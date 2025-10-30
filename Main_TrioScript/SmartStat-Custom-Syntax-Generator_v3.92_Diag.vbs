@@ -1,11 +1,11 @@
-' SmartStat-Custom-Syntax-Generator_v3.91_Learn.vbs
+' SmartStat-Custom-Syntax-Generator_v3.92.vbs
 Option Explicit
 ' =========================
 ' SmartStat Operator Diagnostics (v1.0)
 ' =========================
 ' Purpose: Pinpoint exactly where SmartStat fails on some operator machines.
 
-Const DIAG_MODE                = False
+Const DIAG_MODE                = True
 Const DIAG_LOG_DIR             = "E:\EDRIVE\UNIVERSAL\SmartStat\DiagLogs\"
 Const DIAG_PREFIX              = "SmartStat_OperatorDiag_"
 Const DIAG_ENV_PREFIX          = "SmartStat_EnvCheck_"
@@ -315,7 +315,7 @@ End If
   Diag_Mark_LoadConfig "Loading INI mappings"
   EnsureLogDir LOG_FILE
   EnsureLogDir DIAG_LOG_DIR & "._probe"
-  LogLine LOG_FILE, "=== v3.91_Learn START ==="
+  LogLine LOG_FILE, "=== v3.92 START ==="
   LogLine LOG_FILE, "INFO: Using mappings at [" & MAPPINGS_INI & "]"
   LogLine LOG_FILE, "INFO: Learn file path  [" & LEARN_INI & "]"
 
@@ -347,7 +347,7 @@ End Sub
 Sub FinalizeAndRefresh(logFile, startT)
   Dim elapsed: elapsed = Round(Timer - startT, 2)
   LogLine logFile, "SCRIPT RUNTIME: " & elapsed & " seconds"
-  LogLine logFile, "=== v3.91_Learn END ==="
+  LogLine logFile, "=== v3.92 END ==="
   LogLine logFile, " "
   On Error GoTo 0
   Call SmartStat_RefreshSocketData()
@@ -386,28 +386,35 @@ End Function
 ' ---------------- INI ----------------
 Function LoadIni(path)
   On Error Resume Next
+
   Dim fso: Set fso = CreateObject("Scripting.FileSystemObject")
   If Not fso.FileExists(path) Then Set LoadIni = Nothing: Exit Function
 
   Dim tf: Set tf = fso.OpenTextFile(path, 1, False)
-' Strip UTF-8 BOM if present on first line
-If Not tf.AtEndOfStream Then
-    Dim firstLinePos: firstLinePos = tf.Line
-    Dim peekLine: peekLine = tf.ReadLine
-    If Len(peekLine) > 0 Then
-        If AscW(Left(peekLine,1)) = &HFEFF Then peekLine = Mid(peekLine,2)
-    End If
-    tf.Close
-    Set tf = fso.OpenTextFile(path, 1, False)
-End If
 
   Dim dict: Set dict = NewTextDict()
   Dim sec, line, eq, k, v
+  Dim firstLineHandled: firstLineHandled = False
   sec = ""
+
   Do Until tf.AtEndOfStream
-    line = Trim(tf.ReadLine)
+    ' --- Read the next line; if it's the first line, strip a UTF-8 BOM (U+FEFF) if present ---
+    If Not firstLineHandled Then
+      line = tf.ReadLine
+      If Len(line) > 0 Then
+        If AscW(Left(line, 1)) = &HFEFF Then line = Mid(line, 2)
+      End If
+      firstLineHandled = True
+    Else
+      line = tf.ReadLine
+    End If
+
+    line = Trim(line)
+
     If Len(line) = 0 Then
+      ' skip
     ElseIf Left(line,1) = ";" Or Left(line,1) = "#" Then
+      ' skip comments
     ElseIf Left(line,1) = "[" And Right(line,1) = "]" Then
       sec = Mid(line, 2, Len(line)-2)
       If Not dict.Exists(sec) Then dict.Add sec, NewTextDict()
@@ -421,6 +428,7 @@ End If
       End If
     End If
   Loop
+
   tf.Close
   Set LoadIni = dict
   On Error GoTo 0
@@ -1279,7 +1287,7 @@ Sub LogLine(path, s)
   Diag_TrimLogFileSize path
   Dim fso: Set fso = CreateObject("Scripting.FileSystemObject")
   Dim tf: Set tf = fso.OpenTextFile(path, 8, True)
-  tf.WriteLine Now() & " [v3.91_Learn] " & s
+  tf.WriteLine Now() & " [v3.92] " & s
   tf.Close
   On Error GoTo 0
 End Sub
