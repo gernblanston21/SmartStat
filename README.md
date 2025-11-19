@@ -2,9 +2,8 @@
 ---
 #### **Download:** (You only need one)
 1. Download the Updater from Google Drive and save it to your desktop:
-	- **SmartStat_Updater.exe** ( [Link](https://drive.google.com/drive/folders/1CRUPMOMkS5viA3CQv0fKFEpXyGz2r_93?usp=drive_link) )
-	- **SmartStat_Updater.bat** ( [Link](https://drive.google.com/drive/folders/1CRUPMOMkS5viA3CQv0fKFEpXyGz2r_93?usp=drive_link) ) <<< might be best
-2. **Double-Click** the SmartStat_Updater (.exe or .bat)
+	- **SmartStat_Updater_v4.bat** ( [Link](https://drive.google.com/file/d/1wTlqznBfgwOoerFaksASW_oBLRVoPKQO/view?usp=drive_link) ) <<< might be best
+2. **Double-Click** the SmartStat_Updater_v4 (.bat)
 	- A terminal window will load on screen giving you the status of the updater.
 	- When it is finished (only a few seconds) you should see:
 	```
