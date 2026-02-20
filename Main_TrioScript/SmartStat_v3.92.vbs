@@ -264,7 +264,7 @@ Call Main()
 Sub Main()
   On Error Resume Next
 
-  
+
   Dim x_tmplForDiag: x_tmplForDiag = TrioCmd("page:getpagetemplate")
   Call Diag_Init(x_tmplForDiag)
   If Not Diag_Check_Environment() Then Exit Sub
@@ -518,7 +518,7 @@ End Function
 
 Function StripDiacritics(s)
   Dim src, dst, i
-  src = "áàäâãåčçďéèëêěíìïîľĺńñóòöôõřśšťúùüûýžÁÀÄÂÃÅČÇĎÉÈËÊĚÍÌÏÎĽĹŃÑÓÒÖÔÕŘŚŠŤÚÙÜÛÝŽ"
+  src = "áàäâãåĝçĝéèëêěíìïîľĺńñóòöôõřśšťúùüûýžÝÀÄÂÃÅČÇĎÉÈËÊĚÝÌÝÎĽĹŃÑÓÒÖÔÕŘŚŠŤÚÙÜÛÝŽ"
   dst = "aaaaaaccdeeeeeiiiillnnooooorsstuuuuyzAAAAAACCDEEEEEIIIILLNNOOOOORSSTUUUUYZ"
   For i = 1 To Len(src): s = Replace(s, Mid(src, i, 1), Mid(dst, i, 1)): Next
   StripDiacritics = s
@@ -1188,7 +1188,7 @@ Function Max(a,b)
 		Max = a
 	Else
 		Max = b
-	End If	
+	End If
 End Function
 
 ' ---------------- Trio helpers ----------------
@@ -1455,7 +1455,7 @@ Function ResolveQualifierChain(rawTxt, qAliasNorm, qNorm, learn, ByRef fragJoine
         foundFrag = CStr(qNorm(canonKey))
         Exit For
       End If
-	  
+
 	  ' --- singular fallback for single-token candidates (e.g., curveballs -> curveball) ---
 	  If Not found And i = j Then
 	    Dim sing, canon2
@@ -2230,10 +2230,10 @@ Function SmartStat_RefreshSocketData()
   tabs = TrioCmd("page:get_tabfield_names")
   tab_arr = Split(tabs)
   on_air_tabs = "["
-  
+
   For Each tab In tab_arr
     flag = TrioCmd("tabfield:get_custom_property " & tab)
-    
+
     If flag <> "" Then
       ' Skip tabs with trivial custom props
       If Left(flag, 4) <> "SMT=" And _
@@ -2242,7 +2242,7 @@ Function SmartStat_RefreshSocketData()
          UCase(Left(flag, 5)) <> "AWAY " And _
          UCase(Left(flag, 7)) <> "TEAM XX" And _
          UCase(Left(flag, 9)) <> "PLAYER XX" Then
-         
+
          oa_tab = "['" & tab & "','" & flag & "'], "
          on_air_tabs = on_air_tabs & oa_tab
       End If
@@ -2254,7 +2254,7 @@ Function SmartStat_RefreshSocketData()
   If on_air_tabs <> "[]" Then
     page_name = TrioCmd("page:getpagename")
     page_desc = TrioCmd("page:getpagedescription")
-    
+
     If TrioCmd("sock:socket_is_connected") Then
       TrioCmd "sock:send_socket_data on_air_get message_number=" & page_name & _
               " query=" & on_air_tabs & " message_context=" & page_desc & vbCrLf
