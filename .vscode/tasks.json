@@ -4,16 +4,11 @@
     {
       "label": "SmartStat: Copy MAIN script to clipboard (latest in Main_TrioScript)",
       "type": "shell",
-      "command": "powershell",
+      "command": "powershell.exe",
       "args": [
         "-NoProfile",
         "-Command",
-        "$dir='${workspaceFolder}\\Main_TrioScript'; " +
-        "$f=Get-ChildItem $dir -Filter '*.vbs' | Sort-Object LastWriteTime -Descending | Select-Object -First 1; " +
-        "if(-not $f){Write-Host 'No .vbs found in Main_TrioScript'; exit 1}; " +
-        "$content=Get-Content $f.FullName -Raw; " +
-        "Set-Clipboard -Value $content; " +
-        "Write-Host ('Copied to clipboard: ' + $f.Name)"
+        "$dir='${workspaceFolder}\\Main_TrioScript'; $f=Get-ChildItem $dir -Filter '*.vbs' | Sort-Object LastWriteTime -Descending | Select-Object -First 1; if(-not $f){Write-Host 'No .vbs found in Main_TrioScript'; exit 1}; $content=Get-Content $f.FullName -Raw; Set-Clipboard -Value $content; Write-Host ('Copied to clipboard: ' + $f.Name)"
       ],
       "problemMatcher": [],
       "group": { "kind": "build", "isDefault": true },
@@ -22,19 +17,11 @@
     {
       "label": "SmartStat: Export MAIN script to _EXPORT (latest in Main_TrioScript)",
       "type": "shell",
-      "command": "powershell",
+      "command": "powershell.exe",
       "args": [
         "-NoProfile",
         "-Command",
-        "$srcDir='${workspaceFolder}\\Main_TrioScript'; " +
-        "$outDir='${workspaceFolder}\\_EXPORT'; " +
-        "New-Item -ItemType Directory -Force -Path $outDir | Out-Null; " +
-        "$f=Get-ChildItem $srcDir -Filter '*.vbs' | Sort-Object LastWriteTime -Descending | Select-Object -First 1; " +
-        "if(-not $f){Write-Host 'No .vbs found in Main_TrioScript'; exit 1}; " +
-        "$out=Join-Path $outDir 'SmartStat_TRIO_PASTE.vbs'; " +
-        "Get-Content $f.FullName -Raw | Set-Content -Path $out -Encoding Default; " +
-        "Write-Host ('Exported: ' + $out); " +
-        "Write-Host ('Source:   ' + $f.Name)"
+        "$srcDir='${workspaceFolder}\\Main_TrioScript'; $outDir='${workspaceFolder}\\_EXPORT'; New-Item -ItemType Directory -Force -Path $outDir | Out-Null; $f=Get-ChildItem $srcDir -Filter '*.vbs' | Sort-Object LastWriteTime -Descending | Select-Object -First 1; if(-not $f){Write-Host 'No .vbs found in Main_TrioScript'; exit 1}; $out=Join-Path $outDir 'SmartStat_TRIO_PASTE.vbs'; Get-Content $f.FullName -Raw | Set-Content -Path $out -Encoding Default; Write-Host ('Exported: ' + $out); Write-Host ('Source:   ' + $f.Name)"
       ],
       "problemMatcher": [],
       "presentation": { "reveal": "always", "panel": "dedicated", "clear": true }
