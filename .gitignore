@@ -1,1 +1,5 @@
 .vscode/
+_EXPORT/
+Logs/
+*.log
+*.tmp
