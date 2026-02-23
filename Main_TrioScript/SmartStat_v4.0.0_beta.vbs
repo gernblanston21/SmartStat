@@ -515,7 +515,9 @@ Sub Stage_CommitTransaction()
   Call Diag_WriteLine("TX: Transaction Commit Started - " & ApplyPlan.Count & " fields")
 
   For Each k In ApplyPlan.Keys
-    TrioCmd "tabfield:set_custom_property " & CStr(k) & " " & Quote(CStr(ApplyPlan(k)))
+    ' PREV direct write (kept for traceability):
+    ' TrioCmd "tabfield:set_custom_property " & CStr(k) & " " & Quote(CStr(ApplyPlan(k)))
+    Call Tx_WriteNow(CStr(k), CStr(ApplyPlan(k)))
   Next
 
   Call Diag_WriteLine("TX: Transaction Commit Completed")
@@ -1585,12 +1587,22 @@ End Function
 ' ==========================================
 ' v4.0 Transaction Writer Helper (Phase 1)
 ' ==========================================
+
+Sub Tx_WriteNow(tfName, value)
+  ' Single gateway for immediate writes (never stages).
+  On Error Resume Next
+  TrioCmd "tabfield:set_custom_property " & CStr(tfName) & " " & Quote(CStr(value))
+  On Error GoTo 0
+End Sub
+
 Sub Tx_SetCustomProp(tfName, value)
   ' Stages writes when TRANSACTION_MODE=True, otherwise writes immediately.
   If TRANSACTION_MODE Then
     ApplyPlan(CStr(tfName)) = CStr(value)
   Else
-    TrioCmd "tabfield:set_custom_property " & CStr(tfName) & " " & Quote(CStr(value))
+    ' PREV direct write (kept for traceability):
+    ' TrioCmd "tabfield:set_custom_property " & CStr(tfName) & " " & Quote(CStr(value))
+    Call Tx_WriteNow(tfName, value)
   End If
 End Sub
 
@@ -1764,29 +1776,52 @@ Function ResolveQualifierChain(rawTxt, qAliasNorm, qNorm, learn, ByRef fragJoine
   Dim cand, canonKey
 
   norm = NormalizeKey(CStr(rawTxt))           ' e.g., "with_risp_vs_lhp_in_7th_inning_or_later"
+  tokens = Split(norm, "_")
+  n = UBound(tokens)
 
   fragJoined = ""                              ' e.g., "risp(yes).vs_pitch_hand(L).innings(7-25)"
   leftoversText = ""                           ' any unmatched tokens (for learn logging)
 
   ' ------------------------------------------
+  ' v4.0 Phase 2: Operator shorthand ambiguity guard
+  ' - "VS HP" => ambiguous between VS LHP / VS RHP
+  ' - "VS HB" => ambiguous between VS LHB / VS RHB
+  ' ------------------------------------------
+  If norm = "vs_hp" Then
+    If qNorm.Exists("vs_lhp") And qNorm.Exists("vs_rhp") Then
+      Call Ambiguity_Add("qualifier", "canon", CStr(rawTxt), "vs_lhp", 0.0, "vs_rhp", 0.0)
+      leftoversText = CStr(rawTxt)
+      ResolveQualifierChain = False
+      Exit Function
+    End If
+  End If
+
+  If norm = "vs_hb" Then
+    If qNorm.Exists("vs_lhb") And qNorm.Exists("vs_rhb") Then
+      Call Ambiguity_Add("qualifier", "canon", CStr(rawTxt), "vs_lhb", 0.0, "vs_rhb", 0.0)
+      leftoversText = CStr(rawTxt)
+      ResolveQualifierChain = False
+      Exit Function
+    End If
+  End If
+
+  ' ------------------------------------------
   ' v4.0 Phase 2: Full-string fuzzy resolve FIRST
-  ' This prevents partial matches like "VS HP" resolving to "VS" and ignoring "HP".
+  ' Prevents partial matches like "VS HP" resolving to "VS" and ignoring leftovers.
   ' ------------------------------------------
   If Len(norm) > 0 Then
     Dim directFrag, accBy, sOut
     directFrag = "": accBy = "": sOut = 0
 
-    ' Reuse ResolveQualifierSmart which now supports ambiguity recording
     If ResolveQualifierSmart(norm, qAliasNorm, qNorm, learn, directFrag, accBy, sOut) Then
       fragJoined = directFrag
       leftoversText = ""
       ResolveQualifierChain = True
       Exit Function
     Else
-      ' If ResolveQualifierSmart flagged ambiguity, it returned False and logged it.
-      ' In that case we MUST fail chain so TX gate can block apply.
-      If Left(LCase(accBy), 9) = "ambiguous" Then
-        leftoversText = rawTxt
+      ' If ResolveQualifierSmart flagged ambiguity, fail here so TX gate can block apply.
+      If Left(LCase(CStr(accBy)), 9) = "ambiguous" Then
+        leftoversText = CStr(rawTxt)
         ResolveQualifierChain = False
         Exit Function
       End If
@@ -1796,9 +1831,6 @@ Function ResolveQualifierChain(rawTxt, qAliasNorm, qNorm, learn, ByRef fragJoine
   ' ------------------------------------------
   ' Span matcher (exact). Requires full coverage.
   ' ------------------------------------------
-  tokens = Split(norm, "_")
-  n = UBound(tokens)
-
   i = 0
   Do While i <= n
     found = False
@@ -1855,7 +1887,7 @@ Function ResolveQualifierChain(rawTxt, qAliasNorm, qNorm, learn, ByRef fragJoine
 
   ' ------------------------------------------
   ' v4.0 Phase 2: FULL COVERAGE REQUIREMENT
-  ' If anything is left over, treat as failure (broadcast safety).
+  ' If anything is left over, treat as failure.
   ' ------------------------------------------
   If Len(Trim(leftoversText)) > 0 Then
     ResolveQualifierChain = False
