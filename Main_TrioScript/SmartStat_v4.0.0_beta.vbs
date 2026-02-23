@@ -182,6 +182,29 @@ Sub Diag_WriteLine(ByVal s)
     On Error GoTo 0
 End Sub
 
+' ==========================================
+' v4.0 Phase 2: Ambiguity recording
+' ==========================================
+Sub Ambiguity_Add(where, kind, inputTxt, bestKey, bestScore, altKey, altScore)
+  On Error Resume Next
+
+  If (CompilerContext Is Nothing) Then Exit Sub
+  If Not CompilerContext.Exists("ambiguous") Then Exit Sub
+
+  Dim d: Set d = CompilerContext("ambiguous")
+  Dim id: id = kind & "|" & where & "|" & UCase(Trim(CStr(inputTxt)))
+
+  Dim msg
+  msg = kind & " ambiguous in " & where & " input=[" & CStr(inputTxt) & _
+        "] best=[" & bestKey & "](" & ScoreStr(bestScore) & _
+        ") alt=[" & altKey & "](" & ScoreStr(altScore) & ")"
+
+  d(id) = msg
+  Call Diag_WriteLine("AMBIGUITY: " & msg)
+
+  On Error GoTo 0
+End Sub
+
 Sub Diag_AppendToDebug(ByVal s)
     On Error Resume Next
     Dim path : path = DIAG_LOG_DIR & SMARTSTAT_DEBUG_FILE
@@ -280,6 +303,10 @@ Sub Main()
   Set ApplyPlan = CreateObject("Scripting.Dictionary")
   Set PlanValidationErrors = CreateObject("Scripting.Dictionary")
 
+  ' v4.0 Phase 2: ambiguity & confidence context
+  Dim AmbiguityHits: Set AmbiguityHits = CreateObject("Scripting.Dictionary")
+  CompilerContext("ambiguous") = AmbiguityHits
+
   If Not Diag_Check_Environment() Then Exit Sub
   Dim LOG_FILE:      LOG_FILE      = "E:\EDRIVE\UNIVERSAL\SmartStat\DiagLogs\SmartStat_LearnDebug.txt"
   Dim SRC_DIR:       SRC_DIR       = "E:\EDRIVE\UNIVERSAL\SmartStat\"
@@ -358,6 +385,8 @@ Sub Main()
   Dim rxTransforms: Set rxTransforms = LoadRegexDict(ini, "TRANSFORMS_REGEX")
   Dim learn:        Set learn        = LoadLearnKnobs(ini)
 
+  CompilerContext("learn") = learn
+
   ExecuteTemplatePipeline SRC_DIR, ini, LEARN_INI, transforms, rxTransforms, learn
 
   If TRANSACTION_MODE Then
@@ -398,6 +427,39 @@ Function Stage_ValidatePlan()
     Exit Function
   End If
 
+    ' v4.0 Phase 2: hard block if qualifier failed resolution
+  If Not (PlanValidationErrors Is Nothing) Then
+    If PlanValidationErrors.Exists("QUALIFIER_UNRESOLVED") Then
+      Call Diag_WriteLine("TX: QUALIFIER_UNRESOLVED - blocking apply")
+      Stage_ValidatePlan = False
+      Exit Function
+    End If
+  End If
+
+  ' v4.0 Phase 2: block commit if ambiguity exists (unless explicitly allowed)
+  If Not (CompilerContext Is Nothing) Then
+    If CompilerContext.Exists("ambiguous") Then
+      Dim amb: Set amb = CompilerContext("ambiguous")
+      If amb.Count > 0 Then
+        Dim allowAmb: allowAmb = False
+        If CompilerContext.Exists("learn") Then
+          Dim lk: Set lk = CompilerContext("learn")
+          If lk.Exists("allow_ambiguous_apply") Then allowAmb = CBool(lk("allow_ambiguous_apply"))
+        End If
+
+        If Not allowAmb Then
+          Stage_ValidatePlan = False
+          PlanValidationErrors.RemoveAll
+          PlanValidationErrors("AMBIGUOUS") = "Ambiguous mapping detected; operator choice required."
+          Call Diag_WriteLine("TX: Ambiguity gate blocked apply (count=" & CStr(amb.Count) & ")")
+          Exit Function
+        Else
+          Call Diag_WriteLine("TX: Ambiguity gate bypassed (allow_ambiguous_apply=True)")
+        End If
+      End If
+    End If
+  End If
+
   Call Diag_WriteLine("TX: TRANSACTION_MODE=" & CStr(TRANSACTION_MODE) & " ApplyPlan.Count=" & CStr(ApplyPlan.Count))
 
   If ApplyPlan.Count = 0 Then
@@ -408,7 +470,11 @@ Function Stage_ValidatePlan()
     Exit Function
   End If
 
-  PlanValidationErrors.RemoveAll
+  If PlanValidationErrors.Exists("QUALIFIER_UNRESOLVED") Then
+    Stage_ValidatePlan = False
+    Call Diag_WriteLine("TX: QUALIFIER_UNRESOLVED - blocking apply")
+    Exit Function
+  End If
 
   Dim k, v, hasOpen, hasClose
   For Each k In ApplyPlan.Keys
@@ -644,15 +710,21 @@ Function LoadLearnKnobs(ini)
   d("fuzzy_threshold_short") = 0.82
   d("phonetic_enable") = False
   d("jaccard_threshold") = 0.68
+  ' v4.0 Phase 2 ambiguity knobs
+  d("ambiguous_score_delta") = 0.03          ' if bestScore - altScore <= delta => ambiguous
+  d("allow_ambiguous_apply") = False         ' broadcast-grade default: block apply
   d("stopwords") = Array("batting","bat","hitting","offensive","rate","percent","percentage","team")
   d("deny_fuzzy") = Array("OBP","OPS","ERA","WHIP","WAR")
   d("prefer_pitcher_tokens") = Array("fb","velo","spin","whiff","csw")
+
   If ini.Exists("LEARN") Then
     Dim sec: Set sec = ini("LEARN")
     If sec.Exists("fuzzy_threshold") Then d("fuzzy_threshold") = CDbl(sec("fuzzy_threshold"))
     If sec.Exists("fuzzy_threshold_short") Then d("fuzzy_threshold_short") = CDbl(sec("fuzzy_threshold_short"))
     If sec.Exists("phonetic_enable") Then d("phonetic_enable") = (LCase(sec("phonetic_enable"))="true")
     If sec.Exists("jaccard_threshold") Then d("jaccard_threshold") = CDbl(sec("jaccard_threshold"))
+    If sec.Exists("ambiguous_score_delta") Then d("ambiguous_score_delta") = CDbl(sec("ambiguous_score_delta"))
+    If sec.Exists("allow_ambiguous_apply") Then d("allow_ambiguous_apply") = (LCase(sec("allow_ambiguous_apply"))="true")
     If sec.Exists("stopwords") Then d("stopwords") = ParseCsvList(sec("stopwords"), False)
     If sec.Exists("deny_fuzzy") Then d("deny_fuzzy") = ParseCsvList(sec("deny_fuzzy"), True)
     If sec.Exists("prefer_pitcher_tokens") Then d("prefer_pitcher_tokens") = ParseCsvList(sec("prefer_pitcher_tokens"), False)
@@ -776,16 +848,30 @@ Function ResolveQualifierSmart(qTxt, qAliasNorm, qNorm, learn, ByRef outFrag, By
   If qAliasNorm.Exists(keyN) Then keyN = NormalizeKey(CStr(qAliasNorm(keyN)))
   If qNorm.Exists(keyN) Then outFrag = CStr(qNorm(keyN)) : acceptedBy="direct" : scoreOut=1 : ResolveQualifierSmart=True : Exit Function
 
-  Dim bestA, sA
-  If HeuristicPick(keyN, qAliasNorm.Keys, learn, bestA, sA) Then
+  Dim bestA, altA, sA, sAltA, ambA
+  If HeuristicPickWithAlt(keyN, qAliasNorm.Keys, learn, bestA, sA, altA, sAltA, ambA) Then
+    If ambA Then
+      Call Ambiguity_Add("qualifier", "alias", raw, bestA, sA, altA, sAltA)
+      acceptedBy = "ambiguous/alias": scoreOut = sA
+      ResolveQualifierSmart = False
+      Exit Function
+    End If
+
     If qAliasNorm.Exists(bestA) Then
       Dim canon: canon = NormalizeKey(CStr(qAliasNorm(bestA)))
       If qNorm.Exists(canon) Then outFrag = CStr(qNorm(canon)) : acceptedBy="fuzzy/alias" : scoreOut=sA : ResolveQualifierSmart=True : Exit Function
     End If
   End If
 
-  Dim bestC, sC
-  If HeuristicPick(keyN, qNorm.Keys, learn, bestC, sC) Then
+  Dim bestC, altC, sC, sAltC, ambC
+  If HeuristicPickWithAlt(keyN, qNorm.Keys, learn, bestC, sC, altC, sAltC, ambC) Then
+    If ambC Then
+      Call Ambiguity_Add("qualifier", "canon", raw, bestC, sC, altC, sAltC)
+      acceptedBy = "ambiguous/canon": scoreOut = sC
+      ResolveQualifierSmart = False
+      Exit Function
+    End If
+
     If qNorm.Exists(bestC) Then outFrag = CStr(qNorm(bestC)) : acceptedBy="fuzzy/canon" : scoreOut=sC : ResolveQualifierSmart=True : Exit Function
   End If
 
@@ -964,8 +1050,16 @@ Function ResolveCategorySmart(inputKey, preferPitcher, learn, _
   End If
 
   Dim aliasKeys: aliasKeys = MergeKeys(catAlias, catPitchAlias)
-  Dim bestAlias, s1
-  If HeuristicPick(keyTrim, aliasKeys, learn, bestAlias, s1) Then
+
+  Dim bestAlias, altAlias, s1, sAlt1, amb1
+  If HeuristicPickWithAlt(keyTrim, aliasKeys, learn, bestAlias, s1, altAlias, sAlt1, amb1) Then
+    If amb1 Then
+      Call Ambiguity_Add("category", "alias", keyTrim, bestAlias, s1, altAlias, sAlt1)
+      usedHeuristic = True: acceptedBy = "ambiguous/alias": outScore = s1
+      ResolveCategorySmart = False
+      Exit Function
+    End If
+
     Dim tmpVal
     If catAlias.Exists(bestAlias) Then
       Dim canon: canon = catAlias(bestAlias)
@@ -986,8 +1080,16 @@ Function ResolveCategorySmart(inputKey, preferPitcher, learn, _
   End If
 
   Dim canonKeys: canonKeys = MergeKeys(catMap, catPitchMap)
-  Dim bestCanon, s2
-  If HeuristicPick(keyTrim, canonKeys, learn, bestCanon, s2) Then
+
+  Dim bestCanon, altCanon, s2, sAlt2, amb2
+  If HeuristicPickWithAlt(keyTrim, canonKeys, learn, bestCanon, s2, altCanon, sAlt2, amb2) Then
+    If amb2 Then
+      Call Ambiguity_Add("category", "canon", keyTrim, bestCanon, s2, altCanon, sAlt2)
+      usedHeuristic = True: acceptedBy = "ambiguous/canon": outScore = s2
+      ResolveCategorySmart = False
+      Exit Function
+    End If
+
     Dim tmpVal2
     If TryCanonLookupFlexible(bestCanon, catMap, tmpVal2) Then
       statOut = tmpVal2 : conceptOut = "CATEGORY." & bestCanon : isPitcher = False
@@ -1129,6 +1231,45 @@ Function HeuristicPick(keyTrim, candidateKeys, learn, ByRef bestKey, ByRef score
   HeuristicPick = (ok And score >= threshold)
 End Function
 
+' ==========================================
+' v4.0 Phase 2: Heuristic pick with alternate candidate
+' ==========================================
+Function HeuristicPickWithAlt(keyTrim, candidateKeys, learn, ByRef bestKey, ByRef bestScore, ByRef altKey, ByRef altScore, ByRef isAmbiguous)
+  Dim shortThresh: shortThresh = CDbl(learn("fuzzy_threshold_short"))
+  Dim longThresh:  longThresh  = CDbl(learn("fuzzy_threshold"))
+
+  Dim lenKey: lenKey = Len(keyTrim)
+  If lenKey < 1 Then lenKey = 1
+
+  Dim ok
+  ok = FuzzyResolveTop2Advanced(keyTrim, candidateKeys, learn, bestKey, bestScore, altKey, altScore)
+
+  If (Not ok) Or Len(bestKey) = 0 Then
+    HeuristicPickWithAlt = False
+    isAmbiguous = False
+    Exit Function
+  End If
+
+  Dim threshold
+  If Len(keyTrim) <= 5 Then
+    Dim oneEditBound: oneEditBound = 1 - (1 / lenKey)
+    If oneEditBound > shortThresh Then threshold = shortThresh Else threshold = oneEditBound
+  Else
+    threshold = longThresh
+  End If
+
+  Dim passBest: passBest = (bestScore >= threshold)
+  Dim passAlt:  passAlt  = (Len(altKey) > 0 And altScore >= threshold)
+
+  isAmbiguous = False
+  If passBest And passAlt Then
+    Dim delta: delta = CDbl(learn("ambiguous_score_delta"))
+    If (bestScore - altScore) <= delta Then isAmbiguous = True
+  End If
+
+  HeuristicPickWithAlt = passBest
+End Function
+
 Function FuzzyResolveAdvanced(q, candidateKeys, learn, ByRef bestKey, ByRef score)
   Dim shortToken, pref2, pref3, usePhon, sxQ
   Dim bestDist, maxLen
@@ -1181,6 +1322,89 @@ Function FuzzyResolveAdvanced(q, candidateKeys, learn, ByRef bestKey, ByRef scor
   End If
   FuzzyResolveAdvanced = True
 End Function
+
+' ==========================================
+' v4.0 Phase 2: Top-2 fuzzy resolver (non-breaking addition)
+' ==========================================
+Function FuzzyResolveTop2Advanced(q, candidateKeys, learn, ByRef bestKey, ByRef bestScore, ByRef altKey, ByRef altScore)
+  Dim shortToken, pref2, pref3, usePhon, sxQ
+  Dim bestDist, altDist, maxLen
+  Dim listA(), listB(), i, k
+
+  bestKey = "": altKey = ""
+  bestScore = 0: altScore = 0
+  bestDist = 9999: altDist = 9999
+
+  Dim qn : qn = LCase(CStr(q))
+  shortToken = (Len(qn) <= 5)
+  pref2 = Left(qn, 2)
+  pref3 = Left(qn, 3)
+
+  usePhon = False
+  If learn.Exists("phonetic_enable") Then usePhon = CBool(learn("phonetic_enable"))
+  If usePhon Then sxQ = Soundex(qn) Else sxQ = ""
+
+  Dim haveA: haveA = False
+  Dim haveB: haveB = False
+
+  If IsArray(candidateKeys) Then
+    For i = LBound(candidateKeys) To UBound(candidateKeys)
+      k = LCase(CStr(candidateKeys(i)))
+      If shortToken Then
+        If (Left(k,3)=pref3) Or (Left(k,2)=pref2) Then AppendString listA, k: haveA=True Else AppendString listB, k: haveB=True
+      Else
+        AppendString listA, k: haveA=True
+      End If
+    Next
+  Else
+    For Each k In candidateKeys
+      Dim kk : kk = LCase(CStr(k))
+      If shortToken Then
+        If (Left(kk,3)=pref3) Or (Left(kk,2)=pref2) Then AppendString listA, kk: haveA=True Else AppendString listB, kk: haveB=True
+      Else
+        AppendString listA, kk: haveA=True
+      End If
+    Next
+  End If
+
+  If haveA Then Call ScanForBestTwo(qn, listA, bestKey, bestDist, altKey, altDist)
+  If haveB And bestDist > 1 Then Call ScanForBestTwo(qn, listB, bestKey, bestDist, altKey, altDist)
+
+  maxLen = Len(qn): If maxLen < 1 Then maxLen = 1
+  bestScore = 1 - (bestDist / maxLen)
+  altScore  = 1 - (altDist / maxLen)
+
+  If usePhon Then
+    If Len(bestKey) > 0 And Soundex(bestKey) = sxQ Then
+      bestScore = bestScore + 0.03: If bestScore > 1 Then bestScore = 1
+    End If
+    If Len(altKey) > 0 And Soundex(altKey) = sxQ Then
+      altScore = altScore + 0.03: If altScore > 1 Then altScore = 1
+    End If
+  End If
+
+  FuzzyResolveTop2Advanced = True
+End Function
+
+Sub ScanForBestTwo(qn, arr, ByRef bestKey, ByRef bestDist, ByRef altKey, ByRef altDist)
+  Dim i, k, dist
+  For i = LBound(arr) To UBound(arr)
+    k = CStr(arr(i))
+    dist = Lev(qn, k)
+
+    If dist < bestDist Then
+      altDist = bestDist
+      altKey  = bestKey
+      bestDist = dist
+      bestKey  = k
+    ElseIf dist < altDist And k <> bestKey Then
+      altDist = dist
+      altKey  = k
+    End If
+
+    If Len(qn) <= 5 And bestDist <= 1 Then Exit Sub
+  Next
+End Sub
 
 Private Sub ScanForBest(qn, arr, ByRef bestKey, ByRef bestDist)
   Dim i, k, dist
@@ -1540,11 +1764,40 @@ Function ResolveQualifierChain(rawTxt, qAliasNorm, qNorm, learn, ByRef fragJoine
   Dim cand, canonKey
 
   norm = NormalizeKey(CStr(rawTxt))           ' e.g., "with_risp_vs_lhp_in_7th_inning_or_later"
+
+  fragJoined = ""                              ' e.g., "risp(yes).vs_pitch_hand(L).innings(7-25)"
+  leftoversText = ""                           ' any unmatched tokens (for learn logging)
+
+  ' ------------------------------------------
+  ' v4.0 Phase 2: Full-string fuzzy resolve FIRST
+  ' This prevents partial matches like "VS HP" resolving to "VS" and ignoring "HP".
+  ' ------------------------------------------
+  If Len(norm) > 0 Then
+    Dim directFrag, accBy, sOut
+    directFrag = "": accBy = "": sOut = 0
+
+    ' Reuse ResolveQualifierSmart which now supports ambiguity recording
+    If ResolveQualifierSmart(norm, qAliasNorm, qNorm, learn, directFrag, accBy, sOut) Then
+      fragJoined = directFrag
+      leftoversText = ""
+      ResolveQualifierChain = True
+      Exit Function
+    Else
+      ' If ResolveQualifierSmart flagged ambiguity, it returned False and logged it.
+      ' In that case we MUST fail chain so TX gate can block apply.
+      If Left(LCase(accBy), 9) = "ambiguous" Then
+        leftoversText = rawTxt
+        ResolveQualifierChain = False
+        Exit Function
+      End If
+    End If
+  End If
+
+  ' ------------------------------------------
+  ' Span matcher (exact). Requires full coverage.
+  ' ------------------------------------------
   tokens = Split(norm, "_")
   n = UBound(tokens)
-
-  fragJoined = ""                              ' e.g., "rspos(true).vs_pitcher_hand(left).inning(7-9)"
-  leftoversText = ""                           ' any unmatched tokens (for learn logging)
 
   i = 0
   Do While i <= n
@@ -1563,6 +1816,7 @@ Function ResolveQualifierChain(rawTxt, qAliasNorm, qNorm, learn, ByRef fragJoine
       ' alias -> canon
       canonKey = cand
       If qAliasNorm.Exists(canonKey) Then canonKey = NormalizeKey(CStr(qAliasNorm(canonKey)))
+
       ' canon -> fragment
       If qNorm.Exists(canonKey) Then
         found = True
@@ -1571,22 +1825,21 @@ Function ResolveQualifierChain(rawTxt, qAliasNorm, qNorm, learn, ByRef fragJoine
         Exit For
       End If
 
-	  ' --- singular fallback for single-token candidates (e.g., curveballs -> curveball) ---
-	  If Not found And i = j Then
-	    Dim sing, canon2
-	    sing = NormalizeKey(SingularizeKey(cand))
-	    If sing <> cand Then
-		  ' try alias -> canon with singular
-		  canon2 = sing
-		  If qAliasNorm.Exists(canon2) Then canon2 = NormalizeKey(CStr(qAliasNorm(canon2)))
-		  If qNorm.Exists(canon2) Then
-		    found = True
-		    foundLen = 1
-		    foundFrag = CStr(qNorm(canon2))
-		    Exit For
-	  	  End If
-	    End If
-	  End If
+      ' --- singular fallback for single-token candidates (e.g., curveballs -> curveball) ---
+      If Not found And i = j Then
+        Dim sing, canon2
+        sing = NormalizeKey(SingularizeKey(cand))
+        If sing <> cand Then
+          canon2 = sing
+          If qAliasNorm.Exists(canon2) Then canon2 = NormalizeKey(CStr(qAliasNorm(canon2)))
+          If qNorm.Exists(canon2) Then
+            found = True
+            foundLen = 1
+            foundFrag = CStr(qNorm(canon2))
+            Exit For
+          End If
+        End If
+      End If
     Next
 
     If found Then
@@ -1600,7 +1853,15 @@ Function ResolveQualifierChain(rawTxt, qAliasNorm, qNorm, learn, ByRef fragJoine
     End If
   Loop
 
-  ResolveQualifierChain = (Len(fragJoined) > 0)
+  ' ------------------------------------------
+  ' v4.0 Phase 2: FULL COVERAGE REQUIREMENT
+  ' If anything is left over, treat as failure (broadcast safety).
+  ' ------------------------------------------
+  If Len(Trim(leftoversText)) > 0 Then
+    ResolveQualifierChain = False
+  Else
+    ResolveQualifierChain = (Len(fragJoined) > 0)
+  End If
 End Function
 
 Function SuggestQualifierMapping(rawTxt, qAliasNorm, qNorm, learn, _
@@ -1956,34 +2217,58 @@ Sub DetermineEntityContext(ByRef entityCtx, ByRef entityType, ByRef playerSubtyp
   End If
 End Sub
 
-Sub ProcessQualifierInfo(qualTab, qAliasNorm, qNorm, learn, LEARN_INI, ByRef qPrefix, ByRef qRemFrag)
-  Dim qualTxt: qualTxt = ""
-  If LCase(Trim(qualTab)) <> "none" And Len(Trim(qualTab)) > 0 Then
-    qualTxt = CleanAfterColon(TrioCmd("page:get_property " & qualTab))
-    If InStr(1, qualTxt, "ERROR:", vbTextCompare) > 0 Then qualTxt = ""
+Function ProcessQualifier(qualTab, qAliasNorm, qNorm, learn, ByRef qPrefix, ByRef qRemFrag)
+  Dim qualTxt, qRemainder, chainOk
+  Dim acceptedBy, scoreOut
+
+  qualTxt = Trim(CStr(TrioCmd("page:get_property " & CStr(qualTab))))
+
+  ' -----------------------------
+  ' Broadcast-grade rule:
+  ' - If operator typed NOTHING -> safe default "season"
+  ' - If operator typed SOMETHING and we cannot fully resolve -> FAIL (no silent season default)
+  ' -----------------------------
+  If Len(qualTxt) = 0 Then
+    qPrefix = "season"
+    qRemFrag = ""
+    ProcessQualifier = True
+    Exit Function
   End If
 
-  Dim parsed, qRemainder
-  parsed = NormalizeQualifierPrefixAndKey(qualTxt)
-  qPrefix = "season": qRemainder = ""
-  If IsArray(parsed) Then
-    If Len(parsed(0)) > 0 Then qPrefix = Left(parsed(0), Len(parsed(0)) - 1)
-    qRemainder = CStr(parsed(1))
-  End If
-
+  qPrefix = ""
   qRemFrag = ""
-  If Len(Trim(qRemainder)) > 0 Then
-    Dim qLeft
-    If ResolveQualifierChain(qRemainder, qAliasNorm, qNorm, learn, qRemFrag, qLeft) = False Then
-      If Len(Trim(qLeft)) > 0 Then
-        AppendIniSectionLine LEARN_INI, "[PENDING_QUALIFIER]", Replace(qLeft, " ", "_") & " = (suggest) ??? ; QUAL remainder"
-      Else
-        AppendIniSectionLine LEARN_INI, "[PENDING_QUALIFIER]", NormalizeKey(qRemainder) & " = (suggest) ??? ; QUAL remainder"
+  qRemainder = ""
+
+  ' Resolve qualifier chain (full coverage expected; leftovers indicate failure)
+  chainOk = ResolveQualifierChain(qualTxt, qAliasNorm, qNorm, learn, qRemFrag, qRemainder)
+
+  If Not chainOk Then
+    ' If ambiguity was recorded, Stage_ValidatePlan() will block apply.
+    ' Otherwise, treat as unresolved qualifier -> hard fail.
+    If Not (CompilerContext Is Nothing) Then
+      If CompilerContext.Exists("ambiguous") Then
+        If CompilerContext("ambiguous").Count > 0 Then
+          Call Diag_WriteLine("QUALIFIER: ambiguous/unresolved input=[" & qualTxt & "] (ambigCount=" & CStr(CompilerContext("ambiguous").Count) & ")")
+          ProcessQualifier = False
+          Exit Function
+        End If
       End If
-      qRemFrag = ""
     End If
+
+    PlanValidationErrors.RemoveAll
+    PlanValidationErrors("QUALIFIER_UNRESOLVED") = "Qualifier text could not be resolved: [" & qualTxt & "] leftovers=[" & Trim(CStr(qRemainder)) & "]"
+    Call Diag_WriteLine("QUALIFIER: UNRESOLVED input=[" & qualTxt & "] leftovers=[" & Trim(CStr(qRemainder)) & "]")
+    ProcessQualifier = False
+    Exit Function
   End If
-End Sub
+
+  ' Determine prefix for qualifier display/labeling (existing behavior)
+  ' If your original logic computed qPrefix elsewhere, keep that computation below.
+  ' Minimal safe default: use "season" when resolved fragment starts with season(...)
+  qPrefix = "season"
+
+  ProcessQualifier = True
+End Function
 
 Function BuildOutputTargets(outItems)
   Dim outTargets: Set outTargets = CreateObject("Scripting.Dictionary")
@@ -2224,8 +2509,12 @@ Sub ExecuteTemplatePipeline(srcDir, mappingsIni, LEARN_INI, transforms, rxTransf
   Diag_Mark_Classify "Entity context: " & entityCtx & " subtype=" & playerSubtype
 
   Dim qPrefix, qRemFrag
-  ProcessQualifierInfo qualTab, qAliasNorm, qNorm, learn, LEARN_INI, qPrefix, qRemFrag
-  Diag_Mark_DetectFilters "Qualifier processed; qPrefix=" & qPrefix
+  qPrefix = ""
+  qRemFrag = ""
+  If Not ProcessQualifier(qualTab, qAliasNorm, qNorm, learn, qPrefix, qRemFrag) Then
+    Call Diag_OperatorAlert("SmartStat aborted: Qualifier could not be resolved. No changes applied.")
+    Exit Sub
+  End If
 
   Dim outTargets: Set outTargets = BuildOutputTargets(outItems)
   Diag_Mark_BuildOutMap "Output targets compiled"
