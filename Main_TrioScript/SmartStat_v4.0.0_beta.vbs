@@ -15,6 +15,7 @@ Const DIAG_PREFIX              = "SmartStat_OperatorDiag_"
 Const DIAG_ENV_PREFIX          = "SmartStat_EnvCheck_"
 Const SMARTSTAT_DEBUG_FILE     = "SmartStat_Debug.txt"
 Const DIAG_MAX_FILE_SIZE_BYTES = "5242880"
+Const SMARTSTAT_VERSION = "4.0.0_beta"
 
 Const PHASE_00_BOOT            = "00.BOOT"
 Const PHASE_01_ENV_VALIDATE    = "01.ENV_VALIDATE"
@@ -267,10 +268,10 @@ Call Main()
 
 Sub Main()
   On Error Resume Next
-
-
   Dim x_tmplForDiag: x_tmplForDiag = TrioCmd("page:getpagetemplate")
   Call Diag_Init(x_tmplForDiag)
+
+  Call Diag_Log("VERSION=" & SMARTSTAT_VERSION)
 
   ' ================================
   ' v4.0 Initialize Compiler Context
@@ -337,6 +338,16 @@ Sub Main()
     ' still run so static overrides etc. can apply
     ExecuteTemplatePipeline SRC_DIR, Nothing, LEARN_INI, NewTextDict(), NewTextDict(), NewTextDict()
 
+    If TRANSACTION_MODE Then
+      Call Diag_Log("TRANSACTION_MODE=" & CStr(TRANSACTION_MODE))
+      If Stage_ValidatePlan() Then
+        Call Stage_CommitTransaction()
+      Else
+        Call Diag_OperatorAlert("SmartStat aborted: Validation failure. No changes applied.")
+        Call Diag_Log("VALIDATION FAILURE - Transaction Aborted")
+      End If
+    End If
+
     ' finalize and return (no GoTo)
     Call Diag_Done()
     Call FinalizeAndRefresh(LOG_FILE, startTime)
@@ -348,6 +359,16 @@ Sub Main()
   Dim learn:        Set learn        = LoadLearnKnobs(ini)
 
   ExecuteTemplatePipeline SRC_DIR, ini, LEARN_INI, transforms, rxTransforms, learn
+
+  If TRANSACTION_MODE Then
+    Dim txOk: txOk = Stage_ValidatePlan()
+    If txOk Then
+      Call Stage_CommitTransaction()
+    Else
+      Call Diag_OperatorAlert("SmartStat aborted: Validation failure. No changes applied.")
+      Call Diag_WriteLine("TX: VALIDATION FAILURE - Transaction Aborted")
+    End If
+  End If
 
   ' normal finalize (no label)
   Call Diag_Done()
@@ -363,6 +384,77 @@ Sub FinalizeAndRefresh(logFile, startT)
   Call SmartStat_RefreshSocketData()
 End Sub
 
+' ==========================================
+' v4.0 Stage 4 – Structural Validation Gate
+' - Allows clears ("") and control strings (e.g., SMARTSTAT=PLAYER)
+' - Only enforces moustache pairing when moustaches are present
+' ==========================================
+Function Stage_ValidatePlan()
+  Stage_ValidatePlan = True
+
+  If ApplyPlan Is Nothing Then
+    Call Diag_WriteLine("TX: ApplyPlan is Nothing")
+    Stage_ValidatePlan = False
+    Exit Function
+  End If
+
+  Call Diag_WriteLine("TX: TRANSACTION_MODE=" & CStr(TRANSACTION_MODE) & " ApplyPlan.Count=" & CStr(ApplyPlan.Count))
+
+  If ApplyPlan.Count = 0 Then
+    PlanValidationErrors.RemoveAll
+    PlanValidationErrors("EMPTY_PLAN") = "No tabfields were staged for apply."
+    Call Diag_WriteLine("TX: EMPTY_PLAN (no writes staged)")
+    Stage_ValidatePlan = False
+    Exit Function
+  End If
+
+  PlanValidationErrors.RemoveAll
+
+  Dim k, v, hasOpen, hasClose
+  For Each k In ApplyPlan.Keys
+    v = CStr(ApplyPlan(k))
+
+    ' Allow explicit clears (used by output_map clear list)
+    If Len(Trim(v)) = 0 Then
+      ' OK
+    ElseIf Left(UCase(v), 9) = "SMARTSTAT=" Then
+      ' OK (control custom property in A)
+    Else
+      hasOpen  = (InStr(v, "{{") > 0)
+      hasClose = (InStr(v, "}}") > 0)
+
+      ' Only enforce pairing if any moustache token is present
+      If hasOpen Xor hasClose Then
+        Stage_ValidatePlan = False
+        PlanValidationErrors(CStr(k)) = "Unbalanced moustache braces in: " & v
+      End If
+    End If
+  Next
+
+  If Not Stage_ValidatePlan Then
+    Dim ek
+    For Each ek In PlanValidationErrors.Keys
+      Call Diag_WriteLine("TX: VALIDATION ERROR - " & ek & ": " & PlanValidationErrors(ek))
+    Next
+  Else
+    Call Diag_WriteLine("TX: Validation OK")
+  End If
+End Function
+
+' ==========================================
+' v4.0 Stage 5 – Transaction Commit
+' ==========================================
+Sub Stage_CommitTransaction()
+  Dim k
+  Call Diag_WriteLine("TX: Transaction Commit Started - " & ApplyPlan.Count & " fields")
+
+  For Each k In ApplyPlan.Keys
+    TrioCmd "tabfield:set_custom_property " & CStr(k) & " " & Quote(CStr(ApplyPlan(k)))
+  Next
+
+  Call Diag_WriteLine("TX: Transaction Commit Completed")
+End Sub
+
 ' ---------------- Dict helpers ----------------
 Function CreateTextDict()
   Dim d : Set d = CreateObject("Scripting.Dictionary")
@@ -371,6 +463,7 @@ Function CreateTextDict()
   On Error GoTo 0
   Set CreateTextDict = d
 End Function
+
 Function NewTextDict() : Set NewTextDict = CreateTextDict() : End Function
 
 Function NormalizeKeyForLookup(k)
@@ -1265,6 +1358,18 @@ Function Quote(s)
   Quote = Chr(34) & NormalizeSeasonInSyntax(ApplyLeagueNameAdjustments(s, G_SPORT_TAG)) & Chr(34)
 End Function
 
+' ==========================================
+' v4.0 Transaction Writer Helper (Phase 1)
+' ==========================================
+Sub Tx_SetCustomProp(tfName, value)
+  ' Stages writes when TRANSACTION_MODE=True, otherwise writes immediately.
+  If TRANSACTION_MODE Then
+    ApplyPlan(CStr(tfName)) = CStr(value)
+  Else
+    TrioCmd "tabfield:set_custom_property " & CStr(tfName) & " " & Quote(CStr(value))
+  End If
+End Sub
+
 Sub GuiErr(msg)
   On Error Resume Next
   TrioCmd "gui:error_message " & Quote(msg)
@@ -1822,7 +1927,7 @@ Sub DetermineEntityContext(ByRef entityCtx, ByRef entityType, ByRef playerSubtyp
   aPage = UCase(TrioCmd("page:get_property A"))
 
   If InStr(aFlag, "SMARTSTAT=") = 0 And Len(aPage) = 0 Then
-    TrioCmd "tabfield:set_custom_property A " & Quote("SMARTSTAT=PLAYER")
+    Call Tx_SetCustomProp("A", "SMARTSTAT=PLAYER")
     entityCtx = "player": entityType = "PLAYER": playerSubtype = ""
   Else
     If Len(aPage) > 0 Then
@@ -1837,7 +1942,7 @@ Sub DetermineEntityContext(ByRef entityCtx, ByRef entityType, ByRef playerSubtyp
         playerSubtype = ""
       End If
       entityCtx = LCase(entityType)
-      TrioCmd "tabfield:set_custom_property A " & Quote("SMARTSTAT=" & entityType)
+      Call Tx_SetCustomProp("A", "SMARTSTAT=" & entityType)
     Else
       If InStr(aFlag, "SMARTSTAT=TEAM") > 0 Then
         entityCtx = "team"
@@ -2063,7 +2168,7 @@ Sub ProcessCategoryColumns(catTabs, transforms, rxTransforms, learn, LEARN_INI, 
               targets = outTargets(col1)(r)
               If IsArray(targets) Then
                 For j = LBound(targets) To UBound(targets)
-                  TrioCmd "tabfield:set_custom_property " & CStr(targets(j)) & " " & Quote(finalSyntax)
+                  Call Tx_SetCustomProp(CStr(targets(j)), finalSyntax)
                 Next
               End If
             End If
@@ -2081,7 +2186,7 @@ Sub ProcessCategoryColumns(catTabs, transforms, rxTransforms, learn, LEARN_INI, 
             tclear = outTargets(col1_clear)(r)
             If IsArray(tclear) Then
               For jc = LBound(tclear) To UBound(tclear)
-                TrioCmd "tabfield:set_custom_property " & CStr(tclear(jc)) & " " & Quote("")
+                Call Tx_SetCustomProp(CStr(tclear(jc)), "")
               Next
             End If
           End If
@@ -2202,7 +2307,7 @@ Sub ApplyStaticOverridesByTemplate(staticIniPath, tmplName, entityCtx, playerSub
       If UCase(entityCtx) = "PLAYER" And UCase(playerSubtype) = "P" Then
         If LCase(val) = "{{info.player.primary_position}}" Then val = "{{info.player.pitcher_hand}}"
       End If
-      TrioCmd "tabfield:set_custom_property " & CStr(k) & " " & Quote(val)
+      Call Tx_SetCustomProp(CStr(k), val)
     Next
   End If
 
@@ -2214,7 +2319,7 @@ Sub ApplyStaticOverridesByTemplate(staticIniPath, tmplName, entityCtx, playerSub
       If UCase(entityCtx) = "PLAYER" And UCase(playerSubtype) = "P" Then
         If LCase(val2) = "{{info.player.primary_position}}" Then val2 = "{{info.player.pitcher_hand}}"
       End If
-      TrioCmd "tabfield:set_custom_property " & CStr(k2) & " " & Quote(val2)
+      Call Tx_SetCustomProp(CStr(k2), val2)
     Next
   End If
 
