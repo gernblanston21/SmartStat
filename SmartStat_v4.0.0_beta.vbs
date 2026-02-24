@@ -402,7 +402,13 @@ Sub Main()
 
     If TRANSACTION_MODE Then
       Call Diag_Log("TRANSACTION_MODE=" & CStr(TRANSACTION_MODE))
-      If Stage_ValidatePlan() Then
+      Err.Clear
+      Dim txOkIni: txOkIni = Stage_ValidatePlan()
+      If Err.Number <> 0 Then
+        Call Diag_WriteLine("TX: Stage_ValidatePlan runtime error (ini-load path) Err.Number=" & CStr(Err.Number) & " Err.Description=" & CStr(Err.Description))
+        Err.Clear
+      End If
+      If txOkIni Then
         Call Stage_CommitTransaction()
       Else
         Call Diag_OperatorAlert("SmartStat aborted: Validation failure. No changes applied.")
@@ -425,7 +431,12 @@ Sub Main()
   ExecuteTemplatePipeline SRC_DIR, ini, LEARN_INI, transforms, rxTransforms, learn
 
   If TRANSACTION_MODE Then
+    Err.Clear
     Dim txOk: txOk = Stage_ValidatePlan()
+    If Err.Number <> 0 Then
+      Call Diag_WriteLine("TX: Stage_ValidatePlan runtime error (main path) Err.Number=" & CStr(Err.Number) & " Err.Description=" & CStr(Err.Description))
+      Err.Clear
+    End If
     If txOk Then
       Call Stage_CommitTransaction()
     Else
@@ -488,6 +499,13 @@ Function Stage_ValidatePlan()
   If ApplyPlan Is Nothing Then
     Call Diag_WriteLine("TX: ApplyPlan is Nothing")
     Stage_ValidatePlan = False
+    Call Diag_WriteLine("TX: EARLY EXIT - APPLYPLAN_NOTHING")
+    If (PlanValidationErrors Is Nothing) Then
+      Set PlanValidationErrors = CreateObject("Scripting.Dictionary")
+    End If
+    If PlanValidationErrors.Count = 0 Then
+      PlanValidationErrors("UNKNOWN_VALIDATE_FAIL") = "Stage_ValidatePlan returned False with no recorded errors."
+    End If
     Exit Function
   End If
 
@@ -496,6 +514,13 @@ Function Stage_ValidatePlan()
     If PlanValidationErrors.Exists("QUALIFIER_UNRESOLVED") Then
       Call Diag_WriteLine("TX: QUALIFIER_UNRESOLVED - blocking apply")
       Stage_ValidatePlan = False
+      Call Diag_WriteLine("TX: EARLY EXIT - QUALIFIER_UNRESOLVED_PRECHECK")
+      If (PlanValidationErrors Is Nothing) Then
+        Set PlanValidationErrors = CreateObject("Scripting.Dictionary")
+      End If
+      If PlanValidationErrors.Count = 0 Then
+        PlanValidationErrors("UNKNOWN_VALIDATE_FAIL") = "Stage_ValidatePlan returned False with no recorded errors."
+      End If
       Exit Function
     End If
   End If
@@ -516,6 +541,13 @@ Function Stage_ValidatePlan()
           PlanValidationErrors.RemoveAll
           PlanValidationErrors("AMBIGUOUS") = "Ambiguous mapping detected; operator choice required."
           Call Diag_WriteLine("TX: Ambiguity gate blocked apply (count=" & CStr(amb.Count) & ")")
+          Call Diag_WriteLine("TX: EARLY EXIT - AMBIGUOUS_GATE")
+          If (PlanValidationErrors Is Nothing) Then
+            Set PlanValidationErrors = CreateObject("Scripting.Dictionary")
+          End If
+          If PlanValidationErrors.Count = 0 Then
+            PlanValidationErrors("UNKNOWN_VALIDATE_FAIL") = "Stage_ValidatePlan returned False with no recorded errors."
+          End If
           Exit Function
         Else
           Call Diag_WriteLine("TX: Ambiguity gate bypassed (allow_ambiguous_apply=True)")
@@ -531,12 +563,26 @@ Function Stage_ValidatePlan()
     PlanValidationErrors("EMPTY_PLAN") = "No tabfields were staged for apply."
     Call Diag_WriteLine("TX: EMPTY_PLAN (no writes staged)")
     Stage_ValidatePlan = False
+    Call Diag_WriteLine("TX: EARLY EXIT - EMPTY_PLAN")
+    If (PlanValidationErrors Is Nothing) Then
+      Set PlanValidationErrors = CreateObject("Scripting.Dictionary")
+    End If
+    If PlanValidationErrors.Count = 0 Then
+      PlanValidationErrors("UNKNOWN_VALIDATE_FAIL") = "Stage_ValidatePlan returned False with no recorded errors."
+    End If
     Exit Function
   End If
 
   If PlanValidationErrors.Exists("QUALIFIER_UNRESOLVED") Then
     Stage_ValidatePlan = False
     Call Diag_WriteLine("TX: QUALIFIER_UNRESOLVED - blocking apply")
+    Call Diag_WriteLine("TX: EARLY EXIT - QUALIFIER_UNRESOLVED_FINALCHECK")
+    If (PlanValidationErrors Is Nothing) Then
+      Set PlanValidationErrors = CreateObject("Scripting.Dictionary")
+    End If
+    If PlanValidationErrors.Count = 0 Then
+      PlanValidationErrors("UNKNOWN_VALIDATE_FAIL") = "Stage_ValidatePlan returned False with no recorded errors."
+    End If
     Exit Function
   End If
 
