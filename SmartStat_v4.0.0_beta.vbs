@@ -494,8 +494,11 @@ End Sub
 ' - Only enforces moustache pairing when moustaches are present
 ' ==========================================
 Function Stage_ValidatePlan()
+  On Error Resume Next
+  Dim vStep: vStep = "INIT"
   Stage_ValidatePlan = True
 
+  vStep = "CHECK_APPLYPLAN"
   If ApplyPlan Is Nothing Then
     Call Diag_WriteLine("TX: ApplyPlan is Nothing")
     Stage_ValidatePlan = False
@@ -506,9 +509,14 @@ Function Stage_ValidatePlan()
     If PlanValidationErrors.Count = 0 Then
       PlanValidationErrors("UNKNOWN_VALIDATE_FAIL") = "Stage_ValidatePlan returned False with no recorded errors."
     End If
+    If Err.Number <> 0 Then
+      Call Diag_WriteLine("TX: Stage_ValidatePlan ERROR step=" & vStep & " Err.Number=" & CStr(Err.Number) & " Err.Description=" & CStr(Err.Description))
+      Err.Clear
+    End If
     Exit Function
   End If
 
+  vStep = "QUALIFIER_PRECHECK"
     ' v4.0 Phase 2: hard block if qualifier failed resolution
   If Not (PlanValidationErrors Is Nothing) Then
     If PlanValidationErrors.Exists("QUALIFIER_UNRESOLVED") Then
@@ -521,10 +529,15 @@ Function Stage_ValidatePlan()
       If PlanValidationErrors.Count = 0 Then
         PlanValidationErrors("UNKNOWN_VALIDATE_FAIL") = "Stage_ValidatePlan returned False with no recorded errors."
       End If
+      If Err.Number <> 0 Then
+        Call Diag_WriteLine("TX: Stage_ValidatePlan ERROR step=" & vStep & " Err.Number=" & CStr(Err.Number) & " Err.Description=" & CStr(Err.Description))
+        Err.Clear
+      End If
       Exit Function
     End If
   End If
 
+  vStep = "AMBIGUITY_GATE"
   ' v4.0 Phase 2: block commit if ambiguity exists (unless explicitly allowed)
   If Not (CompilerContext Is Nothing) Then
     If CompilerContext.Exists("ambiguous") Then
@@ -548,6 +561,10 @@ Function Stage_ValidatePlan()
           If PlanValidationErrors.Count = 0 Then
             PlanValidationErrors("UNKNOWN_VALIDATE_FAIL") = "Stage_ValidatePlan returned False with no recorded errors."
           End If
+          If Err.Number <> 0 Then
+            Call Diag_WriteLine("TX: Stage_ValidatePlan ERROR step=" & vStep & " Err.Number=" & CStr(Err.Number) & " Err.Description=" & CStr(Err.Description))
+            Err.Clear
+          End If
           Exit Function
         Else
           Call Diag_WriteLine("TX: Ambiguity gate bypassed (allow_ambiguous_apply=True)")
@@ -556,6 +573,7 @@ Function Stage_ValidatePlan()
     End If
   End If
 
+  vStep = "EMPTY_PLAN"
   Call Diag_WriteLine("TX: TRANSACTION_MODE=" & CStr(TRANSACTION_MODE) & " ApplyPlan.Count=" & CStr(ApplyPlan.Count))
 
   If ApplyPlan.Count = 0 Then
@@ -570,6 +588,10 @@ Function Stage_ValidatePlan()
     If PlanValidationErrors.Count = 0 Then
       PlanValidationErrors("UNKNOWN_VALIDATE_FAIL") = "Stage_ValidatePlan returned False with no recorded errors."
     End If
+    If Err.Number <> 0 Then
+      Call Diag_WriteLine("TX: Stage_ValidatePlan ERROR step=" & vStep & " Err.Number=" & CStr(Err.Number) & " Err.Description=" & CStr(Err.Description))
+      Err.Clear
+    End If
     Exit Function
   End If
 
@@ -583,9 +605,14 @@ Function Stage_ValidatePlan()
     If PlanValidationErrors.Count = 0 Then
       PlanValidationErrors("UNKNOWN_VALIDATE_FAIL") = "Stage_ValidatePlan returned False with no recorded errors."
     End If
+    If Err.Number <> 0 Then
+      Call Diag_WriteLine("TX: Stage_ValidatePlan ERROR step=" & vStep & " Err.Number=" & CStr(Err.Number) & " Err.Description=" & CStr(Err.Description))
+      Err.Clear
+    End If
     Exit Function
   End If
 
+  vStep = "MOUSTACHE_SCAN"
   Dim k, v, hasOpen, hasClose
   For Each k In ApplyPlan.Keys
     v = CStr(ApplyPlan(k))
@@ -607,6 +634,7 @@ Function Stage_ValidatePlan()
     End If
   Next
 
+  vStep = "FINAL_LOGGING"
   If Not Stage_ValidatePlan Then
     If Not (PlanValidationErrors Is Nothing) Then
       If PlanValidationErrors.Count = 0 Then
@@ -621,6 +649,12 @@ Function Stage_ValidatePlan()
   Else
     Call Diag_WriteLine("TX: Validation OK")
   End If
+
+  If Err.Number <> 0 Then
+    Call Diag_WriteLine("TX: Stage_ValidatePlan ERROR step=" & vStep & " Err.Number=" & CStr(Err.Number) & " Err.Description=" & CStr(Err.Description))
+    Err.Clear
+  End If
+  On Error GoTo 0
 End Function
 
 ' ==========================================
