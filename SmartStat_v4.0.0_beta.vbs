@@ -2013,14 +2013,14 @@ Function ResolveQualifierChain(rawTxt, qAliasNorm, qNorm, learn, ByRef fragJoine
   ' Broadcast-grade: NEVER guess. Always record ambiguity and hard fail.
   ' ------------------------------------------
   If norm = "vs_hp" Then
-    Call Ambiguity_AddEx("qualifier", "canon", CStr(rawTxt), "vs_lhp|vs_rhp", "Operator shorthand VS HP")
+    Call Ambiguity_AddEx("qualifier", "canon", CStr(rawTxt), "vs_lhp|vs_rhp", "Operator shorthand VS HP | Hint: type explicit qualifier VS LHP or VS RHP")
     leftoversText = CStr(rawTxt)
     ResolveQualifierChain = False
     Exit Function
   End If
 
   If norm = "vs_hb" Then
-    Call Ambiguity_AddEx("qualifier", "canon", CStr(rawTxt), "vs_lhb|vs_rhb", "Operator shorthand VS HB")
+    Call Ambiguity_AddEx("qualifier", "canon", CStr(rawTxt), "vs_lhb|vs_rhb", "Operator shorthand VS HB | Hint: type explicit qualifier VS LHB or VS RHB")
     leftoversText = CStr(rawTxt)
     ResolveQualifierChain = False
     Exit Function
