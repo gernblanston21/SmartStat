@@ -1786,23 +1786,20 @@ Function ResolveQualifierChain(rawTxt, qAliasNorm, qNorm, learn, ByRef fragJoine
   ' v4.0 Phase 2: Operator shorthand ambiguity guard
   ' - "VS HP" => ambiguous between VS LHP / VS RHP
   ' - "VS HB" => ambiguous between VS LHB / VS RHB
+  ' Broadcast-grade: NEVER guess. Always record ambiguity and hard fail.
   ' ------------------------------------------
   If norm = "vs_hp" Then
-    If qNorm.Exists("vs_lhp") And qNorm.Exists("vs_rhp") Then
-      Call Ambiguity_Add("qualifier", "canon", CStr(rawTxt), "vs_lhp", 0.0, "vs_rhp", 0.0)
-      leftoversText = CStr(rawTxt)
-      ResolveQualifierChain = False
-      Exit Function
-    End If
+    Call Ambiguity_Add("qualifier", "canon", CStr(rawTxt), "vs_lhp", 1.0, "vs_rhp", 1.0)
+    leftoversText = CStr(rawTxt)
+    ResolveQualifierChain = False
+    Exit Function
   End If
 
   If norm = "vs_hb" Then
-    If qNorm.Exists("vs_lhb") And qNorm.Exists("vs_rhb") Then
-      Call Ambiguity_Add("qualifier", "canon", CStr(rawTxt), "vs_lhb", 0.0, "vs_rhb", 0.0)
-      leftoversText = CStr(rawTxt)
-      ResolveQualifierChain = False
-      Exit Function
-    End If
+    Call Ambiguity_Add("qualifier", "canon", CStr(rawTxt), "vs_lhb", 1.0, "vs_rhb", 1.0)
+    leftoversText = CStr(rawTxt)
+    ResolveQualifierChain = False
+    Exit Function
   End If
 
   ' ------------------------------------------
