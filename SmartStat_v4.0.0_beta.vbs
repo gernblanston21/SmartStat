@@ -549,6 +549,21 @@ Function Stage_ValidatePlan()
     End If
 
     If ccHasAmb Then
+      Dim ambTypeName: ambTypeName = TypeName(CompilerContext("ambiguous"))
+      If (Not IsObject(CompilerContext("ambiguous"))) Or UCase(CStr(ambTypeName)) <> "DICTIONARY" Then
+        Call Diag_WriteLine("TX: AMBIGUITY_GATE ambiguous context invalid TypeName=" & CStr(ambTypeName))
+        If (Not IsObject(PlanValidationErrors)) Then
+          Set PlanValidationErrors = CreateObject("Scripting.Dictionary")
+        ElseIf (PlanValidationErrors Is Nothing) Then
+          Set PlanValidationErrors = CreateObject("Scripting.Dictionary")
+        End If
+        PlanValidationErrors.RemoveAll
+        PlanValidationErrors("AMBIGUOUS_CONTEXT_INVALID") = "CompilerContext('ambiguous') is not a Dictionary. Apply blocked to prevent unsafe commit."
+        Stage_ValidatePlan = False
+        If Err.Number <> 0 Then Err.Clear
+        Exit Function
+      End If
+
       vStep = "AMBIGUITY_GATE:SET_AMB"
       Dim amb: Set amb = CompilerContext("ambiguous")
       If Err.Number <> 0 Then
