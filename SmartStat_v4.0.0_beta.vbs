@@ -205,6 +205,39 @@ Sub Ambiguity_Add(where, kind, inputTxt, bestKey, bestScore, altKey, altScore)
   On Error GoTo 0
 End Sub
 
+Sub Ambiguity_AddEx(field, phase, inputValue, candidates, note)
+  On Error Resume Next
+
+  If (CompilerContext Is Nothing) Then Exit Sub
+  If Not CompilerContext.Exists("ambiguous") Then
+    Dim initAmb: Set initAmb = CreateObject("Scripting.Dictionary")
+    CompilerContext("ambiguous") = initAmb
+  End If
+
+  Dim d: Set d = CompilerContext("ambiguous")
+  If (d Is Nothing) Then Exit Sub
+
+  Dim f: f = LCase(Trim(CStr(field)))
+  Dim p: p = LCase(Trim(CStr(phase)))
+  Dim inp: inp = UCase(Trim(CStr(inputValue)))
+  Dim cand: cand = Trim(CStr(candidates))
+  Dim n: n = Trim(CStr(note))
+
+  Dim id
+  id = f & "|" & p & "|" & inp & "|" & UCase(cand)
+
+  If Not d.Exists(id) Then
+    Dim msg
+    msg = phase & " ambiguous in " & field & " input=[" & CStr(inputValue) & _
+          "] candidates=[" & CStr(candidates) & "] note=[" & CStr(n) & "]"
+
+    d(id) = msg
+    Call Diag_WriteLine("AMBIGUITY: " & msg)
+  End If
+
+  On Error GoTo 0
+End Sub
+
 Sub Diag_AppendToDebug(ByVal s)
     On Error Resume Next
     Dim path : path = DIAG_LOG_DIR & SMARTSTAT_DEBUG_FILE
@@ -304,8 +337,10 @@ Sub Main()
   Set PlanValidationErrors = CreateObject("Scripting.Dictionary")
 
   ' v4.0 Phase 2: ambiguity & confidence context
-  Dim AmbiguityHits: Set AmbiguityHits = CreateObject("Scripting.Dictionary")
-  CompilerContext("ambiguous") = AmbiguityHits
+  If Not CompilerContext.Exists("ambiguous") Then
+    Dim AmbiguityHits: Set AmbiguityHits = CreateObject("Scripting.Dictionary")
+    CompilerContext("ambiguous") = AmbiguityHits
+  End If
 
   If Not Diag_Check_Environment() Then Exit Sub
   Dim LOG_FILE:      LOG_FILE      = "E:\EDRIVE\UNIVERSAL\SmartStat\DiagLogs\SmartStat_LearnDebug.txt"
@@ -395,6 +430,35 @@ Sub Main()
       Call Stage_CommitTransaction()
     Else
       Call Diag_OperatorAlert("SmartStat aborted: Validation failure. No changes applied.")
+      If (PlanValidationErrors Is Nothing) Then
+        Call Diag_WriteLine("TX: PlanValidationErrors = Nothing")
+      Else
+        Call Diag_WriteLine("TX: PlanValidationErrors.Count = " & CStr(PlanValidationErrors.Count))
+      End If
+
+      If Not (PlanValidationErrors Is Nothing) Then
+        If PlanValidationErrors.Count > 0 Then
+          Call Diag_WriteLine("TX: VALIDATION ERRORS:")
+
+          Dim txErrKeys: txErrKeys = PlanValidationErrors.Keys
+          Dim txErrI, txErrJ, txErrTmp, txErrKey
+          For txErrI = 0 To UBound(txErrKeys) - 1
+            For txErrJ = txErrI + 1 To UBound(txErrKeys)
+              If StrComp(CStr(txErrKeys(txErrI)), CStr(txErrKeys(txErrJ)), vbTextCompare) > 0 Then
+                txErrTmp = txErrKeys(txErrI)
+                txErrKeys(txErrI) = txErrKeys(txErrJ)
+                txErrKeys(txErrJ) = txErrTmp
+              End If
+            Next
+          Next
+
+          For txErrI = 0 To UBound(txErrKeys)
+            txErrKey = CStr(txErrKeys(txErrI))
+            Call Diag_WriteLine("TX:   " & txErrKey & " = " & CStr(PlanValidationErrors(txErrKey)))
+          Next
+        End If
+      End If
+
       Call Diag_WriteLine("TX: VALIDATION FAILURE - Transaction Aborted")
     End If
   End If
@@ -853,7 +917,7 @@ Function ResolveQualifierSmart(qTxt, qAliasNorm, qNorm, learn, ByRef outFrag, By
   Dim bestA, altA, sA, sAltA, ambA
   If HeuristicPickWithAlt(keyN, qAliasNorm.Keys, learn, bestA, sA, altA, sAltA, ambA) Then
     If ambA Then
-      Call Ambiguity_Add("qualifier", "alias", raw, bestA, sA, altA, sAltA)
+      Call Ambiguity_AddEx("qualifier", "alias", raw, "best=[" & bestA & "](" & ScoreStr(sA) & "); alt=[" & altA & "](" & ScoreStr(sAltA) & ")", "HeuristicPickWithAlt tie")
       acceptedBy = "ambiguous/alias": scoreOut = sA
       ResolveQualifierSmart = False
       Exit Function
@@ -868,7 +932,7 @@ Function ResolveQualifierSmart(qTxt, qAliasNorm, qNorm, learn, ByRef outFrag, By
   Dim bestC, altC, sC, sAltC, ambC
   If HeuristicPickWithAlt(keyN, qNorm.Keys, learn, bestC, sC, altC, sAltC, ambC) Then
     If ambC Then
-      Call Ambiguity_Add("qualifier", "canon", raw, bestC, sC, altC, sAltC)
+      Call Ambiguity_AddEx("qualifier", "canon", raw, "best=[" & bestC & "](" & ScoreStr(sC) & "); alt=[" & altC & "](" & ScoreStr(sAltC) & ")", "HeuristicPickWithAlt tie")
       acceptedBy = "ambiguous/canon": scoreOut = sC
       ResolveQualifierSmart = False
       Exit Function
@@ -1056,7 +1120,7 @@ Function ResolveCategorySmart(inputKey, preferPitcher, learn, _
   Dim bestAlias, altAlias, s1, sAlt1, amb1
   If HeuristicPickWithAlt(keyTrim, aliasKeys, learn, bestAlias, s1, altAlias, sAlt1, amb1) Then
     If amb1 Then
-      Call Ambiguity_Add("category", "alias", keyTrim, bestAlias, s1, altAlias, sAlt1)
+      Call Ambiguity_AddEx("category", "alias", keyTrim, "best=[" & bestAlias & "](" & ScoreStr(s1) & "); alt=[" & altAlias & "](" & ScoreStr(sAlt1) & ")", "HeuristicPickWithAlt tie")
       usedHeuristic = True: acceptedBy = "ambiguous/alias": outScore = s1
       ResolveCategorySmart = False
       Exit Function
@@ -1086,7 +1150,7 @@ Function ResolveCategorySmart(inputKey, preferPitcher, learn, _
   Dim bestCanon, altCanon, s2, sAlt2, amb2
   If HeuristicPickWithAlt(keyTrim, canonKeys, learn, bestCanon, s2, altCanon, sAlt2, amb2) Then
     If amb2 Then
-      Call Ambiguity_Add("category", "canon", keyTrim, bestCanon, s2, altCanon, sAlt2)
+      Call Ambiguity_AddEx("category", "canon", keyTrim, "best=[" & bestCanon & "](" & ScoreStr(s2) & "); alt=[" & altCanon & "](" & ScoreStr(sAlt2) & ")", "HeuristicPickWithAlt tie")
       usedHeuristic = True: acceptedBy = "ambiguous/canon": outScore = s2
       ResolveCategorySmart = False
       Exit Function
@@ -1789,14 +1853,14 @@ Function ResolveQualifierChain(rawTxt, qAliasNorm, qNorm, learn, ByRef fragJoine
   ' Broadcast-grade: NEVER guess. Always record ambiguity and hard fail.
   ' ------------------------------------------
   If norm = "vs_hp" Then
-    Call Ambiguity_Add("qualifier", "canon", CStr(rawTxt), "vs_lhp", 1.0, "vs_rhp", 1.0)
+    Call Ambiguity_AddEx("qualifier", "canon", CStr(rawTxt), "vs_lhp|vs_rhp", "Operator shorthand VS HP")
     leftoversText = CStr(rawTxt)
     ResolveQualifierChain = False
     Exit Function
   End If
 
   If norm = "vs_hb" Then
-    Call Ambiguity_Add("qualifier", "canon", CStr(rawTxt), "vs_lhb", 1.0, "vs_rhb", 1.0)
+    Call Ambiguity_AddEx("qualifier", "canon", CStr(rawTxt), "vs_lhb|vs_rhb", "Operator shorthand VS HB")
     leftoversText = CStr(rawTxt)
     ResolveQualifierChain = False
     Exit Function
@@ -2654,6 +2718,40 @@ Function CleanAfterColon(line)
   CleanAfterColon = Trim(s)
 End Function
 
+Function BuildAmbiguityOperatorSection()
+  On Error Resume Next
+
+  BuildAmbiguityOperatorSection = ""
+
+  If (CompilerContext Is Nothing) Then Exit Function
+  If Not CompilerContext.Exists("ambiguous") Then Exit Function
+
+  Dim amb: Set amb = CompilerContext("ambiguous")
+  If (amb Is Nothing) Then Exit Function
+  If amb.Count <= 0 Then Exit Function
+
+  Dim keys: keys = amb.Keys
+  Dim i, j, tmp
+  For i = 0 To UBound(keys) - 1
+    For j = i + 1 To UBound(keys)
+      If StrComp(CStr(keys(i)), CStr(keys(j)), vbTextCompare) > 0 Then
+        tmp = keys(i)
+        keys(i) = keys(j)
+        keys(j) = tmp
+      End If
+    Next
+  Next
+
+  Dim out: out = "AMBIGUITY:"
+  For i = 0 To UBound(keys)
+    out = out & vbCrLf & CStr(amb(CStr(keys(i))))
+  Next
+
+  BuildAmbiguityOperatorSection = out
+
+  On Error GoTo 0
+End Function
+
 ' ---------------- Socket refresh ----------------
 Function SmartStat_RefreshSocketData()
   Dim tabs, tab_arr, tab, flag
@@ -2687,6 +2785,19 @@ Function SmartStat_RefreshSocketData()
   If on_air_tabs <> "[]" Then
     page_name = TrioCmd("page:getpagename")
     page_desc = TrioCmd("page:getpagedescription")
+
+    Dim ambOut: ambOut = BuildAmbiguityOperatorSection()
+    If Len(ambOut) > 0 Then
+      If Len(page_desc) > 0 Then
+        page_desc = page_desc & vbCrLf & ambOut
+      Else
+        page_desc = ambOut
+      End If
+    End If
+
+    page_desc = Replace(page_desc, vbCrLf, "\n")
+    page_desc = Replace(page_desc, vbCr, "\n")
+    page_desc = Replace(page_desc, vbLf, "\n")
 
     If TrioCmd("sock:socket_is_connected") Then
       TrioCmd "sock:send_socket_data on_air_get message_number=" & page_name & _
