@@ -562,6 +562,12 @@ Function Stage_ValidatePlan()
   Next
 
   If Not Stage_ValidatePlan Then
+    If Not (PlanValidationErrors Is Nothing) Then
+      If PlanValidationErrors.Count = 0 Then
+        PlanValidationErrors("UNKNOWN_VALIDATE_FAIL") = "Stage_ValidatePlan returned False with no recorded errors."
+      End If
+    End If
+
     Dim ek
     For Each ek In PlanValidationErrors.Keys
       Call Diag_WriteLine("TX: VALIDATION ERROR - " & ek & ": " & PlanValidationErrors(ek))
