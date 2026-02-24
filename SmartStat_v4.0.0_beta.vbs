@@ -212,6 +212,10 @@ Sub Ambiguity_AddEx(field, phase, inputValue, candidates, note)
   If Not CompilerContext.Exists("ambiguous") Then
     Dim initAmb: Set initAmb = CreateObject("Scripting.Dictionary")
     CompilerContext("ambiguous") = initAmb
+  ElseIf (Not IsObject(CompilerContext("ambiguous"))) Or (UCase(TypeName(CompilerContext("ambiguous"))) <> "DICTIONARY") Then
+    Call Diag_WriteLine("AMBIGUITY: ambiguous context reset in Ambiguity_AddEx (TypeName=" & TypeName(CompilerContext("ambiguous")) & ")")
+    Dim resetAmb: Set resetAmb = CreateObject("Scripting.Dictionary")
+    CompilerContext("ambiguous") = resetAmb
   End If
 
   Dim d: Set d = CompilerContext("ambiguous")
@@ -340,6 +344,10 @@ Sub Main()
   If Not CompilerContext.Exists("ambiguous") Then
     Dim AmbiguityHits: Set AmbiguityHits = CreateObject("Scripting.Dictionary")
     CompilerContext("ambiguous") = AmbiguityHits
+  ElseIf (Not IsObject(CompilerContext("ambiguous"))) Or (UCase(TypeName(CompilerContext("ambiguous"))) <> "DICTIONARY") Then
+    Call Diag_WriteLine("TX: ambiguous context reset in Main (TypeName=" & TypeName(CompilerContext("ambiguous")) & ")")
+    Dim AmbiguityHitsReset: Set AmbiguityHitsReset = CreateObject("Scripting.Dictionary")
+    CompilerContext("ambiguous") = AmbiguityHitsReset
   End If
 
   If Not Diag_Check_Environment() Then Exit Sub
