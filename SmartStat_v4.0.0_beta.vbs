@@ -545,9 +545,15 @@ Function Stage_ValidatePlan()
       If amb.Count > 0 Then
         Dim allowAmb: allowAmb = False
         If CompilerContext.Exists("learn") Then
-          Dim lk: Set lk = CompilerContext("learn")
-          If lk.Exists("allow_ambiguous_apply") Then allowAmb = CBool(lk("allow_ambiguous_apply"))
+          Dim learnTypeName: learnTypeName = TypeName(CompilerContext("learn"))
+          If IsObject(CompilerContext("learn")) And UCase(CStr(learnTypeName)) = "DICTIONARY" Then
+            Dim lk: Set lk = CompilerContext("learn")
+            If lk.Exists("allow_ambiguous_apply") Then allowAmb = CBool(lk("allow_ambiguous_apply"))
+          Else
+            Call Diag_WriteLine("TX: AMBIGUITY_GATE learn context invalid TypeName=" & CStr(learnTypeName))
+          End If
         End If
+        If Err.Number <> 0 Then Err.Clear
 
         If Not allowAmb Then
           Stage_ValidatePlan = False
