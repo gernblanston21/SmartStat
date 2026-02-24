@@ -1,4 +1,5 @@
 .vscode/
+DiagLogs/
 _EXPORT/
 Logs/
 *.log
