@@ -540,9 +540,31 @@ Function Stage_ValidatePlan()
   vStep = "AMBIGUITY_GATE"
   ' v4.0 Phase 2: block commit if ambiguity exists (unless explicitly allowed)
   If Not (CompilerContext Is Nothing) Then
-    If CompilerContext.Exists("ambiguous") Then
+    Dim ccHasAmb: ccHasAmb = False
+    vStep = "AMBIGUITY_GATE:CC_EXISTS_AMBIGUOUS"
+    ccHasAmb = CompilerContext.Exists("ambiguous")
+    If Err.Number <> 0 Then
+      Call Diag_WriteLine("TX: Stage_ValidatePlan ERROR step=" & vStep & " Err.Number=" & CStr(Err.Number) & " Err.Description=" & CStr(Err.Description))
+      Err.Clear
+    End If
+
+    If ccHasAmb Then
+      vStep = "AMBIGUITY_GATE:SET_AMB"
       Dim amb: Set amb = CompilerContext("ambiguous")
-      If amb.Count > 0 Then
+      If Err.Number <> 0 Then
+        Call Diag_WriteLine("TX: Stage_ValidatePlan ERROR step=" & vStep & " Err.Number=" & CStr(Err.Number) & " Err.Description=" & CStr(Err.Description))
+        Err.Clear
+      End If
+
+      Dim ambCount: ambCount = 0
+      vStep = "AMBIGUITY_GATE:AMB_COUNT"
+      ambCount = amb.Count
+      If Err.Number <> 0 Then
+        Call Diag_WriteLine("TX: Stage_ValidatePlan ERROR step=" & vStep & " Err.Number=" & CStr(Err.Number) & " Err.Description=" & CStr(Err.Description))
+        Err.Clear
+      End If
+
+      If ambCount > 0 Then
         Dim allowAmb: allowAmb = False
         If CompilerContext.Exists("learn") Then
           Dim learnTypeName: learnTypeName = TypeName(CompilerContext("learn"))
@@ -557,7 +579,12 @@ Function Stage_ValidatePlan()
 
         If Not allowAmb Then
           Stage_ValidatePlan = False
+          vStep = "AMBIGUITY_GATE:PLAN_REMOVEALL"
           PlanValidationErrors.RemoveAll
+          If Err.Number <> 0 Then
+            Call Diag_WriteLine("TX: Stage_ValidatePlan ERROR step=" & vStep & " Err.Number=" & CStr(Err.Number) & " Err.Description=" & CStr(Err.Description))
+            Err.Clear
+          End If
           PlanValidationErrors("AMBIGUOUS") = "Ambiguous mapping detected; operator choice required."
           Call Diag_WriteLine("TX: Ambiguity gate blocked apply (count=" & CStr(amb.Count) & ")")
           Call Diag_WriteLine("TX: EARLY EXIT - AMBIGUOUS_GATE")
