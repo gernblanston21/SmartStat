@@ -555,6 +555,24 @@ Function Stage_ValidatePlan()
           PlanValidationErrors("AMBIGUOUS") = "Ambiguous mapping detected; operator choice required."
           Call Diag_WriteLine("TX: Ambiguity gate blocked apply (count=" & CStr(amb.Count) & ")")
           Call Diag_WriteLine("TX: EARLY EXIT - AMBIGUOUS_GATE")
+          Dim ambKeys, ambI, ambJ, ambTmp, ambKey
+          ambKeys = amb.Keys
+          If IsArray(ambKeys) Then
+            For ambI = 0 To UBound(ambKeys) - 1
+              For ambJ = ambI + 1 To UBound(ambKeys)
+                If StrComp(CStr(ambKeys(ambI)), CStr(ambKeys(ambJ)), vbTextCompare) > 0 Then
+                  ambTmp = ambKeys(ambI)
+                  ambKeys(ambI) = ambKeys(ambJ)
+                  ambKeys(ambJ) = ambTmp
+                End If
+              Next
+            Next
+
+            For ambI = 0 To UBound(ambKeys)
+              ambKey = CStr(ambKeys(ambI))
+              Call Diag_WriteLine("TX: AMBIGUITY_DETAIL - " & CStr(amb(ambKey)))
+            Next
+          End If
           If (PlanValidationErrors Is Nothing) Then
             Set PlanValidationErrors = CreateObject("Scripting.Dictionary")
           End If
