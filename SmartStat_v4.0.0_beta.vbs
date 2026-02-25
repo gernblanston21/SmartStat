@@ -17,6 +17,17 @@ Const SMARTSTAT_DEBUG_FILE     = "SmartStat_Debug.txt"
 Const DIAG_MAX_FILE_SIZE_BYTES = "5242880"
 Const SMARTSTAT_VERSION = "4.0.0_beta"
 
+' ================================
+' v4.0 Phase 3: Harness + Integrity
+' ================================
+Const HARNESS_ENABLE      = True
+Const HARNESS_DIR         = "E:\EDRIVE\UNIVERSAL\SmartStat\DiagLogs\Harness\"
+Const HARNESS_CONTROL_TAB = "A"      ' Control tabfield (matches existing SMARTSTAT=PLAYER behavior)
+
+Dim G_HARNESS_MODE   ' OFF | HARNESS | HARNESS_COMMIT | HARNESS_CAPTURE
+Dim G_HARNESS_PRE_CP ' Dict: tabfield -> prior custom prop value
+Dim G_HARNESS_PRE_V  ' Dict: tabfield -> prior visible value
+
 Const PHASE_00_BOOT            = "00.BOOT"
 Const PHASE_01_ENV_VALIDATE    = "01.ENV_VALIDATE"
 Const PHASE_02_LOAD_CONFIG     = "02.LOAD_CONFIG"
@@ -350,6 +361,28 @@ Sub Main()
     Set CompilerContext("ambiguous") = AmbiguityHitsReset
   End If
 
+  ' ================================
+  ' v4.0 Phase 3: Harness bootstrap
+  ' ================================
+  G_HARNESS_MODE = "OFF"
+  If HARNESS_ENABLE Then
+    G_HARNESS_MODE = Harness_GetModeFromControlA()
+    If G_HARNESS_MODE <> "OFF" Then
+      Call Harness_EnsureHarnessDir()
+      Set G_HARNESS_PRE_CP = CreateTextDict()
+      Set G_HARNESS_PRE_V  = CreateTextDict()
+      Call Harness_SnapshotPageState(G_HARNESS_PRE_V, G_HARNESS_PRE_CP)
+      Call Diag_WriteLine("HARNESS: mode=" & G_HARNESS_MODE & " preSnapshotTabs=" & CStr(G_HARNESS_PRE_CP.Count))
+
+      If G_HARNESS_MODE = "HARNESS_CAPTURE" Then
+        Call Harness_WriteFixtureFile(G_HARNESS_PRE_V, G_HARNESS_PRE_CP, x_tmplForDiag)
+        Call Diag_WriteLine("HARNESS: capture complete (no pipeline executed)")
+        Call Diag_Done()
+        Exit Sub
+      End If
+    End If
+  End If
+
   If Not Diag_Check_Environment() Then Exit Sub
   Dim LOG_FILE:      LOG_FILE      = "E:\EDRIVE\UNIVERSAL\SmartStat\DiagLogs\SmartStat_LearnDebug.txt"
   Dim SRC_DIR:       SRC_DIR       = "E:\EDRIVE\UNIVERSAL\SmartStat\"
@@ -408,19 +441,35 @@ Sub Main()
     ' still run so static overrides etc. can apply
     ExecuteTemplatePipeline SRC_DIR, Nothing, LEARN_INI, NewTextDict(), NewTextDict(), NewTextDict()
 
+    ' v4.0 Phase 3: integrity diff (even in ini-fail path, if harness active)
+    If HARNESS_ENABLE Then
+      If G_HARNESS_MODE <> "OFF" Then
+        If Not (G_HARNESS_PRE_CP Is Nothing) Then
+          Call Harness_WriteIntegrityDiff(G_HARNESS_PRE_CP, ApplyPlan)
+        End If
+      End If
+    End If
+
     If TRANSACTION_MODE Then
       Call Diag_Log("TRANSACTION_MODE=" & CStr(TRANSACTION_MODE))
       Err.Clear
-      Dim txOkIni: txOkIni = Stage_ValidatePlan()
-      If Err.Number <> 0 Then
-        Call Diag_WriteLine("TX: Stage_ValidatePlan runtime error (ini-load path) Err.Number=" & CStr(Err.Number) & " Err.Description=" & CStr(Err.Description))
-        Err.Clear
-      End If
-      If txOkIni Then
-        Call Stage_CommitTransaction()
+
+      ' Harness default safety: do NOT commit unless explicitly allowed
+      If G_HARNESS_MODE = "HARNESS" Then
+        Call Diag_WriteLine("HARNESS: no-commit mode; skipping Stage_CommitTransaction (ini-load path)")
       Else
-        Call Diag_OperatorAlert("SmartStat aborted: Validation failure. No changes applied.")
-        Call Diag_Log("VALIDATION FAILURE - Transaction Aborted")
+        Dim txOkIni: txOkIni = Stage_ValidatePlan()
+        If Err.Number <> 0 Then
+          Call Diag_WriteLine("TX: Stage_ValidatePlan runtime error (ini-load path) Err.Number=" & CStr(Err.Number) & " Err.Description=" & CStr(Err.Description))
+          Err.Clear
+        End If
+
+        If txOkIni Then
+          Call Stage_CommitTransaction()
+        Else
+          Call Diag_OperatorAlert("SmartStat aborted: Validation failure. No changes applied.")
+          Call Diag_Log("VALIDATION FAILURE - Transaction Aborted")
+        End If
       End If
     End If
 
@@ -438,47 +487,63 @@ Sub Main()
 
   ExecuteTemplatePipeline SRC_DIR, ini, LEARN_INI, transforms, rxTransforms, learn
 
+  ' v4.0 Phase 3: integrity diff (success path)
+  If HARNESS_ENABLE Then
+    If G_HARNESS_MODE <> "OFF" Then
+      If Not (G_HARNESS_PRE_CP Is Nothing) Then
+        Call Harness_WriteIntegrityDiff(G_HARNESS_PRE_CP, ApplyPlan)
+      End If
+    End If
+  End If
+
   If TRANSACTION_MODE Then
     Err.Clear
-    Dim txOk: txOk = Stage_ValidatePlan()
-    If Err.Number <> 0 Then
-      Call Diag_WriteLine("TX: Stage_ValidatePlan runtime error (main path) Err.Number=" & CStr(Err.Number) & " Err.Description=" & CStr(Err.Description))
-      Err.Clear
-    End If
-    If txOk Then
-      Call Stage_CommitTransaction()
+
+    ' Harness default safety: do NOT commit unless explicitly allowed
+    If G_HARNESS_MODE = "HARNESS" Then
+      Call Diag_WriteLine("HARNESS: no-commit mode; skipping Stage_CommitTransaction (main path)")
     Else
-      Call Diag_OperatorAlert("SmartStat aborted: Validation failure. No changes applied.")
-      If (PlanValidationErrors Is Nothing) Then
-        Call Diag_WriteLine("TX: PlanValidationErrors = Nothing")
+      Dim txOk: txOk = Stage_ValidatePlan()
+      If Err.Number <> 0 Then
+        Call Diag_WriteLine("TX: Stage_ValidatePlan runtime error (main path) Err.Number=" & CStr(Err.Number) & " Err.Description=" & CStr(Err.Description))
+        Err.Clear
+      End If
+
+      If txOk Then
+        Call Stage_CommitTransaction()
       Else
-        Call Diag_WriteLine("TX: PlanValidationErrors.Count = " & CStr(PlanValidationErrors.Count))
-      End If
-
-      If Not (PlanValidationErrors Is Nothing) Then
-        If PlanValidationErrors.Count > 0 Then
-          Call Diag_WriteLine("TX: VALIDATION ERRORS:")
-
-          Dim txErrKeys: txErrKeys = PlanValidationErrors.Keys
-          Dim txErrI, txErrJ, txErrTmp, txErrKey
-          For txErrI = 0 To UBound(txErrKeys) - 1
-            For txErrJ = txErrI + 1 To UBound(txErrKeys)
-              If StrComp(CStr(txErrKeys(txErrI)), CStr(txErrKeys(txErrJ)), vbTextCompare) > 0 Then
-                txErrTmp = txErrKeys(txErrI)
-                txErrKeys(txErrI) = txErrKeys(txErrJ)
-                txErrKeys(txErrJ) = txErrTmp
-              End If
-            Next
-          Next
-
-          For txErrI = 0 To UBound(txErrKeys)
-            txErrKey = CStr(txErrKeys(txErrI))
-            Call Diag_WriteLine("TX:   " & txErrKey & " = " & CStr(PlanValidationErrors(txErrKey)))
-          Next
+        Call Diag_OperatorAlert("SmartStat aborted: Validation failure. No changes applied.")
+        If (PlanValidationErrors Is Nothing) Then
+          Call Diag_WriteLine("TX: PlanValidationErrors = Nothing")
+        Else
+          Call Diag_WriteLine("TX: PlanValidationErrors.Count = " & CStr(PlanValidationErrors.Count))
         End If
-      End If
 
-      Call Diag_WriteLine("TX: VALIDATION FAILURE - Transaction Aborted")
+        If Not (PlanValidationErrors Is Nothing) Then
+          If PlanValidationErrors.Count > 0 Then
+            Call Diag_WriteLine("TX: VALIDATION ERRORS:")
+
+            Dim txErrKeys: txErrKeys = PlanValidationErrors.Keys
+            Dim txErrI, txErrJ, txErrTmp, txErrKey
+            For txErrI = 0 To UBound(txErrKeys) - 1
+              For txErrJ = txErrI + 1 To UBound(txErrKeys)
+                If StrComp(CStr(txErrKeys(txErrI)), CStr(txErrKeys(txErrJ)), vbTextCompare) > 0 Then
+                  txErrTmp = txErrKeys(txErrI)
+                  txErrKeys(txErrI) = txErrKeys(txErrJ)
+                  txErrKeys(txErrJ) = txErrTmp
+                End If
+              Next
+            Next
+
+            For txErrI = 0 To UBound(txErrKeys)
+              txErrKey = CStr(txErrKeys(txErrI))
+              Call Diag_WriteLine("TX:   " & txErrKey & " = " & CStr(PlanValidationErrors(txErrKey)))
+            Next
+          End If
+        End If
+
+        Call Diag_WriteLine("TX: VALIDATION FAILURE - Transaction Aborted")
+      End If
     End If
   End If
 
@@ -675,13 +740,9 @@ End Function
 Sub Stage_CommitTransaction()
   Dim k
   Call Diag_WriteLine("TX: Transaction Commit Started - " & ApplyPlan.Count & " fields")
-
   For Each k In ApplyPlan.Keys
-    ' PREV direct write (kept for traceability):
-    ' TrioCmd "tabfield:set_custom_property " & CStr(k) & " " & Quote(CStr(ApplyPlan(k)))
     Call Tx_WriteNow(CStr(k), CStr(ApplyPlan(k)))
   Next
-
   Call Diag_WriteLine("TX: Transaction Commit Completed")
 End Sub
 
@@ -1751,7 +1812,6 @@ End Function
 ' ==========================================
 
 Sub Tx_WriteNow(tfName, value)
-  ' Single gateway for immediate writes (never stages).
   On Error Resume Next
   TrioCmd "tabfield:set_custom_property " & CStr(tfName) & " " & Quote(CStr(value))
   On Error GoTo 0
@@ -1762,8 +1822,6 @@ Sub Tx_SetCustomProp(tfName, value)
   If TRANSACTION_MODE Then
     ApplyPlan(CStr(tfName)) = CStr(value)
   Else
-    ' PREV direct write (kept for traceability):
-    ' TrioCmd "tabfield:set_custom_property " & CStr(tfName) & " " & Quote(CStr(value))
     Call Tx_WriteNow(tfName, value)
   End If
 End Sub
@@ -2849,6 +2907,120 @@ Function BuildAmbiguityOperatorSection()
 
   On Error GoTo 0
 End Function
+
+' ==========================================
+' v4.0 Phase 3: Harness + Integrity Engine
+' ==========================================
+Function Harness_GetModeFromControlA()
+  On Error Resume Next
+  Harness_GetModeFromControlA = "OFF"
+  If Not HARNESS_ENABLE Then Exit Function
+
+  ' IMPORTANT: match existing control behavior:
+  ' - Prefer operator-visible A value (page:get_property A)
+  ' - Fallback to custom property A
+  Dim v: v = UCase(Trim(CStr(TrioCmd("page:get_property " & HARNESS_CONTROL_TAB))))
+  If Len(v) = 0 Then v = UCase(Trim(CStr(TrioCmd("tabfield:get_custom_property " & HARNESS_CONTROL_TAB))))
+  If Len(v) = 0 Then Exit Function
+
+  If InStr(v, "SMARTSTAT=HARNESS_CAPTURE") > 0 Then Harness_GetModeFromControlA = "HARNESS_CAPTURE" : Exit Function
+  If InStr(v, "SMARTSTAT=HARNESS_COMMIT") > 0 Then Harness_GetModeFromControlA = "HARNESS_COMMIT" : Exit Function
+  If InStr(v, "SMARTSTAT=HARNESS") > 0 Then Harness_GetModeFromControlA = "HARNESS" : Exit Function
+End Function
+
+Sub Harness_EnsureHarnessDir()
+  On Error Resume Next
+  Dim fso: Set fso = CreateObject("Scripting.FileSystemObject")
+  If Not fso.FolderExists(HARNESS_DIR) Then fso.CreateFolder HARNESS_DIR
+  On Error GoTo 0
+End Sub
+
+Sub Harness_SnapshotPageState(ByRef outVisible, ByRef outCustomProps)
+  On Error Resume Next
+  Dim tabs, arr, t, v, cp
+  tabs = TrioCmd("page:get_tabfield_names")
+  arr = Split(CStr(tabs))
+
+  For Each t In arr
+    v = CStr(TrioCmd("page:get_property " & CStr(t)))
+    cp = CStr(TrioCmd("tabfield:get_custom_property " & CStr(t)))
+    outVisible(CStr(t)) = v
+    outCustomProps(CStr(t)) = cp
+  Next
+  On Error GoTo 0
+End Sub
+
+Sub Harness_WriteFixtureFile(ByVal visDict, ByVal cpDict, ByVal tmplName)
+  On Error Resume Next
+  Dim fso: Set fso = CreateObject("Scripting.FileSystemObject")
+  Dim p: p = HARNESS_DIR & "fixture_" & NormalizeKey(CStr(tmplName)) & "_" & CStr(gDiagRunId) & ".ini"
+  Dim ts: Set ts = fso.CreateTextFile(p, True)
+
+  ts.WriteLine "[META]"
+  ts.WriteLine "template=" & CStr(tmplName)
+  ts.WriteLine "run_id=" & CStr(gDiagRunId)
+  ts.WriteLine "machine=" & Diag_SafeEnv("COMPUTERNAME")
+  ts.WriteLine "user=" & Diag_SafeEnv("USERNAME")
+  ts.WriteLine ""
+
+  ts.WriteLine "[VISIBLE]"
+  Dim k
+  For Each k In visDict.Keys
+    ts.WriteLine CStr(k) & "=" & Replace(CStr(visDict(k)), vbCrLf, "\n")
+  Next
+  ts.WriteLine ""
+
+  ts.WriteLine "[CUSTOM_PROPERTIES]"
+  For Each k In cpDict.Keys
+    ts.WriteLine CStr(k) & "=" & Replace(CStr(cpDict(k)), vbCrLf, "\n")
+  Next
+
+  ts.Close
+  Set ts = Nothing
+  Call Diag_WriteLine("HARNESS: fixture written: " & p)
+  On Error GoTo 0
+End Sub
+
+Sub Harness_WriteIntegrityDiff(ByVal preCustomProps, ByVal planDict)
+  On Error Resume Next
+  Dim fso: Set fso = CreateObject("Scripting.FileSystemObject")
+  Dim p: p = HARNESS_DIR & "diff_" & NormalizeKey(CStr(gTemplateName)) & "_" & CStr(gDiagRunId) & ".txt"
+  Dim ts: Set ts = fso.CreateTextFile(p, True)
+
+  ts.WriteLine "SMARTSTAT HARNESS DIFF"
+  ts.WriteLine "template=" & CStr(gTemplateName)
+  ts.WriteLine "run_id=" & CStr(gDiagRunId)
+  ts.WriteLine "mode=" & CStr(G_HARNESS_MODE)
+  ts.WriteLine "planned_fields=" & IIf(planDict Is Nothing, "0", CStr(planDict.Count))
+  ts.WriteLine String(60, "-")
+
+  If (planDict Is Nothing) Or (planDict.Count = 0) Then
+    ts.WriteLine "(no planned changes)"
+    ts.Close
+    Call Diag_WriteLine("HARNESS: integrity diff written: " & p)
+    Exit Sub
+  End If
+
+  Dim k, beforeV, afterV
+  For Each k In planDict.Keys
+    beforeV = ""
+    If Not (preCustomProps Is Nothing) Then
+      If preCustomProps.Exists(CStr(k)) Then beforeV = CStr(preCustomProps(CStr(k)))
+    End If
+    afterV = CStr(planDict(CStr(k)))
+
+    If CStr(beforeV) <> CStr(afterV) Then
+      ts.WriteLine "[" & CStr(k) & "]"
+      ts.WriteLine "  BEFORE: " & Replace(Replace(CStr(beforeV), vbCrLf, "\n"), vbTab, " ")
+      ts.WriteLine "  AFTER : " & Replace(Replace(CStr(afterV), vbCrLf, "\n"), vbTab, " ")
+    End If
+  Next
+
+  ts.Close
+  Set ts = Nothing
+  Call Diag_WriteLine("HARNESS: integrity diff written: " & p)
+  On Error GoTo 0
+End Sub
 
 ' ---------------- Socket refresh ----------------
 Function SmartStat_RefreshSocketData()
