@@ -1,4 +1,4 @@
-# SmartStat Development Roadmap — v4.0.0_beta (Core Engine)
+# SmartStat Development Roadmap: v4.0.0_beta (Core Engine)
 
 ## Scope
 Core engine development only:
@@ -49,11 +49,11 @@ External compatibility watch:
 ---
 
 ## In Progress (active work)
-### 1) Ambiguity system: enable AMBIGUITY output and tracking
+### 1: Ambiguity system: enable AMBIGUITY output and tracking
 **Status:** NOT IMPLEMENTED (paused at analysis checkpoint)
 
 **Last known checkpoint (where work paused):**
-- You’re still not seeing AMBIGUITY because the script has:
+- You're still not seeing AMBIGUITY because the script has:
   - No `Ambiguity_Add` function at all, and
   - No initialization for `CompilerContext("ambiguous")`.
 - The shorthand guard calls a non-existent routine.
@@ -74,7 +74,7 @@ External compatibility watch:
 ---
 
 ## Next Up (after ambiguity item)
-- [ ] Establish “golden” validation runs (3–5 representative templates)
+- [ ] Establish "golden" validation runs (3-5 representative templates)
 - [ ] Confirm and document normalization behavior (spaces ? underscores) end-to-end
 - [ ] Audit TemplateConfig parsing rules for required fields and strict ordering
 - [ ] Verify player-p override behavior remains correct and isolated
