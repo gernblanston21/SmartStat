@@ -24,9 +24,10 @@ Const HARNESS_ENABLE      = True
 Const HARNESS_DIR         = "E:\EDRIVE\UNIVERSAL\SmartStat\DiagLogs\Harness\"
 Const HARNESS_CONTROL_TAB = "A"      ' Control tabfield (matches existing SMARTSTAT=PLAYER behavior)
 
-Dim G_HARNESS_MODE   ' OFF | HARNESS | HARNESS_COMMIT | HARNESS_CAPTURE
-Dim G_HARNESS_PRE_CP ' Dict: tabfield -> prior custom prop value
-Dim G_HARNESS_PRE_V  ' Dict: tabfield -> prior visible value
+Dim G_HARNESS_MODE        ' OFF | HARNESS | HARNESS_COMMIT | HARNESS_CAPTURE | HARNESS_STRICT
+Dim G_HARNESS_PRE_CP      ' Dict: tabfield -> prior custom prop value
+Dim G_HARNESS_PRE_V       ' Dict: tabfield -> prior visible value
+Dim G_HARNESS_DIFF_COUNT  ' Integer: number of changed fields detected by Harness_WriteIntegrityDiff
 
 Const PHASE_00_BOOT            = "00.BOOT"
 Const PHASE_01_ENV_VALIDATE    = "01.ENV_VALIDATE"
@@ -457,6 +458,24 @@ Sub Main()
       ' Harness default safety: do NOT commit unless explicitly allowed
       If G_HARNESS_MODE = "HARNESS" Then
         Call Diag_WriteLine("HARNESS: no-commit mode; skipping Stage_CommitTransaction (ini-load path)")
+      ElseIf G_HARNESS_MODE = "HARNESS_STRICT" Then
+        If CInt(G_HARNESS_DIFF_COUNT) > 0 Then
+          Call Diag_WriteLine("HARNESS_STRICT: non-empty diff (" & CStr(G_HARNESS_DIFF_COUNT) & "); blocking commit (ini-load path)")
+          Call Diag_OperatorAlert("SmartStat Harness Strict: Diff detected. Commit blocked.")
+        Else
+          Dim txOkIniS: txOkIniS = Stage_ValidatePlan()
+          If Err.Number <> 0 Then
+            Call Diag_WriteLine("TX: Stage_ValidatePlan runtime error (ini-load path) Err.Number=" & CStr(Err.Number) & " Err.Description=" & CStr(Err.Description))
+            Err.Clear
+          End If
+
+          If txOkIniS Then
+            Call Stage_CommitTransaction()
+          Else
+            Call Diag_OperatorAlert("SmartStat aborted: Validation failure. No changes applied.")
+            Call Diag_Log("VALIDATION FAILURE - Transaction Aborted")
+          End If
+        End If
       Else
         Dim txOkIni: txOkIni = Stage_ValidatePlan()
         If Err.Number <> 0 Then
@@ -502,17 +521,27 @@ Sub Main()
     ' Harness default safety: do NOT commit unless explicitly allowed
     If G_HARNESS_MODE = "HARNESS" Then
       Call Diag_WriteLine("HARNESS: no-commit mode; skipping Stage_CommitTransaction (main path)")
-    Else
-      Dim txOk: txOk = Stage_ValidatePlan()
-      If Err.Number <> 0 Then
-        Call Diag_WriteLine("TX: Stage_ValidatePlan runtime error (main path) Err.Number=" & CStr(Err.Number) & " Err.Description=" & CStr(Err.Description))
-        Err.Clear
-      End If
-
-      If txOk Then
-        Call Stage_CommitTransaction()
+    ElseIf G_HARNESS_MODE = "HARNESS_STRICT" Then
+      If CInt(G_HARNESS_DIFF_COUNT) > 0 Then
+        Call Diag_WriteLine("HARNESS_STRICT: non-empty diff (" & CStr(G_HARNESS_DIFF_COUNT) & "); blocking commit (main path)")
+        Call Diag_OperatorAlert("SmartStat Harness Strict: Diff detected. Commit blocked.")
       Else
-        Call Diag_OperatorAlert("SmartStat aborted: Validation failure. No changes applied.")
+        Dim txOkS: txOkS = Stage_ValidatePlan()
+        If Err.Number <> 0 Then
+          Call Diag_WriteLine("TX: Stage_ValidatePlan runtime error (main path) Err.Number=" & CStr(Err.Number) & " Err.Description=" & CStr(Err.Description))
+          Err.Clear
+        End If
+
+        If txOkS Then
+          Call Stage_CommitTransaction()
+        Else
+          Call Diag_OperatorAlert("SmartStat aborted: Validation failure. No changes applied.")
+          If (PlanValidationErrors Is Nothing) Then
+            Call Diag_WriteLine("TX: PlanValidationErrors = Nothing")
+          Else
+            Call Diag_WriteLine("TX: PlanValidationErrors.Count = " & CStr(PlanValidationErrors.Count))
+          End If
+        End If
         If (PlanValidationErrors Is Nothing) Then
           Call Diag_WriteLine("TX: PlanValidationErrors = Nothing")
         Else
@@ -2961,6 +2990,7 @@ Function Harness_GetModeFromControlA()
   If Len(v) = 0 Then Exit Function
 
   If InStr(v, "SMARTSTAT=HARNESS_CAPTURE") > 0 Then Harness_GetModeFromControlA = "HARNESS_CAPTURE" : Exit Function
+  If InStr(v, "SMARTSTAT=HARNESS_STRICT") > 0 Then Harness_GetModeFromControlA = "HARNESS_STRICT" : Exit Function
   If InStr(v, "SMARTSTAT=HARNESS_COMMIT") > 0 Then Harness_GetModeFromControlA = "HARNESS_COMMIT" : Exit Function
   If InStr(v, "SMARTSTAT=HARNESS") > 0 Then Harness_GetModeFromControlA = "HARNESS" : Exit Function
 End Function
@@ -3020,6 +3050,10 @@ End Sub
 
 Sub Harness_WriteIntegrityDiff(ByVal preCustomProps, ByVal planDict)
   On Error Resume Next
+
+  ' Reset diff count every run (used by HARNESS_STRICT commit gate)
+  G_HARNESS_DIFF_COUNT = 0
+
   Dim fso: Set fso = CreateObject("Scripting.FileSystemObject")
   Dim p: p = HARNESS_DIR & "diff_" & NormalizeKey(CStr(gTemplateName)) & "_" & CStr(gDiagRunId) & ".txt"
   Dim ts: Set ts = fso.CreateTextFile(p, True)
@@ -3033,8 +3067,10 @@ Sub Harness_WriteIntegrityDiff(ByVal preCustomProps, ByVal planDict)
 
   If (planDict Is Nothing) Or (planDict.Count = 0) Then
     ts.WriteLine "(no planned changes)"
+    ts.WriteLine ""
+    ts.WriteLine "DIFF_COUNT=0"
     ts.Close
-    Call Diag_WriteLine("HARNESS: integrity diff written: " & p)
+    Call Diag_WriteLine("HARNESS: integrity diff written: " & p & " (diffCount=0)")
     Exit Sub
   End If
 
@@ -3047,15 +3083,19 @@ Sub Harness_WriteIntegrityDiff(ByVal preCustomProps, ByVal planDict)
     afterV = CStr(planDict(CStr(k)))
 
     If CStr(beforeV) <> CStr(afterV) Then
+      G_HARNESS_DIFF_COUNT = G_HARNESS_DIFF_COUNT + 1
       ts.WriteLine "[" & CStr(k) & "]"
       ts.WriteLine "  BEFORE: " & Replace(Replace(CStr(beforeV), vbCrLf, "\n"), vbTab, " ")
       ts.WriteLine "  AFTER : " & Replace(Replace(CStr(afterV), vbCrLf, "\n"), vbTab, " ")
     End If
   Next
 
+  ts.WriteLine ""
+  ts.WriteLine "DIFF_COUNT=" & CStr(G_HARNESS_DIFF_COUNT)
+
   ts.Close
   Set ts = Nothing
-  Call Diag_WriteLine("HARNESS: integrity diff written: " & p)
+  Call Diag_WriteLine("HARNESS: integrity diff written: " & p & " (diffCount=" & CStr(G_HARNESS_DIFF_COUNT) & ")")
   On Error GoTo 0
 End Sub
 

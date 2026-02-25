@@ -39,16 +39,14 @@
 - If a patch is unsafe as a partial snippet, output the full file.
 - Flag breaking changes that may affect external tools (SmartStatTrayApp).
 
-## Current status snapshot
-- Status: PAUSED at ambiguity-system implementation checkpoint.
-- Last confirmed analysis finding:
-  - AMBIGUITY output is missing because:
-    - There is no Ambiguity_Add function in the script, and
-    - There is no initialization for CompilerContext("ambiguous"),
-    - A shorthand guard calls a non-existent routine,
-    - The call fails silently due to Main() running under On Error Resume Next,
-    - Execution falls through to the unresolved path.
-- No changes have been applied after this analysis point.
+## Roadmap execution order (current)
+1) WP-05 Output Map Coverage
+2) WP-04 Ambiguity transparency (fail-closed stays strict)
+3) WP-01 Phase hardening
+4) WP-07 Overrides audit trail
+5) WP-08 Harness expansion
 
 ## Next action (ready to proceed)
-- [ ] Proceed with Roadmap “In Progress” Item 1: Ambiguity system implementation.
+- [ ] Implement WP-05 Output Map Coverage (in SmartStat_v4.0.0_beta.vbs)
+  - Add support for category->output “column” patterns (ex: H0100 => H0110/H0120/H0130)
+  - Preserve deterministic ordering and avoid emitting blank/unused outputs
