@@ -2516,8 +2516,45 @@ Function ProcessQualifier(qualTab, qAliasNorm, qNorm, learn, ByRef qPrefix, ByRe
   ' Minimal safe default: use "season" when resolved fragment starts with season(...)
   qPrefix = "season"
 
+  ' v4.0 Phase 3: normalize qualifier parts to prevent duplicate prefixes like "season.season..."
+  Call NormalizeQualifierParts(qPrefix, qRemFrag)
+
   ProcessQualifier = True
 End Function
+
+' ------------------------------------------
+' v4.0 Phase 3: Qualifier normalization
+' Prevents duplicate prefixes when qPrefix and qRemFrag both encode "season"
+' Example bad:  qPrefix="season", qRemFrag="season.vsLHP" -> season.season.vsLHP
+' Example good: qPrefix="season", qRemFrag="vsLHP"
+' ------------------------------------------
+Sub NormalizeQualifierParts(ByRef qPrefix, ByRef qRemFrag)
+  Dim p, r
+  p = LCase(Trim(CStr(qPrefix)))
+  r = Trim(CStr(qRemFrag))
+
+  If Len(p) = 0 Then
+    ' If remainder begins with season., promote prefix and strip remainder
+    If LCase(Left(r, 7)) = "season." Then
+      qPrefix = "season"
+      qRemFrag = Mid(r, 8)
+    End If
+    Exit Sub
+  End If
+
+  ' Strip duplicate prefix from remainder (case-insensitive): "season." + remainder
+  If Len(r) > 0 Then
+    If LCase(Left(r, Len(p) + 1)) = p & "." Then
+      qRemFrag = Mid(r, Len(p) + 2)
+      Exit Sub
+    End If
+  End If
+
+  ' If remainder equals prefix exactly, clear remainder
+  If Len(r) > 0 Then
+    If LCase(r) = p Then qRemFrag = ""
+  End If
+End Sub
 
 Function BuildOutputTargets(outItems)
   Dim outTargets: Set outTargets = CreateObject("Scripting.Dictionary")
