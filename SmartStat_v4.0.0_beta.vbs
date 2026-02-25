@@ -502,11 +502,8 @@ End Sub
 ' - Only enforces moustache pairing when moustaches are present
 ' ==========================================
 Function Stage_ValidatePlan()
-  On Error Resume Next
-  Dim vStep: vStep = "INIT"
   Stage_ValidatePlan = True
 
-  vStep = "CHECK_APPLYPLAN"
   If ApplyPlan Is Nothing Then
     Call Diag_WriteLine("TX: ApplyPlan is Nothing")
     Stage_ValidatePlan = False
@@ -517,14 +514,9 @@ Function Stage_ValidatePlan()
     If PlanValidationErrors.Count = 0 Then
       PlanValidationErrors("UNKNOWN_VALIDATE_FAIL") = "Stage_ValidatePlan returned False with no recorded errors."
     End If
-    If Err.Number <> 0 Then
-      Call Diag_WriteLine("TX: Stage_ValidatePlan ERROR step=" & vStep & " Err.Number=" & CStr(Err.Number) & " Err.Description=" & CStr(Err.Description))
-      Err.Clear
-    End If
     Exit Function
   End If
 
-  vStep = "QUALIFIER_PRECHECK"
     ' v4.0 Phase 2: hard block if qualifier failed resolution
   If Not (PlanValidationErrors Is Nothing) Then
     If PlanValidationErrors.Exists("QUALIFIER_UNRESOLVED") Then
@@ -537,26 +529,13 @@ Function Stage_ValidatePlan()
       If PlanValidationErrors.Count = 0 Then
         PlanValidationErrors("UNKNOWN_VALIDATE_FAIL") = "Stage_ValidatePlan returned False with no recorded errors."
       End If
-      If Err.Number <> 0 Then
-        Call Diag_WriteLine("TX: Stage_ValidatePlan ERROR step=" & vStep & " Err.Number=" & CStr(Err.Number) & " Err.Description=" & CStr(Err.Description))
-        Err.Clear
-      End If
       Exit Function
     End If
   End If
 
-  vStep = "AMBIGUITY_GATE"
   ' v4.0 Phase 2: block commit if ambiguity exists (unless explicitly allowed)
   If Not (CompilerContext Is Nothing) Then
-    Dim ccHasAmb: ccHasAmb = False
-    vStep = "AMBIGUITY_GATE:CC_EXISTS_AMBIGUOUS"
-    ccHasAmb = CompilerContext.Exists("ambiguous")
-    If Err.Number <> 0 Then
-      Call Diag_WriteLine("TX: Stage_ValidatePlan ERROR step=" & vStep & " Err.Number=" & CStr(Err.Number) & " Err.Description=" & CStr(Err.Description))
-      Err.Clear
-    End If
-
-    If ccHasAmb Then
+    If CompilerContext.Exists("ambiguous") Then
       Dim ambTypeName: ambTypeName = TypeName(CompilerContext("ambiguous"))
       If (Not IsObject(CompilerContext("ambiguous"))) Or UCase(CStr(ambTypeName)) <> "DICTIONARY" Then
         Call Diag_WriteLine("TX: AMBIGUITY_GATE ambiguous context invalid TypeName=" & CStr(ambTypeName))
@@ -572,22 +551,8 @@ Function Stage_ValidatePlan()
         Exit Function
       End If
 
-      vStep = "AMBIGUITY_GATE:SET_AMB"
       Dim amb: Set amb = CompilerContext("ambiguous")
-      If Err.Number <> 0 Then
-        Call Diag_WriteLine("TX: Stage_ValidatePlan ERROR step=" & vStep & " Err.Number=" & CStr(Err.Number) & " Err.Description=" & CStr(Err.Description))
-        Err.Clear
-      End If
-
-      Dim ambCount: ambCount = 0
-      vStep = "AMBIGUITY_GATE:AMB_COUNT"
-      ambCount = amb.Count
-      If Err.Number <> 0 Then
-        Call Diag_WriteLine("TX: Stage_ValidatePlan ERROR step=" & vStep & " Err.Number=" & CStr(Err.Number) & " Err.Description=" & CStr(Err.Description))
-        Err.Clear
-      End If
-
-      If ambCount > 0 Then
+      If amb.Count > 0 Then
         Dim allowAmb: allowAmb = False
         If CompilerContext.Exists("learn") Then
           Dim learnTypeName: learnTypeName = TypeName(CompilerContext("learn"))
@@ -598,16 +563,10 @@ Function Stage_ValidatePlan()
             Call Diag_WriteLine("TX: AMBIGUITY_GATE learn context invalid TypeName=" & CStr(learnTypeName))
           End If
         End If
-        If Err.Number <> 0 Then Err.Clear
 
         If Not allowAmb Then
           Stage_ValidatePlan = False
-          vStep = "AMBIGUITY_GATE:PLAN_REMOVEALL"
           PlanValidationErrors.RemoveAll
-          If Err.Number <> 0 Then
-            Call Diag_WriteLine("TX: Stage_ValidatePlan ERROR step=" & vStep & " Err.Number=" & CStr(Err.Number) & " Err.Description=" & CStr(Err.Description))
-            Err.Clear
-          End If
           PlanValidationErrors("AMBIGUOUS") = "Ambiguous mapping detected; operator choice required."
           Call Diag_WriteLine("TX: Ambiguity gate blocked apply (count=" & CStr(amb.Count) & ")")
           Call Diag_WriteLine("TX: EARLY EXIT - AMBIGUOUS_GATE")
@@ -635,10 +594,6 @@ Function Stage_ValidatePlan()
           If PlanValidationErrors.Count = 0 Then
             PlanValidationErrors("UNKNOWN_VALIDATE_FAIL") = "Stage_ValidatePlan returned False with no recorded errors."
           End If
-          If Err.Number <> 0 Then
-            Call Diag_WriteLine("TX: Stage_ValidatePlan ERROR step=" & vStep & " Err.Number=" & CStr(Err.Number) & " Err.Description=" & CStr(Err.Description))
-            Err.Clear
-          End If
           Exit Function
         Else
           Call Diag_WriteLine("TX: Ambiguity gate bypassed (allow_ambiguous_apply=True)")
@@ -647,7 +602,6 @@ Function Stage_ValidatePlan()
     End If
   End If
 
-  vStep = "EMPTY_PLAN"
   Call Diag_WriteLine("TX: TRANSACTION_MODE=" & CStr(TRANSACTION_MODE) & " ApplyPlan.Count=" & CStr(ApplyPlan.Count))
 
   If ApplyPlan.Count = 0 Then
@@ -662,10 +616,6 @@ Function Stage_ValidatePlan()
     If PlanValidationErrors.Count = 0 Then
       PlanValidationErrors("UNKNOWN_VALIDATE_FAIL") = "Stage_ValidatePlan returned False with no recorded errors."
     End If
-    If Err.Number <> 0 Then
-      Call Diag_WriteLine("TX: Stage_ValidatePlan ERROR step=" & vStep & " Err.Number=" & CStr(Err.Number) & " Err.Description=" & CStr(Err.Description))
-      Err.Clear
-    End If
     Exit Function
   End If
 
@@ -679,14 +629,9 @@ Function Stage_ValidatePlan()
     If PlanValidationErrors.Count = 0 Then
       PlanValidationErrors("UNKNOWN_VALIDATE_FAIL") = "Stage_ValidatePlan returned False with no recorded errors."
     End If
-    If Err.Number <> 0 Then
-      Call Diag_WriteLine("TX: Stage_ValidatePlan ERROR step=" & vStep & " Err.Number=" & CStr(Err.Number) & " Err.Description=" & CStr(Err.Description))
-      Err.Clear
-    End If
     Exit Function
   End If
 
-  vStep = "MOUSTACHE_SCAN"
   Dim k, v, hasOpen, hasClose
   For Each k In ApplyPlan.Keys
     v = CStr(ApplyPlan(k))
@@ -708,7 +653,6 @@ Function Stage_ValidatePlan()
     End If
   Next
 
-  vStep = "FINAL_LOGGING"
   If Not Stage_ValidatePlan Then
     If Not (PlanValidationErrors Is Nothing) Then
       If PlanValidationErrors.Count = 0 Then
@@ -723,12 +667,6 @@ Function Stage_ValidatePlan()
   Else
     Call Diag_WriteLine("TX: Validation OK")
   End If
-
-  If Err.Number <> 0 Then
-    Call Diag_WriteLine("TX: Stage_ValidatePlan ERROR step=" & vStep & " Err.Number=" & CStr(Err.Number) & " Err.Description=" & CStr(Err.Description))
-    Err.Clear
-  End If
-  On Error GoTo 0
 End Function
 
 ' ==========================================
