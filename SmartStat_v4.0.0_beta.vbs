@@ -3506,6 +3506,7 @@ Sub ExecuteTemplatePipeline(srcDir, mappingsIni, LEARN_INI, transforms, rxTransf
   Dim filterFrags: filterFrags = ResolveFilterFragments(rowCount, haveFilters, filterTabs, qAliasNorm, qNorm, learn, LEARN_INI)
   Diag_Mark_DetectFilters "RowCount=" & rowCount & ", filters resolved"
 
+  Call Phase_Begin(PHASE_07_BUILD_SYNTAX, "Building syntax for category columns")
   Diag_Mark_BuildSyntax "Building syntax for category columns"
   ProcessCategoryColumns catTabs, transforms, rxTransforms, learn, LEARN_INI, catAliasRaw, catRaw, catPAliasRaw, catPRaw, catAliasNorm, catPAliasNorm, catNorm, catPNorm, outTargets, rowCount, filterFrags, qPrefix, qRemFrag, entityCtx, entityType, playerSubtype
   If TRANSACTION_MODE Then
@@ -3514,6 +3515,7 @@ Sub ExecuteTemplatePipeline(srcDir, mappingsIni, LEARN_INI, transforms, rxTransf
     Call Diag_WriteLine("TX: Immediate write mode (TRANSACTION_MODE=False)")
   End If
 
+  Call Phase_EndOk(PHASE_07_BUILD_SYNTAX, "Syntax build complete")
   Diag_Mark_ApplyOverrides "Applying static overrides"
   ApplyStaticOverridesByTemplate srcDir & "SmartStat_StaticOverrides.ini", tmplName, UCase(entityCtx), UCase(playerSubtype)
   Diag_Mark_PushToTrio "Static override values applied"
