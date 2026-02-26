@@ -1,14 +1,78 @@
 # Changelog
 
 All notable changes to the SmartStat Core Engine are documented in this file.
-SmartStat runtime versioning follows script identifiers (for this release: `v4.0.0_beta`), while `VERSION.txt` remains VIZOR UI display metadata.
+Runtime versioning follows script identifiers (`SmartStat_v*.vbs`), while `VERSION.txt` remains VIZOR UI display metadata.
 
-## [v4.0.0_beta]
+## [v4_Dev] - 2026-02-26
 
 ### Summary
-- Introduces a v4 compiler-context execution model with staged transaction apply, structured diagnostics, ambiguity capture, and stricter validation gates.
-- Expands multi-sport behavior with sport-aware mappings resolution (`MLB` default, `NBA`/`NHL` variants) and league-aware syntax token adjustments.
-- Retains template-driven output-map behavior and static overrides while hardening fail-safe conditions before writes.
+- Comprehensive hardening pass on top of `v4.0.0_beta`, focused on phase consistency, ambiguity transparency, harness safety checks, output-map reliability, and static-override auditability.
+- Source window covered: commits after `v4.0.0_beta` up through `922c583` on `v4_Dev`.
+
+### Added
+- Phase pipeline helpers:
+  - `Phase_Begin`
+  - `Phase_EndOk`
+  - `Phase_Fail`
+  - `Phase_EarlyExit`
+- Ordered phase tracking with diagnostics warnings (`PHASE_ORDER_WARN`) when execution order jumps unexpectedly.
+- Harness/integrity framework extensions:
+  - `HARNESS`, `HARNESS_COMMIT`, `HARNESS_CAPTURE`, and `HARNESS_STRICT` modes
+  - pre-run snapshot capture
+  - fixture export (`fixture_*.ini`)
+  - integrity diff output (`diff_*.txt`)
+  - strict-mode commit block when diff is non-empty
+- Output-map completion logic:
+  - `BuildEffectiveOutputMap` inference path
+  - grouped output candidate matching by prefix/hundred group
+  - explicit map entries preserved while missing rows/columns are inferred where safe
+- Static override diagnostics:
+  - `StaticOverride_GetPrevValue`
+  - `Diag_LogOverrideApplied`
+  - skip logging path when overrides INI is unavailable (`OVERRIDE_APPLY_SKIP`)
+- Tooling scripts for extracting/copying latest script snapshots under `.tools/`.
+
+### Changed
+- `ExecuteTemplatePipeline` now uses standardized phase boundaries and failure/early-exit logging across:
+  - template classification
+  - qualifier/filter detection
+  - output-map build
+  - syntax build
+  - static override apply
+- Fail-closed exit points are now explicit and operator-readable:
+  - `TEMPLATE.EMPTY`
+  - `QUALIFIER.UNRESOLVED`
+  - `OUTMAP.EMPTY`
+- `ProcessQualifier` normalization now prevents duplicate season-prefix chaining in resolved paths.
+- `Stage_ValidatePlan` now has tighter unknown-failure recording and type checks around ambiguity/learn dictionaries.
+- Environment/config validation now emits specific missing/unreadable filename diagnostics during startup checks.
+
+### Fixed
+- Ambiguity context initialization/assignment path in `Main` and `Ambiguity_AddEx` to avoid invalid object-type states.
+- `SmartStat_MappingsNBA.learn.ini` malformed section header corrected to `[ALIASES_REGEX]`.
+- Duplicate `POINTS/GM` alias entry removed from `SmartStat_MappingsNHL.learn.ini`.
+- Additional ambiguity diagnostics stability improvements for top-candidate reporting and summary emission.
+
+### Removed
+- Legacy `v3.92` script snapshots from `Main_TrioScript`.
+- Legacy `DiagScripts/*` artifacts no longer used by the active `v4` runtime path.
+
+### Compatibility Notes
+- Fail-closed ambiguity gating remains strict by default (`allow_ambiguous_apply=false`).
+- Viz Trio naming/tabfield conventions are unchanged.
+- No blocking UI prompts were introduced; operator messaging remains log/socket based.
+- SmartStatTrayApp/socket consumers should continue tolerating multiline ambiguity context details (`AMBIGUITY:` / summary blocks).
+
+### Validation Focus
+- Verify harness behavior for all control modes on a known template.
+- Verify `OUTMAP.EMPTY` gating still blocks unsafe applies.
+- Verify unresolved qualifier paths still hard-stop without partial writes.
+- Verify static override logs include source section + old/new values only when values changed.
+
+## [v4.0.0_beta] - 2026-02-24
+
+### Summary
+- Initial v4 core engine release with staged transaction writes, strict plan validation, ambiguity capture, and structured diagnostics.
 
 ### Added
 - Compiler-context state objects:
@@ -16,88 +80,51 @@ SmartStat runtime versioning follows script identifiers (for this release: `v4.0
   - `ApplyPlan`
   - `PlanValidationErrors`
 - Transactional write path:
-  - staged writes through `Tx_SetCustomProp`
-  - centralized commit phase via `Stage_CommitTransaction`
-- Structural validation gate (`Stage_ValidatePlan`) with hard-stop checks for:
-  - unresolved qualifiers
-  - ambiguous mappings (default block)
+  - staged writes via `Tx_SetCustomProp`
+  - centralized commit via `Stage_CommitTransaction`
+- Structural transaction gate (`Stage_ValidatePlan`) with hard-stop checks for:
+  - unresolved qualifier chains
+  - ambiguity hits (unless explicitly allowed)
   - empty apply plans
-  - unbalanced moustache braces in staged syntax
+  - unbalanced moustache braces
 - Ambiguity subsystem:
   - `Ambiguity_Add` / `Ambiguity_AddEx`
-  - top-2 fuzzy candidate scoring (`HeuristicPickWithAlt`, `FuzzyResolveTop2Advanced`)
-  - operator-visible ambiguity section appended to socket message context (`AMBIGUITY:` block)
-- Diagnostics framework:
-  - phased markers (`00.BOOT` through `99.DONE`)
-  - environment checks (WSH, write access, ADO registry signal)
-  - config readability assertions with operator-facing fail messaging
-  - bounded log growth via size trimming
-- Dynamic `USAGE` resolver for pitch contexts:
-  - `pitch_type(...)` -> `arsenal_<pitch_plural>_percentage`
-  - `pitch_category(...)` -> `pitch_category_<group>_percentage`
-- Sport-aware mapping discovery:
-  - resolves `SmartStat_Mappings{SPORT}.ini` and `.learn.ini`
-  - supports fallback filename conventions (`Mappings{SPORT}.ini`)
+  - top-2 fuzzy-candidate tracking
+  - operator-visible ambiguity context in diagnostics/socket messaging
+- Sport-aware mappings resolution:
+  - `SmartStat_Mappings{SPORT}.ini` and `.learn.ini`
+  - fallback support for `Mappings{SPORT}.ini` naming
+- Dynamic usage resolver for pitch contexts (`USAGE` -> arsenal/pitch-category percentage paths).
 
 ### Changed
-- Default apply mode is transactional (`TRANSACTION_MODE = True`) rather than immediate-write behavior.
-- Qualifier handling is now strict fail-safe:
-  - blank qualifier still defaults to `season`
-  - non-blank qualifier must fully resolve; leftovers trigger `QUALIFIER_UNRESOLVED` and block apply
-- Ambiguity handling is now broadcast-safe by default:
-  - apply is blocked unless `allow_ambiguous_apply=true` in `[LEARN]`
-- Fuzzy resolution now tracks alternate near-matches and promotes ambiguity rather than silent guessing when candidate scores are too close.
-- League-aware token adjustment now rewrites `{{info.player.preferred_name}}` to `{{info.player.first_name}}` for `NBA` and `NHL`.
-- Mapping path resolution now supports league/global-variable and environment-driven selection before generic fallbacks.
+- Default apply behavior moved to transactional mode (`TRANSACTION_MODE=True`).
+- Qualifier handling became strict fail-safe:
+  - blank qualifier defaults to `season`
+  - unresolved non-blank qualifiers block apply
+- Ambiguity handling became broadcast-safe by default:
+  - commits are blocked unless `[LEARN] allow_ambiguous_apply=true`
+- League-aware syntax token adjustment applied for NBA/NHL preferred-name behavior.
 
 ### Fixed
-- UTF-8 BOM guard in INI parsing to prevent first-line key corruption.
-- Added fallback handling on mappings INI load failure so pipeline finalization/validation flow remains deterministic.
-- Reduced false positives/negatives in text resolution with:
-  - doubled-letter collapse rescue
-  - adjacent transposition tolerance for short tokens
-  - singularization fallback for qualifier tokens
-- Added explicit ambiguity gates to prevent unsafe commits when multiple high-confidence matches exist.
+- UTF-8 BOM protection in INI parse path to avoid first-key corruption.
+- Mapping-load failure handling made deterministic so finalize/refresh still runs on fail paths.
+- Fuzzy resolution resiliency improved with doubled-letter and adjacent-swap recovery.
 
-### Configuration and Data
-- Baseline config set includes:
-  - `SmartStat_Mappings.ini`
-  - `SmartStat_MappingsNBA.ini`
-  - `SmartStat_MappingsNHL.ini`
-  - `SmartStat_Mappings.learn.ini`
-  - `SmartStat_MappingsNBA.learn.ini`
-  - `SmartStat_MappingsNHL.learn.ini`
+### Configuration Notes
+- Baseline config family:
+  - `SmartStat_Mappings*.ini`
+  - `SmartStat_Mappings*.learn.ini`
   - `SmartStat_StaticOverrides.ini`
   - `SmartStat_TemplateConfig.ini`
-- `SmartStat_TemplateConfig.ini` includes 15 template blocks, including `config_id` variants for shared template names.
-- `SmartStat_Mappings.ini` includes a security marker section:
+- Security signature marker currently resides in `SmartStat_TemplateConfig.ini`:
   - `[SECURITY]`
   - `signature=MSSG_FANDUEL_SECURE`
-- Static override behavior remains entity-specific and template-aware, including pitcher substitution of `{{info.player.primary_position}}` to `{{info.player.pitcher_hand}}` in player-pitcher context.
-
-### Compatibility Notes
-- Viz Trio tabfield naming/pattern conventions are unchanged.
-- SmartStatTrayApp and other socket-context consumers should tolerate multiline `message_context` values containing appended `AMBIGUITY:` diagnostics.
-- Operator workflows that previously relied on permissive fuzzy fallback may now see intentional hard blocks until qualifier/category ambiguity is resolved.
-
-### Known Issues
-- `SmartStat_MappingsNBA.learn.ini` contains a malformed section header at line 41:
-  - `LIASES_REGEX]`
-  - expected bracketed format (e.g., `[ALIASES_REGEX]`)
-  This can prevent intended regex-alias parsing for that section.
-- `SESSION.md` and `ROADMAP.md` currently describe ambiguity support as missing, which does not match the implemented `v4.0.0_beta` script state.
-- Default script/log paths are still anchored to `E:\EDRIVE\UNIVERSAL\SmartStat\...`; non-standard deployment paths depend on fallback discovery and environment alignment.
-
-### Validation Checklist
-- Confirm transaction validation blocks apply when:
-  - qualifier is unresolved
-  - ambiguity exists and `allow_ambiguous_apply=false`
-  - staged plan is empty
-  - moustache braces are unbalanced
-- Validate end-to-end syntax generation on representative templates across MLB, NBA, and NHL mapping profiles.
-- Confirm static overrides are applied after transaction commit and that pitcher-hand substitution remains correct.
-- Confirm socket refresh payload includes expected tabfield set and ambiguity context when ambiguity is triggered.
 
 ### Release Identity
-- SmartStat runtime release source: `SmartStat_v4.0.0_beta.vbs` (`SMARTSTAT_VERSION = "4.0.0_beta"`).
-- `VERSION.txt` value (`4.0.0`) is VIZOR UI metadata and not runtime version gating.
+- Runtime source: `SmartStat_v4.0.0_beta.vbs` (`SMARTSTAT_VERSION="4.0.0_beta"`).
+- `VERSION.txt` (`4.0.0`) remains VIZOR UI metadata only.
+
+## [v3.92] - 2025-12-23
+
+### Summary
+- Last pre-v4 production line before staged transaction architecture and ambiguity-gating overhaul.
