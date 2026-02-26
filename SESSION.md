@@ -41,13 +41,14 @@
 - Codex must not use shell commands to inspect files (no PowerShell Get-Content, no line-range shell dumps).
 - File inspection must use internal workspace access only.
 - All diffs must be generated statically without terminal execution.
+- Do not request that I run any commands; rely on static reasoning and workspace reads only.
 
 ## Roadmap execution order (current)
 1) WP-05 Output Map Coverage ? (Completed)
-2) WP-04 Ambiguity transparency (fail-closed stays strict) ? (Completed)
-3) WP-01 Phase hardening (in progress)
-4) WP-07 Overrides audit trail
-5) WP-08 Harness expansion
+2) WP-04 Ambiguity transparency (fail-closed stays strict)
+3) WP-01 Phase hardening ? (Completed)
+4) WP-07 Overrides audit trail ? (Completed)
+5) WP-08 Harness expansion ? (In progress)
 
 ## Completed in this session
 - [x] WP-05 Output Map Coverage
@@ -57,24 +58,18 @@
   - Hard fail `OUTMAP.EMPTY` when no usable targets exist
   - No INI schema changes
   - No ambiguity gating changes
-
-- [x] WP-04 Ambiguity transparency (fail-closed stays strict)
-  - Robust ambiguity context initialization
-  - Structured ambiguity recording (`Ambiguity_Add`)
-  - Deterministic single-shot `AMBIGUITY_SUMMARY` (OperatorDiag)
-  - Wired into existing fail paths (no permissiveness changes)
-
-## In progress
-- [ ] WP-01 Phase pipeline hardening
-  - Introduce/standardize phase helpers (`Phase_Begin/EndOk/EarlyExit/Fail`)
-  - Normalize phase boundary logs (entry + exit) without changing logic
-  - Ensure early exits still produce harness diff + operator alert when harness active
-  - Ensure finalize/refresh behavior runs on both success + fail paths (as intended)
+- [x] WP-01 Phase hardening
+  - Added phase helpers for begin/end/fail/early-exit logging
+  - Converted silent early exits in key pipeline spots to logged early-exits
+  - Ensured finalize/refresh behavior is preserved on fail paths
+  - No resolver/mapping behavior changes
+- [x] WP-07 Overrides audit trail
+  - Added override audit logging (old -> new) with section + entity context
+  - Added explicit “skip” log when overrides INI cannot load
+  - No resolver/mapping behavior changes
 
 ## Next action (ready to proceed)
-- [ ] WP-01 Phase Pipeline Hardening (in SmartStat_v4.0.0_beta.vbs)
-  - Replace silent early exits with `Phase_EarlyExit(...)`
-  - Replace `Diag_HardFail ...` with `Phase_Fail(...)` (same codes/details)
-  - Add `Phase_Begin/Phase_EndOk` only where it reduces ambiguity in logs (avoid duplicates)
-  - Ensure fail paths still run `Diag_Done` + `FinalizeAndRefresh` where intended
-  - No functional behavior changes; logging only
+- [ ] WP-08 Harness expansion (in SmartStat_v4.0.0_beta.vbs)
+  - Add HARNESS_CAPTURE_ONLY mode (snapshot-only)
+  - Improve harness diff formatting (group CP vs VALUE changes; deterministic ordering)
+  - Ensure harness artifacts are still written on early exits / config failures
