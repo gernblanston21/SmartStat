@@ -28,6 +28,11 @@ Dim G_HARNESS_MODE        ' OFF | HARNESS | HARNESS_COMMIT | HARNESS_CAPTURE | H
 Dim G_HARNESS_PRE_CP      ' Dict: tabfield -> prior custom prop value
 Dim G_HARNESS_PRE_V       ' Dict: tabfield -> prior visible value
 Dim G_HARNESS_DIFF_COUNT  ' Integer: number of changed fields detected by Harness_WriteIntegrityDiff
+Dim G_TRIO_WRITE_ATTEMPTS
+Dim G_TRIO_WRITE_SUCCESS_COUNT
+Dim G_TRIO_WRITE_FAIL_COUNT
+Dim G_TRIO_WRITE_FAILED
+Dim G_TRIO_WRITE_LAST_FAIL_TF
 
 Const PHASE_00_BOOT            = "00.BOOT"
 Const PHASE_01_ENV_VALIDATE    = "01.ENV_VALIDATE"
@@ -352,6 +357,12 @@ Sub Main()
   Set ApplyPlan = CreateObject("Scripting.Dictionary")
   Set PlanValidationErrors = CreateObject("Scripting.Dictionary")
 
+  G_TRIO_WRITE_ATTEMPTS = 0
+  G_TRIO_WRITE_SUCCESS_COUNT = 0
+  G_TRIO_WRITE_FAIL_COUNT = 0
+  G_TRIO_WRITE_FAILED = False
+  G_TRIO_WRITE_LAST_FAIL_TF = ""
+
   ' v4.0 Phase 2: ambiguity & confidence context
   If Not CompilerContext.Exists("ambiguous") Then
     Dim AmbiguityHits: Set AmbiguityHits = CreateObject("Scripting.Dictionary")
@@ -506,6 +517,10 @@ Sub Main()
 
   ExecuteTemplatePipeline SRC_DIR, ini, LEARN_INI, transforms, rxTransforms, learn
 
+  Dim txPostApplyCount: txPostApplyCount = -1
+  If Not (ApplyPlan Is Nothing) Then txPostApplyCount = ApplyPlan.Count
+  Call Diag_WriteLine("TX: POST_PIPELINE TRANSACTION_MODE=" & CStr(TRANSACTION_MODE) & " (TypeName=" & TypeName(TRANSACTION_MODE) & ") DIAG_MODE=" & CStr(DIAG_MODE) & " HARNESS=" & CStr(G_HARNESS_MODE) & " ApplyPlan.Count=" & CStr(txPostApplyCount))
+
   ' v4.0 Phase 3: integrity diff (success path)
   If HARNESS_ENABLE Then
     If G_HARNESS_MODE <> "OFF" Then
@@ -516,6 +531,7 @@ Sub Main()
   End If
 
   If TRANSACTION_MODE Then
+    Call Diag_WriteLine("TX: ENTER_TRANSACTION_BLOCK")
     Err.Clear
 
     ' Harness default safety: do NOT commit unless explicitly allowed
@@ -526,13 +542,27 @@ Sub Main()
         Call Diag_WriteLine("HARNESS_STRICT: non-empty diff (" & CStr(G_HARNESS_DIFF_COUNT) & "); blocking commit (main path)")
         Call Diag_OperatorAlert("SmartStat Harness Strict: Diff detected. Commit blocked.")
       Else
+        Dim txPlanCountS: txPlanCountS = -1
+        If Not (ApplyPlan Is Nothing) Then txPlanCountS = ApplyPlan.Count
+        Call Diag_WriteLine("TX: ENTER_VALIDATE (ApplyPlan.Count=" & CStr(txPlanCountS) & ")")
         Dim txOkS: txOkS = Stage_ValidatePlan()
-        If Err.Number <> 0 Then
-          Call Diag_WriteLine("TX: Stage_ValidatePlan runtime error (main path) Err.Number=" & CStr(Err.Number) & " Err.Description=" & CStr(Err.Description))
+        Dim txErrNumS, txErrDescS, txPvCountS
+        txErrNumS = Err.Number
+        txErrDescS = CStr(Err.Description)
+        If (PlanValidationErrors Is Nothing) Then
+          txPvCountS = -1
+        Else
+          txPvCountS = PlanValidationErrors.Count
+        End If
+        Call Diag_WriteLine("TX: VALIDATE_RESULT=" & CStr(txOkS) & " Err=" & CStr(txErrNumS) & ":" & txErrDescS & " PlanValidationErrors.Count=" & CStr(txPvCountS))
+
+        If txErrNumS <> 0 Then
+          Call Diag_WriteLine("TX: Stage_ValidatePlan runtime error (main path) Err.Number=" & CStr(txErrNumS) & " Err.Description=" & txErrDescS)
           Err.Clear
         End If
 
         If txOkS Then
+          Call Diag_WriteLine("TX: ENTER_COMMIT (ApplyPlan.Count=" & CStr(txPlanCountS) & ")")
           Call Stage_CommitTransaction()
         Else
           Call Diag_OperatorAlert("SmartStat aborted: Validation failure. No changes applied.")
@@ -573,7 +603,41 @@ Sub Main()
 
         Call Diag_WriteLine("TX: VALIDATION FAILURE - Transaction Aborted")
       End If
+    Else
+      Dim txPlanCount: txPlanCount = -1
+      If Not (ApplyPlan Is Nothing) Then txPlanCount = ApplyPlan.Count
+      Call Diag_WriteLine("TX: ENTER_VALIDATE (ApplyPlan.Count=" & CStr(txPlanCount) & ")")
+      Dim txOk: txOk = Stage_ValidatePlan()
+      Dim txErrNum, txErrDesc, txPvCount
+      txErrNum = Err.Number
+      txErrDesc = CStr(Err.Description)
+      If (PlanValidationErrors Is Nothing) Then
+        txPvCount = -1
+      Else
+        txPvCount = PlanValidationErrors.Count
+      End If
+      Call Diag_WriteLine("TX: VALIDATE_RESULT=" & CStr(txOk) & " Err=" & CStr(txErrNum) & ":" & txErrDesc & " PlanValidationErrors.Count=" & CStr(txPvCount))
+
+      If txErrNum <> 0 Then
+        Call Diag_WriteLine("TX: Stage_ValidatePlan runtime error (main path) Err.Number=" & CStr(txErrNum) & " Err.Description=" & txErrDesc)
+        Err.Clear
+      End If
+
+      If txOk Then
+        Call Diag_WriteLine("TX: ENTER_COMMIT (ApplyPlan.Count=" & CStr(txPlanCount) & ")")
+        Call Stage_CommitTransaction()
+      Else
+        Call Diag_OperatorAlert("SmartStat aborted: Validation failure. No changes applied.")
+        If (PlanValidationErrors Is Nothing) Then
+          Call Diag_WriteLine("TX: PlanValidationErrors = Nothing")
+        Else
+          Call Diag_WriteLine("TX: PlanValidationErrors.Count = " & CStr(PlanValidationErrors.Count))
+        End If
+        Call Diag_WriteLine("TX: VALIDATION FAILURE - Transaction Aborted")
+      End If
     End If
+  Else
+    Call Diag_WriteLine("TX: TRANSACTION_MODE=False; skipping transaction commit block")
   End If
 
   ' normal finalize (no label)
@@ -591,7 +655,7 @@ Sub FinalizeAndRefresh(logFile, startT)
 End Sub
 
 ' ==========================================
-' v4.0 Stage 4 – Structural Validation Gate
+' v4.0 Stage 4 ï¿½ Structural Validation Gate
 ' - Allows clears ("") and control strings (e.g., SMARTSTAT=PLAYER)
 ' - Only enforces moustache pairing when moustaches are present
 ' ==========================================
@@ -764,15 +828,38 @@ Function Stage_ValidatePlan()
 End Function
 
 ' ==========================================
-' v4.0 Stage 5 – Transaction Commit
+' v4.0 Stage 5 ï¿½ Transaction Commit
 ' ==========================================
+Sub Tx_ResetWriteVerifyState()
+  G_TRIO_WRITE_ATTEMPTS = 0
+  G_TRIO_WRITE_SUCCESS_COUNT = 0
+  G_TRIO_WRITE_FAIL_COUNT = 0
+  G_TRIO_WRITE_FAILED = False
+  G_TRIO_WRITE_LAST_FAIL_TF = ""
+End Sub
+
 Sub Stage_CommitTransaction()
   Dim k
+  Call Tx_ResetWriteVerifyState()
   Call Diag_WriteLine("TX: Transaction Commit Started - " & ApplyPlan.Count & " fields")
   For Each k In ApplyPlan.Keys
     Call Tx_WriteNow(CStr(k), CStr(ApplyPlan(k)))
+    If CBool(G_TRIO_WRITE_FAILED) Then
+      Call Diag_WriteLine("TX: Transaction Commit Aborted - Trio write verification failed at tf=" & CStr(G_TRIO_WRITE_LAST_FAIL_TF))
+      Exit For
+    End If
   Next
-  Call Diag_WriteLine("TX: Transaction Commit Completed")
+
+  If CBool(G_TRIO_WRITE_FAILED) Then
+    If Not (PlanValidationErrors Is Nothing) Then
+      PlanValidationErrors("TRIO.CP_WRITE_FAIL") = "Failed to persist tabfield custom property."
+    End If
+  Else
+    Call Diag_WriteLine("TX: Transaction Commit Completed")
+    If CLng(G_TRIO_WRITE_SUCCESS_COUNT) > 0 Then
+      Diag_Mark_PushToTrio "Category syntax applied to Trio custom properties (writes=" & CStr(G_TRIO_WRITE_SUCCESS_COUNT) & ")"
+    End If
+  End If
 End Sub
 
 ' ---------------- Dict helpers ----------------
@@ -1840,9 +1927,93 @@ End Function
 ' v4.0 Transaction Writer Helper (Phase 1)
 ' ==========================================
 
+Function Diag_TruncateForLog(ByVal s, ByVal maxLen)
+  Dim t, m
+  t = CStr(s)
+  m = CLng(maxLen)
+  If m < 0 Then m = 0
+  If Len(t) > m Then
+    Diag_TruncateForLog = Left(t, m) & "...(len=" & CStr(Len(t)) & ")"
+  Else
+    Diag_TruncateForLog = t
+  End If
+End Function
+
 Sub Tx_WriteNow(tfName, value)
   On Error Resume Next
-  TrioCmd "tabfield:set_custom_property " & CStr(tfName) & " " & Quote(CStr(value))
+
+  Dim tf, expected, rc
+  Dim setErrNum, setErrDesc
+  Dim rb, rbErrNum, rbErrDesc
+  Dim verifyWrite, ok, skipNotFound
+  Dim isSetNotFound, isReadNotFound
+
+  tf = CStr(tfName)
+  expected = NormalizeSeasonInSyntax(ApplyLeagueNameAdjustments(CStr(value), G_SPORT_TAG))
+
+  Err.Clear
+  rc = TrioCmd("tabfield:set_custom_property " & tf & " " & Quote(CStr(value)))
+  setErrNum = Err.Number
+  setErrDesc = CStr(Err.Description)
+  Err.Clear
+  isSetNotFound = False
+  If InStr(1, CStr(rc), "400: Tabfield not found", vbTextCompare) > 0 Then isSetNotFound = True
+  If InStr(1, CStr(setErrDesc), "400: Tabfield not found", vbTextCompare) > 0 Then isSetNotFound = True
+
+  G_TRIO_WRITE_ATTEMPTS = CLng(G_TRIO_WRITE_ATTEMPTS) + 1
+  verifyWrite = CBool(DIAG_MODE)
+  ok = (setErrNum = 0)
+
+  rb = ""
+  rbErrNum = 0
+  rbErrDesc = ""
+  isReadNotFound = False
+
+  If verifyWrite Then
+    rb = CStr(TrioCmd("tabfield:get_custom_property " & tf))
+    rbErrNum = Err.Number
+    rbErrDesc = CStr(Err.Description)
+    Err.Clear
+    If InStr(1, CStr(rb), "400: Tabfield not found", vbTextCompare) > 0 Then isReadNotFound = True
+    If InStr(1, CStr(rbErrDesc), "400: Tabfield not found", vbTextCompare) > 0 Then isReadNotFound = True
+
+    If rbErrNum <> 0 Then ok = False
+    If CStr(rb) <> CStr(expected) Then ok = False
+  End If
+
+  skipNotFound = False
+  If isSetNotFound Or isReadNotFound Then
+    If (setErrNum = 0 Or isSetNotFound) And (rbErrNum = 0 Or isReadNotFound) Then
+      skipNotFound = True
+    End If
+  End If
+
+  If skipNotFound Then
+    Call Diag_WriteLine( _
+      "TRIO_WRITE_SKIP_TABFIELD_NOT_FOUND tf=" & tf & _
+      " expected=[" & Diag_TruncateForLog(expected, 180) & "]" & _
+      " actual=[" & Diag_TruncateForLog(rb, 180) & "]" & _
+      " rc=[" & Diag_TruncateForLog(CStr(rc), 80) & "]" & _
+      " setErr=" & CStr(setErrNum) & ":" & Diag_TruncateForLog(setErrDesc, 120) & _
+      " readErr=" & CStr(rbErrNum) & ":" & Diag_TruncateForLog(rbErrDesc, 120))
+  ElseIf ok Then
+    G_TRIO_WRITE_SUCCESS_COUNT = CLng(G_TRIO_WRITE_SUCCESS_COUNT) + 1
+  Else
+    G_TRIO_WRITE_FAIL_COUNT = CLng(G_TRIO_WRITE_FAIL_COUNT) + 1
+    G_TRIO_WRITE_FAILED = True
+    G_TRIO_WRITE_LAST_FAIL_TF = tf
+
+    Call Diag_WriteLine( _
+      "TRIO_WRITE_VERIFY_FAIL tf=" & tf & _
+      " expected=[" & Diag_TruncateForLog(expected, 180) & "]" & _
+      " actual=[" & Diag_TruncateForLog(rb, 180) & "]" & _
+      " rc=[" & Diag_TruncateForLog(CStr(rc), 80) & "]" & _
+      " setErr=" & CStr(setErrNum) & ":" & Diag_TruncateForLog(setErrDesc, 120) & _
+      " readErr=" & CStr(rbErrNum) & ":" & Diag_TruncateForLog(rbErrDesc, 120))
+
+    Call Diag_HardFail(PHASE_08_PUSH_TO_TRIO, "TRIO.CP_WRITE_FAIL", "Failed to persist tabfield custom property", "See diag for tfName/rc/readback")
+  End If
+
   On Error GoTo 0
 End Sub
 
@@ -2353,10 +2524,14 @@ Function LoadTemplateSectionConfig(srcDir, tmplNameKey, ByRef tsec, ByRef qualTa
   catTabsCsv    = SafeGet(tsec, "category_tabfields", "")
   outMapCsv     = SafeGet(tsec, "output_map", "")
 
-  If Len(catTabsCsv) = 0 Or Len(outMapCsv) = 0 Then LoadTemplateSectionConfig = False: Exit Function
+  If Len(catTabsCsv) = 0 Then LoadTemplateSectionConfig = False: Exit Function
 
   catTabs  = Split(catTabsCsv, ",")
-  outItems = Split(outMapCsv, ",")
+  If Len(outMapCsv) > 0 Then
+    outItems = Split(outMapCsv, ",")
+  Else
+    outItems = Array()
+  End If
 
   Dim filterTabsNorm: filterTabsNorm = LCase(Trim(filterTabsCsv))
   haveFilters = False
@@ -2585,21 +2760,327 @@ Sub NormalizeQualifierParts(ByRef qPrefix, ByRef qRemFrag)
   End If
 End Sub
 
-Function BuildOutputTargets(outItems)
-  Dim outTargets: Set outTargets = CreateObject("Scripting.Dictionary")
-  Dim i, itm, parts, tgtTab, colIdx, rowIdx
-  For i = LBound(outItems) To UBound(outItems)
-    itm = Trim(CStr(outItems(i)))
-    parts = Split(itm, ":")
-    If UBound(parts) >= 2 Then
-      tgtTab = Trim(parts(0))
-      colIdx = CInt(parts(1))
-      rowIdx = CInt(parts(2))
-      If Not outTargets.Exists(colIdx) Then outTargets.Add colIdx, CreateObject("Scripting.Dictionary")
-      If Not outTargets(colIdx).Exists(rowIdx) Then outTargets(colIdx).Add rowIdx, Array()
-      outTargets(colIdx)(rowIdx) = PushArray(outTargets(colIdx)(rowIdx), tgtTab)
+Function ArrayHasElements(arr)
+  On Error Resume Next
+  Dim lb, ub
+  lb = LBound(arr)
+  ub = UBound(arr)
+  If Err.Number <> 0 Then
+    Err.Clear
+    ArrayHasElements = False
+  Else
+    ArrayHasElements = (ub >= lb)
+  End If
+  On Error GoTo 0
+End Function
+
+Function NormalizeTabfieldToken(token)
+  NormalizeTabfieldToken = UCase(Trim(CStr(token)))
+End Function
+
+Function IsDigits4(s)
+  Dim i, ch
+  IsDigits4 = False
+  If Len(s) <> 4 Then Exit Function
+  For i = 1 To 4
+    ch = Mid(s, i, 1)
+    If ch < "0" Or ch > "9" Then Exit Function
+  Next
+  IsDigits4 = True
+End Function
+
+Function ParseTabfieldCode(tabName, ByRef prefixOut, ByRef numOut)
+  Dim t, d
+  ParseTabfieldCode = False
+  prefixOut = ""
+  numOut = 0
+
+  t = NormalizeTabfieldToken(tabName)
+  If Len(t) <> 5 Then Exit Function
+
+  prefixOut = Left(t, 1)
+  d = Mid(t, 2, 4)
+  If Not IsDigits4(d) Then Exit Function
+
+  numOut = CInt(d)
+  ParseTabfieldCode = True
+End Function
+
+Function OutputPrefixPriority(prefixTxt)
+  Dim p
+  p = UCase(Trim(CStr(prefixTxt)))
+  If p = "A" Or p = "E" Then OutputPrefixPriority = 99: Exit Function
+  If p >= "H" And p <= "Y" Then OutputPrefixPriority = 0: Exit Function
+  If p = "B" Or p = "C" Then OutputPrefixPriority = 2: Exit Function
+  If p >= "A" And p <= "Z" Then OutputPrefixPriority = 1: Exit Function
+  OutputPrefixPriority = 50
+End Function
+
+Function CanInferFromCategoryPrefix(prefixTxt)
+  Dim pr
+  pr = OutputPrefixPriority(prefixTxt)
+  CanInferFromCategoryPrefix = (pr < 2)
+End Function
+
+Function TryParseOutputMapItem(itm, ByRef tgtTab, ByRef colIdx, ByRef rowIdx)
+  On Error Resume Next
+  Dim raw, parts
+
+  TryParseOutputMapItem = False
+  tgtTab = ""
+  colIdx = 0
+  rowIdx = 0
+
+  raw = Trim(CStr(itm))
+  If Len(raw) = 0 Then Exit Function
+
+  parts = Split(raw, ":")
+  If UBound(parts) < 2 Then Exit Function
+
+  tgtTab = NormalizeTabfieldToken(parts(0))
+  If Len(tgtTab) = 0 Then Exit Function
+  If Not IsNumeric(Trim(CStr(parts(1)))) Then Exit Function
+  If Not IsNumeric(Trim(CStr(parts(2)))) Then Exit Function
+
+  colIdx = CInt(parts(1))
+  rowIdx = CInt(parts(2))
+  If colIdx <= 0 Or rowIdx <= 0 Then Exit Function
+
+  If Err.Number <> 0 Then
+    Err.Clear
+    Exit Function
+  End If
+
+  TryParseOutputMapItem = True
+  On Error GoTo 0
+End Function
+
+Function ArrayListToArray(listObj)
+  Dim arr(), i
+  If listObj Is Nothing Then ArrayListToArray = Array(): Exit Function
+  If listObj.Count = 0 Then ArrayListToArray = Array(): Exit Function
+
+  ReDim arr(listObj.Count - 1)
+  For i = 0 To listObj.Count - 1
+    arr(i) = CStr(listObj(i))
+  Next
+  ArrayListToArray = arr
+End Function
+
+Function CollectOutputCandidatesForGroup(pageTabs, anchorPrefix, anchorGroup, rowCount, catTab, allowCategorySelf)
+  Dim prim, sec, seen
+  Dim i, t, pfx, numVal, suffix
+  Set prim = CreateObject("System.Collections.ArrayList")
+  Set sec  = CreateObject("System.Collections.ArrayList")
+  Set seen = NewTextDict()
+
+  For i = LBound(pageTabs) To UBound(pageTabs)
+    t = NormalizeTabfieldToken(pageTabs(i))
+    If Len(t) > 0 Then
+      If ParseTabfieldCode(t, pfx, numVal) Then
+        If pfx = anchorPrefix And (numVal \ 100) = anchorGroup Then
+          suffix = (numVal Mod 100)
+          If suffix <> 0 Then
+            If allowCategorySelf Or t <> UCase(catTab) Then
+              If Not seen.Exists(t) Then
+                seen(t) = True
+                If rowCount > 1 Then
+                  If (suffix Mod 10) = 0 Then
+                    prim.Add t
+                  Else
+                    sec.Add t
+                  End If
+                Else
+                  prim.Add t
+                End If
+              End If
+            End If
+          End If
+        End If
+      End If
     End If
   Next
+
+  prim.Sort
+  sec.Sort
+
+  Dim merged: Set merged = CreateObject("System.Collections.ArrayList")
+  For i = 0 To prim.Count - 1
+    merged.Add CStr(prim(i))
+  Next
+  For i = 0 To sec.Count - 1
+    merged.Add CStr(sec(i))
+  Next
+
+  CollectOutputCandidatesForGroup = ArrayListToArray(merged)
+End Function
+
+Function FirstUnusedCandidate(candidates, usedTabs)
+  Dim i, c
+  FirstUnusedCandidate = ""
+  If Not ArrayHasElements(candidates) Then Exit Function
+
+  For i = LBound(candidates) To UBound(candidates)
+    c = UCase(Trim(CStr(candidates(i))))
+    If Len(c) > 0 Then
+      If Not usedTabs.Exists(c) Then
+        FirstUnusedCandidate = c
+        Exit Function
+      End If
+    End If
+  Next
+End Function
+
+Function GetMappedTabForColumn(mappedByKey, colIdx, rowCount, ByRef hasExplicitAnchor)
+  Dim r, key
+  Dim bestRow, bestTab
+  Dim k, parts, cVal, rVal
+
+  hasExplicitAnchor = False
+  GetMappedTabForColumn = ""
+
+  For r = 1 To rowCount
+    key = CStr(colIdx) & ":" & CStr(r)
+    If mappedByKey.Exists(key) Then
+      hasExplicitAnchor = True
+      GetMappedTabForColumn = NormalizeTabfieldToken(mappedByKey(key))
+      Exit Function
+    End If
+  Next
+
+  bestRow = 2147483647
+  bestTab = ""
+  For Each k In mappedByKey.Keys
+    parts = Split(CStr(k), ":")
+    If UBound(parts) >= 1 Then
+      If IsNumeric(parts(0)) And IsNumeric(parts(1)) Then
+        cVal = CInt(parts(0))
+        rVal = CInt(parts(1))
+        If cVal = colIdx Then
+          If rVal < bestRow Then
+            bestRow = rVal
+            bestTab = NormalizeTabfieldToken(mappedByKey(k))
+          End If
+        End If
+      End If
+    End If
+  Next
+
+  If bestRow <> 2147483647 Then
+    hasExplicitAnchor = True
+    GetMappedTabForColumn = bestTab
+  End If
+End Function
+
+Function BuildEffectiveOutputMap(catTabs, outItems, rowCount, ByRef inferredCount)
+  Dim mappedByKey, existingItems, inferredItems
+  Dim i, tgtTab, colIdx, rowIdx, key
+  Set mappedByKey = NewTextDict()
+  Set existingItems = CreateObject("System.Collections.ArrayList")
+  Set inferredItems = CreateObject("System.Collections.ArrayList")
+  inferredCount = 0
+
+  If ArrayHasElements(outItems) Then
+    For i = LBound(outItems) To UBound(outItems)
+      If TryParseOutputMapItem(outItems(i), tgtTab, colIdx, rowIdx) Then
+        existingItems.Add tgtTab & ":" & CStr(colIdx) & ":" & CStr(rowIdx)
+        key = CStr(colIdx) & ":" & CStr(rowIdx)
+        If Not mappedByKey.Exists(key) Then mappedByKey(key) = tgtTab
+      End If
+    Next
+  End If
+
+  Dim pageTabs: pageTabs = Split(TrioCmd("page:get_tabfield_names"))
+  Dim catCount
+  catCount = 0
+  If ArrayHasElements(catTabs) Then catCount = UBound(catTabs) - LBound(catTabs) + 1
+
+  Dim c, catTab, anchorTab, hasExplicitAnchor
+  Dim anchorPrefix, anchorNum, anchorGroup
+  Dim catPrefix, catNum
+  Dim candidates, usedTabs
+  Dim r, pick
+
+  For c = 0 To catCount - 1
+    colIdx = c + 1
+    catTab = NormalizeTabfieldToken(catTabs(LBound(catTabs) + c))
+    If Len(catTab) > 0 Then
+      hasExplicitAnchor = False
+      anchorTab = GetMappedTabForColumn(mappedByKey, colIdx, rowCount, hasExplicitAnchor)
+
+      If Len(anchorTab) = 0 Then
+        If ParseTabfieldCode(catTab, catPrefix, catNum) Then
+          If CanInferFromCategoryPrefix(catPrefix) Then
+            anchorTab = catTab
+          End If
+        End If
+      End If
+
+      If Len(anchorTab) > 0 Then
+        If ParseTabfieldCode(anchorTab, anchorPrefix, anchorNum) Then
+          anchorGroup = anchorNum \ 100
+          candidates = CollectOutputCandidatesForGroup(pageTabs, anchorPrefix, anchorGroup, rowCount, catTab, hasExplicitAnchor)
+          Set usedTabs = NewTextDict()
+
+          For r = 1 To rowCount
+            key = CStr(colIdx) & ":" & CStr(r)
+            If mappedByKey.Exists(key) Then usedTabs(UCase(CStr(mappedByKey(key)))) = True
+          Next
+
+          For r = 1 To rowCount
+            key = CStr(colIdx) & ":" & CStr(r)
+            If Not mappedByKey.Exists(key) Then
+              pick = FirstUnusedCandidate(candidates, usedTabs)
+
+              If Len(pick) = 0 And rowCount = 1 Then
+                If ParseTabfieldCode(catTab, catPrefix, catNum) Then
+                  If catPrefix = anchorPrefix And (catNum \ 100) = anchorGroup And (catNum Mod 100) <> 0 Then
+                    If Not usedTabs.Exists(UCase(catTab)) Then pick = UCase(catTab)
+                  End If
+                End If
+              End If
+
+              If Len(pick) > 0 Then
+                mappedByKey(key) = pick
+                usedTabs(pick) = True
+                inferredItems.Add pick & ":" & CStr(colIdx) & ":" & CStr(r)
+                inferredCount = inferredCount + 1
+              End If
+            End If
+          Next
+        End If
+      End If
+    End If
+  Next
+
+  Dim finalList
+  Set finalList = CreateObject("System.Collections.ArrayList")
+
+  For i = 0 To existingItems.Count - 1
+    finalList.Add CStr(existingItems(i))
+  Next
+
+  For i = 0 To inferredItems.Count - 1
+    finalList.Add CStr(inferredItems(i))
+  Next
+
+  BuildEffectiveOutputMap = ArrayListToArray(finalList)
+End Function
+
+Function BuildOutputTargets(outItems)
+  Dim outTargets: Set outTargets = CreateObject("Scripting.Dictionary")
+  Dim i, tgtTab, colIdx, rowIdx
+
+  If ArrayHasElements(outItems) Then
+    For i = LBound(outItems) To UBound(outItems)
+      If TryParseOutputMapItem(outItems(i), tgtTab, colIdx, rowIdx) Then
+        If Not outTargets.Exists(colIdx) Then outTargets.Add colIdx, CreateObject("Scripting.Dictionary")
+        If Not outTargets(colIdx).Exists(rowIdx) Then outTargets(colIdx).Add rowIdx, Array()
+        outTargets(colIdx)(rowIdx) = PushArray(outTargets(colIdx)(rowIdx), tgtTab)
+      End If
+    Next
+  End If
+
   Set BuildOutputTargets = outTargets
 End Function
 
@@ -2831,16 +3312,27 @@ Sub ExecuteTemplatePipeline(srcDir, mappingsIni, LEARN_INI, transforms, rxTransf
     Exit Sub
   End If
 
-  Dim outTargets: Set outTargets = BuildOutputTargets(outItems)
-  Diag_Mark_BuildOutMap "Output targets compiled"
-
   Dim rowCount: rowCount = DetermineRowCount(tsec, haveFilters, filterTabs)
+  Dim inferredOutCount: inferredOutCount = 0
+  outItems = BuildEffectiveOutputMap(catTabs, outItems, rowCount, inferredOutCount)
+
+  Dim outTargets: Set outTargets = BuildOutputTargets(outItems)
+  If outTargets.Count = 0 Then
+    Diag_HardFail PHASE_06_BUILD_OUTMAP, "OUTMAP.EMPTY", "output_map resolved to no usable targets for " & tmplName, "Define output_map or ensure category/output tabfields share prefix and hundred-group."
+    Exit Sub
+  End If
+  Diag_Mark_BuildOutMap "Output targets compiled (inferred=" & CStr(inferredOutCount) & ")"
+
   Dim filterFrags: filterFrags = ResolveFilterFragments(rowCount, haveFilters, filterTabs, qAliasNorm, qNorm, learn, LEARN_INI)
   Diag_Mark_DetectFilters "RowCount=" & rowCount & ", filters resolved"
 
   Diag_Mark_BuildSyntax "Building syntax for category columns"
   ProcessCategoryColumns catTabs, transforms, rxTransforms, learn, LEARN_INI, catAliasRaw, catRaw, catPAliasRaw, catPRaw, catAliasNorm, catPAliasNorm, catNorm, catPNorm, outTargets, rowCount, filterFrags, qPrefix, qRemFrag, entityCtx, entityType, playerSubtype
-  Diag_Mark_PushToTrio "Category syntax applied to Trio custom properties"
+  If TRANSACTION_MODE Then
+    Call Diag_WriteLine("TX: Category syntax staged for Trio custom properties (pending commit)")
+  Else
+    Call Diag_WriteLine("TX: Immediate write mode (TRANSACTION_MODE=False)")
+  End If
 
   Diag_Mark_ApplyOverrides "Applying static overrides"
   ApplyStaticOverridesByTemplate srcDir & "SmartStat_StaticOverrides.ini", tmplName, UCase(entityCtx), UCase(playerSubtype)
@@ -3152,3 +3644,9 @@ Function SmartStat_RefreshSocketData()
     End If
   End If
 End Function
+' PRESERVED_ORIGINAL_LINES_FOR_TRACEABILITY
+' [original line 771] Call Diag_WriteLine("TX: Transaction Commit Started - " & ApplyPlan.Count & " fields")
+' [original line 773] Call Tx_WriteNow(CStr(k), CStr(ApplyPlan(k)))
+' [original line 775] Call Diag_WriteLine("TX: Transaction Commit Completed")
+' [original line 3160] Diag_Mark_PushToTrio "Category syntax applied to Trio custom properties"
+' [original line 1845] TrioCmd "tabfield:set_custom_property " & CStr(tfName) & " " & Quote(CStr(value))
