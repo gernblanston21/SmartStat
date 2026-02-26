@@ -59,11 +59,10 @@
   - No ambiguity gating changes
 
 - [x] WP-04 Ambiguity transparency (fail-closed stays strict)
-  - Added robust ambiguity context initialization (`EnsureAmbiguityContext`)
-  - Added structured ambiguity recording (`Ambiguity_Add`)
-  - Added deterministic, single-shot `AMBIGUITY_SUMMARY` emission (`Diag_WriteAmbiguitySummary`)
-  - Wired summary logging into ambiguity fail paths (DIAG-gated)
-  - Fail-closed behavior unchanged
+  - Robust ambiguity context initialization
+  - Structured ambiguity recording (`Ambiguity_Add`)
+  - Deterministic single-shot `AMBIGUITY_SUMMARY` (OperatorDiag)
+  - Wired into existing fail paths (no permissiveness changes)
 
 ## In progress
 - [ ] WP-01 Phase pipeline hardening
@@ -73,8 +72,9 @@
   - Ensure finalize/refresh behavior runs on both success + fail paths (as intended)
 
 ## Next action (ready to proceed)
-- [ ] WP-01 Phase Pipeline Hardening (continue)
-  - Phase helper system added (Phase_Begin / Phase_EndOk / Phase_Fail / Phase_EarlyExit)
-  - Replace remaining silent early exits with logged Phase_EarlyExit
-  - Convert key HardFail sites to Phase_Fail where appropriate (no behavior change)
-  - Ensure early exits still run `Diag_Done` + `FinalizeAndRefresh` where required
+- [ ] WP-01 Phase Pipeline Hardening (in SmartStat_v4.0.0_beta.vbs)
+  - Replace silent early exits with `Phase_EarlyExit(...)`
+  - Replace `Diag_HardFail ...` with `Phase_Fail(...)` (same codes/details)
+  - Add `Phase_Begin/Phase_EndOk` only where it reduces ambiguity in logs (avoid duplicates)
+  - Ensure fail paths still run `Diag_Done` + `FinalizeAndRefresh` where intended
+  - No functional behavior changes; logging only
