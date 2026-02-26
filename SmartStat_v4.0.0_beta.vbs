@@ -3517,7 +3517,9 @@ Sub ExecuteTemplatePipeline(srcDir, mappingsIni, LEARN_INI, transforms, rxTransf
 
   Call Phase_EndOk(PHASE_07_BUILD_SYNTAX, "Syntax build complete")
   Diag_Mark_ApplyOverrides "Applying static overrides"
+  Call Phase_Begin(PHASE_08_PUSH_TO_TRIO, "Applying static overrides")
   ApplyStaticOverridesByTemplate srcDir & "SmartStat_StaticOverrides.ini", tmplName, UCase(entityCtx), UCase(playerSubtype)
+  Call Phase_EndOk(PHASE_08_PUSH_TO_TRIO, "Static override values applied")
   Diag_Mark_PushToTrio "Static override values applied"
 
   On Error GoTo 0
@@ -3578,7 +3580,10 @@ Sub ApplyStaticOverridesByTemplate(staticIniPath, tmplName, entityCtx, playerSub
   Dim prevVal
 
   Set ini = LoadIni(staticIniPath)
-  If ini Is Nothing Then Exit Sub
+  If ini Is Nothing Then
+    If DIAG_MODE Then Call Diag_WriteLine("OVERRIDE_APPLY_SKIP ini_unavailable path=" & CStr(staticIniPath))
+    Exit Sub
+  End If
 
   secSpecific = "STATIC_FIELD_TO_SYNTAX_" & UCase(entityCtx) & "_" & UCase(tmplName)
   secGeneric  = "STATIC_FIELD_TO_SYNTAX_" & UCase(entityCtx)
