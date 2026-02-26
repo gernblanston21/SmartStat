@@ -57,9 +57,13 @@
   - Hard fail `OUTMAP.EMPTY` when no usable targets exist
   - No INI schema changes
   - No ambiguity gating changes
-- [x] WP-04 Ambiguity transparency (fail-closed preserved)
-  - Structured ambiguity recording + consolidated `AMBIGUITY_SUMMARY` (DIAG only)
-  - No behavior changes to ambiguity resolution / commit gating
+
+- [x] WP-04 Ambiguity transparency (fail-closed stays strict)
+  - Added robust ambiguity context initialization (`EnsureAmbiguityContext`)
+  - Added structured ambiguity recording (`Ambiguity_Add`)
+  - Added deterministic, single-shot `AMBIGUITY_SUMMARY` emission (`Diag_WriteAmbiguitySummary`)
+  - Wired summary logging into ambiguity fail paths (DIAG-gated)
+  - Fail-closed behavior unchanged
 
 ## In progress
 - [ ] WP-01 Phase pipeline hardening
@@ -69,7 +73,8 @@
   - Ensure finalize/refresh behavior runs on both success + fail paths (as intended)
 
 ## Next action (ready to proceed)
-- [ ] Proceed with WP-01 using the phase helpers (static diffs only, no shell)
-  - Convert existing phase marks to `Phase_Begin(...)`
-  - Replace scattered "EARLY EXIT" logs with `Phase_EarlyExit(...)` (single consistent format)
-  - Preserve all existing resolver/mapping/override behavior
+- [ ] WP-01 Phase Pipeline Hardening (continue)
+  - Phase helper system added (Phase_Begin / Phase_EndOk / Phase_Fail / Phase_EarlyExit)
+  - Replace remaining silent early exits with logged Phase_EarlyExit
+  - Convert key HardFail sites to Phase_Fail where appropriate (no behavior change)
+  - Ensure early exits still run `Diag_Done` + `FinalizeAndRefresh` where required
