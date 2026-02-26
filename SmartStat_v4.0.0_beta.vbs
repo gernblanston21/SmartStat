@@ -3482,6 +3482,9 @@ Sub ExecuteTemplatePipeline(srcDir, mappingsIni, LEARN_INI, transforms, rxTransf
   qPrefix = ""
   qRemFrag = ""
   If Not ProcessQualifier(qualTab, qAliasNorm, qNorm, learn, qPrefix, qRemFrag) Then
+    Call Phase_EarlyExit(PHASE_05_DETECT_FILTERS, "QUALIFIER.UNRESOLVED", _
+      "Qualifier could not be resolved for tabfield " & CStr(qualTab), _
+      "Set the qualifier tabfield to an exact supported token or update learn mappings.")
     Call Diag_OperatorAlert("SmartStat aborted: Qualifier could not be resolved. No changes applied.")
     Exit Sub
   End If
@@ -3492,10 +3495,11 @@ Sub ExecuteTemplatePipeline(srcDir, mappingsIni, LEARN_INI, transforms, rxTransf
 
   Dim outTargets: Set outTargets = BuildOutputTargets(outItems)
   If outTargets.Count = 0 Then
-    Diag_HardFail PHASE_06_BUILD_OUTMAP, "OUTMAP.EMPTY", "output_map resolved to no usable targets for " & tmplName, "Define output_map or ensure category/output tabfields share prefix and hundred-group."
+    Call Phase_Fail(PHASE_06_BUILD_OUTMAP, "OUTMAP.EMPTY", "output_map resolved to no usable targets for " & tmplName, "Define output_map or ensure category/output tabfields share prefix and hundred-group.")
     Exit Sub
   End If
   Diag_Mark_BuildOutMap "Output targets compiled (inferred=" & CStr(inferredOutCount) & ")"
+  Call Phase_EndOk(PHASE_06_BUILD_OUTMAP, "Output map complete")
 
   Dim filterFrags: filterFrags = ResolveFilterFragments(rowCount, haveFilters, filterTabs, qAliasNorm, qNorm, learn, LEARN_INI)
   Diag_Mark_DetectFilters "RowCount=" & rowCount & ", filters resolved"
