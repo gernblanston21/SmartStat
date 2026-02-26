@@ -403,31 +403,53 @@ End Function
 
 Function Diag_Check_Environment()
     If Not DIAG_MODE Then Diag_Check_Environment = True : Exit Function
-    Diag_Step PHASE_01_ENV_VALIDATE, "Validating environment and prerequisites"
+    Call Phase_Begin(PHASE_01_ENV_VALIDATE, "Validating environment and prerequisites")
     Dim ok
     ok = Diag_Assert(Diag_CheckWSHEnabled(), PHASE_01_ENV_VALIDATE, "ENV.WSH", "Windows Script Host appears enabled", "Enable: HKLM\Software\Microsoft\Windows Script Host\Settings\Enabled=1 (or key absent)")
-    If Not ok Then Diag_Check_Environment = False : Exit Function
+    If Not ok Then
+        Call Phase_EarlyExit(PHASE_01_ENV_VALIDATE, "ENV.WSH_FAIL", "Windows Script Host check failed.", "Enable WSH and rerun SmartStat.")
+        Diag_Check_Environment = False
+        Exit Function
+    End If
     ok = Diag_Assert(Diag_CheckWriteAccess(DIAG_LOG_DIR), PHASE_01_ENV_VALIDATE, "ENV.LOGWRITE", "Write access to " & DIAG_LOG_DIR, "Grant write perms to " & DIAG_LOG_DIR & " or choose a writable folder")
-    If Not ok Then Diag_Check_Environment = False : Exit Function
+    If Not ok Then
+        Call Phase_EarlyExit(PHASE_01_ENV_VALIDATE, "ENV.LOGWRITE_FAIL", "Cannot write to diagnostics directory.", "Grant write permissions to SmartStat\\DiagLogs and retry.")
+        Diag_Check_Environment = False
+        Exit Function
+    End If
     Dim adoOK : adoOK = Diag_CheckADOAvailable()
     If adoOK Then
         Diag_WriteLine "[OK] ENV.ADO: ADODB present"
     Else
         Diag_WriteLine "[WARN] ENV.ADO: ADODB registry not found; if SmartStat uses ADO on this page, install MDAC/ADO."
     End If
+    Call Phase_EndOk(PHASE_01_ENV_VALIDATE, "Environment validation passed")
     Diag_Check_Environment = True
 End Function
 
 Function Diag_Check_ConfigPresence(ByVal mappingsPath, ByVal overridesPath, ByVal templateCfgPath)
     If Not DIAG_MODE Then Diag_Check_ConfigPresence = True : Exit Function
-    Diag_Step PHASE_02_LOAD_CONFIG, "Probing config files"
+    Call Phase_Begin(PHASE_02_LOAD_CONFIG, "Probing config files")
     Dim ok
     ok = Diag_Assert(Diag_FileExistsReadable(mappingsPath), PHASE_02_LOAD_CONFIG, "CFG.MAP", "Mappings file readable: " & mappingsPath, "Verify path and permissions. Redownload if corrupted.")
-    If Not ok Then Diag_Check_ConfigPresence = False : Exit Function
+    If Not ok Then
+        Call Phase_EarlyExit(PHASE_02_LOAD_CONFIG, "CFG.MAP_FAIL", "Mappings file is missing/unreadable: " & mappingsPath, "Restore SmartStat_Mappings.ini and verify read permissions.")
+        Diag_Check_ConfigPresence = False
+        Exit Function
+    End If
     ok = Diag_Assert(Diag_FileExistsReadable(overridesPath), PHASE_02_LOAD_CONFIG, "CFG.OVR", "Static overrides file readable: " & overridesPath, "Verify path and permissions. Redownload if corrupted.")
-    If Not ok Then Diag_Check_ConfigPresence = False : Exit Function
+    If Not ok Then
+        Call Phase_EarlyExit(PHASE_02_LOAD_CONFIG, "CFG.OVR_FAIL", "Static overrides file is missing/unreadable: " & overridesPath, "Restore SmartStat_StaticOverrides.ini and verify read permissions.")
+        Diag_Check_ConfigPresence = False
+        Exit Function
+    End If
     ok = Diag_Assert(Diag_FileExistsReadable(templateCfgPath), PHASE_02_LOAD_CONFIG, "CFG.TPL", "Template config file readable: " & templateCfgPath, "Verify path and permissions. Redownload if corrupted.")
-    If Not ok Then Diag_Check_ConfigPresence = False : Exit Function
+    If Not ok Then
+        Call Phase_EarlyExit(PHASE_02_LOAD_CONFIG, "CFG.TPL_FAIL", "Template config file is missing/unreadable: " & templateCfgPath, "Restore SmartStat_TemplateConfig.ini and verify read permissions.")
+        Diag_Check_ConfigPresence = False
+        Exit Function
+    End If
+    Call Phase_EndOk(PHASE_02_LOAD_CONFIG, "Configuration files verified")
     Diag_Check_ConfigPresence = True
 End Function
 
@@ -520,8 +542,12 @@ Sub Main()
     End If
   End If
 
-  If Not Diag_Check_Environment() Then Exit Sub
   Dim LOG_FILE:      LOG_FILE      = "E:\EDRIVE\UNIVERSAL\SmartStat\DiagLogs\SmartStat_LearnDebug.txt"
+  If Not Diag_Check_Environment() Then
+    Call Diag_Done()
+    Call FinalizeAndRefresh(LOG_FILE, startTime)
+    Exit Sub
+  End If
   Dim SRC_DIR:       SRC_DIR       = "E:\EDRIVE\UNIVERSAL\SmartStat\"
   ' --- Auto-handle Google Drive nested folder case (SmartStat\SmartStat) ---
   If Not gFSO.FileExists(SRC_DIR & "SmartStat_TemplateConfig.ini") Then
@@ -560,6 +586,7 @@ Sub Main()
 
   If Not Diag_Check_ConfigPresence(MAPPINGS_INI, SRC_DIR & "SmartStat_StaticOverrides.ini", SRC_DIR & "SmartStat_TemplateConfig.ini") Then
     Call Diag_Done()
+    Call FinalizeAndRefresh(LOG_FILE, startTime)
     Exit Sub
   End If
 
@@ -3426,8 +3453,12 @@ Sub ExecuteTemplatePipeline(srcDir, mappingsIni, LEARN_INI, transforms, rxTransf
 
   Dim tmplNameRaw: tmplNameRaw = TrioCmd("page:getpagetemplate")
   Dim tmplName: tmplName = NormalizeTemplateNameForKeys(tmplNameRaw)
-  If Len(tmplName) = 0 Then Exit Sub
+  If Len(tmplName) = 0 Then
+    Call Phase_EarlyExit(PHASE_03_CLASSIFY_FIELDS, "TEMPLATE.EMPTY", "Template name could not be resolved.", "Verify page template binding and reload the page.")
+    Exit Sub
+  End If
 
+  Call Phase_Begin(PHASE_03_CLASSIFY_FIELDS, "Classifying template and runtime context")
   Diag_Mark_Classify "Template detected: " & tmplName
 
   Dim tsec, qualTab, catTabs, outItems, filterTabs, haveFilters
