@@ -3570,38 +3570,74 @@ End Function
 ' ---------------- Static overrides ----------------
 Sub ApplyStaticOverridesByTemplate(staticIniPath, tmplName, entityCtx, playerSubtype)
   On Error Resume Next
-  Dim ini: Set ini = LoadIni(staticIniPath)
+  Dim ini
+  Dim secSpecific, secGeneric
+  Dim sec, sec2
+  Dim k, val
+  Dim k2, val2
+  Dim prevVal
+
+  Set ini = LoadIni(staticIniPath)
   If ini Is Nothing Then Exit Sub
 
-  Dim secSpecific, secGeneric
   secSpecific = "STATIC_FIELD_TO_SYNTAX_" & UCase(entityCtx) & "_" & UCase(tmplName)
   secGeneric  = "STATIC_FIELD_TO_SYNTAX_" & UCase(entityCtx)
 
   If ini.Exists(secSpecific) Then
-    Dim sec: Set sec = ini(secSpecific)
-    Dim k, val
+    Set sec = ini(secSpecific)
     For Each k In sec.Keys
       val = CStr(sec(k))
       If UCase(entityCtx) = "PLAYER" And UCase(playerSubtype) = "P" Then
         If LCase(val) = "{{info.player.primary_position}}" Then val = "{{info.player.pitcher_hand}}"
+      End If
+      If DIAG_MODE Then
+        prevVal = StaticOverride_GetPrevValue(CStr(k))
+        Call Diag_LogOverrideApplied(secSpecific, CStr(k), prevVal, val, entityCtx, playerSubtype)
       End If
       Call Tx_SetCustomProp(CStr(k), val)
     Next
   End If
 
   If ini.Exists(secGeneric) Then
-    Dim sec2: Set sec2 = ini(secGeneric)
-    Dim k2, val2
+    Set sec2 = ini(secGeneric)
     For Each k2 In sec2.Keys
       val2 = CStr(sec2(k2))
       If UCase(entityCtx) = "PLAYER" And UCase(playerSubtype) = "P" Then
         If LCase(val2) = "{{info.player.primary_position}}" Then val2 = "{{info.player.pitcher_hand}}"
+      End If
+      If DIAG_MODE Then
+        prevVal = StaticOverride_GetPrevValue(CStr(k2))
+        Call Diag_LogOverrideApplied(secGeneric, CStr(k2), prevVal, val2, entityCtx, playerSubtype)
       End If
       Call Tx_SetCustomProp(CStr(k2), val2)
     Next
   End If
 
   On Error GoTo 0
+End Sub
+
+Function StaticOverride_GetPrevValue(ByVal tfName)
+  Dim tf
+  tf = CStr(tfName)
+
+  If TRANSACTION_MODE Then
+    If IsObject(ApplyPlan) Then
+      If UCase(TypeName(ApplyPlan)) = "DICTIONARY" Then
+        If ApplyPlan.Exists(tf) Then
+          StaticOverride_GetPrevValue = CStr(ApplyPlan(tf))
+          Exit Function
+        End If
+      End If
+    End If
+  End If
+
+  StaticOverride_GetPrevValue = CStr(TrioCmd("tabfield:get_custom_property " & tf))
+End Function
+
+Sub Diag_LogOverrideApplied(ByVal sourceSection, ByVal tabfield, ByVal oldValue, ByVal newValue, ByVal entityCtx, ByVal playerSubtype)
+  If Not DIAG_MODE Then Exit Sub
+  If CStr(oldValue) = CStr(newValue) Then Exit Sub
+  Call Diag_WriteLine("OVERRIDE_APPLIED section=" & CStr(sourceSection) & " tabfield=" & CStr(tabfield) & " old=[" & CStr(oldValue) & "] new=[" & CStr(newValue) & "] entityCtx=" & CStr(entityCtx) & " playerSubtype=" & CStr(playerSubtype))
 End Sub
 
 ' ---------------- Misc ----------------
