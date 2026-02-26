@@ -38,15 +38,35 @@
 - No placeholders.
 - If a patch is unsafe as a partial snippet, output the full file.
 - Flag breaking changes that may affect external tools (SmartStatTrayApp).
+- Codex must not use shell commands to inspect files (no PowerShell Get-Content, no line-range shell dumps).
+- File inspection must use internal workspace access only.
+- All diffs must be generated statically without terminal execution.
 
 ## Roadmap execution order (current)
-1) WP-05 Output Map Coverage
-2) WP-04 Ambiguity transparency (fail-closed stays strict)
-3) WP-01 Phase hardening
+1) WP-05 Output Map Coverage ? (Completed)
+2) WP-04 Ambiguity transparency (fail-closed stays strict) ? (Completed)
+3) WP-01 Phase hardening ?? (Next)
 4) WP-07 Overrides audit trail
 5) WP-08 Harness expansion
 
+## Completed in this session
+- [x] WP-05 Output Map Coverage
+  - Runtime inference of missing/partial `output_map`
+  - Deterministic prefix + hundred-group pairing
+  - Explicit map entries preserved
+  - Hard fail `OUTMAP.EMPTY` when no usable targets exist
+  - No INI schema changes
+  - No ambiguity gating changes
+- [x] WP-04 Ambiguity transparency (fail-closed stays strict)
+  - Added robust ambiguity context initialization (`EnsureAmbiguityContext`)
+  - Added structured ambiguity recording (`Ambiguity_Add`)
+  - Added deterministic single-shot OperatorDiag section (`AMBIGUITY_SUMMARY`) gated by `DIAG_MODE`
+  - Wired summary emission into existing ambiguity fail paths
+  - No changes to fail-closed gating or commit permissiveness
+
 ## Next action (ready to proceed)
-- [ ] Implement WP-05 Output Map Coverage (in SmartStat_v4.0.0_beta.vbs)
-  - Add support for category->output “column” patterns (ex: H0100 => H0110/H0120/H0130)
-  - Preserve deterministic ordering and avoid emitting blank/unused outputs
+- [ ] Implement WP-01 Phase hardening (in SmartStat_v4.0.0_beta.vbs)
+  - Add phase boundary invariants and ordered phase logging
+  - Prevent commit after any hardfail / validation failure / empty ApplyPlan
+  - Add explicit `COMMIT_SKIPPED` diagnostics with reasons
+  - No changes to mapping/resolve behavior; guardrails + deterministic logs only

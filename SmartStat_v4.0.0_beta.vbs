@@ -33,6 +33,7 @@ Dim G_TRIO_WRITE_SUCCESS_COUNT
 Dim G_TRIO_WRITE_FAIL_COUNT
 Dim G_TRIO_WRITE_FAILED
 Dim G_TRIO_WRITE_LAST_FAIL_TF
+Dim G_AMBIGUITY_SUMMARY_EMITTED
 
 Const PHASE_00_BOOT            = "00.BOOT"
 Const PHASE_01_ENV_VALIDATE    = "01.ENV_VALIDATE"
@@ -362,8 +363,10 @@ Sub Main()
   G_TRIO_WRITE_FAIL_COUNT = 0
   G_TRIO_WRITE_FAILED = False
   G_TRIO_WRITE_LAST_FAIL_TF = ""
+  G_AMBIGUITY_SUMMARY_EMITTED = False
 
   ' v4.0 Phase 2: ambiguity & confidence context
+  Call EnsureAmbiguityContext()
   If Not CompilerContext.Exists("ambiguous") Then
     Dim AmbiguityHits: Set AmbiguityHits = CreateObject("Scripting.Dictionary")
     Set CompilerContext("ambiguous") = AmbiguityHits
@@ -661,6 +664,19 @@ End Sub
 ' ==========================================
 Function Stage_ValidatePlan()
   Stage_ValidatePlan = True
+
+  Call EnsureAmbiguityContext()
+  If Not (CompilerContext Is Nothing) Then
+    If CompilerContext.Exists("ambiguous") Then
+      If IsObject(CompilerContext("ambiguous")) Then
+        If UCase(TypeName(CompilerContext("ambiguous"))) = "DICTIONARY" Then
+          If CompilerContext("ambiguous").Count > 0 Then
+            Call Diag_WriteAmbiguitySummary()
+          End If
+        End If
+      End If
+    End If
+  End If
 
   If ApplyPlan Is Nothing Then
     Call Diag_WriteLine("TX: ApplyPlan is Nothing")
@@ -2674,6 +2690,7 @@ Function ProcessQualifier(qualTab, qAliasNorm, qNorm, learn, ByRef qPrefix, ByRe
   Dim qualTxt, qRemainder, chainOk
   Dim acceptedBy, scoreOut
 
+  Call EnsureAmbiguityContext()
   qualTxt = Trim(CStr(TrioCmd("page:get_property " & CStr(qualTab))))
 
   ' -----------------------------
@@ -2701,7 +2718,9 @@ Function ProcessQualifier(qualTab, qAliasNorm, qNorm, learn, ByRef qPrefix, ByRe
     If Not (CompilerContext Is Nothing) Then
       If CompilerContext.Exists("ambiguous") Then
         If CompilerContext("ambiguous").Count > 0 Then
+          Call Ambiguity_AddDetailed("QUALIFIER", qualTxt, CompilerContext("ambiguous").Keys, "BLOCKED", "Multiple qualifier candidates remained above threshold.", "Set " & CStr(qualTab) & " to one exact qualifier token (example: VS_CHANGEUP), or update learn alias mapping.")
           Call Diag_WriteLine("QUALIFIER: ambiguous/unresolved input=[" & qualTxt & "] (ambigCount=" & CStr(CompilerContext("ambiguous").Count) & ")")
+          Call Diag_WriteAmbiguitySummary()
           ProcessQualifier = False
           Exit Function
         End If
@@ -2711,6 +2730,8 @@ Function ProcessQualifier(qualTab, qAliasNorm, qNorm, learn, ByRef qPrefix, ByRe
     PlanValidationErrors.RemoveAll
     PlanValidationErrors("QUALIFIER_UNRESOLVED") = "Qualifier text could not be resolved: [" & qualTxt & "] leftovers=[" & Trim(CStr(qRemainder)) & "]"
     Call Diag_WriteLine("QUALIFIER: UNRESOLVED input=[" & qualTxt & "] leftovers=[" & Trim(CStr(qRemainder)) & "]")
+    Call Ambiguity_AddDetailed("QUALIFIER", qualTxt, "", "UNRESOLVED", "Qualifier chain did not fully resolve (leftover tokens remained).", "Use an exact qualifier key in " & CStr(qualTab) & " or add a learn alias for this phrase.")
+    Call Diag_WriteAmbiguitySummary()
     ProcessQualifier = False
     Exit Function
   End If
@@ -3432,8 +3453,213 @@ Function CleanAfterColon(line)
   CleanAfterColon = Trim(s)
 End Function
 
+Sub EnsureAmbiguityContext()
+  On Error Resume Next
+
+  If (Not IsObject(CompilerContext)) Then
+    Set CompilerContext = CreateObject("Scripting.Dictionary")
+  ElseIf UCase(TypeName(CompilerContext)) <> "DICTIONARY" Then
+    Set CompilerContext = CreateObject("Scripting.Dictionary")
+  End If
+
+  If Not CompilerContext.Exists("ambiguous") Then
+    Dim amb0: Set amb0 = CreateObject("Scripting.Dictionary")
+    On Error Resume Next
+    amb0.CompareMode = 1
+    On Error GoTo 0
+    Set CompilerContext("ambiguous") = amb0
+  ElseIf (Not IsObject(CompilerContext("ambiguous"))) Or (UCase(TypeName(CompilerContext("ambiguous"))) <> "DICTIONARY") Then
+    Dim amb1: Set amb1 = CreateObject("Scripting.Dictionary")
+    On Error Resume Next
+    amb1.CompareMode = 1
+    On Error GoTo 0
+    Set CompilerContext("ambiguous") = amb1
+  End If
+
+  On Error GoTo 0
+End Sub
+
+Function Ambiguity_SafeTruncate(ByVal s, ByVal maxLen)
+  Dim t, m
+  t = CStr(s)
+  m = CLng(maxLen)
+  If m < 0 Then m = 0
+  If Len(t) > m Then
+    Ambiguity_SafeTruncate = Left(t, m) & "...(len=" & CStr(Len(t)) & ")"
+  Else
+    Ambiguity_SafeTruncate = t
+  End If
+End Function
+
+Function Ambiguity_StringifyCandidates(ByVal candidates, ByVal maxItems)
+  On Error Resume Next
+  Dim cap: cap = CLng(maxItems)
+  If cap <= 0 Then cap = 8
+
+  Dim list: Set list = CreateObject("System.Collections.ArrayList")
+  Dim i, k, tname
+
+  If IsArray(candidates) Then
+    For i = LBound(candidates) To UBound(candidates)
+      list.Add Trim(CStr(candidates(i)))
+    Next
+  ElseIf IsObject(candidates) Then
+    tname = UCase(TypeName(candidates))
+    If tname = "DICTIONARY" Then
+      For Each k In candidates.Keys
+        list.Add Trim(CStr(k))
+      Next
+      list.Sort
+    ElseIf InStr(1, tname, "ARRAYLIST", vbTextCompare) > 0 Then
+      For i = 0 To candidates.Count - 1
+        list.Add Trim(CStr(candidates(i)))
+      Next
+      list.Sort
+    Else
+      list.Add Trim(CStr(candidates))
+    End If
+  Else
+    If Len(Trim(CStr(candidates))) > 0 Then list.Add Trim(CStr(candidates))
+  End If
+
+  Dim outTxt, take
+  outTxt = ""
+  take = list.Count
+  If take > cap Then take = cap
+
+  For i = 0 To take - 1
+    If Len(outTxt) > 0 Then outTxt = outTxt & " | "
+    outTxt = outTxt & CStr(list(i))
+  Next
+  If list.Count > cap Then outTxt = outTxt & " | ... +" & CStr(list.Count - cap)
+
+  Ambiguity_StringifyCandidates = outTxt
+  On Error GoTo 0
+End Function
+
+Sub Ambiguity_AddDetailed(ByVal decisionLabel, ByVal inputToken, ByVal candidates, ByVal selectedState, ByVal notes, ByVal hint)
+  On Error Resume Next
+  Call EnsureAmbiguityContext()
+
+  Dim ambHits: Set ambHits = CompilerContext("ambiguous")
+  Dim decisionTxt, inputTxt, stateTxt, notesTxt, hintTxt
+  Dim entryKey, entryObj, candidateTxt
+
+  decisionTxt = UCase(Trim(CStr(decisionLabel)))
+  If Len(decisionTxt) = 0 Then decisionTxt = "UNKNOWN_DECISION"
+  inputTxt = Trim(CStr(inputToken))
+
+  stateTxt = UCase(Trim(CStr(selectedState)))
+  If Len(stateTxt) = 0 Then stateTxt = "BLOCKED"
+
+  notesTxt = Trim(CStr(notes))
+
+  hintTxt = Trim(CStr(hint))
+
+  entryKey = decisionTxt & "|" & UCase(inputTxt)
+  If Not ambHits.Exists(entryKey) Then
+    Set entryObj = CreateObject("Scripting.Dictionary")
+    On Error Resume Next
+    entryObj.CompareMode = 1
+    On Error GoTo 0
+    Set ambHits(entryKey) = entryObj
+  ElseIf IsObject(ambHits(entryKey)) Then
+    If UCase(TypeName(ambHits(entryKey))) = "DICTIONARY" Then
+      Set entryObj = ambHits(entryKey)
+    Else
+      Set entryObj = CreateObject("Scripting.Dictionary")
+      Set ambHits(entryKey) = entryObj
+    End If
+  Else
+    Set entryObj = CreateObject("Scripting.Dictionary")
+    Set ambHits(entryKey) = entryObj
+  End If
+
+  entryObj("decision_key") = decisionTxt
+  entryObj("input_token") = inputTxt
+  candidateTxt = Ambiguity_StringifyCandidates(candidates, 8)
+  entryObj("candidates") = candidateTxt
+  entryObj("state") = stateTxt
+  entryObj("notes") = notesTxt
+  entryObj("hint") = hintTxt
+  If stateTxt = "BLOCKED" Or stateTxt = "FAILED" Or stateTxt = "UNRESOLVED" Then
+    entryObj("blocked") = "True"
+  Else
+    entryObj("blocked") = "False"
+  End If
+
+  On Error GoTo 0
+End Sub
+
+Sub Diag_WriteAmbiguitySummary()
+  On Error Resume Next
+  If Not CBool(DIAG_MODE) Then Exit Sub
+  If CBool(G_AMBIGUITY_SUMMARY_EMITTED) Then Exit Sub
+
+  Call EnsureAmbiguityContext()
+  If (CompilerContext Is Nothing) Then Exit Sub
+  If Not CompilerContext.Exists("ambiguous") Then Exit Sub
+
+  Dim ambHits: Set ambHits = CompilerContext("ambiguous")
+  If (ambHits Is Nothing) Then Exit Sub
+  If ambHits.Count <= 0 Then Exit Sub
+
+  Dim keyList: Set keyList = CreateObject("System.Collections.ArrayList")
+  Dim k
+  For Each k In ambHits.Keys
+    keyList.Add CStr(k)
+  Next
+  keyList.Sort
+
+  Call Diag_WriteLine("AMBIGUITY_SUMMARY")
+
+  Dim i, hitKey, hitVal, dKey, inTok, cand, st, rsn, act, lineTxt
+  For i = 0 To keyList.Count - 1
+    hitKey = CStr(keyList(i))
+    dKey = "UNKNOWN_DECISION"
+    inTok = ""
+    cand = ""
+    st = "BLOCKED"
+    rsn = ""
+    act = ""
+
+    If IsObject(ambHits(hitKey)) Then
+      If UCase(TypeName(ambHits(hitKey))) = "DICTIONARY" Then
+        Set hitVal = ambHits(hitKey)
+        If hitVal.Exists("decision_key") Then dKey = CStr(hitVal("decision_key"))
+        If hitVal.Exists("input_token") Then inTok = CStr(hitVal("input_token"))
+        If hitVal.Exists("candidates") Then cand = CStr(hitVal("candidates"))
+        If hitVal.Exists("state") Then st = CStr(hitVal("state"))
+        If hitVal.Exists("notes") Then rsn = CStr(hitVal("notes"))
+        If hitVal.Exists("hint") Then act = CStr(hitVal("hint"))
+      Else
+        rsn = CStr(ambHits(hitKey))
+      End If
+    Else
+      rsn = CStr(ambHits(hitKey))
+    End If
+
+    If Len(cand) = 0 Then cand = "(none recorded)"
+    If Len(act) = 0 Then
+      act = "Use an exact token in the template tabfield or add/adjust learn alias to force one match."
+    End If
+
+    lineTxt = "AMBIGUITY[" & CStr(i + 1) & "] decision=" & dKey & _
+              " input=[" & Ambiguity_SafeTruncate(inTok, 80) & "]" & _
+              " state=" & st & _
+              " candidates=[" & Ambiguity_SafeTruncate(cand, 220) & "]" & _
+              " reason=[" & Ambiguity_SafeTruncate(rsn, 220) & "]" & _
+              " action=[" & Ambiguity_SafeTruncate(act, 220) & "]"
+    Call Diag_WriteLine(lineTxt)
+  Next
+
+  G_AMBIGUITY_SUMMARY_EMITTED = True
+  On Error GoTo 0
+End Sub
+
 Function BuildAmbiguityOperatorSection()
   On Error Resume Next
+  Call EnsureAmbiguityContext
 
   BuildAmbiguityOperatorSection = ""
 
@@ -3644,9 +3870,3 @@ Function SmartStat_RefreshSocketData()
     End If
   End If
 End Function
-' PRESERVED_ORIGINAL_LINES_FOR_TRACEABILITY
-' [original line 771] Call Diag_WriteLine("TX: Transaction Commit Started - " & ApplyPlan.Count & " fields")
-' [original line 773] Call Tx_WriteNow(CStr(k), CStr(ApplyPlan(k)))
-' [original line 775] Call Diag_WriteLine("TX: Transaction Commit Completed")
-' [original line 3160] Diag_Mark_PushToTrio "Category syntax applied to Trio custom properties"
-' [original line 1845] TrioCmd "tabfield:set_custom_property " & CStr(tfName) & " " & Quote(CStr(value))
