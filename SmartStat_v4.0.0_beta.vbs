@@ -3464,7 +3464,7 @@ Sub ExecuteTemplatePipeline(srcDir, mappingsIni, LEARN_INI, transforms, rxTransf
   Dim tsec, qualTab, catTabs, outItems, filterTabs, haveFilters
   haveFilters = False
   If Not LoadTemplateSectionConfig(srcDir, tmplName, tsec, qualTab, catTabs, outItems, filterTabs, haveFilters) Then
-    Diag_HardFail PHASE_03_CLASSIFY_FIELDS, "TPLCFG.MISS", "Template block missing for " & tmplName, "Add [TEMPLATE:" & tmplName & "] to SmartStat_TemplateConfig.ini"
+    Call Phase_Fail(PHASE_03_CLASSIFY_FIELDS, "TPLCFG.MISS", "Template block missing for " & tmplName, "Add [TEMPLATE:" & tmplName & "] to SmartStat_TemplateConfig.ini")
     Exit Sub
   End If
   Diag_Mark_Classify "Template config loaded"
@@ -3477,6 +3477,7 @@ Sub ExecuteTemplatePipeline(srcDir, mappingsIni, LEARN_INI, transforms, rxTransf
   Dim entityCtx, entityType, playerSubtype
   DetermineEntityContext entityCtx, entityType, playerSubtype
   Diag_Mark_Classify "Entity context: " & entityCtx & " subtype=" & playerSubtype
+  Call Phase_EndOk(PHASE_03_CLASSIFY_FIELDS, "Classification complete")
 
   Dim qPrefix, qRemFrag
   qPrefix = ""
@@ -3490,6 +3491,7 @@ Sub ExecuteTemplatePipeline(srcDir, mappingsIni, LEARN_INI, transforms, rxTransf
   End If
 
   Dim rowCount: rowCount = DetermineRowCount(tsec, haveFilters, filterTabs)
+  Call Phase_Begin(PHASE_06_BUILD_OUTMAP, "Building output map")
   Dim inferredOutCount: inferredOutCount = 0
   outItems = BuildEffectiveOutputMap(catTabs, outItems, rowCount, inferredOutCount)
 
