@@ -34,6 +34,9 @@ Dim G_TRIO_WRITE_FAIL_COUNT
 Dim G_TRIO_WRITE_FAILED
 Dim G_TRIO_WRITE_LAST_FAIL_TF
 Dim G_AMBIGUITY_SUMMARY_EMITTED
+Dim G_PHASE_LAST
+Dim G_PHASE_FAILED
+Dim G_PHASE_ORDER_INDEX
 
 Const PHASE_00_BOOT            = "00.BOOT"
 Const PHASE_01_ENV_VALIDATE    = "01.ENV_VALIDATE"
@@ -47,6 +50,122 @@ Const PHASE_08_PUSH_TO_TRIO    = "08.PUSH_TO_TRIO"
 Const PHASE_99_DONE            = "99.DONE"
 
 Dim gDiagRunId, gDiagFile, gFSO, gDiagStarted, gTemplateName, gStartTicks
+
+Function Phase_OrderList()
+  Phase_OrderList = Array( _
+    PHASE_00_BOOT, _
+    PHASE_01_ENV_VALIDATE, _
+    PHASE_02_LOAD_CONFIG, _
+    PHASE_03_CLASSIFY_FIELDS, _
+    PHASE_04_APPLY_OVERRIDES, _
+    PHASE_05_DETECT_FILTERS, _
+    PHASE_06_BUILD_OUTMAP, _
+    PHASE_07_BUILD_SYNTAX, _
+    PHASE_08_PUSH_TO_TRIO, _
+    PHASE_99_DONE)
+End Function
+
+Function Phase_OrderIndex(ByVal phaseId)
+  Dim arr, i, p
+  p = UCase(Trim(CStr(phaseId)))
+  arr = Phase_OrderList()
+  For i = LBound(arr) To UBound(arr)
+    If UCase(CStr(arr(i))) = p Then
+      Phase_OrderIndex = i + 1
+      Exit Function
+    End If
+  Next
+  Phase_OrderIndex = 0
+End Function
+
+Function Phase_OrderName(ByVal idx)
+  Dim arr, z, lo, hi, count, idx0
+  arr = Phase_OrderList()
+  z = CInt(idx)
+  lo = LBound(arr)
+  hi = UBound(arr)
+  count = hi - lo + 1
+  If z < 1 Or z > count Then
+    Phase_OrderName = ""
+    Exit Function
+  End If
+  idx0 = lo + (z - 1)
+  Phase_OrderName = CStr(arr(idx0))
+End Function
+
+Function Ambiguity_HasHits()
+  On Error Resume Next
+  Ambiguity_HasHits = False
+  Call EnsureAmbiguityContext()
+  If (CompilerContext Is Nothing) Then Exit Function
+  If Not CompilerContext.Exists("ambiguous") Then Exit Function
+  If (Not IsObject(CompilerContext("ambiguous"))) Then Exit Function
+  If UCase(TypeName(CompilerContext("ambiguous"))) <> "DICTIONARY" Then Exit Function
+  Ambiguity_HasHits = (CompilerContext("ambiguous").Count > 0)
+  On Error GoTo 0
+End Function
+
+Sub Phase_Begin(ByVal phaseId, ByVal msg)
+  On Error Resume Next
+  Dim gotIdx, expectedPhase
+  gotIdx = Phase_OrderIndex(phaseId)
+
+  If gotIdx > 0 Then
+    If CLng(G_PHASE_ORDER_INDEX) = 0 Then
+      If CBool(DIAG_MODE) Then
+        If gotIdx <> 1 Then
+          expectedPhase = Phase_OrderName(1)
+          Call Diag_WriteLine("PHASE_ORDER_WARN expected=" & expectedPhase & " got=" & CStr(phaseId) & " last=" & CStr(G_PHASE_LAST))
+        End If
+      End If
+      G_PHASE_ORDER_INDEX = gotIdx
+    Else
+      If gotIdx < CLng(G_PHASE_ORDER_INDEX) Or gotIdx > (CLng(G_PHASE_ORDER_INDEX) + 1) Then
+        If CBool(DIAG_MODE) Then
+          expectedPhase = Phase_OrderName(CLng(G_PHASE_ORDER_INDEX) + 1)
+          If Len(expectedPhase) = 0 Then expectedPhase = "END"
+          Call Diag_WriteLine("PHASE_ORDER_WARN expected=" & expectedPhase & " got=" & CStr(phaseId) & " last=" & CStr(G_PHASE_LAST))
+        End If
+      End If
+      G_PHASE_ORDER_INDEX = gotIdx
+    End If
+  End If
+
+  G_PHASE_LAST = CStr(phaseId)
+  Call Diag_WriteHeader(CStr(phaseId), CStr(msg))
+  On Error GoTo 0
+End Sub
+
+Sub Phase_EndOk(ByVal phaseId, ByVal msg)
+  On Error Resume Next
+  If Len(Trim(CStr(phaseId))) = 0 Then Exit Sub
+  Call Diag_WriteLine("PHASE_END phase=" & CStr(phaseId) & " detail=" & CStr(msg))
+  On Error GoTo 0
+End Sub
+
+Sub Phase_Fail(ByVal phaseId, ByVal code, ByVal detail, ByVal actionHint)
+  On Error Resume Next
+  G_PHASE_FAILED = True
+  G_PHASE_LAST = CStr(phaseId)
+  G_PHASE_ORDER_INDEX = Phase_OrderIndex(phaseId)
+  Call Diag_HardFail(CStr(phaseId), CStr(code), CStr(detail), CStr(actionHint))
+  If CBool(DIAG_MODE) Then
+    If Ambiguity_HasHits() Then Call Diag_WriteAmbiguitySummary()
+  End If
+  On Error GoTo 0
+End Sub
+
+Sub Phase_EarlyExit(ByVal phaseId, ByVal reasonCode, ByVal detail, ByVal actionHint)
+  On Error Resume Next
+  G_PHASE_FAILED = True
+  G_PHASE_LAST = CStr(phaseId)
+  G_PHASE_ORDER_INDEX = Phase_OrderIndex(phaseId)
+  Call Diag_WriteLine("EARLY_EXIT phase=" & CStr(phaseId) & " code=" & CStr(reasonCode) & " detail=" & CStr(detail) & " action=" & CStr(actionHint))
+  If CBool(DIAG_MODE) Then
+    If Ambiguity_HasHits() Then Call Diag_WriteAmbiguitySummary()
+  End If
+  On Error GoTo 0
+End Sub
 
 Sub Diag_Init(ByVal templateName)
     If Not DIAG_MODE Then Exit Sub
@@ -346,6 +465,9 @@ Call Main()
 
 Sub Main()
   On Error Resume Next
+  G_PHASE_LAST = ""
+  G_PHASE_FAILED = False
+  G_PHASE_ORDER_INDEX = 0
   Dim x_tmplForDiag: x_tmplForDiag = TrioCmd("page:getpagetemplate")
   Call Diag_Init(x_tmplForDiag)
 

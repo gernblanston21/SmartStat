@@ -45,7 +45,7 @@
 ## Roadmap execution order (current)
 1) WP-05 Output Map Coverage ? (Completed)
 2) WP-04 Ambiguity transparency (fail-closed stays strict) ? (Completed)
-3) WP-01 Phase hardening ?? (Next)
+3) WP-01 Phase hardening (in progress)
 4) WP-07 Overrides audit trail
 5) WP-08 Harness expansion
 
@@ -57,16 +57,19 @@
   - Hard fail `OUTMAP.EMPTY` when no usable targets exist
   - No INI schema changes
   - No ambiguity gating changes
-- [x] WP-04 Ambiguity transparency (fail-closed stays strict)
-  - Added robust ambiguity context initialization (`EnsureAmbiguityContext`)
-  - Added structured ambiguity recording (`Ambiguity_Add`)
-  - Added deterministic single-shot OperatorDiag section (`AMBIGUITY_SUMMARY`) gated by `DIAG_MODE`
-  - Wired summary emission into existing ambiguity fail paths
-  - No changes to fail-closed gating or commit permissiveness
+- [x] WP-04 Ambiguity transparency (fail-closed preserved)
+  - Structured ambiguity recording + consolidated `AMBIGUITY_SUMMARY` (DIAG only)
+  - No behavior changes to ambiguity resolution / commit gating
+
+## In progress
+- [ ] WP-01 Phase pipeline hardening
+  - Introduce/standardize phase helpers (`Phase_Begin/EndOk/EarlyExit/Fail`)
+  - Normalize phase boundary logs (entry + exit) without changing logic
+  - Ensure early exits still produce harness diff + operator alert when harness active
+  - Ensure finalize/refresh behavior runs on both success + fail paths (as intended)
 
 ## Next action (ready to proceed)
-- [ ] Implement WP-01 Phase hardening (in SmartStat_v4.0.0_beta.vbs)
-  - Add phase boundary invariants and ordered phase logging
-  - Prevent commit after any hardfail / validation failure / empty ApplyPlan
-  - Add explicit `COMMIT_SKIPPED` diagnostics with reasons
-  - No changes to mapping/resolve behavior; guardrails + deterministic logs only
+- [ ] Proceed with WP-01 using the phase helpers (static diffs only, no shell)
+  - Convert existing phase marks to `Phase_Begin(...)`
+  - Replace scattered "EARLY EXIT" logs with `Phase_EarlyExit(...)` (single consistent format)
+  - Preserve all existing resolver/mapping/override behavior
