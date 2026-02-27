@@ -48,7 +48,7 @@
 
 ## Roadmap execution order (current)
 1) WP-05 Output Map Coverage ? (Completed)
-2) WP-04 Ambiguity transparency (fail-closed stays strict) ? (Starting now)
+2) WP-04 Ambiguity transparency (fail-closed stays strict) ? (Completed)
 3) WP-01 Phase hardening ? (Completed)
 4) WP-07 Overrides audit trail ? (Completed)
 5) WP-08 Harness expansion ? (Completed)
@@ -76,11 +76,26 @@
   - Added harness artifacts on early exits / config failures
   - Centralized artifact emissions (avoid duplicates)
   - No resolver/mapping/Tx behavior changes
+- [x] WP-04 Ambiguity transparency
+  - All ambiguity-block abort paths emit exactly one EARLY EXIT marker:
+    - TX: EARLY EXIT - AMBIGUOUS_GATE
+    - TX: EARLY EXIT - AMBIGUOUS_CONTEXT_INVALID
+  - No remaining unbounded ambiguity dump paths
+  - Diag_WriteAmbiguitySummary() gated behind learn.allow_ambiguous_apply=True
+  - BuildAmbiguityOperatorSection() gated behind learn.allow_ambiguous_apply=True
+  - Bounded detail enforced (max 5 entries + truncation marker)
+  - Fail-closed behavior unchanged
+  - No resolver/mapping/apply behavior changes
 
 ## Next action (ready to proceed)
-- [ ] WP-04 Ambiguity transparency (fail-closed stays strict)
-  - Logging-only improvements when ambiguity gating blocks execution
-  - Add stable phase code marker for ambiguity aborts
-  - Add concise summary (count + affected keys/fields)
-  - Add bounded detail (max 5 lines) and explicit “No changes applied” statement
-  - Do NOT change ambiguity detection, resolver scoring, candidate ordering, ApplyPlan behavior, transaction behavior, phase order, or INI schemas
+- [ ] WP-06 Resolver stability guardrails
+  - Audit candidate sorting determinism
+  - Verify tie-breaking stability
+  - Add logging-only transparency if nondeterminism risk exists
+  - Do NOT change scoring math, thresholds, ordering logic, ApplyPlan behavior, transaction behavior, phase order, or INI schemas
+
+## Output Requirements
+- Provide unified diff (-U5) for SESSION.md only.
+- Minimal edits only.
+- No commentary inside the diff.
+- Stop after the diff and wait for approval.
