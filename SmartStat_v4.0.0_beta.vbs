@@ -924,7 +924,8 @@ Function Stage_ValidatePlan()
           PlanValidationErrors("AMBIGUOUS") = "Ambiguous mapping detected; operator choice required."
           Call Diag_WriteLine("TX: Ambiguity gate blocked apply (count=" & CStr(amb.Count) & ")")
           Call Diag_WriteLine("TX: EARLY EXIT - AMBIGUOUS_GATE")
-          Dim ambKeys, ambI, ambJ, ambTmp, ambKey
+          Call Diag_WriteLine("TX: PHASE_CODE=AMBIGUOUS_GATE")
+          Dim ambKeys, ambI, ambJ, ambTmp, ambKey, ambKeysCsv, ambShown, ambTotal
           ambKeys = amb.Keys
           If IsArray(ambKeys) Then
             For ambI = 0 To UBound(ambKeys) - 1
@@ -937,11 +938,29 @@ Function Stage_ValidatePlan()
               Next
             Next
 
+            ambKeysCsv = ""
             For ambI = 0 To UBound(ambKeys)
+              If Len(ambKeysCsv) > 0 Then ambKeysCsv = ambKeysCsv & ","
+              ambKeysCsv = ambKeysCsv & CStr(ambKeys(ambI))
+            Next
+            Call Diag_WriteLine("TX: AMBIGUITY_GATE_SUMMARY count=" & CStr(amb.Count) & " keys=[" & ambKeysCsv & "]")
+
+            ambTotal = amb.Count
+            ambShown = ambTotal
+            If ambShown > 5 Then ambShown = 5
+
+            For ambI = 0 To ambShown - 1
               ambKey = CStr(ambKeys(ambI))
               Call Diag_WriteLine("TX: AMBIGUITY_DETAIL - " & CStr(amb(ambKey)))
             Next
+ 
+            If ambTotal > ambShown Then
+              Call Diag_WriteLine("TX: AMBIGUITY_DETAIL_TRUNCATED total=" & CStr(ambTotal) & " shown=" & CStr(ambShown))
+            End If
+          Else
+            Call Diag_WriteLine("TX: AMBIGUITY_GATE_SUMMARY count=" & CStr(amb.Count) & " keys=[]")
           End If
+          Call Diag_WriteLine("Ambiguity detected. No changes applied.")
           If (PlanValidationErrors Is Nothing) Then
             Set PlanValidationErrors = CreateObject("Scripting.Dictionary")
           End If
