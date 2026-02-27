@@ -551,6 +551,9 @@ Sub Main()
       If G_HARNESS_MODE = "HARNESS_CAPTURE" Then
         Call Harness_WriteFixtureFile(G_HARNESS_PRE_V, G_HARNESS_PRE_CP, x_tmplForDiag)
         Call Diag_WriteLine("HARNESS: capture complete (no pipeline executed)")
+        Call Harness_CapturePostSnapshot()
+        Call Harness_WriteSnapshotArtifact("HARNESS_CAPTURE")
+        Call Harness_WriteGroupedDiffArtifact("HARNESS_CAPTURE")
         Call Diag_Done()
         FinalizeAndRefresh LOG_FILE, startTime
         Exit Sub
