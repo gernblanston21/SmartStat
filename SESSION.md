@@ -4,6 +4,8 @@
 - Working target version (user-declared): v4.0.0_beta
 - SmartStat baseline identifier (user-declared): v4.0.0_beta
 - Workspace folder: SMARTSTAT (this VS Code workspace)
+- Branch: v4_Dev
+- Source of truth: current workspace (v4_Dev branch). For cross-checking outside Codex, use the raw GitHub link for SmartStat_v4.0.0_beta.vbs.
 
 ## Notes on VERSION.txt (important)
 - VERSION.txt value: 4.0.0
@@ -28,6 +30,7 @@
   - SmartStatValidator.exe
 - Logs:
   - DiagLogs\
+  - DiagLogs\Harness\
 
 ## Non-negotiables (session enforcement)
 - Version numbers MUST be specified by the user at the beginning of each session.
@@ -38,14 +41,14 @@
 - No placeholders.
 - If a patch is unsafe as a partial snippet, output the full file.
 - Flag breaking changes that may affect external tools (SmartStatTrayApp).
-- Codex must not use shell commands to inspect files (no PowerShell Get-Content, no line-range shell dumps).
-- File inspection must use internal workspace access only.
-- All diffs must be generated statically without terminal execution.
-- Do not request that I run any commands; rely on static reasoning and workspace reads only.
+
+## Codex execution policy (current)
+- Codex MAY use shell commands for READ-ONLY inspection (rg/grep, cat/type, git show/diff, etc.) without asking.
+- Codex MUST ask for approval before any change that writes/modifies repo files (apply/edit/patch).
 
 ## Roadmap execution order (current)
 1) WP-05 Output Map Coverage ? (Completed)
-2) WP-04 Ambiguity transparency (fail-closed stays strict) ? (Next)
+2) WP-04 Ambiguity transparency (fail-closed stays strict) ? (Starting now)
 3) WP-01 Phase hardening ? (Completed)
 4) WP-07 Overrides audit trail ? (Completed)
 5) WP-08 Harness expansion ? (Completed)
@@ -58,36 +61,26 @@
   - Hard fail `OUTMAP.EMPTY` when no usable targets exist
   - No INI schema changes
   - No ambiguity gating changes
-
 - [x] WP-01 Phase hardening
   - Added phase helpers for begin/end/fail/early-exit logging
   - Converted silent early exits in key pipeline spots to logged early-exits
   - Ensured finalize/refresh behavior is preserved on fail paths
   - No resolver/mapping behavior changes
-
 - [x] WP-07 Overrides audit trail
   - Added override audit logging (old -> new) with section + entity context
   - Added explicit “skip” log when overrides INI cannot load
   - No resolver/mapping behavior changes
-
 - [x] WP-08 Harness expansion
-  - Added HARNESS_CAPTURE_ONLY mode (snapshot-only; exits before pipeline)
-  - Deterministic grouped diff artifacts (CP vs VALUE changes)
-  - Snapshot + grouped diff artifacts emitted for:
-    - CAPTURE_ONLY
-    - HARNESS_CAPTURE
-    - HARNESS_STRICT (precommit logging only)
-    - POST_PIPELINE (centralized end-of-run)
-  - Early-exit artifact emission for:
-    - ENV_VALIDATE_FAIL
-    - CONFIG_PRESENCE_FAIL
-  - No resolver/mapping behavior changes
-  - No transaction behavior changes
+  - Added HARNESS_CAPTURE_ONLY mode
+  - Added harness snapshot + grouped diff artifacts (deterministic ordering)
+  - Added harness artifacts on early exits / config failures
+  - Centralized artifact emissions (avoid duplicates)
+  - No resolver/mapping/Tx behavior changes
 
 ## Next action (ready to proceed)
 - [ ] WP-04 Ambiguity transparency (fail-closed stays strict)
-  - Improve diagnostic clarity when ambiguity gating blocks execution
-  - Emit structured ambiguity summaries (counts + top candidates)
-  - Preserve fail-closed behavior exactly
-  - No resolver scoring logic changes
-  - No ApplyPlan / Tx behavior changes
+  - Logging-only improvements when ambiguity gating blocks execution
+  - Add stable phase code marker for ambiguity aborts
+  - Add concise summary (count + affected keys/fields)
+  - Add bounded detail (max 5 lines) and explicit “No changes applied” statement
+  - Do NOT change ambiguity detection, resolver scoring, candidate ordering, ApplyPlan behavior, transaction behavior, phase order, or INI schemas
