@@ -1896,6 +1896,35 @@ Function FuzzyResolveAdvanced(q, candidateKeys, learn, ByRef bestKey, ByRef scor
     Next
   End If
 
+  If CBool(DIAG_MODE) Then
+    Dim rsBefore, rsAfter, rsList
+    rsBefore = ""
+    Set rsList = CreateObject("System.Collections.ArrayList")
+
+    If haveA Then
+      For i = LBound(listA) To UBound(listA)
+        If Len(rsBefore) > 0 Then rsBefore = rsBefore & " | "
+        rsBefore = rsBefore & CStr(listA(i))
+        rsList.Add CStr(listA(i))
+      Next
+    End If
+    If haveB Then
+      For i = LBound(listB) To UBound(listB)
+        If Len(rsBefore) > 0 Then rsBefore = rsBefore & " | "
+        rsBefore = rsBefore & CStr(listB(i))
+        rsList.Add CStr(listB(i))
+      Next
+    End If
+
+    rsAfter = ""
+    rsList.Sort
+    For i = 0 To rsList.Count - 1
+      If Len(rsAfter) > 0 Then rsAfter = rsAfter & " | "
+      rsAfter = rsAfter & CStr(rsList(i))
+    Next
+    Call Diag_WriteLine("RESOLVER_CANDIDATES_BEFORE_SORT q=[" & qn & "] count=" & CStr(rsList.Count) & " list=[" & Ambiguity_SafeTruncate(rsBefore, 320) & "]")
+    Call Diag_WriteLine("RESOLVER_CANDIDATES_AFTER_SORT q=[" & qn & "] count=" & CStr(rsList.Count) & " list=[" & Ambiguity_SafeTruncate(rsAfter, 320) & "]")
+  End If
   If haveA Then ScanForBest qn, listA, bestKey, bestDist
   If haveB And bestDist > 1 Then ScanForBest qn, listB, bestKey, bestDist
 
@@ -1955,6 +1984,35 @@ Function FuzzyResolveTop2Advanced(q, candidateKeys, learn, ByRef bestKey, ByRef 
     Next
   End If
 
+  If CBool(DIAG_MODE) Then
+    Dim rsBefore2, rsAfter2, rsList2
+    rsBefore2 = ""
+    Set rsList2 = CreateObject("System.Collections.ArrayList")
+
+    If haveA Then
+      For i = LBound(listA) To UBound(listA)
+        If Len(rsBefore2) > 0 Then rsBefore2 = rsBefore2 & " | "
+        rsBefore2 = rsBefore2 & CStr(listA(i))
+        rsList2.Add CStr(listA(i))
+      Next
+    End If
+    If haveB Then
+      For i = LBound(listB) To UBound(listB)
+        If Len(rsBefore2) > 0 Then rsBefore2 = rsBefore2 & " | "
+        rsBefore2 = rsBefore2 & CStr(listB(i))
+        rsList2.Add CStr(listB(i))
+      Next
+    End If
+
+    rsAfter2 = ""
+    rsList2.Sort
+    For i = 0 To rsList2.Count - 1
+      If Len(rsAfter2) > 0 Then rsAfter2 = rsAfter2 & " | "
+      rsAfter2 = rsAfter2 & CStr(rsList2(i))
+    Next
+    Call Diag_WriteLine("RESOLVER_CANDIDATES_BEFORE_SORT q=[" & qn & "] count=" & CStr(rsList2.Count) & " list=[" & Ambiguity_SafeTruncate(rsBefore2, 320) & "]")
+    Call Diag_WriteLine("RESOLVER_CANDIDATES_AFTER_SORT q=[" & qn & "] count=" & CStr(rsList2.Count) & " list=[" & Ambiguity_SafeTruncate(rsAfter2, 320) & "]")
+  End If
   If haveA Then Call ScanForBestTwo(qn, listA, bestKey, bestDist, altKey, altDist)
   If haveB And bestDist > 1 Then Call ScanForBestTwo(qn, listB, bestKey, bestDist, altKey, altDist)
 
@@ -1980,6 +2038,14 @@ Sub ScanForBestTwo(qn, arr, ByRef bestKey, ByRef bestDist, ByRef altKey, ByRef a
     k = CStr(arr(i))
     dist = Lev(qn, k)
 
+    If CBool(DIAG_MODE) Then
+      If Len(bestKey) > 0 And dist = bestDist And k <> bestKey Then
+        Call Diag_WriteLine("RESOLVER_TIE q=[" & qn & "] dist=" & CStr(dist) & " incumbent=[" & CStr(bestKey) & "] contender=[" & k & "]")
+      End If
+      If Len(altKey) > 0 And dist = altDist And k <> altKey Then
+        Call Diag_WriteLine("RESOLVER_TIE_ALT q=[" & qn & "] dist=" & CStr(dist) & " incumbent=[" & CStr(altKey) & "] contender=[" & k & "]")
+      End If
+    End If
     If dist < bestDist Then
       altDist = bestDist
       altKey  = bestKey
@@ -2003,6 +2069,10 @@ Private Sub ScanForBest(qn, arr, ByRef bestKey, ByRef bestDist)
       bestDist = dist
       bestKey = k
       If Len(qn) <= 5 And bestDist <= 1 Then Exit Sub
+    ElseIf dist = bestDist And k <> bestKey Then
+      If CBool(DIAG_MODE) Then
+        Call Diag_WriteLine("RESOLVER_TIE q=[" & qn & "] dist=" & CStr(dist) & " incumbent=[" & CStr(bestKey) & "] contender=[" & k & "]")
+      End If
     End If
   Next
 End Sub
