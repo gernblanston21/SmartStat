@@ -93,9 +93,3 @@
   - Verify tie-breaking stability
   - Add logging-only transparency if nondeterminism risk exists
   - Do NOT change scoring math, thresholds, ordering logic, ApplyPlan behavior, transaction behavior, phase order, or INI schemas
-
-## Output Requirements
-- Provide unified diff (-U5) for SESSION.md only.
-- Minimal edits only.
-- No commentary inside the diff.
-- Stop after the diff and wait for approval.
