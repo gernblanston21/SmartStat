@@ -560,6 +560,7 @@ Sub Main()
 
   LOG_FILE      = "E:\EDRIVE\UNIVERSAL\SmartStat\DiagLogs\SmartStat_LearnDebug.txt"
   If Not Diag_Check_Environment() Then
+    Call Harness_FinalizeEarlyExitArtifacts("ENV_VALIDATE_FAIL")
     Call Diag_Done()
     Call FinalizeAndRefresh(LOG_FILE, startTime)
     Exit Sub
@@ -601,6 +602,7 @@ Sub Main()
   End If
 
   If Not Diag_Check_ConfigPresence(MAPPINGS_INI, SRC_DIR & "SmartStat_StaticOverrides.ini", SRC_DIR & "SmartStat_TemplateConfig.ini") Then
+    Call Harness_FinalizeEarlyExitArtifacts("CONFIG_PRESENCE_FAIL")
     Call Diag_Done()
     Call FinalizeAndRefresh(LOG_FILE, startTime)
     Exit Sub
