@@ -3974,6 +3974,242 @@ Sub Harness_CapturePostSnapshot()
   On Error GoTo 0
 End Sub
 
+Function Harness_IsDict(ByVal d)
+  Harness_IsDict = False
+  If IsObject(d) Then
+    If UCase(TypeName(d)) = "DICTIONARY" Then Harness_IsDict = True
+  End If
+End Function
+
+Function Harness_SortedKeys(ByVal d)
+  On Error Resume Next
+  Dim list, k
+  Set list = CreateObject("System.Collections.ArrayList")
+
+  If Err.Number = 0 And Not (list Is Nothing) Then
+    If Harness_IsDict(d) Then
+      For Each k In d.Keys
+        list.Add CStr(k)
+      Next
+    End If
+    list.Sort
+    Set Harness_SortedKeys = list
+    On Error GoTo 0
+    Exit Function
+  End If
+
+  ' Fallback: preserve unsorted key order in a dictionary-backed index list.
+  Err.Clear
+  Dim fallback, idx
+  Set fallback = NewTextDict()
+  idx = 0
+  If Harness_IsDict(d) Then
+    For Each k In d.Keys
+      fallback(CStr(idx)) = CStr(k)
+      idx = idx + 1
+    Next
+  End If
+  Set Harness_SortedKeys = fallback
+  On Error GoTo 0
+End Function
+
+Function Harness_DictHasKey(ByVal d, ByVal k)
+  Harness_DictHasKey = False
+  If Harness_IsDict(d) Then
+    Harness_DictHasKey = d.Exists(CStr(k))
+  End If
+End Function
+
+Function Harness_DictGetSafe(ByVal d, ByVal k)
+  Harness_DictGetSafe = ""
+  If Harness_DictHasKey(d, k) Then
+    Harness_DictGetSafe = CStr(d(CStr(k)))
+  End If
+End Function
+
+Function Harness_UnionSortedKeys(ByVal d1, ByVal d2)
+  Dim merged, k
+  Set merged = NewTextDict()
+  If Harness_IsDict(d1) Then
+    For Each k In d1.Keys
+      merged(CStr(k)) = True
+    Next
+  End If
+  If Harness_IsDict(d2) Then
+    For Each k In d2.Keys
+      merged(CStr(k)) = True
+    Next
+  End If
+  Set Harness_UnionSortedKeys = Harness_SortedKeys(merged)
+End Function
+
+Function Harness_KeyListCount(ByVal keysObj)
+  Harness_KeyListCount = 0
+  If Not IsObject(keysObj) Then Exit Function
+  Select Case UCase(TypeName(keysObj))
+    Case "ARRAYLIST", "DICTIONARY"
+      Harness_KeyListCount = CLng(keysObj.Count)
+  End Select
+End Function
+
+Function Harness_KeyListItem(ByVal keysObj, ByVal idx)
+  Harness_KeyListItem = ""
+  If Not IsObject(keysObj) Then Exit Function
+  Select Case UCase(TypeName(keysObj))
+    Case "ARRAYLIST"
+      Harness_KeyListItem = CStr(keysObj(CLng(idx)))
+    Case "DICTIONARY"
+      If keysObj.Exists(CStr(idx)) Then Harness_KeyListItem = CStr(keysObj(CStr(idx)))
+  End Select
+End Function
+
+Sub Harness_WriteSnapshotSection(ByRef ts, ByVal sectionName, ByVal dataDict)
+  Dim keysObj, i, n, k, lineVal
+  ts.WriteLine "[" & CStr(sectionName) & "]"
+  Set keysObj = Harness_SortedKeys(dataDict)
+  n = Harness_KeyListCount(keysObj)
+  If n = 0 Then
+    ts.WriteLine "(none)"
+  Else
+    For i = 0 To (n - 1)
+      k = Harness_KeyListItem(keysObj, i)
+      lineVal = CStr(Harness_DictGetSafe(dataDict, k))
+      lineVal = Replace(Replace(CStr(lineVal), vbCrLf, "\n"), vbTab, " ")
+      ts.WriteLine CStr(k) & "=" & CStr(lineVal)
+    Next
+  End If
+  ts.WriteLine ""
+End Sub
+
+Sub Harness_WriteSnapshotArtifact(ByVal reason)
+  On Error Resume Next
+  Dim runId, p, fso, ts, postAvailable, postReason
+
+  If Not HARNESS_ENABLE Then Exit Sub
+  If UCase(Trim(CStr(G_HARNESS_MODE))) = "OFF" Then Exit Sub
+
+  runId = Trim(CStr(gDiagRunId))
+  If Len(runId) = 0 Then runId = Diag_TimestampCompact()
+  p = HARNESS_DIR & "Harness_Snapshot_" & CStr(runId) & ".txt"
+
+  Call Harness_EnsureHarnessDir()
+  Set fso = CreateObject("Scripting.FileSystemObject")
+  Set ts = fso.CreateTextFile(p, True)
+  If ts Is Nothing Then Exit Sub
+
+  ts.WriteLine "RUN_ID=" & CStr(runId)
+  ts.WriteLine "TEMPLATE=" & CStr(gTemplateName)
+  ts.WriteLine "MODE=" & CStr(G_HARNESS_MODE)
+  ts.WriteLine "REASON=" & CStr(reason)
+  ts.WriteLine ""
+
+  Call Harness_WriteSnapshotSection(ts, "PRE.CP", G_HARNESS_PRE_CP)
+  Call Harness_WriteSnapshotSection(ts, "PRE.VALUES", G_HARNESS_PRE_V)
+
+  postAvailable = (Harness_IsDict(G_HARNESS_POST_CP) And Harness_IsDict(G_HARNESS_POST_V))
+  If postAvailable Then
+    Call Harness_WriteSnapshotSection(ts, "POST.CP", G_HARNESS_POST_CP)
+    Call Harness_WriteSnapshotSection(ts, "POST.VALUES", G_HARNESS_POST_V)
+  Else
+    postReason = Trim(CStr(G_HARNESS_POST_SKIPPED_REASON))
+    If Len(postReason) = 0 Then postReason = "UNKNOWN"
+    ts.WriteLine "POST_SKIPPED reason=" & CStr(postReason)
+    ts.WriteLine ""
+  End If
+
+  ts.Close
+  Set ts = Nothing
+  If DIAG_MODE Then Call Diag_WriteLine("HARNESS: snapshot artifact written: " & p)
+  On Error GoTo 0
+End Sub
+
+Sub Harness_WriteGroupedDiffArtifact(ByVal reason)
+  On Error Resume Next
+  Dim runId, p, fso, ts, postAvailable, postReason
+  Dim keysObj, i, n, k
+  Dim hasBefore, hasAfter, beforeV, afterV
+  Dim cpChanges, valueChanges
+
+  If Not HARNESS_ENABLE Then Exit Sub
+  If UCase(Trim(CStr(G_HARNESS_MODE))) = "OFF" Then Exit Sub
+
+  runId = Trim(CStr(gDiagRunId))
+  If Len(runId) = 0 Then runId = Diag_TimestampCompact()
+  p = HARNESS_DIR & "Harness_Diff_" & CStr(runId) & ".txt"
+
+  Call Harness_EnsureHarnessDir()
+  Set fso = CreateObject("Scripting.FileSystemObject")
+  Set ts = fso.CreateTextFile(p, True)
+  If ts Is Nothing Then Exit Sub
+
+  ts.WriteLine "RUN_ID=" & CStr(runId)
+  ts.WriteLine "TEMPLATE=" & CStr(gTemplateName)
+  ts.WriteLine "MODE=" & CStr(G_HARNESS_MODE)
+  ts.WriteLine "REASON=" & CStr(reason)
+  ts.WriteLine ""
+
+  postAvailable = (Harness_IsDict(G_HARNESS_POST_CP) And Harness_IsDict(G_HARNESS_POST_V))
+  If Not postAvailable Then
+    postReason = Trim(CStr(G_HARNESS_POST_SKIPPED_REASON))
+    If Len(postReason) = 0 Then postReason = "UNKNOWN"
+    ts.WriteLine "POST_SKIPPED reason=" & CStr(postReason)
+    ts.WriteLine ""
+  End If
+
+  cpChanges = 0
+  valueChanges = 0
+
+  ts.WriteLine "[CP_CHANGES]"
+  If postAvailable Then
+    Set keysObj = Harness_UnionSortedKeys(G_HARNESS_PRE_CP, G_HARNESS_POST_CP)
+    n = Harness_KeyListCount(keysObj)
+    For i = 0 To (n - 1)
+      k = Harness_KeyListItem(keysObj, i)
+      hasBefore = Harness_DictHasKey(G_HARNESS_PRE_CP, k)
+      hasAfter = Harness_DictHasKey(G_HARNESS_POST_CP, k)
+      If hasBefore Then beforeV = CStr(Harness_DictGetSafe(G_HARNESS_PRE_CP, k)) Else beforeV = "<MISSING>"
+      If hasAfter Then afterV = CStr(Harness_DictGetSafe(G_HARNESS_POST_CP, k)) Else afterV = "<MISSING>"
+      If CStr(beforeV) <> CStr(afterV) Then
+        cpChanges = cpChanges + 1
+        beforeV = Replace(Replace(CStr(beforeV), vbCrLf, "\n"), vbTab, " ")
+        afterV = Replace(Replace(CStr(afterV), vbCrLf, "\n"), vbTab, " ")
+        ts.WriteLine CStr(k) & ": [" & CStr(beforeV) & "] -> [" & CStr(afterV) & "]"
+      End If
+    Next
+  End If
+  If cpChanges = 0 Then ts.WriteLine "(none)"
+  ts.WriteLine ""
+
+  ts.WriteLine "[VALUE_CHANGES]"
+  If postAvailable Then
+    Set keysObj = Harness_UnionSortedKeys(G_HARNESS_PRE_V, G_HARNESS_POST_V)
+    n = Harness_KeyListCount(keysObj)
+    For i = 0 To (n - 1)
+      k = Harness_KeyListItem(keysObj, i)
+      hasBefore = Harness_DictHasKey(G_HARNESS_PRE_V, k)
+      hasAfter = Harness_DictHasKey(G_HARNESS_POST_V, k)
+      If hasBefore Then beforeV = CStr(Harness_DictGetSafe(G_HARNESS_PRE_V, k)) Else beforeV = "<MISSING>"
+      If hasAfter Then afterV = CStr(Harness_DictGetSafe(G_HARNESS_POST_V, k)) Else afterV = "<MISSING>"
+      If CStr(beforeV) <> CStr(afterV) Then
+        valueChanges = valueChanges + 1
+        beforeV = Replace(Replace(CStr(beforeV), vbCrLf, "\n"), vbTab, " ")
+        afterV = Replace(Replace(CStr(afterV), vbCrLf, "\n"), vbTab, " ")
+        ts.WriteLine CStr(k) & ": [" & CStr(beforeV) & "] -> [" & CStr(afterV) & "]"
+      End If
+    Next
+  End If
+  If valueChanges = 0 Then ts.WriteLine "(none)"
+  ts.WriteLine ""
+
+  G_HARNESS_DIFF_COUNT = CLng(cpChanges) + CLng(valueChanges)
+  ts.WriteLine "DIFF_COUNT=" & CStr(G_HARNESS_DIFF_COUNT)
+
+  ts.Close
+  Set ts = Nothing
+  If DIAG_MODE Then Call Diag_WriteLine("HARNESS: grouped diff written: " & p & " (diffCount=" & CStr(G_HARNESS_DIFF_COUNT) & ")")
+  On Error GoTo 0
+End Sub
+
 Sub Harness_WriteFixtureFile(ByVal visDict, ByVal cpDict, ByVal tmplName)
   On Error Resume Next
   Dim fso: Set fso = CreateObject("Scripting.FileSystemObject")
