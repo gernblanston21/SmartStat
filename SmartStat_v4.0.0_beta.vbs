@@ -32,6 +32,7 @@ Dim G_HARNESS_DIFF_COUNT  ' Integer: number of changed fields detected by Harnes
 Dim G_HARNESS_POST_CP     ' Dict: tabfield -> post custom prop value
 Dim G_HARNESS_POST_V      ' Dict: tabfield -> post visible value
 Dim G_HARNESS_POST_SKIPPED_REASON
+Dim G_HARNESS_EARLY_EXIT_FINALIZED
 Dim G_TRIO_WRITE_ATTEMPTS
 Dim G_TRIO_WRITE_SUCCESS_COUNT
 Dim G_TRIO_WRITE_FAIL_COUNT
@@ -513,6 +514,7 @@ Sub Main()
   G_TRIO_WRITE_FAILED = False
   G_TRIO_WRITE_LAST_FAIL_TF = ""
   G_AMBIGUITY_SUMMARY_EMITTED = False
+  G_HARNESS_EARLY_EXIT_FINALIZED = False
 
   ' v4.0 Phase 2: ambiguity & confidence context
   Call EnsureAmbiguityContext()
@@ -542,6 +544,7 @@ Sub Main()
         Call Harness_WriteSnapshotArtifact("CAPTURE_ONLY")
         Call Harness_WriteGroupedDiffArtifact("CAPTURE_ONLY")
         Call Diag_WriteLine("HARNESS: capture-only mode; exiting before pipeline")
+        Call Diag_WriteLine("TX: EARLY EXIT - HARNESS_CAPTURE_ONLY")
         Call Diag_Done()
         FinalizeAndRefresh LOG_FILE, startTime
         Exit Sub
@@ -554,6 +557,7 @@ Sub Main()
         Call Harness_CapturePostSnapshot()
         Call Harness_WriteSnapshotArtifact("HARNESS_CAPTURE")
         Call Harness_WriteGroupedDiffArtifact("HARNESS_CAPTURE")
+        Call Diag_WriteLine("TX: EARLY EXIT - HARNESS_CAPTURE")
         Call Diag_Done()
         FinalizeAndRefresh LOG_FILE, startTime
         Exit Sub
@@ -564,6 +568,7 @@ Sub Main()
   LOG_FILE      = "E:\EDRIVE\UNIVERSAL\SmartStat\DiagLogs\SmartStat_LearnDebug.txt"
   If Not Diag_Check_Environment() Then
     Call Harness_FinalizeEarlyExitArtifacts("ENV_VALIDATE_FAIL")
+    Call Diag_WriteLine("TX: EARLY EXIT - ENV_VALIDATE_FAIL")
     Call Diag_Done()
     Call FinalizeAndRefresh(LOG_FILE, startTime)
     Exit Sub
@@ -606,6 +611,7 @@ Sub Main()
 
   If Not Diag_Check_ConfigPresence(MAPPINGS_INI, SRC_DIR & "SmartStat_StaticOverrides.ini", SRC_DIR & "SmartStat_TemplateConfig.ini") Then
     Call Harness_FinalizeEarlyExitArtifacts("CONFIG_PRESENCE_FAIL")
+    Call Diag_WriteLine("TX: EARLY EXIT - CONFIG_PRESENCE_FAIL")
     Call Diag_Done()
     Call FinalizeAndRefresh(LOG_FILE, startTime)
     Exit Sub
@@ -678,6 +684,7 @@ Sub Main()
     End If
 
     ' finalize and return (no GoTo)
+    Call Diag_WriteLine("TX: EARLY EXIT - MAPPINGS_INI_LOAD_FAIL")
     Call Diag_Done()
     Call FinalizeAndRefresh(LOG_FILE, startTime)
     Exit Sub
@@ -3034,6 +3041,7 @@ Function ProcessQualifier(qualTab, qAliasNorm, qNorm, learn, ByRef qPrefix, ByRe
     Call Diag_WriteLine("QUALIFIER: UNRESOLVED input=[" & qualTxt & "] leftovers=[" & Trim(CStr(qRemainder)) & "]")
     Call Ambiguity_AddDetailed("QUALIFIER", qualTxt, "", "UNRESOLVED", "Qualifier chain did not fully resolve (leftover tokens remained).", "Use an exact qualifier key in " & CStr(qualTab) & " or add a learn alias for this phrase.")
     Call Diag_WriteAmbiguitySummary()
+    Call Diag_WriteLine("TX: EARLY EXIT - QUALIFIER_UNRESOLVED_CHAIN")
     ProcessQualifier = False
     Exit Function
   End If
@@ -3608,6 +3616,7 @@ Sub ExecuteTemplatePipeline(srcDir, mappingsIni, LEARN_INI, transforms, rxTransf
   Dim tmplName: tmplName = NormalizeTemplateNameForKeys(tmplNameRaw)
   If Len(tmplName) = 0 Then
     Call Phase_EarlyExit(PHASE_03_CLASSIFY_FIELDS, "TEMPLATE.EMPTY", "Template name could not be resolved.", "Verify page template binding and reload the page.")
+    Call Diag_WriteLine("TX: EARLY EXIT - TEMPLATE_EMPTY")
     Exit Sub
   End If
 
@@ -3640,6 +3649,7 @@ Sub ExecuteTemplatePipeline(srcDir, mappingsIni, LEARN_INI, transforms, rxTransf
       "Qualifier could not be resolved for tabfield " & CStr(qualTab), _
       "Set the qualifier tabfield to an exact supported token or update learn mappings.")
     Call Diag_OperatorAlert("SmartStat aborted: Qualifier could not be resolved. No changes applied.")
+    Call Diag_WriteLine("TX: EARLY EXIT - QUALIFIER_UNRESOLVED_PIPELINE")
     Exit Sub
   End If
 
@@ -4122,6 +4132,19 @@ Sub Harness_MarkPostSkipped(ByVal reason)
   Set G_HARNESS_POST_CP = Nothing
   Set G_HARNESS_POST_V = Nothing
   G_HARNESS_POST_SKIPPED_REASON = UCase(Trim(CStr(reason)))
+End Sub
+
+Sub Harness_FinalizeEarlyExitArtifacts(ByVal reason)
+  On Error Resume Next
+  If Not HARNESS_ENABLE Then Exit Sub
+  If UCase(Trim(CStr(G_HARNESS_MODE))) = "OFF" Then Exit Sub
+  If CBool(G_HARNESS_EARLY_EXIT_FINALIZED) Then Exit Sub
+
+  G_HARNESS_EARLY_EXIT_FINALIZED = True
+  Call Harness_CapturePostSnapshot()
+  Call Harness_WriteSnapshotArtifact(CStr(reason))
+  Call Harness_WriteGroupedDiffArtifact(CStr(reason))
+  On Error GoTo 0
 End Sub
 
 Sub Harness_CapturePostSnapshot()
