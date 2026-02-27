@@ -647,6 +647,7 @@ Sub Main()
           Call Diag_WriteLine("HARNESS_STRICT: non-empty diff (" & CStr(G_HARNESS_DIFF_COUNT) & "); blocking commit (ini-load path)")
           Call Diag_OperatorAlert("SmartStat Harness Strict: Diff detected. Commit blocked.")
         Else
+          Call Diag_WriteLine("HARNESS_STRICT: precommit validate/commit path entered (diffCount=" & CStr(G_HARNESS_DIFF_COUNT) & ")")
           Dim txOkIniS: txOkIniS = Stage_ValidatePlan()
           If Err.Number <> 0 Then
             Call Diag_WriteLine("TX: Stage_ValidatePlan runtime error (ini-load path) Err.Number=" & CStr(Err.Number) & " Err.Description=" & CStr(Err.Description))
@@ -715,6 +716,7 @@ Sub Main()
         Call Diag_WriteLine("HARNESS_STRICT: non-empty diff (" & CStr(G_HARNESS_DIFF_COUNT) & "); blocking commit (main path)")
         Call Diag_OperatorAlert("SmartStat Harness Strict: Diff detected. Commit blocked.")
       Else
+        Call Diag_WriteLine("HARNESS_STRICT: precommit validate/commit path entered (diffCount=" & CStr(G_HARNESS_DIFF_COUNT) & ")")
         Dim txPlanCountS: txPlanCountS = -1
         If Not (ApplyPlan Is Nothing) Then txPlanCountS = ApplyPlan.Count
         Call Diag_WriteLine("TX: ENTER_VALIDATE (ApplyPlan.Count=" & CStr(txPlanCountS) & ")")
