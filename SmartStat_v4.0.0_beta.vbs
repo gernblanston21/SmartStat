@@ -23,8 +23,9 @@ Const SMARTSTAT_VERSION = "4.0.0_beta"
 Const HARNESS_ENABLE      = True
 Const HARNESS_DIR         = "E:\EDRIVE\UNIVERSAL\SmartStat\DiagLogs\Harness\"
 Const HARNESS_CONTROL_TAB = "A"      ' Control tabfield (matches existing SMARTSTAT=PLAYER behavior)
+Const HARNESS_MODE_CAPTURE_ONLY = "HARNESS_CAPTURE_ONLY"
 
-Dim G_HARNESS_MODE        ' OFF | HARNESS | HARNESS_COMMIT | HARNESS_CAPTURE | HARNESS_STRICT
+Dim G_HARNESS_MODE        ' OFF | HARNESS | HARNESS_COMMIT | HARNESS_CAPTURE | HARNESS_CAPTURE_ONLY | HARNESS_STRICT
 Dim G_HARNESS_PRE_CP      ' Dict: tabfield -> prior custom prop value
 Dim G_HARNESS_PRE_V       ' Dict: tabfield -> prior visible value
 Dim G_HARNESS_DIFF_COUNT  ' Integer: number of changed fields detected by Harness_WriteIntegrityDiff
@@ -3908,6 +3909,10 @@ Function Harness_GetModeFromControlA()
   Dim v: v = UCase(Trim(CStr(TrioCmd("page:get_property " & HARNESS_CONTROL_TAB))))
   If Len(v) = 0 Then v = UCase(Trim(CStr(TrioCmd("tabfield:get_custom_property " & HARNESS_CONTROL_TAB))))
   If Len(v) = 0 Then Exit Function
+
+  ' Must be before HARNESS_CAPTURE because of substring overlap
+  If v = HARNESS_MODE_CAPTURE_ONLY Then Harness_GetModeFromControlA = HARNESS_MODE_CAPTURE_ONLY : Exit Function
+  If InStr(v, "SMARTSTAT=" & HARNESS_MODE_CAPTURE_ONLY) > 0 Then Harness_GetModeFromControlA = HARNESS_MODE_CAPTURE_ONLY : Exit Function
 
   If InStr(v, "SMARTSTAT=HARNESS_CAPTURE") > 0 Then Harness_GetModeFromControlA = "HARNESS_CAPTURE" : Exit Function
   If InStr(v, "SMARTSTAT=HARNESS_STRICT") > 0 Then Harness_GetModeFromControlA = "HARNESS_STRICT" : Exit Function
