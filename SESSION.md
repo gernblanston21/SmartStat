@@ -45,10 +45,10 @@
 
 ## Roadmap execution order (current)
 1) WP-05 Output Map Coverage ? (Completed)
-2) WP-04 Ambiguity transparency (fail-closed stays strict)
+2) WP-04 Ambiguity transparency (fail-closed stays strict) ? (Next)
 3) WP-01 Phase hardening ? (Completed)
 4) WP-07 Overrides audit trail ? (Completed)
-5) WP-08 Harness expansion ? (In progress)
+5) WP-08 Harness expansion ? (Completed)
 
 ## Completed in this session
 - [x] WP-05 Output Map Coverage
@@ -58,18 +58,36 @@
   - Hard fail `OUTMAP.EMPTY` when no usable targets exist
   - No INI schema changes
   - No ambiguity gating changes
+
 - [x] WP-01 Phase hardening
   - Added phase helpers for begin/end/fail/early-exit logging
   - Converted silent early exits in key pipeline spots to logged early-exits
   - Ensured finalize/refresh behavior is preserved on fail paths
   - No resolver/mapping behavior changes
+
 - [x] WP-07 Overrides audit trail
   - Added override audit logging (old -> new) with section + entity context
   - Added explicit “skip” log when overrides INI cannot load
   - No resolver/mapping behavior changes
 
+- [x] WP-08 Harness expansion
+  - Added HARNESS_CAPTURE_ONLY mode (snapshot-only; exits before pipeline)
+  - Deterministic grouped diff artifacts (CP vs VALUE changes)
+  - Snapshot + grouped diff artifacts emitted for:
+    - CAPTURE_ONLY
+    - HARNESS_CAPTURE
+    - HARNESS_STRICT (precommit logging only)
+    - POST_PIPELINE (centralized end-of-run)
+  - Early-exit artifact emission for:
+    - ENV_VALIDATE_FAIL
+    - CONFIG_PRESENCE_FAIL
+  - No resolver/mapping behavior changes
+  - No transaction behavior changes
+
 ## Next action (ready to proceed)
-- [ ] WP-08 Harness expansion (in SmartStat_v4.0.0_beta.vbs)
-  - Add HARNESS_CAPTURE_ONLY mode (snapshot-only)
-  - Improve harness diff formatting (group CP vs VALUE changes; deterministic ordering)
-  - Ensure harness artifacts are still written on early exits / config failures
+- [ ] WP-04 Ambiguity transparency (fail-closed stays strict)
+  - Improve diagnostic clarity when ambiguity gating blocks execution
+  - Emit structured ambiguity summaries (counts + top candidates)
+  - Preserve fail-closed behavior exactly
+  - No resolver scoring logic changes
+  - No ApplyPlan / Tx behavior changes
