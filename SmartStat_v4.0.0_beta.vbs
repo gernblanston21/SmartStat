@@ -894,6 +894,8 @@ Function Stage_ValidatePlan()
       If (Not IsObject(CompilerContext("ambiguous"))) Or UCase(CStr(ambTypeName)) <> "DICTIONARY" Then
         Call Diag_WriteLine("TX: AMBIGUITY_GATE ambiguous context invalid TypeName=" & CStr(ambTypeName))
         Call Diag_WriteLine("TX: PHASE_CODE=AMBIGUOUS_GATE")
+        Call Diag_WriteLine("TX: EARLY EXIT - AMBIGUOUS_CONTEXT_INVALID")
+        Call Diag_WriteLine("TX: AMBIGUITY_GATE_SUMMARY count=0 keys=[]")
         If (Not IsObject(PlanValidationErrors)) Then
           Set PlanValidationErrors = CreateObject("Scripting.Dictionary")
         ElseIf (PlanValidationErrors Is Nothing) Then
@@ -953,7 +955,35 @@ Function Stage_ValidatePlan()
 
             For ambI = 0 To ambShown - 1
               ambKey = CStr(ambKeys(ambI))
-              Call Diag_WriteLine("TX: AMBIGUITY_DETAIL - " & CStr(amb(ambKey)))
+              If IsObject(amb(ambKey)) Then
+                If UCase(TypeName(amb(ambKey))) = "DICTIONARY" Then
+                  Dim ambHit, ambDecision, ambInput, ambState, ambCand, ambReason, ambAction
+                  Set ambHit = amb(ambKey)
+                  ambDecision = "UNKNOWN_DECISION"
+                  ambInput = ""
+                  ambState = "BLOCKED"
+                  ambCand = "(none recorded)"
+                  ambReason = ""
+                  ambAction = ""
+                  If ambHit.Exists("decision_key") Then ambDecision = CStr(ambHit("decision_key"))
+                  If ambHit.Exists("input_token") Then ambInput = CStr(ambHit("input_token"))
+                  If ambHit.Exists("state") Then ambState = CStr(ambHit("state"))
+                  If ambHit.Exists("candidates") Then ambCand = CStr(ambHit("candidates"))
+                  If ambHit.Exists("notes") Then ambReason = CStr(ambHit("notes"))
+                  If ambHit.Exists("hint") Then ambAction = CStr(ambHit("hint"))
+                  Call Diag_WriteLine("TX: AMBIGUITY_DETAIL[" & CStr(ambI + 1) & "] key=" & ambKey & _
+                    " decision=" & ambDecision & _
+                    " input=[" & Ambiguity_SafeTruncate(ambInput, 80) & "]" & _
+                    " state=" & ambState & _
+                    " candidates=[" & Ambiguity_SafeTruncate(ambCand, 220) & "]" & _
+                    " reason=[" & Ambiguity_SafeTruncate(ambReason, 220) & "]" & _
+                    " action=[" & Ambiguity_SafeTruncate(ambAction, 220) & "]")
+                Else
+                  Call Diag_WriteLine("TX: AMBIGUITY_DETAIL - " & CStr(amb(ambKey)))
+                End If
+              Else
+                Call Diag_WriteLine("TX: AMBIGUITY_DETAIL - " & CStr(amb(ambKey)))
+              End If
             Next
  
             If ambTotal > ambShown Then
