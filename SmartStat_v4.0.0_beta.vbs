@@ -2952,6 +2952,7 @@ Function ProcessQualifier(qualTab, qAliasNorm, qNorm, learn, ByRef qPrefix, ByRe
           Call Ambiguity_AddDetailed("QUALIFIER", qualTxt, CompilerContext("ambiguous").Keys, "BLOCKED", "Multiple qualifier candidates remained above threshold.", "Set " & CStr(qualTab) & " to one exact qualifier token (example: VS_CHANGEUP), or update learn alias mapping.")
           Call Diag_WriteLine("QUALIFIER: ambiguous/unresolved input=[" & qualTxt & "] (ambigCount=" & CStr(CompilerContext("ambiguous").Count) & ")")
           Call Diag_WriteAmbiguitySummary()
+          Call Diag_WriteLine("TX: EARLY EXIT - AMBIGUOUS_GATE")
           ProcessQualifier = False
           Exit Function
         End If
