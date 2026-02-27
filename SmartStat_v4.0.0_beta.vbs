@@ -810,6 +810,14 @@ Sub Main()
     Call Diag_WriteLine("TX: TRANSACTION_MODE=False; skipping transaction commit block")
   End If
 
+  If HARNESS_ENABLE Then
+    If UCase(Trim(CStr(G_HARNESS_MODE))) <> "OFF" Then
+      Call Harness_CapturePostSnapshot()
+      Call Harness_WriteSnapshotArtifact("POST_PIPELINE")
+      Call Harness_WriteGroupedDiffArtifact("POST_PIPELINE")
+    End If
+  End If
+
   ' normal finalize (no label)
   Call Diag_Done()
   Call FinalizeAndRefresh(LOG_FILE, startTime)
