@@ -3882,6 +3882,15 @@ Sub Diag_WriteAmbiguitySummary()
 
   Call EnsureAmbiguityContext()
   If (CompilerContext Is Nothing) Then Exit Sub
+  Dim allowAmbSummary: allowAmbSummary = False
+  If CompilerContext.Exists("learn") Then
+    Dim learnTypeNameSummary: learnTypeNameSummary = TypeName(CompilerContext("learn"))
+    If IsObject(CompilerContext("learn")) And UCase(CStr(learnTypeNameSummary)) = "DICTIONARY" Then
+      Dim lkSummary: Set lkSummary = CompilerContext("learn")
+      If lkSummary.Exists("allow_ambiguous_apply") Then allowAmbSummary = CBool(lkSummary("allow_ambiguous_apply"))
+    End If
+  End If
+  If Not allowAmbSummary Then Exit Sub
   If Not CompilerContext.Exists("ambiguous") Then Exit Sub
 
   Dim ambHits: Set ambHits = CompilerContext("ambiguous")
@@ -3948,6 +3957,15 @@ Function BuildAmbiguityOperatorSection()
   BuildAmbiguityOperatorSection = ""
 
   If (CompilerContext Is Nothing) Then Exit Function
+  Dim allowAmbOut: allowAmbOut = False
+  If CompilerContext.Exists("learn") Then
+    Dim learnTypeNameOut: learnTypeNameOut = TypeName(CompilerContext("learn"))
+    If IsObject(CompilerContext("learn")) And UCase(CStr(learnTypeNameOut)) = "DICTIONARY" Then
+      Dim lkOut: Set lkOut = CompilerContext("learn")
+      If lkOut.Exists("allow_ambiguous_apply") Then allowAmbOut = CBool(lkOut("allow_ambiguous_apply"))
+    End If
+  End If
+  If Not allowAmbOut Then Exit Function
   If Not CompilerContext.Exists("ambiguous") Then Exit Function
 
   Dim amb: Set amb = CompilerContext("ambiguous")
