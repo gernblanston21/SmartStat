@@ -29,6 +29,9 @@ Dim G_HARNESS_MODE        ' OFF | HARNESS | HARNESS_COMMIT | HARNESS_CAPTURE | H
 Dim G_HARNESS_PRE_CP      ' Dict: tabfield -> prior custom prop value
 Dim G_HARNESS_PRE_V       ' Dict: tabfield -> prior visible value
 Dim G_HARNESS_DIFF_COUNT  ' Integer: number of changed fields detected by Harness_WriteIntegrityDiff
+Dim G_HARNESS_POST_CP     ' Dict: tabfield -> post custom prop value
+Dim G_HARNESS_POST_V      ' Dict: tabfield -> post visible value
+Dim G_HARNESS_POST_SKIPPED_REASON
 Dim G_TRIO_WRITE_ATTEMPTS
 Dim G_TRIO_WRITE_SUCCESS_COUNT
 Dim G_TRIO_WRITE_FAIL_COUNT
@@ -3939,6 +3942,35 @@ Sub Harness_SnapshotPageState(ByRef outVisible, ByRef outCustomProps)
     outVisible(CStr(t)) = v
     outCustomProps(CStr(t)) = cp
   Next
+  On Error GoTo 0
+End Sub
+
+Sub Harness_ResetPostState()
+  Set G_HARNESS_POST_CP = Nothing
+  Set G_HARNESS_POST_V = Nothing
+  G_HARNESS_POST_SKIPPED_REASON = ""
+End Sub
+
+Sub Harness_MarkPostSkipped(ByVal reason)
+  Set G_HARNESS_POST_CP = Nothing
+  Set G_HARNESS_POST_V = Nothing
+  G_HARNESS_POST_SKIPPED_REASON = UCase(Trim(CStr(reason)))
+End Sub
+
+Sub Harness_CapturePostSnapshot()
+  On Error Resume Next
+  Dim cp, vv
+  Set cp = NewTextDict()
+  Set vv = NewTextDict()
+  Call Harness_SnapshotPageState(cp, vv)
+  If Err.Number = 0 Then
+    Set G_HARNESS_POST_CP = cp
+    Set G_HARNESS_POST_V = vv
+    G_HARNESS_POST_SKIPPED_REASON = ""
+  Else
+    Call Harness_MarkPostSkipped("SNAPSHOT_ERROR")
+    Err.Clear
+  End If
   On Error GoTo 0
 End Sub
 
