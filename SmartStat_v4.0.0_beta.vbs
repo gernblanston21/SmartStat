@@ -498,6 +498,7 @@ Sub Main()
   Call Diag_Init(x_tmplForDiag)
 
   Call Diag_Log("VERSION=" & SMARTSTAT_VERSION)
+  Dim LOG_FILE:      LOG_FILE      = "E:\EDRIVE\UNIVERSAL\SmartStat\DiagLogs\SmartStat_LearnDebug.txt"
 
   ' ================================
   ' v4.0 Initialize Compiler Context
@@ -535,18 +536,29 @@ Sub Main()
       Set G_HARNESS_PRE_CP = CreateTextDict()
       Set G_HARNESS_PRE_V  = CreateTextDict()
       Call Harness_SnapshotPageState(G_HARNESS_PRE_V, G_HARNESS_PRE_CP)
+      Call Harness_ResetPostState()
+      If G_HARNESS_MODE = HARNESS_MODE_CAPTURE_ONLY Then
+        Call Harness_MarkPostSkipped("CAPTURE_ONLY")
+        Call Harness_WriteSnapshotArtifact("CAPTURE_ONLY")
+        Call Harness_WriteGroupedDiffArtifact("CAPTURE_ONLY")
+        Call Diag_WriteLine("HARNESS: capture-only mode; exiting before pipeline")
+        Call Diag_Done()
+        FinalizeAndRefresh LOG_FILE, startTime
+        Exit Sub
+      End If
       Call Diag_WriteLine("HARNESS: mode=" & G_HARNESS_MODE & " preSnapshotTabs=" & CStr(G_HARNESS_PRE_CP.Count))
 
       If G_HARNESS_MODE = "HARNESS_CAPTURE" Then
         Call Harness_WriteFixtureFile(G_HARNESS_PRE_V, G_HARNESS_PRE_CP, x_tmplForDiag)
         Call Diag_WriteLine("HARNESS: capture complete (no pipeline executed)")
         Call Diag_Done()
+        FinalizeAndRefresh LOG_FILE, startTime
         Exit Sub
       End If
     End If
   End If
 
-  Dim LOG_FILE:      LOG_FILE      = "E:\EDRIVE\UNIVERSAL\SmartStat\DiagLogs\SmartStat_LearnDebug.txt"
+  LOG_FILE      = "E:\EDRIVE\UNIVERSAL\SmartStat\DiagLogs\SmartStat_LearnDebug.txt"
   If Not Diag_Check_Environment() Then
     Call Diag_Done()
     Call FinalizeAndRefresh(LOG_FILE, startTime)
