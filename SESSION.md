@@ -86,6 +86,13 @@
   - Bounded detail enforced (max 5 entries + truncation marker)
   - Fail-closed behavior unchanged
   - No resolver/mapping/apply behavior changes
+- [x] WP-09 Pre-release stability verification
+  - STRICT diff>0 commit block validated
+  - STRICT diff=0 commit allow validated
+  - Removed false "VALIDATION FAILURE - Transaction Aborted" log after successful commit
+  - Fixed Harness_CapturePostSnapshot CP/VALUES inversion
+  - Verified integrity diff and grouped diff alignment
+  - No resolver/mapping/Tx behavior changes
 
 ## Next action (ready to proceed)
 - [ ] WP-06 Resolver stability guardrails
