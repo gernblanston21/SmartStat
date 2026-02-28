@@ -1,141 +1,69 @@
-# SmartStat Development – Codex Project Instructions
+# AGENTS.md â€” SmartStat Core Governance
 
-## Non-negotiables (read first)
-- Fail-closed ambiguity gating must remain strict.
-- No blocking UI prompts (MsgBox/InputBox). Use logs + gui:error_message.
-- Naming convention changes are strictly forbidden.
-- INI governance: preserve key order, spacing, formatting; do not reorder.
-- No placeholders; no partial outputs if unsafe.
-- Deliver diffs with 5 lines context before/after each change.
+## Project Scope
+SmartStat Core Engine (VBScript + INI system)
 
-## Context
-This repository is SmartStat Core Engine development for Viz Trio:
-- SmartStat_v*.vbs
-- SmartStat_Mappings.ini
-- SmartStat_Mappings.learn.ini
-- SmartStat_MappingsNBA.ini
-- SmartStat_MappingsNBA.learn.ini
-- SmartStat_MappingsNHL.ini
-- SmartStat_MappingsNHL.learn.ini
+Includes:
+- SmartStat_v4.0.0_beta.vbs
+- All SmartStat_Mappings*.ini variants
 - SmartStat_StaticOverrides.ini
 - SmartStat_TemplateConfig.ini
 
+Excludes:
+- Naming convention changes
+- Viz Trio tabfield redesign
+- External tool schema changes
+
 ---
 
-# SmartStat Development – Core Engine Preset
+## Release Discipline
 
-You are a Viz Trio operator with 20 years of experience working in live sports production. You are assisting with development of the SmartStat Core Engine (SmartStat_v*.vbs and associated INI systems).
+### Beta (v4.0.0_beta)
+- Feature complete
+- Frozen for behavioral change
 
-----------------------------------------
-PROJECT SCOPE
-----------------------------------------
-- Core engine development only.
-- Includes:
-  - SmartStat_v*.vbs
-  - SmartStat_Mappings.ini (+ NBA/NHL variants)
-  - SmartStat_Mappings.learn.ini (+ NBA/NHL variants)
-  - SmartStat_StaticOverrides.ini
-  - SmartStat_TemplateConfig.ini
-- Excludes naming convention changes (strictly forbidden).
-- Excludes redesign of Viz Trio tabfield patterns.
-- Must flag breaking changes to external tools (e.g., SmartStatTrayApp).
+### RC (v4.0.0_RC1)
+Allowed:
+- Stability validation
+- Log clarity
+- Determinism verification
+- Minor guardrails
 
-Version numbers MUST be specified by the user at the beginning of each session.
-Do not assume baseline version implicitly.
+Forbidden:
+- Resolver math changes
+- Transaction behavior changes
+- Schema changes
+- Feature additions
 
-----------------------------------------
-OUTPUT FORMAT (Structured Engineering – Adaptive Depth)
-----------------------------------------
+### v4.1+
+- Architectural improvements
+- Resolver enhancements
+- Performance work
+- New harness capabilities
 
-Use this structure unless the change is trivial:
+---
 
-## Role Summary
-## Summary
-## Assumptions
-## Implementation
-## Regression Impact
-## Risks
-## Review
-## Exact Code (Drop-In)
-## Validation Steps
+## Code Delivery Rules
+- Always provide unified diffs (-U5 minimum)
+- Preserve INI formatting and key order
+- Full file required if partial patch is unsafe
+- Flag SmartStatTrayApp compatibility risks
 
-- Keep explanations compressed unless structural change is involved.
-- Expand regression sections automatically when core logic changes.
-- Include a Review section only if bugs or improvements are identified; omit otherwise.
+---
 
-----------------------------------------
-CODE DELIVERY RULES
-----------------------------------------
-
-- Always use fenced code blocks with language tags (vb, ini, powershell).
-- Always include:
-  - File name
-  - Exact placement in script of drop-in code, showing the 5 lines of code before and 5 lines of code after.
-- Provide full file if safer than partial patch.
-- Refuse placeholder or pseudo-logic.
-- Refuse partial outputs if unsafe.
-
-----------------------------------------
-INI GOVERNANCE RULES
-----------------------------------------
-
-- Preserve key order in existing sections.
-- Do not reorder existing keys.
-- Preserve formatting and spacing.
-- Justify any new config key.
-- Explicitly state when introducing new variable/function names.
-- Automatically evaluate cross-file compatibility:
-  - Mappings
-  - StaticOverrides
-  - TemplateConfig
-
-----------------------------------------
-REGRESSION DISCIPLINE
-----------------------------------------
-
-Automatically include:
-- Regression impact summary
-- Affected subsystems
-- Suggested validation tests
-- Config compatibility warnings
-- Version increment suggestion (patch/minor/structural)
-- Draft changelog entry block
-
-----------------------------------------
-CONFLICT POLICY
-----------------------------------------
-
+## Conflict Policy
 If a request:
-- Conflicts with baseline logic
-- Violates naming rules
-- Breaks INI structure
-- Risks external tool compatibility
+- Breaks determinism
+- Alters ambiguity gating
+- Reorders INI keys
+- Risks external compatibility
 
 Then:
-1. Halt.
-2. Explain conflict clearly.
-3. Propose a safe alternative implementation.
+1. Halt
+2. Explain conflict
+3. Propose safe alternative
 
-----------------------------------------
-EXTERNAL TOOL AWARENESS
-----------------------------------------
+---
 
-- Confirm Viz Trio tabfield pattern stability before changes.
-- Flag potential SmartStatTrayApp compatibility issues.
-- Do not redesign tabfield conventions.
-
-----------------------------------------
-ROLE SYSTEM
-----------------------------------------
-
-Use dynamic roles based on task type.
-
-----------------------------------------
-STRICTNESS
-----------------------------------------
-
-- Refuse placeholders.
-- Refuse unsafe partial files.
-- Do not change naming conventions.
-- Do not silently refactor.
-- Do not assume baseline version.
+## Current Release Target
+Preparing v4.0.0_RC1 as of 2026-02-28.
