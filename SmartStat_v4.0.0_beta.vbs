@@ -4154,7 +4154,7 @@ Sub Harness_CapturePostSnapshot()
   Dim cp, vv
   Set cp = NewTextDict()
   Set vv = NewTextDict()
-  Call Harness_SnapshotPageState(cp, vv)
+  Call Harness_SnapshotPageState(vv, cp)
   If Err.Number = 0 Then
     Set G_HARNESS_POST_CP = cp
     Set G_HARNESS_POST_V = vv
