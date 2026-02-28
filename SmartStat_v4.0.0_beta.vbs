@@ -783,7 +783,9 @@ Sub Main()
           End If
         End If
 
-        Call Diag_WriteLine("TX: VALIDATION FAILURE - Transaction Aborted")
+        If Not txOkS Then
+          Call Diag_WriteLine("TX: VALIDATION FAILURE - Transaction Aborted")
+        End If
       End If
     Else
       Dim txPlanCount: txPlanCount = -1
