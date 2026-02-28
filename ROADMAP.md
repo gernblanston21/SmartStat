@@ -1,7 +1,7 @@
-# ROADMAP — SmartStat v4 Lifecycle
+# ROADMAP - SmartStat v4 Lifecycle
 
 ## Current State
-v4.0.0_beta — Frozen and stable
+v4.0.0_beta - Frozen and stable
 Transitioning to v4.0.0_RC1
 
 ---

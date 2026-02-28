@@ -1,4 +1,4 @@
-# AGENTS.md — SmartStat Core Governance
+# AGENTS.md - SmartStat Core Governance
 
 ## Project Scope
 SmartStat Core Engine (VBScript + INI system)

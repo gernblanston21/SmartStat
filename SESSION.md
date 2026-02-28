@@ -1,4 +1,4 @@
-# SESSION — SmartStat Core Engine
+# SESSION - SmartStat Core Engine
 
 ## Release State
 - Current Stable Baseline: v4.0.0_beta (FROZEN)
