@@ -1446,6 +1446,7 @@ Function ResolveQualifierSmart(qTxt, qAliasNorm, qNorm, learn, ByRef outFrag, By
   If qNorm.Exists(keyN) Then outFrag = CStr(qNorm(keyN)) : acceptedBy="direct" : scoreOut=1 : ResolveQualifierSmart=True : Exit Function
 
   Dim bestA, altA, sA, sAltA, ambA
+  If CBool(DIAG_MODE) Then Call Diag_WriteLine("RESOLVER_CANDIDATE_SOURCE scope=qualifier.alias source=DICT_KEYS order=UNSORTED_ENUM tie_rule=FIRST_SEEN")
   If HeuristicPickWithAlt(keyN, qAliasNorm.Keys, learn, bestA, sA, altA, sAltA, ambA) Then
     If ambA Then
       Call Ambiguity_AddEx("qualifier", "alias", raw, "best=[" & bestA & "](" & ScoreStr(sA) & "); alt=[" & altA & "](" & ScoreStr(sAltA) & ")", "HeuristicPickWithAlt tie")
@@ -1461,6 +1462,7 @@ Function ResolveQualifierSmart(qTxt, qAliasNorm, qNorm, learn, ByRef outFrag, By
   End If
 
   Dim bestC, altC, sC, sAltC, ambC
+  If CBool(DIAG_MODE) Then Call Diag_WriteLine("RESOLVER_CANDIDATE_SOURCE scope=qualifier.canon source=DICT_KEYS order=UNSORTED_ENUM tie_rule=FIRST_SEEN")
   If HeuristicPickWithAlt(keyN, qNorm.Keys, learn, bestC, sC, altC, sAltC, ambC) Then
     If ambC Then
       Call Ambiguity_AddEx("qualifier", "canon", raw, "best=[" & bestC & "](" & ScoreStr(sC) & "); alt=[" & altC & "](" & ScoreStr(sAltC) & ")", "HeuristicPickWithAlt tie")
@@ -1647,6 +1649,7 @@ Function ResolveCategorySmart(inputKey, preferPitcher, learn, _
   End If
 
   Dim aliasKeys: aliasKeys = MergeKeys(catAlias, catPitchAlias)
+  If CBool(DIAG_MODE) Then Call Diag_WriteLine("RESOLVER_CANDIDATE_SOURCE scope=category.alias source=MERGE_KEYS_DICT_ENUM order=UNSORTED_ENUM tie_rule=FIRST_SEEN")
 
   Dim bestAlias, altAlias, s1, sAlt1, amb1
   If HeuristicPickWithAlt(keyTrim, aliasKeys, learn, bestAlias, s1, altAlias, sAlt1, amb1) Then
@@ -1677,6 +1680,7 @@ Function ResolveCategorySmart(inputKey, preferPitcher, learn, _
   End If
 
   Dim canonKeys: canonKeys = MergeKeys(catMap, catPitchMap)
+  If CBool(DIAG_MODE) Then Call Diag_WriteLine("RESOLVER_CANDIDATE_SOURCE scope=category.canon source=MERGE_KEYS_DICT_ENUM order=UNSORTED_ENUM tie_rule=FIRST_SEEN")
 
   Dim bestCanon, altCanon, s2, sAlt2, amb2
   If HeuristicPickWithAlt(keyTrim, canonKeys, learn, bestCanon, s2, altCanon, sAlt2, amb2) Then
@@ -2049,10 +2053,10 @@ Sub ScanForBestTwo(qn, arr, ByRef bestKey, ByRef bestDist, ByRef altKey, ByRef a
 
     If CBool(DIAG_MODE) Then
       If Len(bestKey) > 0 And dist = bestDist And k <> bestKey Then
-        Call Diag_WriteLine("RESOLVER_TIE q=[" & qn & "] dist=" & CStr(dist) & " incumbent=[" & CStr(bestKey) & "] contender=[" & k & "]")
+        Call Diag_WriteLine("RESOLVER_TIE q=[" & qn & "] dist=" & CStr(dist) & " incumbent=[" & CStr(bestKey) & "] contender=[" & k & "] tie_rule=FIRST_SEEN")
       End If
       If Len(altKey) > 0 And dist = altDist And k <> altKey Then
-        Call Diag_WriteLine("RESOLVER_TIE_ALT q=[" & qn & "] dist=" & CStr(dist) & " incumbent=[" & CStr(altKey) & "] contender=[" & k & "]")
+        Call Diag_WriteLine("RESOLVER_TIE_ALT q=[" & qn & "] dist=" & CStr(dist) & " incumbent=[" & CStr(altKey) & "] contender=[" & k & "] tie_rule=FIRST_SEEN")
       End If
     End If
     If dist < bestDist Then
@@ -2080,7 +2084,7 @@ Private Sub ScanForBest(qn, arr, ByRef bestKey, ByRef bestDist)
       If Len(qn) <= 5 And bestDist <= 1 Then Exit Sub
     ElseIf dist = bestDist And k <> bestKey Then
       If CBool(DIAG_MODE) Then
-        Call Diag_WriteLine("RESOLVER_TIE q=[" & qn & "] dist=" & CStr(dist) & " incumbent=[" & CStr(bestKey) & "] contender=[" & k & "]")
+        Call Diag_WriteLine("RESOLVER_TIE q=[" & qn & "] dist=" & CStr(dist) & " incumbent=[" & CStr(bestKey) & "] contender=[" & k & "] tie_rule=FIRST_SEEN")
       End If
     End If
   Next
