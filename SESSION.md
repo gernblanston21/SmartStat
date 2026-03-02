@@ -6,6 +6,7 @@
 - Working Branch: v4_Dev (future development only)
 - Upcoming Branch: v4_RC (Release Candidate stabilization)
 - Source of Truth: v4_Dev branch workspace
+- Viz Trio Reference: docs/viz-trio/
 
 ---
 

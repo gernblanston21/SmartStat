@@ -994,7 +994,7 @@ Function Stage_ValidatePlan()
                 Call Diag_WriteLine("TX: AMBIGUITY_DETAIL - " & CStr(amb(ambKey)))
               End If
             Next
- 
+
             If ambTotal > ambShown Then
               Call Diag_WriteLine("TX: AMBIGUITY_DETAIL_TRUNCATED total=" & CStr(ambTotal) & " shown=" & CStr(ambShown))
             End If

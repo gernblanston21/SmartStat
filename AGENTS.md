@@ -16,6 +16,12 @@ Excludes:
 
 ---
 
+## Viz Trio Grounding Requirement
+- All SmartStat changes must align with `docs/viz-trio/`; no Trio command, tabfield assumption, or operator workflow may be inferred without documentation support. If uncertain, quote the relevant section and fail closed.
+
+
+---
+
 ## Release Discipline
 
 ### Beta (v4.0.0_beta)
