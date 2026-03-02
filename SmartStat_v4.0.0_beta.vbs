@@ -765,10 +765,12 @@ Sub Main()
             Call Diag_WriteLine("TX: VALIDATION ERRORS:")
 
             Dim txErrKeys: txErrKeys = PlanValidationErrors.Keys
-            Dim txErrI, txErrJ, txErrTmp, txErrKey
+            Dim txErrI, txErrJ, txErrTmp, txErrKey, txErrCmp
             For txErrI = 0 To UBound(txErrKeys) - 1
               For txErrJ = txErrI + 1 To UBound(txErrKeys)
-                If StrComp(CStr(txErrKeys(txErrI)), CStr(txErrKeys(txErrJ)), vbTextCompare) > 0 Then
+                txErrCmp = StrComp(CStr(txErrKeys(txErrI)), CStr(txErrKeys(txErrJ)), vbTextCompare)
+                If txErrCmp = 0 Then txErrCmp = StrComp(CStr(txErrKeys(txErrI)), CStr(txErrKeys(txErrJ)), vbBinaryCompare)
+                If txErrCmp > 0 Then
                   txErrTmp = txErrKeys(txErrI)
                   txErrKeys(txErrI) = txErrKeys(txErrJ)
                   txErrKeys(txErrJ) = txErrTmp
@@ -938,12 +940,14 @@ Function Stage_ValidatePlan()
           Call Diag_WriteLine("TX: Ambiguity gate blocked apply (count=" & CStr(amb.Count) & ")")
           Call Diag_WriteLine("TX: EARLY EXIT - AMBIGUOUS_GATE")
           Call Diag_WriteLine("TX: PHASE_CODE=AMBIGUOUS_GATE")
-          Dim ambKeys, ambI, ambJ, ambTmp, ambKey, ambKeysCsv, ambShown, ambTotal
+          Dim ambKeys, ambI, ambJ, ambTmp, ambKey, ambKeysCsv, ambShown, ambTotal, ambCmp
           ambKeys = amb.Keys
           If IsArray(ambKeys) Then
             For ambI = 0 To UBound(ambKeys) - 1
               For ambJ = ambI + 1 To UBound(ambKeys)
-                If StrComp(CStr(ambKeys(ambI)), CStr(ambKeys(ambJ)), vbTextCompare) > 0 Then
+                ambCmp = StrComp(CStr(ambKeys(ambI)), CStr(ambKeys(ambJ)), vbTextCompare)
+                If ambCmp = 0 Then ambCmp = StrComp(CStr(ambKeys(ambI)), CStr(ambKeys(ambJ)), vbBinaryCompare)
+                If ambCmp > 0 Then
                   ambTmp = ambKeys(ambI)
                   ambKeys(ambI) = ambKeys(ambJ)
                   ambKeys(ambJ) = ambTmp
@@ -1074,10 +1078,29 @@ Function Stage_ValidatePlan()
       End If
     End If
 
-    Dim ek
-    For Each ek In PlanValidationErrors.Keys
-      Call Diag_WriteLine("TX: VALIDATION ERROR - " & ek & ": " & PlanValidationErrors(ek))
-    Next
+    Dim ek, ekKeys, ekI, ekJ, ekTmp, ekCmp
+    If Not (PlanValidationErrors Is Nothing) Then
+      If PlanValidationErrors.Count > 0 Then
+        ekKeys = PlanValidationErrors.Keys
+        If IsArray(ekKeys) Then
+          For ekI = 0 To UBound(ekKeys) - 1
+            For ekJ = ekI + 1 To UBound(ekKeys)
+              ekCmp = StrComp(CStr(ekKeys(ekI)), CStr(ekKeys(ekJ)), vbTextCompare)
+              If ekCmp = 0 Then ekCmp = StrComp(CStr(ekKeys(ekI)), CStr(ekKeys(ekJ)), vbBinaryCompare)
+              If ekCmp > 0 Then
+                ekTmp = ekKeys(ekI)
+                ekKeys(ekI) = ekKeys(ekJ)
+                ekKeys(ekJ) = ekTmp
+              End If
+            Next
+          Next
+          For ekI = 0 To UBound(ekKeys)
+            ek = CStr(ekKeys(ekI))
+            Call Diag_WriteLine("TX: VALIDATION ERROR - " & ek & ": " & PlanValidationErrors(ek))
+          Next
+        End If
+      End If
+    End If
   Else
     Call Diag_WriteLine("TX: Validation OK")
   End If
@@ -4420,14 +4443,20 @@ Sub Harness_WriteFixtureFile(ByVal visDict, ByVal cpDict, ByVal tmplName)
   ts.WriteLine ""
 
   ts.WriteLine "[VISIBLE]"
-  Dim k
-  For Each k In visDict.Keys
+  Dim k, keysObj, i, n
+  Set keysObj = Harness_SortedKeys(visDict)
+  n = Harness_KeyListCount(keysObj)
+  For i = 0 To (n - 1)
+    k = Harness_KeyListItem(keysObj, i)
     ts.WriteLine CStr(k) & "=" & Replace(CStr(visDict(k)), vbCrLf, "\n")
   Next
   ts.WriteLine ""
 
   ts.WriteLine "[CUSTOM_PROPERTIES]"
-  For Each k In cpDict.Keys
+  Set keysObj = Harness_SortedKeys(cpDict)
+  n = Harness_KeyListCount(keysObj)
+  For i = 0 To (n - 1)
+    k = Harness_KeyListItem(keysObj, i)
     ts.WriteLine CStr(k) & "=" & Replace(CStr(cpDict(k)), vbCrLf, "\n")
   Next
 
@@ -4463,8 +4492,12 @@ Sub Harness_WriteIntegrityDiff(ByVal preCustomProps, ByVal planDict)
     Exit Sub
   End If
 
-  Dim k, beforeV, afterV
-  For Each k In planDict.Keys
+  Dim k, beforeV, afterV, planKeysObj, pi, pn
+  Set planKeysObj = Harness_SortedKeys(planDict)
+  pn = Harness_KeyListCount(planKeysObj)
+
+  For pi = 0 To (pn - 1)
+    k = Harness_KeyListItem(planKeysObj, pi)
     beforeV = ""
     If Not (preCustomProps Is Nothing) Then
       If preCustomProps.Exists(CStr(k)) Then beforeV = CStr(preCustomProps(CStr(k)))
