@@ -203,6 +203,9 @@ Output:
     ROADMAP.md
     SESSION.md
 
+Note:
+Validation artifacts committed on branch v4_RC; release tag remains 4852c94.
+
 ------------------------------------------------------------------------
 
 # 7) Final RC1 Validation Verdict
