@@ -896,6 +896,13 @@ Function Stage_ValidatePlan()
       End If
       Exit Function
     End If
+    If PlanValidationErrors.Exists("TRANSFORMS_REGEX_CONFLICT") Then
+      Call Diag_WriteLine("TX: VALIDATION ERROR - TRANSFORMS_REGEX_CONFLICT: " & CStr(PlanValidationErrors("TRANSFORMS_REGEX_CONFLICT")))
+      Call Diag_WriteLine("TX: TRANSFORMS_REGEX_CONFLICT - blocking apply")
+      Stage_ValidatePlan = False
+      Call Diag_WriteLine("TX: EARLY EXIT - TRANSFORMS_REGEX_CONFLICT_PRECHECK")
+      Exit Function
+    End If
   End If
 
   ' v4.0 Phase 2: block commit if ambiguity exists (unless explicitly allowed)
@@ -1267,18 +1274,111 @@ Function EscapeForCharClass(s)
   EscapeForCharClass = out
 End Function
 
+Function Transform_SortStringArrayTextBinary(ByVal arrIn)
+  On Error Resume Next
+  If Not IsArray(arrIn) Then
+    Transform_SortStringArrayTextBinary = Array()
+    Exit Function
+  End If
+
+  Dim lo, hi
+  lo = LBound(arrIn)
+  hi = UBound(arrIn)
+  If Err.Number <> 0 Then
+    Err.Clear
+    Transform_SortStringArrayTextBinary = Array()
+    Exit Function
+  End If
+
+  Dim arr, i, j, tmp, cmp
+  arr = arrIn
+  If hi > lo Then
+    For i = lo To hi - 1
+      For j = i + 1 To hi
+        cmp = StrComp(CStr(arr(i)), CStr(arr(j)), vbTextCompare)
+        If cmp = 0 Then cmp = StrComp(CStr(arr(i)), CStr(arr(j)), vbBinaryCompare)
+        If cmp > 0 Then
+          tmp = arr(i)
+          arr(i) = arr(j)
+          arr(j) = tmp
+        End If
+      Next
+    Next
+  End If
+
+  Transform_SortStringArrayTextBinary = arr
+  On Error GoTo 0
+End Function
+
+Function Transform_DictKeysSortedTextBinary(ByVal d)
+  On Error Resume Next
+  Transform_DictKeysSortedTextBinary = Array()
+  If Not IsObject(d) Then Exit Function
+  If UCase(TypeName(d)) <> "DICTIONARY" Then Exit Function
+  If d.Count <= 0 Then Exit Function
+  Transform_DictKeysSortedTextBinary = Transform_SortStringArrayTextBinary(d.Keys)
+  On Error GoTo 0
+End Function
+
 Function LoadRegexDict(ini, sectionName)
   On Error Resume Next
   Dim out: Set out = NewTextDict()
+  Dim seenExact: Set seenExact = CreateObject("Scripting.Dictionary")
+  Dim conflictCount: conflictCount = 0
+  Dim isStrict: isStrict = (UCase(Trim(CStr(G_HARNESS_MODE))) = "HARNESS_STRICT")
+
   If ini.Exists(sectionName) Then
     Dim sec: Set sec = ini(sectionName)
-    Dim k, line, parts
-    For Each k In sec.Keys
-      line = sec(k)
-      parts = Split(line, "=>")
-      If UBound(parts) >= 1 Then out(Trim(parts(0))) = Trim(parts(1))
-    Next
+    Dim srcKeys, i, srcKey, line, parts
+    Dim patternTxt, replacementTxt, prevReplacement, warnMsg
+
+    srcKeys = Transform_DictKeysSortedTextBinary(sec)
+    If IsArray(srcKeys) Then
+      For i = LBound(srcKeys) To UBound(srcKeys)
+        srcKey = CStr(srcKeys(i))
+        line = CStr(sec(srcKey))
+        parts = Split(line, "=>")
+
+        If UBound(parts) >= 1 Then
+          patternTxt = Trim(CStr(parts(0)))
+          replacementTxt = Trim(CStr(parts(1)))
+
+          ' Exact duplicate identity is byte-for-byte parsed LHS pattern text.
+          If seenExact.Exists(patternTxt) Then
+            prevReplacement = CStr(seenExact(patternTxt))
+            If CStr(prevReplacement) <> CStr(replacementTxt) Then
+              conflictCount = CLng(conflictCount) + 1
+              warnMsg = "TRANSFORMS_REGEX_WARN_CONFLICT pattern=[" & patternTxt & "] prior=[" & prevReplacement & "] winning=[" & replacementTxt & "] precedence=sorted source-key order; later wins"
+              If CBool(DIAG_MODE) Then Call Diag_WriteLine(warnMsg)
+
+              If isStrict Then
+                Call EnsureAmbiguityContext()
+                Call Ambiguity_AddEx("transforms_regex", "conflict", patternTxt, "prior=[" & prevReplacement & "]; winning=[" & replacementTxt & "]", "Conflicting duplicate pattern in TRANSFORMS_REGEX")
+              End If
+            End If
+          End If
+
+          seenExact(patternTxt) = replacementTxt
+          out(patternTxt) = replacementTxt
+        End If
+      Next
+    End If
   End If
+
+  If CLng(conflictCount) > 0 Then
+    If isStrict Then
+      If (Not IsObject(PlanValidationErrors)) Then
+        Set PlanValidationErrors = CreateObject("Scripting.Dictionary")
+      ElseIf (PlanValidationErrors Is Nothing) Then
+        Set PlanValidationErrors = CreateObject("Scripting.Dictionary")
+      End If
+      PlanValidationErrors("TRANSFORMS_REGEX_CONFLICT") = "count=" & CStr(conflictCount) & " (strict fail-closed)"
+      If CBool(DIAG_MODE) Then Call Diag_WriteLine("TRANSFORMS_REGEX_STRICT_BLOCK conflicts=" & CStr(conflictCount) & " action=TRANSFORMS_REGEX_CONFLICT")
+    Else
+      If CBool(DIAG_MODE) Then Call Diag_WriteLine("TRANSFORMS_REGEX_WARN_CONFLICT_SUMMARY count=" & CStr(conflictCount) & " precedence=sorted source-key order; later wins")
+    End If
+  End If
+
   Set LoadRegexDict = out
   On Error GoTo 0
 End Function
@@ -1317,9 +1417,14 @@ Function ApplyTransforms(s, transforms, rxTransforms)
   End If
   If transforms.Exists("to_lower") And transforms("to_lower") Then k = LCase(k)
   If transforms.Exists("spaces_to_underscores") And transforms("spaces_to_underscores") Then k = Replace(k, " ", "_")
-  For Each prn In rxTransforms.Keys
-    k = RegexReplaceAll(k, prn, rxTransforms(prn))
-  Next
+  Dim rxKeys, rxi
+  rxKeys = Transform_DictKeysSortedTextBinary(rxTransforms)
+  If IsArray(rxKeys) Then
+    For rxi = LBound(rxKeys) To UBound(rxKeys)
+      prn = CStr(rxKeys(rxi))
+      k = RegexReplaceAll(k, prn, CStr(rxTransforms(prn)))
+    Next
+  End If
   ApplyTransforms = k
 End Function
 
