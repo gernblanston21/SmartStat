@@ -32,20 +32,102 @@ Transitioning to v4.0.0_RC1
 - Fail-closed semantics preserved (ambiguity + validation gates).
 - Each WP must include: scope, DoD, regression plan, and validation artifacts.
 
-## WP-10 (v4.1.0): Explicit deterministic key sorting (controlled change)
-### Scope
-- Introduce explicit deterministic ordering where unordered iteration can affect output stability
-- Keep functional outputs identical except for deterministic ordering (no math/logic changes)
+## WP-10 (v4.1.0): Determinism Surface Stabilization (Explicit Ordering)
 
-### Definition of Done
-- Deterministic ordering verified across representative templates
+### Objective
+Eliminate nondeterministic iteration surfaces that affect:
+- Visible output stability
+- Log emission stability
+- Harness artifact reproducibility
+- Resolver decision consistency
+- INI traversal consistency
+
+This is a controlled architectural stabilization pass.
+No math, resolution logic, or precedence changes are permitted.
+
+---
+
+### Determinism Surface Classes (Mapped)
+
+The following unordered iteration classes are in scope:
+
+1. Dictionary key iteration (runtime collections)
+2. Multi-source merge order (config overlays)
+3. First-match resolver scans
+4. Output_map emission ordering
+5. Log/diagnostic dump ordering
+6. INI section traversal
+7. INI key traversal (if iterative)
+8. Filesystem enumeration (if used for config load)
+9. List parsing rehydration into unordered containers
+10. Candidate set construction during heuristic scans
+
+Each surface must be classified as:
+- Behavior-affecting
+- Presentation-only
+- Non-impacting
+
+HIGH-risk surfaces (behavioral) must be stabilized before emission-level sorting.
+
+---
+
+### Explicit Non-Scope
+
+WP-10 must NOT:
+- Change resolution precedence rules
+- Alter ambiguity detection behavior
+- Modify fail-closed gating
+- Reorder INI files
+- Refactor resolver algorithm design
+- Introduce silent precedence changes
+- Mask latent ambiguity bugs via sorting
+
+---
+
+### Implementation Phases
+
+Phase 1 – Surface Audit (no code changes)
+- Confirm actual presence of each determinism surface class
+- Identify behavioral vs presentation-only cases
+- Document implicit precedence dependencies
+
+Phase 2 – Emission Stabilization
+- Stabilize output_map ordering
+- Stabilize ambiguity dump ordering
+- Stabilize harness artifact serialization
+
+Phase 3 – Behavioral Surface Hardening
+- Stabilize dictionary iteration used in resolver decisions
+- Stabilize overlay merge ordering explicitly
+- Stabilize candidate evaluation order
+
+Phase 4 – Regression Verification
+- STRICT harness repeat-run validation
+- Confirm identical resolution outcomes
+- Confirm diffs are ordering-only
+- Document validation artifact record
+
+---
+
+### Definition of Done (Expanded)
+
+- All HIGH-risk determinism surfaces stabilized
+- All MEDIUM-risk surfaces stabilized for artifact consistency
+- STRICT harness repeat-run produces identical artifacts
 - No new ambiguity leakage
-- Harness runs produce stable outputs across repeated executions
-- Changelog entry + validation record added
+- No resolution outcome changes
+- Changelog + validation record committed
 
-### Validation
-- STRICT harness regression on representative templates (repeat runs)
-- Diff review confirms only ordering changes
+---
+
+### Versioning
+
+This is a minor version bump (v4.1.0) because:
+- Output ordering will change
+- Diff behavior changes
+- Determinism guarantees are strengthened
+
+No patch release permitted for this scope.
 
 ## WP-11 (v4.1.0): Harness regression pack framework
 ### Scope
