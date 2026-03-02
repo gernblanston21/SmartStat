@@ -1118,16 +1118,34 @@ Sub Tx_ResetWriteVerifyState()
 End Sub
 
 Sub Stage_CommitTransaction()
-  Dim k
+  Dim k, commitKeys, i, j, tmpKey, keyCmp
   Call Tx_ResetWriteVerifyState()
   Call Diag_WriteLine("TX: Transaction Commit Started - " & ApplyPlan.Count & " fields")
-  For Each k In ApplyPlan.Keys
-    Call Tx_WriteNow(CStr(k), CStr(ApplyPlan(k)))
-    If CBool(G_TRIO_WRITE_FAILED) Then
-      Call Diag_WriteLine("TX: Transaction Commit Aborted - Trio write verification failed at tf=" & CStr(G_TRIO_WRITE_LAST_FAIL_TF))
-      Exit For
+  If ApplyPlan.Count > 0 Then
+    commitKeys = ApplyPlan.Keys
+    If IsArray(commitKeys) Then
+      For i = 0 To UBound(commitKeys) - 1
+        For j = i + 1 To UBound(commitKeys)
+          keyCmp = StrComp(CStr(commitKeys(i)), CStr(commitKeys(j)), vbTextCompare)
+          If keyCmp = 0 Then keyCmp = StrComp(CStr(commitKeys(i)), CStr(commitKeys(j)), vbBinaryCompare)
+          If keyCmp > 0 Then
+            tmpKey = commitKeys(i)
+            commitKeys(i) = commitKeys(j)
+            commitKeys(j) = tmpKey
+          End If
+        Next
+      Next
+
+      For i = 0 To UBound(commitKeys)
+        k = CStr(commitKeys(i))
+        Call Tx_WriteNow(k, CStr(ApplyPlan(k)))
+        If CBool(G_TRIO_WRITE_FAILED) Then
+          Call Diag_WriteLine("TX: Transaction Commit Aborted - Trio write verification failed at tf=" & CStr(G_TRIO_WRITE_LAST_FAIL_TF))
+          Exit For
+        End If
+      Next
     End If
-  Next
+  End If
 
   If CBool(G_TRIO_WRITE_FAILED) Then
     If Not (PlanValidationErrors Is Nothing) Then

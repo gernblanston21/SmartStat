@@ -46,6 +46,7 @@ Runtime versioning follows script identifiers (`SmartStat_v*.vbs`), while `VERSI
 - `ProcessQualifier` normalization now prevents duplicate season-prefix chaining in resolved paths.
 - `Stage_ValidatePlan` now has tighter unknown-failure recording and type checks around ambiguity/learn dictionaries.
 - Environment/config validation now emits specific missing/unreadable filename diagnostics during startup checks.
+- WP-10 Phase-3 Target #1: `Stage_CommitTransaction` now sorts `ApplyPlan` keys before commit using `vbTextCompare` with `vbBinaryCompare` tie-break, eliminating implicit dictionary-order precedence in non-atomic abort paths while preserving write/verify semantics and successful-commit outcomes.
 
 ### Fixed
 - Ambiguity context initialization/assignment path in `Main` and `Ambiguity_AddEx` to avoid invalid object-type states.
