@@ -4,6 +4,14 @@
 v4.0.0_beta - Frozen and stable
 Transitioning to v4.0.0_RC1
 
+## Determinism Doctrine (v4+)
+
+SmartStat guarantees (within a given version + config):
+- Identical input state + config ? identical output
+- Identical STRICT harness run (same version/config) ? identical artifacts
+- No implicit precedence via iteration order in resolver logic
+- No filesystem-order-dependent behavior
+
 ---
 
 # RC1 Phase (Immediate)
