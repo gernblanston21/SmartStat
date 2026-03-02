@@ -47,6 +47,7 @@ Runtime versioning follows script identifiers (`SmartStat_v*.vbs`), while `VERSI
 - `Stage_ValidatePlan` now has tighter unknown-failure recording and type checks around ambiguity/learn dictionaries.
 - Environment/config validation now emits specific missing/unreadable filename diagnostics during startup checks.
 - WP-10 Phase-3 Target #1: `Stage_CommitTransaction` now sorts `ApplyPlan` keys before commit using `vbTextCompare` with `vbBinaryCompare` tie-break, eliminating implicit dictionary-order precedence in non-atomic abort paths while preserving write/verify semantics and successful-commit outcomes.
+- WP-10 Phase-3 Target #2: resolver tie handling now uses pass-1 winner preservation plus pass-2 top-distance tie detection; tied best candidates fail closed through existing ambiguity paths (`ResolveQualifierSmart`, `ResolveCategorySmart`, and runtime fallback `SuggestQualifierMapping`) while strict non-tie winners remain unchanged.
 
 ### Fixed
 - Ambiguity context initialization/assignment path in `Main` and `Ambiguity_AddEx` to avoid invalid object-type states.

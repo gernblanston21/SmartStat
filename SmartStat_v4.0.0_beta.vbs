@@ -1486,11 +1486,15 @@ Function ResolveQualifierSmart(qTxt, qAliasNorm, qNorm, learn, ByRef outFrag, By
   If qAliasNorm.Exists(keyN) Then keyN = NormalizeKey(CStr(qAliasNorm(keyN)))
   If qNorm.Exists(keyN) Then outFrag = CStr(qNorm(keyN)) : acceptedBy="direct" : scoreOut=1 : ResolveQualifierSmart=True : Exit Function
 
-  Dim bestA, altA, sA, sAltA, ambA
-  If CBool(DIAG_MODE) Then Call Diag_WriteLine("RESOLVER_CANDIDATE_SOURCE scope=qualifier.alias source=DICT_KEYS order=UNSORTED_ENUM tie_rule=FIRST_SEEN")
-  If HeuristicPickWithAlt(keyN, qAliasNorm.Keys, learn, bestA, sA, altA, sAltA, ambA) Then
+  Dim bestA, altA, sA, sAltA, ambA, topTieA, topTieAKeys
+  If CBool(DIAG_MODE) Then Call Diag_WriteLine("RESOLVER_CANDIDATE_SOURCE scope=qualifier.alias source=DICT_KEYS order=UNSORTED_ENUM tie_rule=FAIL_CLOSED_ON_TOP_TIE")
+  If HeuristicPickWithAlt(keyN, qAliasNorm.Keys, learn, bestA, sA, altA, sAltA, ambA, topTieA, topTieAKeys) Then
     If ambA Then
-      Call Ambiguity_AddEx("qualifier", "alias", raw, "best=[" & bestA & "](" & ScoreStr(sA) & "); alt=[" & altA & "](" & ScoreStr(sAltA) & ")", "HeuristicPickWithAlt tie")
+      If CBool(topTieA) Then
+        Call Ambiguity_AddEx("qualifier", "alias", raw, "top_tie=[" & topTieAKeys & "]", "HeuristicPickWithAlt top-score tie fail-closed")
+      Else
+        Call Ambiguity_AddEx("qualifier", "alias", raw, "best=[" & bestA & "](" & ScoreStr(sA) & "); alt=[" & altA & "](" & ScoreStr(sAltA) & ")", "HeuristicPickWithAlt tie")
+      End If
       acceptedBy = "ambiguous/alias": scoreOut = sA
       ResolveQualifierSmart = False
       Exit Function
@@ -1502,11 +1506,15 @@ Function ResolveQualifierSmart(qTxt, qAliasNorm, qNorm, learn, ByRef outFrag, By
     End If
   End If
 
-  Dim bestC, altC, sC, sAltC, ambC
-  If CBool(DIAG_MODE) Then Call Diag_WriteLine("RESOLVER_CANDIDATE_SOURCE scope=qualifier.canon source=DICT_KEYS order=UNSORTED_ENUM tie_rule=FIRST_SEEN")
-  If HeuristicPickWithAlt(keyN, qNorm.Keys, learn, bestC, sC, altC, sAltC, ambC) Then
+  Dim bestC, altC, sC, sAltC, ambC, topTieC, topTieCKeys
+  If CBool(DIAG_MODE) Then Call Diag_WriteLine("RESOLVER_CANDIDATE_SOURCE scope=qualifier.canon source=DICT_KEYS order=UNSORTED_ENUM tie_rule=FAIL_CLOSED_ON_TOP_TIE")
+  If HeuristicPickWithAlt(keyN, qNorm.Keys, learn, bestC, sC, altC, sAltC, ambC, topTieC, topTieCKeys) Then
     If ambC Then
-      Call Ambiguity_AddEx("qualifier", "canon", raw, "best=[" & bestC & "](" & ScoreStr(sC) & "); alt=[" & altC & "](" & ScoreStr(sAltC) & ")", "HeuristicPickWithAlt tie")
+      If CBool(topTieC) Then
+        Call Ambiguity_AddEx("qualifier", "canon", raw, "top_tie=[" & topTieCKeys & "]", "HeuristicPickWithAlt top-score tie fail-closed")
+      Else
+        Call Ambiguity_AddEx("qualifier", "canon", raw, "best=[" & bestC & "](" & ScoreStr(sC) & "); alt=[" & altC & "](" & ScoreStr(sAltC) & ")", "HeuristicPickWithAlt tie")
+      End If
       acceptedBy = "ambiguous/canon": scoreOut = sC
       ResolveQualifierSmart = False
       Exit Function
@@ -1690,12 +1698,16 @@ Function ResolveCategorySmart(inputKey, preferPitcher, learn, _
   End If
 
   Dim aliasKeys: aliasKeys = MergeKeys(catAlias, catPitchAlias)
-  If CBool(DIAG_MODE) Then Call Diag_WriteLine("RESOLVER_CANDIDATE_SOURCE scope=category.alias source=MERGE_KEYS_DICT_ENUM order=UNSORTED_ENUM tie_rule=FIRST_SEEN")
+  If CBool(DIAG_MODE) Then Call Diag_WriteLine("RESOLVER_CANDIDATE_SOURCE scope=category.alias source=MERGE_KEYS_DICT_ENUM order=UNSORTED_ENUM tie_rule=FAIL_CLOSED_ON_TOP_TIE")
 
-  Dim bestAlias, altAlias, s1, sAlt1, amb1
-  If HeuristicPickWithAlt(keyTrim, aliasKeys, learn, bestAlias, s1, altAlias, sAlt1, amb1) Then
+  Dim bestAlias, altAlias, s1, sAlt1, amb1, topTie1, topTie1Keys
+  If HeuristicPickWithAlt(keyTrim, aliasKeys, learn, bestAlias, s1, altAlias, sAlt1, amb1, topTie1, topTie1Keys) Then
     If amb1 Then
-      Call Ambiguity_AddEx("category", "alias", keyTrim, "best=[" & bestAlias & "](" & ScoreStr(s1) & "); alt=[" & altAlias & "](" & ScoreStr(sAlt1) & ")", "HeuristicPickWithAlt tie")
+      If CBool(topTie1) Then
+        Call Ambiguity_AddEx("category", "alias", keyTrim, "top_tie=[" & topTie1Keys & "]", "HeuristicPickWithAlt top-score tie fail-closed")
+      Else
+        Call Ambiguity_AddEx("category", "alias", keyTrim, "best=[" & bestAlias & "](" & ScoreStr(s1) & "); alt=[" & altAlias & "](" & ScoreStr(sAlt1) & ")", "HeuristicPickWithAlt tie")
+      End If
       usedHeuristic = True: acceptedBy = "ambiguous/alias": outScore = s1
       ResolveCategorySmart = False
       Exit Function
@@ -1721,12 +1733,16 @@ Function ResolveCategorySmart(inputKey, preferPitcher, learn, _
   End If
 
   Dim canonKeys: canonKeys = MergeKeys(catMap, catPitchMap)
-  If CBool(DIAG_MODE) Then Call Diag_WriteLine("RESOLVER_CANDIDATE_SOURCE scope=category.canon source=MERGE_KEYS_DICT_ENUM order=UNSORTED_ENUM tie_rule=FIRST_SEEN")
+  If CBool(DIAG_MODE) Then Call Diag_WriteLine("RESOLVER_CANDIDATE_SOURCE scope=category.canon source=MERGE_KEYS_DICT_ENUM order=UNSORTED_ENUM tie_rule=FAIL_CLOSED_ON_TOP_TIE")
 
-  Dim bestCanon, altCanon, s2, sAlt2, amb2
-  If HeuristicPickWithAlt(keyTrim, canonKeys, learn, bestCanon, s2, altCanon, sAlt2, amb2) Then
+  Dim bestCanon, altCanon, s2, sAlt2, amb2, topTie2, topTie2Keys
+  If HeuristicPickWithAlt(keyTrim, canonKeys, learn, bestCanon, s2, altCanon, sAlt2, amb2, topTie2, topTie2Keys) Then
     If amb2 Then
-      Call Ambiguity_AddEx("category", "canon", keyTrim, "best=[" & bestCanon & "](" & ScoreStr(s2) & "); alt=[" & altCanon & "](" & ScoreStr(sAlt2) & ")", "HeuristicPickWithAlt tie")
+      If CBool(topTie2) Then
+        Call Ambiguity_AddEx("category", "canon", keyTrim, "top_tie=[" & topTie2Keys & "]", "HeuristicPickWithAlt top-score tie fail-closed")
+      Else
+        Call Ambiguity_AddEx("category", "canon", keyTrim, "best=[" & bestCanon & "](" & ScoreStr(s2) & "); alt=[" & altCanon & "](" & ScoreStr(sAlt2) & ")", "HeuristicPickWithAlt tie")
+      End If
       usedHeuristic = True: acceptedBy = "ambiguous/canon": outScore = s2
       ResolveCategorySmart = False
       Exit Function
@@ -1876,19 +1892,23 @@ End Function
 ' ==========================================
 ' v4.0 Phase 2: Heuristic pick with alternate candidate
 ' ==========================================
-Function HeuristicPickWithAlt(keyTrim, candidateKeys, learn, ByRef bestKey, ByRef bestScore, ByRef altKey, ByRef altScore, ByRef isAmbiguous)
+Function HeuristicPickWithAlt(keyTrim, candidateKeys, learn, ByRef bestKey, ByRef bestScore, ByRef altKey, ByRef altScore, ByRef isAmbiguous, ByRef hasTopTieOut, ByRef topTieCandidatesOut)
   Dim shortThresh: shortThresh = CDbl(learn("fuzzy_threshold_short"))
   Dim longThresh:  longThresh  = CDbl(learn("fuzzy_threshold"))
 
   Dim lenKey: lenKey = Len(keyTrim)
   If lenKey < 1 Then lenKey = 1
 
-  Dim ok
-  ok = FuzzyResolveTop2Advanced(keyTrim, candidateKeys, learn, bestKey, bestScore, altKey, altScore)
+  Dim ok, hasTopTie, topTieCandidates
+  hasTopTie = False
+  topTieCandidates = ""
+  ok = FuzzyResolveTop2Advanced(keyTrim, candidateKeys, learn, bestKey, bestScore, altKey, altScore, hasTopTie, topTieCandidates)
 
   If (Not ok) Or Len(bestKey) = 0 Then
     HeuristicPickWithAlt = False
     isAmbiguous = False
+    hasTopTieOut = False
+    topTieCandidatesOut = ""
     Exit Function
   End If
 
@@ -1908,6 +1928,10 @@ Function HeuristicPickWithAlt(keyTrim, candidateKeys, learn, ByRef bestKey, ByRe
     Dim delta: delta = CDbl(learn("ambiguous_score_delta"))
     If (bestScore - altScore) <= delta Then isAmbiguous = True
   End If
+  If passBest And CBool(hasTopTie) Then isAmbiguous = True
+
+  hasTopTieOut = CBool(hasTopTie)
+  topTieCandidatesOut = CStr(topTieCandidates)
 
   HeuristicPickWithAlt = passBest
 End Function
@@ -1997,7 +2021,7 @@ End Function
 ' ==========================================
 ' v4.0 Phase 2: Top-2 fuzzy resolver (non-breaking addition)
 ' ==========================================
-Function FuzzyResolveTop2Advanced(q, candidateKeys, learn, ByRef bestKey, ByRef bestScore, ByRef altKey, ByRef altScore)
+Function FuzzyResolveTop2Advanced(q, candidateKeys, learn, ByRef bestKey, ByRef bestScore, ByRef altKey, ByRef altScore, ByRef hasTopTie, ByRef topTieCandidates)
   Dim shortToken, pref2, pref3, usePhon, sxQ
   Dim bestDist, altDist, maxLen
   Dim listA(), listB(), i, k
@@ -2005,6 +2029,8 @@ Function FuzzyResolveTop2Advanced(q, candidateKeys, learn, ByRef bestKey, ByRef 
   bestKey = "": altKey = ""
   bestScore = 0: altScore = 0
   bestDist = 9999: altDist = 9999
+  hasTopTie = False
+  topTieCandidates = ""
 
   Dim qn : qn = LCase(CStr(q))
   shortToken = (Len(qn) <= 5)
@@ -2068,7 +2094,11 @@ Function FuzzyResolveTop2Advanced(q, candidateKeys, learn, ByRef bestKey, ByRef 
     Call Diag_WriteLine("RESOLVER_CANDIDATES_AFTER_SORT q=[" & qn & "] count=" & CStr(rsList2.Count) & " list=[" & Ambiguity_SafeTruncate(rsAfter2, 320) & "]")
   End If
   If haveA Then Call ScanForBestTwo(qn, listA, bestKey, bestDist, altKey, altDist)
-  If haveB And bestDist > 1 Then Call ScanForBestTwo(qn, listB, bestKey, bestDist, altKey, altDist)
+  Dim pass1ScanB: pass1ScanB = False
+  If haveB And bestDist > 1 Then
+    pass1ScanB = True
+    Call ScanForBestTwo(qn, listB, bestKey, bestDist, altKey, altDist)
+  End If
 
   maxLen = Len(qn): If maxLen < 1 Then maxLen = 1
   bestScore = 1 - (bestDist / maxLen)
@@ -2083,6 +2113,18 @@ Function FuzzyResolveTop2Advanced(q, candidateKeys, learn, ByRef bestKey, ByRef 
     End If
   End If
 
+  ' Pass 2: detect top-distance ties without changing pass-1 winner selection.
+  If Len(bestKey) > 0 And bestDist < 9999 Then
+    Dim tieSeen: Set tieSeen = NewTextDict()
+    If haveA Then Call CollectBestDistCandidatesFromArray(qn, listA, bestDist, tieSeen)
+    If pass1ScanB Then Call CollectBestDistCandidatesFromArray(qn, listB, bestDist, tieSeen)
+    hasTopTie = (tieSeen.Count > 1)
+    topTieCandidates = DictKeysCsvSortedTextBinary(tieSeen)
+    If CBool(DIAG_MODE) And CBool(hasTopTie) Then
+      Call Diag_WriteLine("RESOLVER_TOP_TIE_FAIL_CLOSED q=[" & qn & "] bestDist=" & CStr(bestDist) & " candidates=[" & topTieCandidates & "]")
+    End If
+  End If
+
   FuzzyResolveTop2Advanced = True
 End Function
 
@@ -2094,10 +2136,10 @@ Sub ScanForBestTwo(qn, arr, ByRef bestKey, ByRef bestDist, ByRef altKey, ByRef a
 
     If CBool(DIAG_MODE) Then
       If Len(bestKey) > 0 And dist = bestDist And k <> bestKey Then
-        Call Diag_WriteLine("RESOLVER_TIE q=[" & qn & "] dist=" & CStr(dist) & " incumbent=[" & CStr(bestKey) & "] contender=[" & k & "] tie_rule=FIRST_SEEN")
+        Call Diag_WriteLine("RESOLVER_TIE q=[" & qn & "] dist=" & CStr(dist) & " incumbent=[" & CStr(bestKey) & "] contender=[" & k & "] tie_rule=PASS1_FIRST_SEEN_GUARDED")
       End If
       If Len(altKey) > 0 And dist = altDist And k <> altKey Then
-        Call Diag_WriteLine("RESOLVER_TIE_ALT q=[" & qn & "] dist=" & CStr(dist) & " incumbent=[" & CStr(altKey) & "] contender=[" & k & "] tie_rule=FIRST_SEEN")
+        Call Diag_WriteLine("RESOLVER_TIE_ALT q=[" & qn & "] dist=" & CStr(dist) & " incumbent=[" & CStr(altKey) & "] contender=[" & k & "] tie_rule=PASS1_FIRST_SEEN_GUARDED")
       End If
     End If
     If dist < bestDist Then
@@ -2112,6 +2154,73 @@ Sub ScanForBestTwo(qn, arr, ByRef bestKey, ByRef bestDist, ByRef altKey, ByRef a
 
     If Len(qn) <= 5 And bestDist <= 1 Then Exit Sub
   Next
+End Sub
+
+Sub CollectBestDistCandidatesFromArray(qn, arr, bestDist, ByRef seenDict)
+  Dim i, cand, dist
+  If Not IsArray(arr) Then Exit Sub
+  For i = LBound(arr) To UBound(arr)
+    cand = LCase(CStr(arr(i)))
+    dist = Lev(qn, cand)
+    If dist = bestDist Then
+      If Not seenDict.Exists(cand) Then seenDict(cand) = True
+    End If
+  Next
+End Sub
+
+Function DictKeysCsvSortedTextBinary(d)
+  DictKeysCsvSortedTextBinary = ""
+  If d Is Nothing Then Exit Function
+  If d.Count = 0 Then Exit Function
+
+  Dim arr, i, j, tmp, cmp, outTxt
+  arr = d.Keys
+  For i = 0 To UBound(arr) - 1
+    For j = i + 1 To UBound(arr)
+      cmp = StrComp(CStr(arr(i)), CStr(arr(j)), vbTextCompare)
+      If cmp = 0 Then cmp = StrComp(CStr(arr(i)), CStr(arr(j)), vbBinaryCompare)
+      If cmp > 0 Then
+        tmp = arr(i)
+        arr(i) = arr(j)
+        arr(j) = tmp
+      End If
+    Next
+  Next
+
+  outTxt = ""
+  For i = 0 To UBound(arr)
+    If Len(outTxt) > 0 Then outTxt = outTxt & "|"
+    outTxt = outTxt & CStr(arr(i))
+  Next
+  DictKeysCsvSortedTextBinary = outTxt
+End Function
+
+Sub GetTopTieInfoForCandidates(qn, candidateKeys, bestDist, ByRef tieCount, ByRef tieCsv)
+  Dim seen, i, k, cand, dist
+  Set seen = NewTextDict()
+  tieCount = 0
+  tieCsv = ""
+
+  If IsArray(candidateKeys) Then
+    For i = LBound(candidateKeys) To UBound(candidateKeys)
+      cand = LCase(CStr(candidateKeys(i)))
+      dist = Lev(qn, cand)
+      If dist = bestDist Then
+        If Not seen.Exists(cand) Then seen(cand) = True
+      End If
+    Next
+  Else
+    For Each k In candidateKeys
+      cand = LCase(CStr(k))
+      dist = Lev(qn, cand)
+      If dist = bestDist Then
+        If Not seen.Exists(cand) Then seen(cand) = True
+      End If
+    Next
+  End If
+
+  tieCount = seen.Count
+  tieCsv = DictKeysCsvSortedTextBinary(seen)
 End Sub
 
 Private Sub ScanForBest(qn, arr, ByRef bestKey, ByRef bestDist)
@@ -2751,6 +2860,15 @@ Function SuggestQualifierMapping(rawTxt, qAliasNorm, qNorm, learn, _
   ' --- 3) Fuzzy among ALIAS keys ---
   Dim bestA, sA
   If HeuristicPick(keyN, qAliasNorm.Keys, learn, bestA, sA) Then
+    Dim bestDistA, tieCountA, tieCsvA
+    bestDistA = Lev(LCase(CStr(keyN)), LCase(CStr(bestA)))
+    Call GetTopTieInfoForCandidates(LCase(CStr(keyN)), qAliasNorm.Keys, bestDistA, tieCountA, tieCsvA)
+    If tieCountA > 1 Then
+      Call Ambiguity_AddEx("qualifier", "alias_fallback", rawTxt, "top_tie=[" & tieCsvA & "]", "SuggestQualifierMapping top-distance tie fail-closed")
+      SuggestQualifierMapping = False
+      Exit Function
+    End If
+
     aliasKeyOut = bestA
     canonKeyOut = NormalizeKey(CStr(qAliasNorm(bestA)))
     If qNorm.Exists(canonKeyOut) Then fragOut = CStr(qNorm(canonKeyOut)) Else fragOut = ""
@@ -2763,6 +2881,15 @@ Function SuggestQualifierMapping(rawTxt, qAliasNorm, qNorm, learn, _
   ' --- 4) Fuzzy among CANONICAL keys ---
   Dim bestC, sC
   If HeuristicPick(keyN, qNorm.Keys, learn, bestC, sC) Then
+    Dim bestDistC, tieCountC, tieCsvC
+    bestDistC = Lev(LCase(CStr(keyN)), LCase(CStr(bestC)))
+    Call GetTopTieInfoForCandidates(LCase(CStr(keyN)), qNorm.Keys, bestDistC, tieCountC, tieCsvC)
+    If tieCountC > 1 Then
+      Call Ambiguity_AddEx("qualifier", "canon_fallback", rawTxt, "top_tie=[" & tieCsvC & "]", "SuggestQualifierMapping top-distance tie fail-closed")
+      SuggestQualifierMapping = False
+      Exit Function
+    End If
+
     canonKeyOut = bestC
     fragOut = CStr(qNorm(bestC))
     scoreOut = sC
