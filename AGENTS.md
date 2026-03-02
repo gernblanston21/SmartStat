@@ -16,9 +16,29 @@ Excludes:
 
 ---
 
-## Viz Trio Grounding Requirement
-- All SmartStat changes must align with `docs/viz-trio/`; no Trio command, tabfield assumption, or operator workflow may be inferred without documentation support. If uncertain, quote the relevant section and fail closed.
+## Viz Trio Grounding Requirement (Method A — Same Repo)
 
+All SmartStat changes must align with `docs/viz-trio/`.
+
+No Trio command, tabfield assumption, or operator workflow may be inferred without documentation support.
+
+Before proposing ANY SmartStat changes:
+1) Read `docs/viz-trio/environment_constraints.md` (live-safe rules)
+2) Read `docs/viz-trio/command_reference.md`
+3) Read `docs/viz-trio/commands_full_index.md`
+4) Read `docs/viz-trio/tabfields.md` (tabfield prefix heuristics)
+5) Use `page_list.md`, `page_editor.md`, and `show_control.md` when reasoning about operator workflow
+
+If uncertain:
+- Quote the relevant section.
+- Justify the decision.
+- Fail closed.
+
+If a proposal conflicts with those docs:
+- STOP.
+- Propose a safer alternative.
+
+Use `PROMPTS.md` for standardized Codex kickoff blocks.
 
 ---
 
@@ -42,34 +62,49 @@ Forbidden:
 - Feature additions
 
 ### v4.1+
+Allowed:
 - Architectural improvements
 - Resolver enhancements
 - Performance work
 - New harness capabilities
 
+All changes must:
+- Preserve fail-closed ambiguity gating
+- Preserve transaction integrity
+- Avoid unintended behavioral drift
+
 ---
 
 ## Code Delivery Rules
+
 - Always provide unified diffs (-U5 minimum)
 - Preserve INI formatting and key order
 - Full file required if partial patch is unsafe
 - Flag SmartStatTrayApp compatibility risks
+- Do not silently refactor unrelated code
+- Clearly state regression impact
 
 ---
 
 ## Conflict Policy
+
 If a request:
 - Breaks determinism
 - Alters ambiguity gating
 - Reorders INI keys
 - Risks external compatibility
+- Conflicts with Viz Trio documentation
 
 Then:
 1. Halt
-2. Explain conflict
-3. Propose safe alternative
+2. Explain conflict clearly
+3. Propose safe alternative implementation
+
+Fail closed by default.
 
 ---
 
 ## Current Release Target
-Preparing v4.0.0_RC1 as of 2026-02-28.
+
+v4.0.0_RC1 frozen
+Post-RC development continues on `v4_Dev` branch toward v4.1.0.
