@@ -1,48 +1,112 @@
 # SESSION - SmartStat Core Engine
 
 ## Release State
-- Current Stable Baseline: v4.0.0_beta (FROZEN)
-- Freeze Date: 2026-02-27
-- Working Branch: v4_Dev (future development only)
-- Upcoming Branch: v4_RC (Release Candidate stabilization)
+
+- Stable Baseline: v4.0.0_RC1 (FROZEN + TAGGED)
+- RC1 Merge Commit: c7ee0e8 (merged back into v4_Dev)
+- Active Development Branch: v4_Dev
+- Current Development Track: v4.1.0 (Post-RC)
 - Source of Truth: v4_Dev branch workspace
-- Viz Trio Reference: docs/viz-trio/
+- Viz Trio Reference: docs/viz-trio/ (Method A — repo grounded)
+
+RC1 is complete and must not be re-reviewed or modified.
+All new work proceeds from the post-RC baseline.
 
 ---
 
-## RC Transition Phase (Active)
-This session marks the transition from Beta Freeze to Release Candidate discipline.
+## Current Phase: Post-RC Structured Development (v4.1.0)
 
-No structural or behavioral changes are permitted in v4.0.0_beta.
+We are operating under controlled, versioned Work Packages.
 
-Only the following are allowed for RC1:
-- Log clarity improvements (no logic change)
-- Guardrail reinforcement (no behavior change)
-- Determinism verification (logging only)
-- Documentation corrections
+Active WP:
+- WP-10 — Explicit deterministic key sorting (controlled change)
+
+No opportunistic refactors.
+No scope creep.
+Each WP must be:
+- Scoped
+- Documented
+- Regression validated
+- Changelog recorded
 
 ---
 
-## Architectural Guardrails
-- Fail-closed ambiguity gating must remain strict.
-- FIRST_SEEN tie rule must remain unchanged.
-- No resolver scoring math changes.
+## Architectural Guardrails (Active)
+
+These rules persist across all v4.x versions:
+
+- Fail-closed ambiguity gating remains strict.
+- FIRST_SEEN tie rule remains unchanged.
+- No resolver scoring math changes unless explicitly versioned.
 - No INI key reordering.
 - No tabfield pattern redesign.
 - No silent refactors.
 - No placeholders.
+- Determinism must be intentional and testable.
+- All SmartStat behavior must align with docs/viz-trio/.
+
+If a proposal conflicts with:
+- Determinism
+- Ambiguity gating
+- Transaction integrity
+- INI ordering
+- Viz Trio documentation
+
+Then:
+1. Halt
+2. Explain conflict
+3. Propose safer alternative
+
+Fail closed by default.
 
 ---
 
-## Stability Guarantees (v4.0.0_beta)
-- Deterministic resolver behavior
+## Stability Guarantees (Inherited from RC1)
+
+- Deterministic resolver behavior (as of RC1)
 - STRICT harness diff gating validated
 - No ambiguity leakage
 - Transaction validation integrity preserved
 - Output_map inference stable
 - Override audit trail complete
+- Governance discipline enforced
+
+These guarantees form the regression baseline for v4.1.0.
 
 ---
 
-## Next Step
-Create v4_RC branch and execute RC1_CHECKLIST.md in full before tagging v4.0.0_RC1.
+## Determinism Focus (WP-10)
+
+Objective:
+Introduce explicit deterministic ordering where unordered iteration affects output stability.
+
+Constraints:
+- No logic/math changes
+- No resolver scoring changes
+- No behavior drift beyond ordering stability
+- STRICT harness must confirm stability across repeated runs
+
+---
+
+## Near-Term Roadmap
+
+v4.1.0 Work Packages:
+- WP-10: Deterministic key sorting
+- WP-11: Harness regression pack framework
+- WP-12: Enhanced learn system validation
+- WP-13: Resolver performance optimization
+- WP-14: TrayApp alignment preparation
+
+---
+
+## Operating Discipline
+
+- Architecture discussion occurs before implementation.
+- Code mutation occurs in Codex.
+- Governance review occurs before merge.
+- Each WP results in:
+  - Diff review
+  - Regression validation
+  - Changelog update
+
+Release discipline enforced starting 2026-02-28.
