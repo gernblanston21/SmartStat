@@ -121,6 +121,40 @@ Completed:
 - Target #7 — SuggestQualifierMapping / ResolveFilterFragments: deterministic first-hit scanning (containment + fuzzy fallback).
 
 Remaining (from Phase-1 HIGH-risk audit):
+- Target #8 — ResolveQualifierSmart candidate pool ordering determinism
+  Scope:
+  - Stabilize candidate evaluation order in ResolveQualifierSmart and related heuristic scanners.
+  - Replace dictionary key iteration with deterministic sorted arrays.
+  Discipline:
+  - No scoring changes.
+  - Strict mode fails closed only on true multi-hit/tie cases.
+  - Non-strict preserves behavior except where prior result depended on iteration order.
+
+- Target #9 — ResolveCategorySmart alias/canonical merge determinism
+  Scope:
+  - Stabilize alias + canonical candidate merging.
+  - Eliminate implicit first-add / first-seen precedence caused by dictionary order.
+  Discipline:
+  - Preserve explicit precedence (if defined).
+  - Do not alter resolution math.
+  - Strict mode fails closed only when ambiguity genuinely exists.
+
+- Target #10 — Heuristic scanner input normalization
+  Scope:
+  - Standardize all heuristic/fuzzy scanners to operate on deterministically sorted candidate arrays.
+  - Eliminate hidden dict.Keys enumeration inside scanners.
+  Discipline:
+  - No algorithm refactors.
+  - No scoring changes.
+  - Only ordering stabilization.
+
+- Target #11 — Residual normalized lookup surfaces (if discovered)
+  Scope:
+  - Identify and stabilize any remaining normalize-then-first-match helpers not covered by Targets #5–#7.
+  Discipline:
+  - Same collision pattern as Target #5.
+  - Strict fail-closed on ambiguous normalize matches.
+  - Deterministic sorted-first only in non-strict collision branch.
 
 Phase 4 – Regression Verification
 - STRICT harness repeat-run validation
