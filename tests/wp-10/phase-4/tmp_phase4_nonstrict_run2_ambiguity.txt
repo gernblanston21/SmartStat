@@ -1,0 +1,9 @@
+RET=False
+STAT_OUT=
+CONCEPT_OUT=
+IS_PITCHER=False
+USED_HEUR=True
+ACCEPTED_BY=ambiguous/alias
+SCORE=0.75
+AMB_COUNT=1
+AMB_SUMMARY=alias ambiguous in category input=[abcd] candidates=[top_tie=[abce|abcf]] note=[HeuristicPickWithAlt top-score tie fail-closed]
