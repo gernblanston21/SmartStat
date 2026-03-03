@@ -119,18 +119,10 @@ Completed:
 - Target #5 — TryCanonLookupFlexible: deterministic first-match behavior (normalize-collision handling).
 - Target #6 — LoadIniSectionDictNormalized / LoadIni: deterministic normalized-key collision handling.
 - Target #7 — SuggestQualifierMapping / ResolveFilterFragments: deterministic first-hit scanning (containment + fuzzy fallback).
-- Target #8 — ResolveQualifierSmart candidate pool ordering determinism
+- Target #8 — ResolveQualifierSmart candidate pool ordering determinism.
+- Target #9 — ResolveCategorySmart alias/canonical merge determinism.
 
 Remaining (from Phase-1 HIGH-risk audit):
-- Target #9 — ResolveCategorySmart alias/canonical merge determinism
-  Scope:
-  - Stabilize alias + canonical candidate merging.
-  - Eliminate implicit first-add / first-seen precedence caused by dictionary order.
-  Discipline:
-  - Preserve explicit precedence (if defined).
-  - Do not alter resolution math.
-  - Strict mode fails closed only when ambiguity genuinely exists.
-
 - Target #10 — Heuristic scanner input normalization
   Scope:
   - Standardize all heuristic/fuzzy scanners to operate on deterministically sorted candidate arrays.

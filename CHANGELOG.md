@@ -54,6 +54,7 @@ Runtime versioning follows script identifiers (`SmartStat_v*.vbs`), while `VERSI
 - WP-10 Phase-3 Target #6: INI normalized-key collisions are now handled deterministically; strict mode fails closed on collisions.
 - WP-10 Phase-3 Target #7: unresolved-filter scanning is now deterministic; strict mode fails closed on multi-hit containment matches; non-strict uses stable sorted-first selection with deterministic collision logging.
 - WP-10 Phase-3 Target #8: ResolveQualifierSmart now feeds deterministically sorted candidate pools into fuzzy qualifier resolution; outcomes are stable across runs without math/policy changes.
+- WP-10 Phase-3 Target #9: ResolveCategorySmart now feeds deterministically sorted candidate pools (and deterministic alias/canon merge where applicable); outcomes are stable across runs without math/policy changes.
 
 ### Fixed
 - Ambiguity context initialization/assignment path in `Main` and `Ambiguity_AddEx` to avoid invalid object-type states.

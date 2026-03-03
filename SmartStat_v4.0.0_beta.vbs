@@ -1892,7 +1892,7 @@ Function ResolveCategorySmart(inputKey, preferPitcher, learn, _
     End If
   End If
 
-  Dim aliasKeys: aliasKeys = MergeKeys(catAlias, catPitchAlias)
+  Dim aliasKeys: aliasKeys = MergeKeysSortedTextBinary(catAlias, catPitchAlias)
   If CBool(DIAG_MODE) Then Call Diag_WriteLine("RESOLVER_CANDIDATE_SOURCE scope=category.alias source=MERGE_KEYS_DICT_ENUM order=UNSORTED_ENUM tie_rule=FAIL_CLOSED_ON_TOP_TIE")
 
   Dim bestAlias, altAlias, s1, sAlt1, amb1, topTie1, topTie1Keys
@@ -1927,7 +1927,7 @@ Function ResolveCategorySmart(inputKey, preferPitcher, learn, _
     End If
   End If
 
-  Dim canonKeys: canonKeys = MergeKeys(catMap, catPitchMap)
+  Dim canonKeys: canonKeys = MergeKeysSortedTextBinary(catMap, catPitchMap)
   If CBool(DIAG_MODE) Then Call Diag_WriteLine("RESOLVER_CANDIDATE_SOURCE scope=category.canon source=MERGE_KEYS_DICT_ENUM order=UNSORTED_ENUM tie_rule=FAIL_CLOSED_ON_TOP_TIE")
 
   Dim bestCanon, altCanon, s2, sAlt2, amb2, topTie2, topTie2Keys
@@ -2077,6 +2077,44 @@ Function MergeKeys(d1, d2)
   If Not IsEmpty(d1) Then If IsObject(d1) Then For Each k In d1.Keys: count = count + 1: ReDim Preserve tmp(count): tmp(count) = CStr(k): Next
   If Not IsEmpty(d2) Then If IsObject(d2) Then For Each k In d2.Keys: count = count + 1: ReDim Preserve tmp(count): tmp(count) = CStr(k): Next
   If count < 0 Then MergeKeys = Array() Else MergeKeys = tmp
+End Function
+
+Function MergeKeysSortedTextBinary(d1, d2)
+  Dim k1: k1 = Transform_DictKeysSortedTextBinary(d1)
+  Dim k2: k2 = Transform_DictKeysSortedTextBinary(d2)
+  Dim seen: Set seen = NewTextDict()
+  Dim tmp(), count, i, k
+  count = -1
+
+  If IsArray(k1) Then
+    For i = LBound(k1) To UBound(k1)
+      k = CStr(k1(i))
+      If Not seen.Exists(k) Then
+        seen(k) = True
+        count = count + 1
+        ReDim Preserve tmp(count)
+        tmp(count) = k
+      End If
+    Next
+  End If
+
+  If IsArray(k2) Then
+    For i = LBound(k2) To UBound(k2)
+      k = CStr(k2(i))
+      If Not seen.Exists(k) Then
+        seen(k) = True
+        count = count + 1
+        ReDim Preserve tmp(count)
+        tmp(count) = k
+      End If
+    Next
+  End If
+
+  If count < 0 Then
+    MergeKeysSortedTextBinary = Array()
+  Else
+    MergeKeysSortedTextBinary = tmp
+  End If
 End Function
 
 Function CollapseDoubles(s)

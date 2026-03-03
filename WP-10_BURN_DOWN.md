@@ -21,6 +21,7 @@ These affect resolution outcome, ambiguity gating, commit behavior, or fragment 
 | #6 | LoadIniSectionDictNormalized collision | INI traversal | ? Complete | Strict + non-strict collision A/B |
 | #7 | SuggestQualifierMapping containment | First-hit scan | ? Complete | Multi-hit containment strict fail-closed |
 | #8 | ResolveQualifierSmart fuzzy pool ordering | Candidate construction | ? Complete | A/B insertion SHA match |
+| #9 | ResolveCategorySmart alias/canon merge determinism | Merge order + first-seen precedence | ? Complete | Mirror discipline of #8 |
 
 ---
 
@@ -28,7 +29,6 @@ These affect resolution outcome, ambiguity gating, commit behavior, or fragment 
 
 | Target | Surface | Class | Status | Notes |
 |--------|---------|-------|--------|-------|
-| #9 | ResolveCategorySmart alias/canon merge determinism | Merge order + first-seen precedence | ? Pending | Mirror discipline of #8 |
 | #10 | Heuristic scanner input normalization (global) | Candidate pool ordering | ? Pending | Eliminate hidden dict.Keys in fuzzy helpers |
 | #11 | Residual normalize-first-match helpers | Normalize collision | ? Pending | Same pattern as #5 |
 
