@@ -13,24 +13,27 @@ These affect resolution outcome, ambiguity gating, commit behavior, or fragment 
 
 | Target | Surface | Class | Status | Validation Artifact |
 |--------|---------|-------|--------|---------------------|
-| #1 | ApplyPlan.Keys commit ordering | Dictionary iteration | ? Complete | STRICT harness repeat-run hash match |
-| #2 | Resolver tie determinism | First-match / fuzzy | ? Complete | Top-tie fail-closed validation |
-| #3 | TRANSFORMS_REGEX load/apply order | INI traversal | ? Complete | Deterministic regex conflict test |
-| #4 | AmbiguityContext lifecycle | Resolver gating | ? Complete | STRICT invariant guard test |
-| #5 | TryCanonLookupFlexible normalize collision | First-match resolver | ? Complete | A/B normalize collision test |
-| #6 | LoadIniSectionDictNormalized collision | INI traversal | ? Complete | Strict + non-strict collision A/B |
-| #7 | SuggestQualifierMapping containment | First-hit scan | ? Complete | Multi-hit containment strict fail-closed |
-| #8 | ResolveQualifierSmart fuzzy pool ordering | Candidate construction | ? Complete | A/B insertion SHA match |
-| #9 | ResolveCategorySmart alias/canon merge determinism | Merge order + first-seen precedence | ? Complete | Mirror discipline of #8 |
-| #10 | Heuristic scanner input normalization (global) | Candidate pool ordering | ? Complete | Eliminate hidden dict.Keys in fuzzy helpers |
+| #1 | ApplyPlan.Keys commit ordering | Dictionary iteration | Complete | STRICT harness repeat-run hash match |
+| #2 | Resolver tie determinism | First-match / fuzzy | Complete | Top-tie fail-closed validation |
+| #3 | TRANSFORMS_REGEX load/apply order | INI traversal | Complete | Deterministic regex conflict test |
+| #4 | AmbiguityContext lifecycle | Resolver gating | Complete | STRICT invariant guard test |
+| #5 | TryCanonLookupFlexible normalize collision | First-match resolver | Complete | A/B normalize collision test |
+| #6 | LoadIniSectionDictNormalized collision | INI traversal | Complete | Strict + non-strict collision A/B |
+| #7 | SuggestQualifierMapping containment | First-hit scan | Complete | Multi-hit containment strict fail-closed |
+| #8 | ResolveQualifierSmart fuzzy pool ordering | Candidate construction | Complete | A/B insertion SHA match |
+| #9 | ResolveCategorySmart alias/canon merge determinism | Merge order + first-seen precedence | Complete | Mirror discipline of #8 |
+| #10 | Heuristic scanner input normalization (global) | Candidate pool ordering | Complete | Eliminate hidden dict.Keys in fuzzy helpers |
+| #11 | Residual normalize-first-match helpers | Normalize collision | Complete | Same pattern as #5 |
 
 ---
 
 ### Remaining HIGH Surfaces
 
+HIGH surface count = 0.
+
 | Target | Surface | Class | Status | Notes |
 |--------|---------|-------|--------|-------|
-| #11 | Residual normalize-first-match helpers | Normalize collision | ? Pending | Same pattern as #5 |
+| #11 | Residual normalize-first-match helpers | Normalize collision | CLOSED | Closed |
 
 ---
 
@@ -60,7 +63,7 @@ Presentation-only or already sorted.
 
 WP-10 Behavioral Surface Hardening is complete when:
 
-- All HIGH-risk surfaces marked ?
+- All HIGH-risk surfaces marked
 - No STRICT harness behavioral diffs vs RC1 baseline
 - No new ambiguity leakage
 - No implicit precedence remains in resolver logic
@@ -70,7 +73,7 @@ WP-10 Behavioral Surface Hardening is complete when:
 
 # Determinism Doctrine Reference
 
-- Identical input state + config ? identical output
-- STRICT harness repeat-run ? identical artifacts
+- Identical input state + config - identical output
+- STRICT harness repeat-run - identical artifacts
 - No implicit precedence via iteration order
 - No filesystem-order-dependent behavior
