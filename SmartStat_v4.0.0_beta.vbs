@@ -2212,10 +2212,31 @@ Function HeuristicPickWithAlt(keyTrim, candidateKeys, learn, ByRef bestKey, ByRe
   HeuristicPickWithAlt = passBest
 End Function
 
+Function Fuzzy_NormalizeCandidateKeysForScan(candidateKeys)
+  If IsArray(candidateKeys) Then
+    Fuzzy_NormalizeCandidateKeysForScan = candidateKeys
+    Exit Function
+  End If
+
+  Dim tmp(), count, k
+  count = -1
+  For Each k In candidateKeys
+    count = count + 1
+    ReDim Preserve tmp(count)
+    tmp(count) = CStr(k)
+  Next
+
+  If count < 0 Then
+    Fuzzy_NormalizeCandidateKeysForScan = Array()
+  Else
+    Fuzzy_NormalizeCandidateKeysForScan = Transform_SortStringArrayTextBinary(tmp)
+  End If
+End Function
+
 Function FuzzyResolveAdvanced(q, candidateKeys, learn, ByRef bestKey, ByRef score)
   Dim shortToken, pref2, pref3, usePhon, sxQ
   Dim bestDist, maxLen
-  Dim listA(), listB(), i, k, d
+  Dim listA(), listB(), i, k, d, scanKeys
   Dim haveA, haveB
   bestKey = "": score = 0
   bestDist = 9999
@@ -2230,22 +2251,14 @@ Function FuzzyResolveAdvanced(q, candidateKeys, learn, ByRef bestKey, ByRef scor
   If learn.Exists("phonetic_enable") Then usePhon = CBool(learn("phonetic_enable"))
   If usePhon Then sxQ = Soundex(qn) Else sxQ = ""
 
-  If IsArray(candidateKeys) Then
-    For i = LBound(candidateKeys) To UBound(candidateKeys)
-      k = LCase(CStr(candidateKeys(i)))
+  scanKeys = Fuzzy_NormalizeCandidateKeysForScan(candidateKeys)
+  If IsArray(scanKeys) Then
+    For i = LBound(scanKeys) To UBound(scanKeys)
+      k = LCase(CStr(scanKeys(i)))
       If shortToken Then
         If (Left(k,3) = pref3) Or (Left(k,2) = pref2) Then AppendString listA, k: haveA = True Else AppendString listB, k: haveB = True
       Else
         AppendString listA, k: haveA = True
-      End If
-    Next
-  Else
-    For Each k In candidateKeys
-      Dim kk : kk = LCase(CStr(k))
-      If shortToken Then
-        If (Left(kk,3) = pref3) Or (Left(kk,2) = pref2) Then AppendString listA, kk: haveA = True Else AppendString listB, kk: haveB = True
-      Else
-        AppendString listA, kk: haveA = True
       End If
     Next
   End If
@@ -2300,7 +2313,7 @@ End Function
 Function FuzzyResolveTop2Advanced(q, candidateKeys, learn, ByRef bestKey, ByRef bestScore, ByRef altKey, ByRef altScore, ByRef hasTopTie, ByRef topTieCandidates)
   Dim shortToken, pref2, pref3, usePhon, sxQ
   Dim bestDist, altDist, maxLen
-  Dim listA(), listB(), i, k
+  Dim listA(), listB(), i, k, scanKeys
 
   bestKey = "": altKey = ""
   bestScore = 0: altScore = 0
@@ -2320,22 +2333,14 @@ Function FuzzyResolveTop2Advanced(q, candidateKeys, learn, ByRef bestKey, ByRef 
   Dim haveA: haveA = False
   Dim haveB: haveB = False
 
-  If IsArray(candidateKeys) Then
-    For i = LBound(candidateKeys) To UBound(candidateKeys)
-      k = LCase(CStr(candidateKeys(i)))
+  scanKeys = Fuzzy_NormalizeCandidateKeysForScan(candidateKeys)
+  If IsArray(scanKeys) Then
+    For i = LBound(scanKeys) To UBound(scanKeys)
+      k = LCase(CStr(scanKeys(i)))
       If shortToken Then
         If (Left(k,3)=pref3) Or (Left(k,2)=pref2) Then AppendString listA, k: haveA=True Else AppendString listB, k: haveB=True
       Else
         AppendString listA, k: haveA=True
-      End If
-    Next
-  Else
-    For Each k In candidateKeys
-      Dim kk : kk = LCase(CStr(k))
-      If shortToken Then
-        If (Left(kk,3)=pref3) Or (Left(kk,2)=pref2) Then AppendString listA, kk: haveA=True Else AppendString listB, kk: haveB=True
-      Else
-        AppendString listA, kk: haveA=True
       End If
     Next
   End If
@@ -2472,22 +2477,15 @@ Function DictKeysCsvSortedTextBinary(d)
 End Function
 
 Sub GetTopTieInfoForCandidates(qn, candidateKeys, bestDist, ByRef tieCount, ByRef tieCsv)
-  Dim seen, i, k, cand, dist
+  Dim seen, i, k, cand, dist, scanKeys
   Set seen = NewTextDict()
   tieCount = 0
   tieCsv = ""
 
-  If IsArray(candidateKeys) Then
-    For i = LBound(candidateKeys) To UBound(candidateKeys)
-      cand = LCase(CStr(candidateKeys(i)))
-      dist = Lev(qn, cand)
-      If dist = bestDist Then
-        If Not seen.Exists(cand) Then seen(cand) = True
-      End If
-    Next
-  Else
-    For Each k In candidateKeys
-      cand = LCase(CStr(k))
+  scanKeys = Fuzzy_NormalizeCandidateKeysForScan(candidateKeys)
+  If IsArray(scanKeys) Then
+    For i = LBound(scanKeys) To UBound(scanKeys)
+      cand = LCase(CStr(scanKeys(i)))
       dist = Lev(qn, cand)
       If dist = bestDist Then
         If Not seen.Exists(cand) Then seen(cand) = True
@@ -4237,14 +4235,14 @@ Sub LogLearnPendingWithGuess(learnPath, key, catMap, catPitchMap, catAlias, catP
 End Sub
 
 Function SuggestCanonKey(key, catMap, catPitchMap, catAlias, catPitchAlias, preferPitcher, learn, ByRef canonOut, ByRef isPitcher, ByRef scoreOut, ByRef acceptedBy)
-  Dim aliasKeys: aliasKeys = MergeKeys(catAlias, catPitchAlias)
+  Dim aliasKeys: aliasKeys = MergeKeysSortedTextBinary(catAlias, catPitchAlias)
   Dim bestA, sA
   If HeuristicPick(key, aliasKeys, learn, bestA, sA) Then
     If catAlias.Exists(bestA) Then canonOut = catAlias(bestA): isPitcher=False: scoreOut=sA: acceptedBy="alias": SuggestCanonKey=True: Exit Function
     If catPitchAlias.Exists(bestA) Then canonOut = catPitchAlias(bestA): isPitcher=True: scoreOut=sA: acceptedBy="alias_pitcher": SuggestCanonKey=True: Exit Function
   End If
 
-  Dim canonKeys: canonKeys = MergeKeys(catMap, catPitchMap)
+  Dim canonKeys: canonKeys = MergeKeysSortedTextBinary(catMap, catPitchMap)
   Dim bestC, sC
   If HeuristicPick(key, canonKeys, learn, bestC, sC) Then
     If catMap.Exists(bestC) Then canonOut = bestC: isPitcher=False: scoreOut=sC: acceptedBy="canon": SuggestCanonKey=True: Exit Function

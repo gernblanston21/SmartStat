@@ -108,3 +108,12 @@ Fail closed by default.
 
 v4.0.0_RC1 frozen
 Post-RC development continues on `v4_Dev` branch toward v4.1.0.
+
+---
+
+## Testing Governance
+
+- Codex may create any harness files needed.
+- All harnesses and outputs must go under `/tests/wp-XX/target-YY/`.
+- If WP/target is unknown, use `/tests/_scratch/<task>/`.
+- Root `tmp_*` files are forbidden; move them into `/tests` before final output.

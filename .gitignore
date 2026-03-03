@@ -6,6 +6,8 @@ Logs/
 *.log
 *.tmp
 PLAN.md
+/tmp_*.vbs
+/tmp_*.txt
 tmp_*.vbs
 tmp_*.md
 tmp_*.txt
