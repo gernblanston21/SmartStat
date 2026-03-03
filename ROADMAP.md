@@ -133,6 +133,8 @@ Phase 4 – Regression Verification
 - Confirm diffs are ordering-only
 - Document validation artifact record
 
+WP-10 CLOSED — Determinism surface stabilization and regression verification complete.
+
 ---
 
 ### Definition of Done (Expanded)

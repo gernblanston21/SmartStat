@@ -77,3 +77,5 @@ WP-10 Behavioral Surface Hardening is complete when:
 - STRICT harness repeat-run - identical artifacts
 - No implicit precedence via iteration order
 - No filesystem-order-dependent behavior
+
+WP-10 CLOSED — HIGH surface count = 0; Phase-4 regression verification passed.

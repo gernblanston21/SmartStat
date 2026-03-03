@@ -58,6 +58,8 @@ Runtime versioning follows script identifiers (`SmartStat_v*.vbs`), while `VERSI
 - WP-10 Phase-3 Target #10: Heuristic/fuzzy scanner helpers now normalize non-array enumerable candidate ingress to deterministic TEXT_BINARY-sorted arrays before evaluation (ordering-only; duplicates preserved). Learn-only SuggestCanonKey now uses MergeKeysSortedTextBinary for deterministic candidate merge order. No scoring, threshold, tie-rule, ambiguity-policy, or resolver algorithm changes.
 - WP-10 Phase-3 Target #11: LoadIniSectionDictNormalized now uses deterministic TEXT_BINARY-sorted section-key ingress for normalize-first population (ordering-only; strict fail-closed unchanged).
 - WP-10 Phase-3 complete — Behavioral surface determinism stabilization finalized.
+- WP-10 Phase-4: STRICT + non-strict regression verification passed (repeat-run determinism and parity confirmed).
+- WP-10 CLOSED.
 
 ### Fixed
 - Ambiguity context initialization/assignment path in `Main` and `Ambiguity_AddEx` to avoid invalid object-type states.
