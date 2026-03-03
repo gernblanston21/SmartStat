@@ -116,9 +116,9 @@ Completed:
 - Target #2 — Resolver tie determinism (two-pass tie detection; ties fail closed).
 - Target #3 — TRANSFORMS_REGEX determinism (sorted load/apply; strict conflict fail-closed).
 - Target #4 — AmbiguityContext lifecycle determinism + strict invariants (AMBIGUOUS_CONTEXT_INVALID; stable ambiguity emissions).
+- Target #5 — TryCanonLookupFlexible: deterministic first-match behavior (normalize-collision handling).
 
 Remaining (from Phase-1 HIGH-risk audit):
-- Target #5 — TryCanonLookupFlexible: deterministic first-match behavior (normalize-collision handling).
 - Target #6 — LoadIniSectionDictNormalized / LoadIni: deterministic normalized-key collision handling.
 - Target #7 — SuggestQualifierMapping / ResolveFilterFragments: deterministic first-hit scanning (containment + fuzzy fallback).
 
