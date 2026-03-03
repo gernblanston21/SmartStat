@@ -1252,14 +1252,19 @@ Sub LoadIniSectionDictNormalized(ini, sectionName, ByRef rawDict, ByRef normDict
   If ini Is Nothing Then Exit Sub
   If ini.Exists(sectionName) Then
     Dim sec: Set sec = ini(sectionName)
-    For Each k In sec.Keys
-      v = sec(k)
-      If Not rawDict.Exists(k) Then rawDict.Add k, v
-      Dim nk: nk = NormalizeKey(CStr(k))
-      If Not normDict.Exists(nk) Then normDict.Add nk, v
-    Next
+    Dim sortedKeysIngress: sortedKeysIngress = Transform_SortStringArrayTextBinary(sec.Keys)
+    Dim iIngress, keyIngress, valIngress, nkIngress
+    If IsArray(sortedKeysIngress) Then
+      For iIngress = LBound(sortedKeysIngress) To UBound(sortedKeysIngress)
+        keyIngress = CStr(sortedKeysIngress(iIngress))
+        valIngress = sec(keyIngress)
+        If Not rawDict.Exists(keyIngress) Then rawDict.Add keyIngress, valIngress
+        nkIngress = NormalizeKey(CStr(keyIngress))
+        If Not normDict.Exists(nkIngress) Then normDict.Add nkIngress, valIngress
+      Next
+    End If
 
-    Dim sortedKeys: sortedKeys = Transform_SortStringArrayTextBinary(sec.Keys)
+    Dim sortedKeys: sortedKeys = sortedKeysIngress
     If IsArray(sortedKeys) Then
       Dim strictMode: strictMode = Ambiguity_IsStrictHarness()
       Dim groupNormLookup, groupCount, groupKeys()

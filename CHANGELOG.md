@@ -56,6 +56,7 @@ Runtime versioning follows script identifiers (`SmartStat_v*.vbs`), while `VERSI
 - WP-10 Phase-3 Target #8: ResolveQualifierSmart now feeds deterministically sorted candidate pools into fuzzy qualifier resolution; outcomes are stable across runs without math/policy changes.
 - WP-10 Phase-3 Target #9: ResolveCategorySmart now feeds deterministically sorted candidate pools (and deterministic alias/canon merge where applicable); outcomes are stable across runs without math/policy changes.
 - WP-10 Phase-3 Target #10: Heuristic/fuzzy scanner helpers now normalize non-array enumerable candidate ingress to deterministic TEXT_BINARY-sorted arrays before evaluation (ordering-only; duplicates preserved). Learn-only SuggestCanonKey now uses MergeKeysSortedTextBinary for deterministic candidate merge order. No scoring, threshold, tie-rule, ambiguity-policy, or resolver algorithm changes.
+- WP-10 Phase-3 Target #11: LoadIniSectionDictNormalized now uses deterministic TEXT_BINARY-sorted section-key ingress for normalize-first population (ordering-only; strict fail-closed unchanged).
 
 ### Fixed
 - Ambiguity context initialization/assignment path in `Main` and `Ambiguity_AddEx` to avoid invalid object-type states.
