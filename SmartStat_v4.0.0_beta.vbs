@@ -1258,6 +1258,97 @@ Sub LoadIniSectionDictNormalized(ini, sectionName, ByRef rawDict, ByRef normDict
       Dim nk: nk = NormalizeKey(CStr(k))
       If Not normDict.Exists(nk) Then normDict.Add nk, v
     Next
+
+    Dim sortedKeys: sortedKeys = Transform_SortStringArrayTextBinary(sec.Keys)
+    If IsArray(sortedKeys) Then
+      Dim strictMode: strictMode = Ambiguity_IsStrictHarness()
+      Dim groupNormLookup, groupCount, groupKeys()
+      Dim i, j, keyTxt, keyNormLookup
+      Dim groupMatchCsv, groupWinner, groupWinnerNorm
+      Dim firstVal, hasDiffVal
+
+      groupNormLookup = ""
+      groupCount = -1
+
+      For i = LBound(sortedKeys) To UBound(sortedKeys)
+        keyTxt = CStr(sortedKeys(i))
+        keyNormLookup = NormalizeKeyForLookup(keyTxt)
+
+        If groupCount >= 0 Then
+          If StrComp(CStr(groupNormLookup), CStr(keyNormLookup), vbBinaryCompare) <> 0 Then
+            If groupCount > 0 Then
+              firstVal = CStr(sec(CStr(groupKeys(0))))
+              hasDiffVal = False
+              For j = 1 To groupCount
+                If StrComp(firstVal, CStr(sec(CStr(groupKeys(j)))), vbBinaryCompare) <> 0 Then
+                  hasDiffVal = True
+                  Exit For
+                End If
+              Next
+
+              If hasDiffVal Then
+                groupMatchCsv = ""
+                For j = 0 To groupCount
+                  If Len(groupMatchCsv) > 0 Then groupMatchCsv = groupMatchCsv & "|"
+                  groupMatchCsv = groupMatchCsv & CStr(groupKeys(j))
+                Next
+
+                If strictMode Then
+                  Call Diag_WriteLine("TX: INI_NORMALIZED_KEY_COLLISION section=[" & CStr(sectionName) & "] normalize=[" & CStr(groupNormLookup) & "] matches=[" & groupMatchCsv & "] winner=[(none)] action=[FAIL_CLOSED]")
+                  Call Ambiguity_AddEx("ini", "normalized_collision", CStr(sectionName) & ":" & CStr(groupNormLookup), "top_tie=[" & groupMatchCsv & "]", "LoadIniSectionDictNormalized normalize collision fail-closed")
+                Else
+                  groupWinner = CStr(groupKeys(0))
+                  groupWinnerNorm = NormalizeKey(CStr(groupWinner))
+                  normDict(groupWinnerNorm) = sec(groupWinner)
+                  Call Diag_WriteLine("TX: INI_NORMALIZED_KEY_COLLISION section=[" & CStr(sectionName) & "] normalize=[" & CStr(groupNormLookup) & "] matches=[" & groupMatchCsv & "] winner=[" & groupWinner & "] action=[SORTED_FIRST]")
+                End If
+              End If
+            End If
+            groupCount = -1
+          End If
+        End If
+
+        If groupCount < 0 Then
+          groupNormLookup = keyNormLookup
+          groupCount = 0
+          ReDim groupKeys(0)
+          groupKeys(0) = keyTxt
+        Else
+          groupCount = groupCount + 1
+          ReDim Preserve groupKeys(groupCount)
+          groupKeys(groupCount) = keyTxt
+        End If
+      Next
+
+      If groupCount > 0 Then
+        firstVal = CStr(sec(CStr(groupKeys(0))))
+        hasDiffVal = False
+        For j = 1 To groupCount
+          If StrComp(firstVal, CStr(sec(CStr(groupKeys(j)))), vbBinaryCompare) <> 0 Then
+            hasDiffVal = True
+            Exit For
+          End If
+        Next
+
+        If hasDiffVal Then
+          groupMatchCsv = ""
+          For j = 0 To groupCount
+            If Len(groupMatchCsv) > 0 Then groupMatchCsv = groupMatchCsv & "|"
+            groupMatchCsv = groupMatchCsv & CStr(groupKeys(j))
+          Next
+
+          If strictMode Then
+            Call Diag_WriteLine("TX: INI_NORMALIZED_KEY_COLLISION section=[" & CStr(sectionName) & "] normalize=[" & CStr(groupNormLookup) & "] matches=[" & groupMatchCsv & "] winner=[(none)] action=[FAIL_CLOSED]")
+            Call Ambiguity_AddEx("ini", "normalized_collision", CStr(sectionName) & ":" & CStr(groupNormLookup), "top_tie=[" & groupMatchCsv & "]", "LoadIniSectionDictNormalized normalize collision fail-closed")
+          Else
+            groupWinner = CStr(groupKeys(0))
+            groupWinnerNorm = NormalizeKey(CStr(groupWinner))
+            normDict(groupWinnerNorm) = sec(groupWinner)
+            Call Diag_WriteLine("TX: INI_NORMALIZED_KEY_COLLISION section=[" & CStr(sectionName) & "] normalize=[" & CStr(groupNormLookup) & "] matches=[" & groupMatchCsv & "] winner=[" & groupWinner & "] action=[SORTED_FIRST]")
+          End If
+        End If
+      End If
+    End If
   End If
 End Sub
 
