@@ -123,14 +123,9 @@ Completed:
 - Target #9 — ResolveCategorySmart alias/canonical merge determinism.
 - Target #10 — Heuristic scanner input normalization
 
-Remaining (from Phase-1 HIGH-risk audit):
-- Target #11 — Residual normalized lookup surfaces (if discovered)
-  Scope:
-  - Identify and stabilize any remaining normalize-then-first-match helpers not covered by Targets #5–#7.
-  Discipline:
-  - Same collision pattern as Target #5.
-  - Strict fail-closed on ambiguous normalize matches.
-  - Deterministic sorted-first only in non-strict collision branch.
+- Target #11 — Residual normalized lookup surfaces (if discovered) (Completed)
+
+Phase-3 complete: All documented HIGH nondeterministic behavioral surfaces stabilized with ordering-only fixes. No ambiguity, scoring, resolver, or logging drift introduced.
 
 Phase 4 – Regression Verification
 - STRICT harness repeat-run validation
