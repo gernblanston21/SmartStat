@@ -119,17 +119,9 @@ Completed:
 - Target #5 — TryCanonLookupFlexible: deterministic first-match behavior (normalize-collision handling).
 - Target #6 — LoadIniSectionDictNormalized / LoadIni: deterministic normalized-key collision handling.
 - Target #7 — SuggestQualifierMapping / ResolveFilterFragments: deterministic first-hit scanning (containment + fuzzy fallback).
+- Target #8 — ResolveQualifierSmart candidate pool ordering determinism
 
 Remaining (from Phase-1 HIGH-risk audit):
-- Target #8 — ResolveQualifierSmart candidate pool ordering determinism
-  Scope:
-  - Stabilize candidate evaluation order in ResolveQualifierSmart and related heuristic scanners.
-  - Replace dictionary key iteration with deterministic sorted arrays.
-  Discipline:
-  - No scoring changes.
-  - Strict mode fails closed only on true multi-hit/tie cases.
-  - Non-strict preserves behavior except where prior result depended on iteration order.
-
 - Target #9 — ResolveCategorySmart alias/canonical merge determinism
   Scope:
   - Stabilize alias + canonical candidate merging.

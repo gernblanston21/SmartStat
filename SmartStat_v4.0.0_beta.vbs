@@ -1678,10 +1678,12 @@ Function ResolveQualifierSmart(qTxt, qAliasNorm, qNorm, learn, ByRef outFrag, By
   Dim keyN: keyN = NormalizeKey(raw)
   If qAliasNorm.Exists(keyN) Then keyN = NormalizeKey(CStr(qAliasNorm(keyN)))
   If qNorm.Exists(keyN) Then outFrag = CStr(qNorm(keyN)) : acceptedBy="direct" : scoreOut=1 : ResolveQualifierSmart=True : Exit Function
+  Dim aliasKeysSorted: aliasKeysSorted = Transform_SortStringArrayTextBinary(qAliasNorm.Keys)
+  Dim canonKeysSorted: canonKeysSorted = Transform_SortStringArrayTextBinary(qNorm.Keys)
 
   Dim bestA, altA, sA, sAltA, ambA, topTieA, topTieAKeys
-  If CBool(DIAG_MODE) Then Call Diag_WriteLine("RESOLVER_CANDIDATE_SOURCE scope=qualifier.alias source=DICT_KEYS order=UNSORTED_ENUM tie_rule=FAIL_CLOSED_ON_TOP_TIE")
-  If HeuristicPickWithAlt(keyN, qAliasNorm.Keys, learn, bestA, sA, altA, sAltA, ambA, topTieA, topTieAKeys) Then
+  If CBool(DIAG_MODE) Then Call Diag_WriteLine("RESOLVER_CANDIDATE_SOURCE scope=qualifier.alias source=DICT_KEYS order=SORTED_TEXT_BINARY tie_rule=FAIL_CLOSED_ON_TOP_TIE")
+  If HeuristicPickWithAlt(keyN, aliasKeysSorted, learn, bestA, sA, altA, sAltA, ambA, topTieA, topTieAKeys) Then
     If ambA Then
       If CBool(topTieA) Then
         Call Ambiguity_AddEx("qualifier", "alias", raw, "top_tie=[" & topTieAKeys & "]", "HeuristicPickWithAlt top-score tie fail-closed")
@@ -1700,8 +1702,8 @@ Function ResolveQualifierSmart(qTxt, qAliasNorm, qNorm, learn, ByRef outFrag, By
   End If
 
   Dim bestC, altC, sC, sAltC, ambC, topTieC, topTieCKeys
-  If CBool(DIAG_MODE) Then Call Diag_WriteLine("RESOLVER_CANDIDATE_SOURCE scope=qualifier.canon source=DICT_KEYS order=UNSORTED_ENUM tie_rule=FAIL_CLOSED_ON_TOP_TIE")
-  If HeuristicPickWithAlt(keyN, qNorm.Keys, learn, bestC, sC, altC, sAltC, ambC, topTieC, topTieCKeys) Then
+  If CBool(DIAG_MODE) Then Call Diag_WriteLine("RESOLVER_CANDIDATE_SOURCE scope=qualifier.canon source=DICT_KEYS order=SORTED_TEXT_BINARY tie_rule=FAIL_CLOSED_ON_TOP_TIE")
+  If HeuristicPickWithAlt(keyN, canonKeysSorted, learn, bestC, sC, altC, sAltC, ambC, topTieC, topTieCKeys) Then
     If ambC Then
       If CBool(topTieC) Then
         Call Ambiguity_AddEx("qualifier", "canon", raw, "top_tie=[" & topTieCKeys & "]", "HeuristicPickWithAlt top-score tie fail-closed")
