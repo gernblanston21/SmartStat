@@ -109,6 +109,19 @@ Phase 3 – Behavioral Surface Hardening
 - Stabilize overlay merge ordering explicitly
 - Stabilize candidate evaluation order
 
+### WP-10 Phase 3 — Behavioral Surface Hardening (Targets)
+
+Completed:
+- Target #1 — Commit ordering determinism (ApplyPlan.Keys sorted before non-atomic commit loop).
+- Target #2 — Resolver tie determinism (two-pass tie detection; ties fail closed).
+- Target #3 — TRANSFORMS_REGEX determinism (sorted load/apply; strict conflict fail-closed).
+- Target #4 — AmbiguityContext lifecycle determinism + strict invariants (AMBIGUOUS_CONTEXT_INVALID; stable ambiguity emissions).
+
+Remaining (from Phase-1 HIGH-risk audit):
+- Target #5 — TryCanonLookupFlexible: deterministic first-match behavior (normalize-collision handling).
+- Target #6 — LoadIniSectionDictNormalized / LoadIni: deterministic normalized-key collision handling.
+- Target #7 — SuggestQualifierMapping / ResolveFilterFragments: deterministic first-hit scanning (containment + fuzzy fallback).
+
 Phase 4 – Regression Verification
 - STRICT harness repeat-run validation
 - Confirm identical resolution outcomes
