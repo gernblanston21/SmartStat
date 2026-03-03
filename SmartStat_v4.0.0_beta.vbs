@@ -1887,10 +1887,53 @@ Function TryCanonLookupFlexible(k, dict, ByRef outVal)
   Dim kn: kn = NormalizeKeyForLookup(k)
   If dict.Exists(k) Then outVal = dict(k): TryCanonLookupFlexible = True: Exit Function
   If dict.Exists(kn) Then outVal = dict(kn): TryCanonLookupFlexible = True: Exit Function
-  Dim kk
-  For Each kk In dict.Keys
-    If NormalizeKeyForLookup(CStr(kk)) = kn Then outVal = dict(kk): TryCanonLookupFlexible = True: Exit Function
+
+  Dim sortedKeys: sortedKeys = Transform_SortStringArrayTextBinary(dict.Keys)
+  Dim matchKeys(), matchCount, i, kk
+  matchCount = -1
+
+  If IsArray(sortedKeys) Then
+    For i = LBound(sortedKeys) To UBound(sortedKeys)
+      kk = CStr(sortedKeys(i))
+      If NormalizeKeyForLookup(kk) = kn Then
+        matchCount = matchCount + 1
+        ReDim Preserve matchKeys(matchCount)
+        matchKeys(matchCount) = kk
+      End If
+    Next
+  End If
+
+  If matchCount < 0 Then
+    TryCanonLookupFlexible = False
+    Exit Function
+  End If
+
+  If matchCount = 0 Then
+    outVal = dict(matchKeys(0))
+    TryCanonLookupFlexible = True
+    Exit Function
+  End If
+
+  Dim matchCsv, mi
+  matchCsv = ""
+  For mi = 0 To matchCount
+    If Len(matchCsv) > 0 Then matchCsv = matchCsv & "|"
+    matchCsv = matchCsv & CStr(matchKeys(mi))
   Next
+
+  If Ambiguity_IsStrictHarness() Then
+    Call Diag_WriteLine("TX: CANON_LOOKUP_NORMALIZE_COLLISION key=[" & CStr(k) & "] normalize=[" & kn & "] matches=[" & matchCsv & "] winner=[(none)] action=[FAIL_CLOSED]")
+    Call Ambiguity_AddEx("category", "canon", CStr(k), "top_tie=[" & matchCsv & "]", "TryCanonLookupFlexible normalize collision fail-closed")
+    TryCanonLookupFlexible = False
+    Exit Function
+  End If
+
+  Dim winnerKey: winnerKey = CStr(matchKeys(0))
+  Call Diag_WriteLine("TX: CANON_LOOKUP_NORMALIZE_COLLISION key=[" & CStr(k) & "] normalize=[" & kn & "] matches=[" & matchCsv & "] winner=[" & winnerKey & "] action=[SORTED_FIRST]")
+  outVal = dict(winnerKey)
+  TryCanonLookupFlexible = True
+  Exit Function
+
   TryCanonLookupFlexible = False
 End Function
 
