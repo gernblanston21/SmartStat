@@ -168,3 +168,27 @@ All future roadmap work that touches resolution, normalization, or ambiguity mus
 No exceptions.
 
 SmartStat determinism is a release-grade guarantee.
+
+---
+
+# 9. Phase-4 Regression Verification
+
+WP-10 Phase-4 is a regression-verification stage, not a behavioral modification stage.
+
+Rules:
+
+- No SmartStat production code changes are allowed during Phase-4.
+- No INI or mapping edits are allowed.
+- Phase-4 may generate harness-only artifacts under:
+
+  /tests/wp-10/phase-4/
+
+- Phase-4 validation must prove:
+  - Repeat-run determinism within STRICT harness mode.
+  - Repeat-run determinism within non-strict harness mode.
+  - STRICT vs non-strict parity for expected-success scenarios.
+  - Deterministic fail-closed behavior for expected-ambiguity scenarios.
+
+All Phase-4 artifacts are considered regression evidence and must remain archived.
+
+---
