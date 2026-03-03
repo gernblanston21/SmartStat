@@ -121,17 +121,9 @@ Completed:
 - Target #7 — SuggestQualifierMapping / ResolveFilterFragments: deterministic first-hit scanning (containment + fuzzy fallback).
 - Target #8 — ResolveQualifierSmart candidate pool ordering determinism.
 - Target #9 — ResolveCategorySmart alias/canonical merge determinism.
+- Target #10 — Heuristic scanner input normalization
 
 Remaining (from Phase-1 HIGH-risk audit):
-- Target #10 — Heuristic scanner input normalization
-  Scope:
-  - Standardize all heuristic/fuzzy scanners to operate on deterministically sorted candidate arrays.
-  - Eliminate hidden dict.Keys enumeration inside scanners.
-  Discipline:
-  - No algorithm refactors.
-  - No scoring changes.
-  - Only ordering stabilization.
-
 - Target #11 — Residual normalized lookup surfaces (if discovered)
   Scope:
   - Identify and stabilize any remaining normalize-then-first-match helpers not covered by Targets #5–#7.
