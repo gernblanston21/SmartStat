@@ -3033,6 +3033,9 @@ Function SuggestQualifierMapping(rawTxt, qAliasNorm, qNorm, learn, _
                                  ByRef suggestIsAlias, ByRef aliasKeyOut, _
                                  ByRef canonKeyOut, ByRef fragOut, ByRef scoreOut)
   Dim keyN: keyN = NormalizeKey(CStr(rawTxt))
+  Dim keyLower: keyLower = LCase(CStr(keyN))
+  Dim aliasKeysSorted: aliasKeysSorted = Transform_SortStringArrayTextBinary(qAliasNorm.Keys)
+  Dim canonKeysSorted: canonKeysSorted = Transform_SortStringArrayTextBinary(qNorm.Keys)
   suggestIsAlias = False
   aliasKeyOut = "": canonKeyOut = "": fragOut = "": scoreOut = 0
 
@@ -3061,44 +3064,113 @@ Function SuggestQualifierMapping(rawTxt, qAliasNorm, qNorm, learn, _
 
   ' --- 1) Token containment against ALIAS keys (alias->canon mapping) ---
   Dim k, toks, ti, tok
-  For Each k In qAliasNorm.Keys   ' normalized alias key, e.g., "at_home"
-    toks = Split(LCase(CStr(k)), "_")
-    For ti = LBound(toks) To UBound(toks)
-      tok = toks(ti)
-      If tok = LCase(keyN) Then
-        aliasKeyOut = CStr(k)
-        canonKeyOut = NormalizeKey(CStr(qAliasNorm(k)))     ' normalized canonical key
-        If qNorm.Exists(canonKeyOut) Then fragOut = CStr(qNorm(canonKeyOut)) Else fragOut = ""
-        scoreOut = 0.95
-        suggestIsAlias = True
-        SuggestQualifierMapping = True
-        Exit Function
-      End If
+  Dim aliasHits(), aliasHitCount, ai
+  aliasHitCount = -1
+  If IsArray(aliasKeysSorted) Then
+    For ai = LBound(aliasKeysSorted) To UBound(aliasKeysSorted)
+      k = CStr(aliasKeysSorted(ai))
+      toks = Split(LCase(CStr(k)), "_")
+      For ti = LBound(toks) To UBound(toks)
+        tok = toks(ti)
+        If tok = keyLower Then
+          aliasHitCount = aliasHitCount + 1
+          ReDim Preserve aliasHits(aliasHitCount)
+          aliasHits(aliasHitCount) = CStr(k)
+          Exit For
+        End If
+      Next
     Next
-  Next
+  End If
+  If aliasHitCount = 0 Then
+    aliasKeyOut = CStr(aliasHits(0))
+    canonKeyOut = NormalizeKey(CStr(qAliasNorm(aliasKeyOut)))     ' normalized canonical key
+    If qNorm.Exists(canonKeyOut) Then fragOut = CStr(qNorm(canonKeyOut)) Else fragOut = ""
+    scoreOut = 0.95
+    suggestIsAlias = True
+    SuggestQualifierMapping = True
+    Exit Function
+  ElseIf aliasHitCount > 0 Then
+    Dim aliasMatchCsv, aliasWinner, mi
+    aliasMatchCsv = ""
+    For mi = 0 To aliasHitCount
+      If Len(aliasMatchCsv) > 0 Then aliasMatchCsv = aliasMatchCsv & "|"
+      aliasMatchCsv = aliasMatchCsv & CStr(aliasHits(mi))
+    Next
+
+    If Ambiguity_IsStrictHarness() Then
+      Call Diag_WriteLine("TX: QUALIFIER_CONTAINMENT_MULTI_HIT scope=[alias] key=[" & CStr(keyN) & "] matches=[" & aliasMatchCsv & "] winner=[(none)] action=[FAIL_CLOSED]")
+      Call Ambiguity_AddEx("qualifier", "alias_fallback", rawTxt, "top_tie=[" & aliasMatchCsv & "]", "SuggestQualifierMapping containment multi-hit fail-closed")
+      SuggestQualifierMapping = False
+      Exit Function
+    End If
+
+    aliasWinner = CStr(aliasHits(0))
+    Call Diag_WriteLine("TX: QUALIFIER_CONTAINMENT_MULTI_HIT scope=[alias] key=[" & CStr(keyN) & "] matches=[" & aliasMatchCsv & "] winner=[" & aliasWinner & "] action=[SORTED_FIRST]")
+    aliasKeyOut = aliasWinner
+    canonKeyOut = NormalizeKey(CStr(qAliasNorm(aliasKeyOut)))     ' normalized canonical key
+    If qNorm.Exists(canonKeyOut) Then fragOut = CStr(qNorm(canonKeyOut)) Else fragOut = ""
+    scoreOut = 0.95
+    suggestIsAlias = True
+    SuggestQualifierMapping = True
+    Exit Function
+  End If
 
   ' --- 2) Token containment against CANONICAL keys (e.g., keyN "home" hits "at_home") ---
-  For Each k In qNorm.Keys        ' canonical key, e.g., "at_home"
-    toks = Split(LCase(CStr(k)), "_")
-    For ti = LBound(toks) To UBound(toks)
-      tok = toks(ti)
-      If tok = LCase(keyN) Then
-        canonKeyOut = CStr(k)
-        fragOut = CStr(qNorm(k))
-        scoreOut = 0.90
-        suggestIsAlias = False
-        SuggestQualifierMapping = True
-        Exit Function
-      End If
+  Dim canonHits(), canonHitCount, ci
+  canonHitCount = -1
+  If IsArray(canonKeysSorted) Then
+    For ci = LBound(canonKeysSorted) To UBound(canonKeysSorted)
+      k = CStr(canonKeysSorted(ci))
+      toks = Split(LCase(CStr(k)), "_")
+      For ti = LBound(toks) To UBound(toks)
+        tok = toks(ti)
+        If tok = keyLower Then
+          canonHitCount = canonHitCount + 1
+          ReDim Preserve canonHits(canonHitCount)
+          canonHits(canonHitCount) = CStr(k)
+          Exit For
+        End If
+      Next
     Next
-  Next
+  End If
+  If canonHitCount = 0 Then
+    canonKeyOut = CStr(canonHits(0))
+    fragOut = CStr(qNorm(canonKeyOut))
+    scoreOut = 0.90
+    suggestIsAlias = False
+    SuggestQualifierMapping = True
+    Exit Function
+  ElseIf canonHitCount > 0 Then
+    Dim canonMatchCsv, canonWinner
+    canonMatchCsv = ""
+    For mi = 0 To canonHitCount
+      If Len(canonMatchCsv) > 0 Then canonMatchCsv = canonMatchCsv & "|"
+      canonMatchCsv = canonMatchCsv & CStr(canonHits(mi))
+    Next
+
+    If Ambiguity_IsStrictHarness() Then
+      Call Diag_WriteLine("TX: QUALIFIER_CONTAINMENT_MULTI_HIT scope=[canon] key=[" & CStr(keyN) & "] matches=[" & canonMatchCsv & "] winner=[(none)] action=[FAIL_CLOSED]")
+      Call Ambiguity_AddEx("qualifier", "canon_fallback", rawTxt, "top_tie=[" & canonMatchCsv & "]", "SuggestQualifierMapping containment multi-hit fail-closed")
+      SuggestQualifierMapping = False
+      Exit Function
+    End If
+
+    canonWinner = CStr(canonHits(0))
+    Call Diag_WriteLine("TX: QUALIFIER_CONTAINMENT_MULTI_HIT scope=[canon] key=[" & CStr(keyN) & "] matches=[" & canonMatchCsv & "] winner=[" & canonWinner & "] action=[SORTED_FIRST]")
+    canonKeyOut = canonWinner
+    fragOut = CStr(qNorm(canonKeyOut))
+    scoreOut = 0.90
+    suggestIsAlias = False
+    SuggestQualifierMapping = True
+    Exit Function
+  End If
 
   ' --- 3) Fuzzy among ALIAS keys ---
   Dim bestA, sA
-  If HeuristicPick(keyN, qAliasNorm.Keys, learn, bestA, sA) Then
+  If HeuristicPick(keyN, aliasKeysSorted, learn, bestA, sA) Then
     Dim bestDistA, tieCountA, tieCsvA
     bestDistA = Lev(LCase(CStr(keyN)), LCase(CStr(bestA)))
-    Call GetTopTieInfoForCandidates(LCase(CStr(keyN)), qAliasNorm.Keys, bestDistA, tieCountA, tieCsvA)
+    Call GetTopTieInfoForCandidates(LCase(CStr(keyN)), aliasKeysSorted, bestDistA, tieCountA, tieCsvA)
     If tieCountA > 1 Then
       Call Ambiguity_AddEx("qualifier", "alias_fallback", rawTxt, "top_tie=[" & tieCsvA & "]", "SuggestQualifierMapping top-distance tie fail-closed")
       SuggestQualifierMapping = False
@@ -3116,10 +3188,10 @@ Function SuggestQualifierMapping(rawTxt, qAliasNorm, qNorm, learn, _
 
   ' --- 4) Fuzzy among CANONICAL keys ---
   Dim bestC, sC
-  If HeuristicPick(keyN, qNorm.Keys, learn, bestC, sC) Then
+  If HeuristicPick(keyN, canonKeysSorted, learn, bestC, sC) Then
     Dim bestDistC, tieCountC, tieCsvC
     bestDistC = Lev(LCase(CStr(keyN)), LCase(CStr(bestC)))
-    Call GetTopTieInfoForCandidates(LCase(CStr(keyN)), qNorm.Keys, bestDistC, tieCountC, tieCsvC)
+    Call GetTopTieInfoForCandidates(LCase(CStr(keyN)), canonKeysSorted, bestDistC, tieCountC, tieCsvC)
     If tieCountC > 1 Then
       Call Ambiguity_AddEx("qualifier", "canon_fallback", rawTxt, "top_tie=[" & tieCsvC & "]", "SuggestQualifierMapping top-distance tie fail-closed")
       SuggestQualifierMapping = False

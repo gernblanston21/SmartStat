@@ -118,9 +118,9 @@ Completed:
 - Target #4 — AmbiguityContext lifecycle determinism + strict invariants (AMBIGUOUS_CONTEXT_INVALID; stable ambiguity emissions).
 - Target #5 — TryCanonLookupFlexible: deterministic first-match behavior (normalize-collision handling).
 - Target #6 — LoadIniSectionDictNormalized / LoadIni: deterministic normalized-key collision handling.
+- Target #7 — SuggestQualifierMapping / ResolveFilterFragments: deterministic first-hit scanning (containment + fuzzy fallback).
 
 Remaining (from Phase-1 HIGH-risk audit):
-- Target #7 — SuggestQualifierMapping / ResolveFilterFragments: deterministic first-hit scanning (containment + fuzzy fallback).
 
 Phase 4 – Regression Verification
 - STRICT harness repeat-run validation

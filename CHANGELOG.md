@@ -52,6 +52,7 @@ Runtime versioning follows script identifiers (`SmartStat_v*.vbs`), while `VERSI
 - WP-10 Phase-3 Target #4: AmbiguityContext lifecycle is now deterministic and strict-invariant checked; ambiguity recording always initializes context or fails closed in HARNESS_STRICT; ambiguity summaries are stable-sorted.
 - WP-10 Phase-3 Target #5: TryCanonLookupFlexible canonical lookup is now deterministic under normalize-collisions; strict mode fails closed on ambiguous normalize matches.
 - WP-10 Phase-3 Target #6: INI normalized-key collisions are now handled deterministically; strict mode fails closed on collisions.
+- WP-10 Phase-3 Target #7: unresolved-filter scanning is now deterministic; strict mode fails closed on multi-hit containment matches; non-strict uses stable sorted-first selection with deterministic collision logging.
 
 ### Fixed
 - Ambiguity context initialization/assignment path in `Main` and `Ambiguity_AddEx` to avoid invalid object-type states.
