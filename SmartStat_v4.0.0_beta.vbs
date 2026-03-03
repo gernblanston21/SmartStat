@@ -330,8 +330,11 @@ End Sub
 Sub Ambiguity_Add(where, kind, inputTxt, bestKey, bestScore, altKey, altScore)
   On Error Resume Next
 
+  Call EnsureAmbiguityContextEx(False, "Ambiguity_Add")
   If (CompilerContext Is Nothing) Then Exit Sub
   If Not CompilerContext.Exists("ambiguous") Then Exit Sub
+  If (Not IsObject(CompilerContext("ambiguous"))) Then Exit Sub
+  If UCase(TypeName(CompilerContext("ambiguous"))) <> "DICTIONARY" Then Exit Sub
 
   Dim d: Set d = CompilerContext("ambiguous")
   Dim id: id = kind & "|" & where & "|" & UCase(Trim(CStr(inputTxt)))
@@ -350,16 +353,11 @@ End Sub
 Sub Ambiguity_AddEx(field, phase, inputValue, candidates, note)
   On Error Resume Next
 
+  Call EnsureAmbiguityContextEx(False, "Ambiguity_AddEx")
   If (CompilerContext Is Nothing) Then Exit Sub
-  If Not CompilerContext.Exists("ambiguous") Then
-    Dim initAmb: Set initAmb = CreateObject("Scripting.Dictionary")
-    Set CompilerContext("ambiguous") = initAmb
-  ElseIf (Not IsObject(CompilerContext("ambiguous"))) Or (UCase(TypeName(CompilerContext("ambiguous"))) <> "DICTIONARY") Then
-    Call Diag_WriteLine("AMBIGUITY: ambiguous context reset in Ambiguity_AddEx (TypeName=" & TypeName(CompilerContext("ambiguous")) & ")")
-    Dim resetAmb: Set resetAmb = CreateObject("Scripting.Dictionary")
-    Set CompilerContext("ambiguous") = resetAmb
-  End If
-
+  If Not CompilerContext.Exists("ambiguous") Then Exit Sub
+  If (Not IsObject(CompilerContext("ambiguous"))) Then Exit Sub
+  If UCase(TypeName(CompilerContext("ambiguous"))) <> "DICTIONARY" Then Exit Sub
   Dim d: Set d = CompilerContext("ambiguous")
   If (d Is Nothing) Then Exit Sub
 
@@ -517,15 +515,7 @@ Sub Main()
   G_HARNESS_EARLY_EXIT_FINALIZED = False
 
   ' v4.0 Phase 2: ambiguity & confidence context
-  Call EnsureAmbiguityContext()
-  If Not CompilerContext.Exists("ambiguous") Then
-    Dim AmbiguityHits: Set AmbiguityHits = CreateObject("Scripting.Dictionary")
-    Set CompilerContext("ambiguous") = AmbiguityHits
-  ElseIf (Not IsObject(CompilerContext("ambiguous"))) Or (UCase(TypeName(CompilerContext("ambiguous"))) <> "DICTIONARY") Then
-    Call Diag_WriteLine("TX: ambiguous context reset in Main (TypeName=" & TypeName(CompilerContext("ambiguous")) & ")")
-    Dim AmbiguityHitsReset: Set AmbiguityHitsReset = CreateObject("Scripting.Dictionary")
-    Set CompilerContext("ambiguous") = AmbiguityHitsReset
-  End If
+  Call EnsureAmbiguityContextEx(True, "Main")
 
   ' ================================
   ' v4.0 Phase 3: Harness bootstrap
@@ -856,7 +846,7 @@ End Sub
 Function Stage_ValidatePlan()
   Stage_ValidatePlan = True
 
-  Call EnsureAmbiguityContext()
+  Call EnsureAmbiguityContextEx(False, "Stage_ValidatePlan")
   If Not (CompilerContext Is Nothing) Then
     If CompilerContext.Exists("ambiguous") Then
       If IsObject(CompilerContext("ambiguous")) Then
@@ -884,6 +874,13 @@ Function Stage_ValidatePlan()
 
     ' v4.0 Phase 2: hard block if qualifier failed resolution
   If Not (PlanValidationErrors Is Nothing) Then
+    If PlanValidationErrors.Exists("AMBIGUOUS_CONTEXT_INVALID") Then
+      Call Diag_WriteLine("TX: VALIDATION ERROR - AMBIGUOUS_CONTEXT_INVALID: " & CStr(PlanValidationErrors("AMBIGUOUS_CONTEXT_INVALID")))
+      Call Diag_WriteLine("TX: AMBIGUOUS_CONTEXT_INVALID - blocking apply")
+      Stage_ValidatePlan = False
+      Call Diag_WriteLine("TX: EARLY EXIT - AMBIGUOUS_CONTEXT_INVALID_PRECHECK")
+      Exit Function
+    End If
     If PlanValidationErrors.Exists("QUALIFIER_UNRESOLVED") Then
       Call Diag_WriteLine("TX: QUALIFIER_UNRESOLVED - blocking apply")
       Stage_ValidatePlan = False
@@ -4097,22 +4094,78 @@ Function CleanAfterColon(line)
   CleanAfterColon = Trim(s)
 End Function
 
-Sub EnsureAmbiguityContext()
+Function Ambiguity_IsStrictHarness()
+  On Error Resume Next
+  Ambiguity_IsStrictHarness = (UCase(Trim(CStr(G_HARNESS_MODE))) = "HARNESS_STRICT")
+  On Error GoTo 0
+End Function
+
+Sub Ambiguity_RecordContextInvalid(ByVal sourceTag, ByVal detail)
   On Error Resume Next
 
-  If (Not IsObject(CompilerContext)) Then
-    Set CompilerContext = CreateObject("Scripting.Dictionary")
-  ElseIf UCase(TypeName(CompilerContext)) <> "DICTIONARY" Then
+  Dim sourceTxt: sourceTxt = Trim(CStr(sourceTag))
+  Dim detailTxt: detailTxt = Trim(CStr(detail))
+  If Len(sourceTxt) = 0 Then sourceTxt = "EnsureAmbiguityContext"
+  If Len(detailTxt) = 0 Then detailTxt = "unspecified"
+
+  If (Not IsObject(PlanValidationErrors)) Then
+    Set PlanValidationErrors = CreateObject("Scripting.Dictionary")
+  ElseIf (PlanValidationErrors Is Nothing) Then
+    Set PlanValidationErrors = CreateObject("Scripting.Dictionary")
+  End If
+
+  PlanValidationErrors("AMBIGUOUS_CONTEXT_INVALID") = "Ambiguity context invalid at [" & sourceTxt & "] detail=[" & detailTxt & "]. Apply blocked to prevent unsafe commit."
+  Call Diag_WriteLine("TX: AMBIGUOUS_CONTEXT_INVALID source=[" & sourceTxt & "] detail=[" & detailTxt & "]")
+
+  On Error GoTo 0
+End Sub
+
+Sub EnsureAmbiguityContext()
+  Call EnsureAmbiguityContextEx(False, "EnsureAmbiguityContext")
+End Sub
+
+Sub EnsureAmbiguityContextEx(ByVal forceReset, ByVal sourceTag)
+  On Error Resume Next
+
+  Dim doReset: doReset = CBool(forceReset)
+  If Err.Number <> 0 Then
+    Err.Clear
+    doReset = False
+  End If
+
+  Dim src: src = Trim(CStr(sourceTag))
+  If Len(src) = 0 Then src = "EnsureAmbiguityContext"
+
+  Dim strictMode: strictMode = Ambiguity_IsStrictHarness()
+  Dim resetAmb: resetAmb = doReset
+  Dim ctxTypeName: ctxTypeName = ""
+
+  If IsObject(CompilerContext) Then
+    ctxTypeName = UCase(CStr(TypeName(CompilerContext)))
+    If ctxTypeName = "DICTIONARY" Then
+      ' valid context
+    ElseIf ctxTypeName = "NOTHING" Then
+      Set CompilerContext = CreateObject("Scripting.Dictionary")
+    Else
+      If strictMode Then Call Ambiguity_RecordContextInvalid(src, "CompilerContext TypeName=" & CStr(ctxTypeName))
+      Set CompilerContext = CreateObject("Scripting.Dictionary")
+    End If
+  Else
     Set CompilerContext = CreateObject("Scripting.Dictionary")
   End If
 
   If Not CompilerContext.Exists("ambiguous") Then
-    Dim amb0: Set amb0 = CreateObject("Scripting.Dictionary")
-    On Error Resume Next
-    amb0.CompareMode = 1
-    On Error GoTo 0
-    Set CompilerContext("ambiguous") = amb0
-  ElseIf (Not IsObject(CompilerContext("ambiguous"))) Or (UCase(TypeName(CompilerContext("ambiguous"))) <> "DICTIONARY") Then
+    resetAmb = True
+  Else
+    Dim ambTypeName
+    ambTypeName = UCase(CStr(TypeName(CompilerContext("ambiguous"))))
+    If (Not IsObject(CompilerContext("ambiguous"))) Or (ambTypeName <> "DICTIONARY") Then
+      If strictMode Then Call Ambiguity_RecordContextInvalid(src, "CompilerContext('ambiguous') TypeName=" & CStr(ambTypeName))
+      resetAmb = True
+    End If
+  End If
+
+  If resetAmb Then
     Dim amb1: Set amb1 = CreateObject("Scripting.Dictionary")
     On Error Resume Next
     amb1.CompareMode = 1
@@ -4141,7 +4194,7 @@ Function Ambiguity_StringifyCandidates(ByVal candidates, ByVal maxItems)
   If cap <= 0 Then cap = 8
 
   Dim list: Set list = CreateObject("System.Collections.ArrayList")
-  Dim i, k, tname
+  Dim i, k, tname, sortedList
 
   If IsArray(candidates) Then
     For i = LBound(candidates) To UBound(candidates)
@@ -4153,17 +4206,25 @@ Function Ambiguity_StringifyCandidates(ByVal candidates, ByVal maxItems)
       For Each k In candidates.Keys
         list.Add Trim(CStr(k))
       Next
-      list.Sort
     ElseIf InStr(1, tname, "ARRAYLIST", vbTextCompare) > 0 Then
       For i = 0 To candidates.Count - 1
         list.Add Trim(CStr(candidates(i)))
       Next
-      list.Sort
     Else
       list.Add Trim(CStr(candidates))
     End If
   Else
     If Len(Trim(CStr(candidates))) > 0 Then list.Add Trim(CStr(candidates))
+  End If
+
+  If list.Count > 0 Then
+    ReDim sortedList(list.Count - 1)
+    For i = 0 To list.Count - 1
+      sortedList(i) = CStr(list(i))
+    Next
+    sortedList = Transform_SortStringArrayTextBinary(sortedList)
+  Else
+    sortedList = Array()
   End If
 
   Dim outTxt, take
@@ -4173,7 +4234,7 @@ Function Ambiguity_StringifyCandidates(ByVal candidates, ByVal maxItems)
 
   For i = 0 To take - 1
     If Len(outTxt) > 0 Then outTxt = outTxt & " | "
-    outTxt = outTxt & CStr(list(i))
+    outTxt = outTxt & CStr(sortedList(i))
   Next
   If list.Count > cap Then outTxt = outTxt & " | ... +" & CStr(list.Count - cap)
 
@@ -4183,9 +4244,14 @@ End Function
 
 Sub Ambiguity_AddDetailed(ByVal decisionLabel, ByVal inputToken, ByVal candidates, ByVal selectedState, ByVal notes, ByVal hint)
   On Error Resume Next
-  Call EnsureAmbiguityContext()
+  Call EnsureAmbiguityContextEx(False, "Ambiguity_AddDetailed")
+  If (CompilerContext Is Nothing) Then Exit Sub
+  If Not CompilerContext.Exists("ambiguous") Then Exit Sub
+  If (Not IsObject(CompilerContext("ambiguous"))) Then Exit Sub
+  If UCase(TypeName(CompilerContext("ambiguous"))) <> "DICTIONARY" Then Exit Sub
 
   Dim ambHits: Set ambHits = CompilerContext("ambiguous")
+  If (ambHits Is Nothing) Then Exit Sub
   Dim decisionTxt, inputTxt, stateTxt, notesTxt, hintTxt
   Dim entryKey, entryObj, candidateTxt
 
@@ -4240,7 +4306,7 @@ Sub Diag_WriteAmbiguitySummary()
   If Not CBool(DIAG_MODE) Then Exit Sub
   If CBool(G_AMBIGUITY_SUMMARY_EMITTED) Then Exit Sub
 
-  Call EnsureAmbiguityContext()
+  Call EnsureAmbiguityContextEx(False, "Diag_WriteAmbiguitySummary")
   If (CompilerContext Is Nothing) Then Exit Sub
   Dim allowAmbSummary: allowAmbSummary = False
   If CompilerContext.Exists("learn") Then
@@ -4257,17 +4323,14 @@ Sub Diag_WriteAmbiguitySummary()
   If (ambHits Is Nothing) Then Exit Sub
   If ambHits.Count <= 0 Then Exit Sub
 
-  Dim keyList: Set keyList = CreateObject("System.Collections.ArrayList")
-  Dim k
-  For Each k In ambHits.Keys
-    keyList.Add CStr(k)
-  Next
-  keyList.Sort
+  Dim keyList
+  keyList = Transform_SortStringArrayTextBinary(ambHits.Keys)
+  If Not IsArray(keyList) Then Exit Sub
 
   Call Diag_WriteLine("AMBIGUITY_SUMMARY")
 
   Dim i, hitKey, hitVal, dKey, inTok, cand, st, rsn, act, lineTxt
-  For i = 0 To keyList.Count - 1
+  For i = LBound(keyList) To UBound(keyList)
     hitKey = CStr(keyList(i))
     dKey = "UNKNOWN_DECISION"
     inTok = ""
@@ -4312,7 +4375,7 @@ End Sub
 
 Function BuildAmbiguityOperatorSection()
   On Error Resume Next
-  Call EnsureAmbiguityContext
+  Call EnsureAmbiguityContextEx(False, "BuildAmbiguityOperatorSection")
 
   BuildAmbiguityOperatorSection = ""
 
@@ -4332,20 +4395,12 @@ Function BuildAmbiguityOperatorSection()
   If (amb Is Nothing) Then Exit Function
   If amb.Count <= 0 Then Exit Function
 
-  Dim keys: keys = amb.Keys
-  Dim i, j, tmp
-  For i = 0 To UBound(keys) - 1
-    For j = i + 1 To UBound(keys)
-      If StrComp(CStr(keys(i)), CStr(keys(j)), vbTextCompare) > 0 Then
-        tmp = keys(i)
-        keys(i) = keys(j)
-        keys(j) = tmp
-      End If
-    Next
-  Next
+  Dim keys: keys = Transform_SortStringArrayTextBinary(amb.Keys)
+  If Not IsArray(keys) Then Exit Function
+  Dim i
 
   Dim out: out = "AMBIGUITY:"
-  For i = 0 To UBound(keys)
+  For i = LBound(keys) To UBound(keys)
     out = out & vbCrLf & CStr(amb(CStr(keys(i))))
   Next
 
