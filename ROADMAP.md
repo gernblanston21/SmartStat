@@ -227,6 +227,7 @@ WP-14 implementation package (RC-safe, docs/tests/tooling only):
 - Evidence location: tests/wp-14/contract-validators/artifacts/<runLabel>/
 - RC constraint: no SmartStat core VBScript behavior changes; no production INI schema/order mutations
 
+WP-14 CLOSED - TrayApp contract + validator harness implemented (docs/tests/tooling only).
 Evidence: tests/wp-14/contract-validators/artifacts/wp14_runB/ (RUN_PASS=True, REPO_GATE_FAILURES=0)
 ---
 
