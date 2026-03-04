@@ -3,6 +3,7 @@
 ## Current State
 v4.0.0_beta - Frozen and stable
 Transitioning to v4.0.0_RC1
+v4.1.0_RC1 stabilization (Path A) is active.
 
 ## Determinism Doctrine (v4+)
 

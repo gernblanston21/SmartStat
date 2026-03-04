@@ -31,6 +31,25 @@ Each WP must be:
 
 ---
 
+## RC1 Stabilization Discipline (Active)
+
+Path A is active for `v4.1.0_RC1` on `v4_Dev`.
+WP-10 is closed.
+Phase-4 pack evidence is archived under `/tests/wp-10/phase-4/`.
+
+Allowed changes for RC1:
+- Logging clarity improvements (no behavior change)
+- Guardrail reinforcement (no behavior change)
+- Determinism verification additions (tests only)
+- Documentation corrections
+
+Prohibited changes for RC1:
+- Any resolver behavior changes
+- Any scoring/threshold/tie/policy changes
+- Any INI reordering
+
+---
+
 ## Architectural Guardrails (Active)
 
 These rules persist across all v4.x versions:

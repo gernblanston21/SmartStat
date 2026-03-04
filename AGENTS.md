@@ -68,6 +68,11 @@ Allowed:
 - Performance work
 - New harness capabilities
 
+### RC Stabilization Rules
+- RC work is doc/tests/log clarity only unless explicitly approved as a roadmap item.
+- Any behavior change requires a new WP entry + Phase-4 style regression evidence.
+- All new harness artifacts must remain under `/tests/...`.
+
 All changes must:
 - Preserve fail-closed ambiguity gating
 - Preserve transaction integrity
