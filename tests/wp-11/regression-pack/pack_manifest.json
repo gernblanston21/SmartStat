@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "pack_name": "wp11_regression_pack",
+  "description": "WP-11 harness regression pack framework seeded with WP-10 phase-4 scenarios.",
+  "defaults": {
+    "script": "SmartStat_v4.0.0_beta.vbs"
+  },
+  "cases": [
+    {
+      "id": "strict_success",
+      "enabled": true,
+      "runner": "tests/wp-10/phase-4/tmp_phase4_runner.vbs",
+      "args": [
+        "SUCCESS",
+        "HARNESS_STRICT"
+      ],
+      "artifact": "strict_success.txt"
+    },
+    {
+      "id": "strict_ambiguity",
+      "enabled": true,
+      "runner": "tests/wp-10/phase-4/tmp_phase4_runner.vbs",
+      "args": [
+        "AMBIGUITY",
+        "HARNESS_STRICT"
+      ],
+      "artifact": "strict_ambiguity.txt"
+    },
+    {
+      "id": "nonstrict_success",
+      "enabled": true,
+      "runner": "tests/wp-10/phase-4/tmp_phase4_runner.vbs",
+      "args": [
+        "SUCCESS",
+        "HARNESS"
+      ],
+      "artifact": "nonstrict_success.txt"
+    },
+    {
+      "id": "nonstrict_ambiguity",
+      "enabled": true,
+      "runner": "tests/wp-10/phase-4/tmp_phase4_runner.vbs",
+      "args": [
+        "AMBIGUITY",
+        "HARNESS"
+      ],
+      "artifact": "nonstrict_ambiguity.txt"
+    }
+  ],
+  "within_run_equal": [
+    {
+      "id": "strict_vs_nonstrict_success",
+      "left_case": "strict_success",
+      "right_case": "nonstrict_success"
+    }
+  ]
+}

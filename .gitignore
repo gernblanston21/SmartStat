@@ -13,3 +13,5 @@ PLAN.md
 # Codex Agent Skills runtime logs (keep structure, ignore outputs)
 .agents/**/logs/
 .agents/**/logs/**
+# WP-11 regression pack generated outputs
+tests/wp-11/regression-pack/artifacts/

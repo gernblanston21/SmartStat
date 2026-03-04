@@ -179,6 +179,9 @@ No patch release permitted for this scope.
 - Artifact locations standardized
 - Clear pass/fail criteria captured
 
+WP-11 CLOSED — Harness regression pack framework implemented (tests-only).
+Evidence: tests/wp-11/regression-pack/artifacts/compare/wp11_runA__wp11_runB/ (PACK_PASS=True)
+
 ## WP-12 (v4.1.0): Enhanced learn system validation
 ### Scope
 - Verify learn file writes are correct, stable, and governed
