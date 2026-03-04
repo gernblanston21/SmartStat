@@ -204,6 +204,10 @@ Evidence: tests/wp-12/learn-validation/artifacts/wp12_runC/ (RUN_PASS=True)
 - Performance improvement measured
 - No behavioral diffs in STRICT harness regression pack
 
+RC note:
+- Harness/regression evidence implemented under tests/wp-13/resolver-perf/ (tests-only, RC-safe).
+- Core resolver perf micro-optimization deferred (stashed) for post-RC / post-guardrail approval.
+
 ## WP-14 (v4.1.0): TrayApp alignment preparation
 ### Scope
 - Define and stabilize the contract between SmartStat core + TrayApp
