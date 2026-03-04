@@ -42,6 +42,7 @@ Allowed changes for RC1:
 - Guardrail reinforcement (no behavior change)
 - Determinism verification additions (tests only)
 - Documentation corrections
+- Harness regression pack framework (tests only)
 
 Prohibited changes for RC1:
 - Any resolver behavior changes
