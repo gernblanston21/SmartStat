@@ -156,6 +156,17 @@ This is a minor version bump (v4.1.0) because:
 - Diff behavior changes
 - Determinism guarantees are strengthened
 
+### WP-10 Retrospective — Determinism Stabilization
+
+WP-10 hardened SmartStat’s resolution engine to guarantee deterministic behavior across runs.
+All previously identified HIGH-risk nondeterministic surfaces (dictionary iteration order, candidate pool construction, alias/canonical merge order, normalize-first lookup helpers, and heuristic scanner ingress) were stabilized without altering resolver math, scoring rules, or ambiguity policy.
+
+The work focused exclusively on deterministic ordering and fail-closed ambiguity preservation so that identical input state and configuration now produce identical outputs every time.
+
+Phase-4 regression verification validated repeat-run determinism in both STRICT and runtime harness modes, with archived evidence under `/tests/wp-10/phase-4/`.
+
+This milestone establishes SmartStat’s first fully verified deterministic core and provides a stable foundation for future resolver enhancements and feature work.
+
 No patch release permitted for this scope.
 
 ## WP-11 (v4.1.0): Harness regression pack framework
