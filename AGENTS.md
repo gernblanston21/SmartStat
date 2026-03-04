@@ -16,7 +16,7 @@ Excludes:
 
 ---
 
-## Viz Trio Grounding Requirement (Method A � Same Repo)
+## Viz Trio Grounding Requirement (Method A — Same Repo)
 
 All SmartStat changes must align with `docs/viz-trio/`.
 
@@ -39,6 +39,20 @@ If a proposal conflicts with those docs:
 - Propose a safer alternative.
 
 Use `PROMPTS.md` for standardized Codex kickoff blocks.
+
+---
+
+## Codex Agent Skills
+
+This repo uses Codex-compatible skills stored in:
+- `.agents/skills/<skill-name>/SKILL.md`
+
+When a task falls into one of these domains, Codex must prefer the matching skill workflow:
+- Viz Trio semantics / TrioCmd / tabfields / operator workflow → `viztrio-grounding`
+- INI contract/order/aliases/dup keys → `smartstat-ini-governance`
+- Determinism evidence / run comparisons / stable hashing → `smartstat-determinism-audit`
+- RC-only allowed work / regression evidence requirements → `rc-stabilization-discipline`
+- Standard repo mechanics (-U5 diffs, line extraction) → `repo-ops-codex`
 
 ---
 

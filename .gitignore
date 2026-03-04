@@ -8,3 +8,6 @@ Logs/
 PLAN.md
 /tmp_*.vbs
 /tmp_*.txt
+# Codex Agent Skills runtime logs (keep structure, ignore outputs)
+.agents/**/logs/
+.agents/**/logs/**
