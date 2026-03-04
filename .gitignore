@@ -17,3 +17,5 @@ PLAN.md
 tests/wp-11/regression-pack/artifacts/
 # WP-12 learn validation generated outputs
 tests/wp-12/learn-validation/artifacts/
+# WP-13 resolver perf generated outputs
+tests/wp-13/resolver-perf/artifacts/
