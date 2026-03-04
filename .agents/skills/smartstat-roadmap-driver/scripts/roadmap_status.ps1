@@ -15,8 +15,22 @@ function ReadOrNull([string]$p) {
 function InferMode([string]$roadmap, [string]$session) {
   $mode = "DEV"
   if ($session) {
-    if ($session -match '(?im)\bRC1\b' -or $session -match '(?im)\bRelease Candidate\b' -or $session -match '(?im)\bv4_RC\b' -or $session -match '(?im)\bv4\.0\.0_RC') {
+    $sessionHasActiveRc = (
+      $session -match '(?im)RC1 Stabilization Discipline \(Active\)' -or
+      $session -match '(?im)\bv4\.1\.0_RC1\b' -or
+      $session -match '(?im)Stabilization Discipline \(Active\)'
+    )
+    if ($sessionHasActiveRc) {
       return "RC"
+    }
+
+    $sessionHasExplicitRcInactiveOrComplete = (
+      $session -match '(?im)\bRC\s*discipline\s+is\s+inactive\b' -or
+      $session -match '(?im)\bRC\s*discipline\s+is\s+complete\b' -or
+      $session -match '(?im)\bStabilization Discipline\s*\((Inactive|Complete)\)\b'
+    )
+    if ($sessionHasExplicitRcInactiveOrComplete -and -not $sessionHasActiveRc) {
+      return "DEV"
     }
   }
   if ($roadmap) {
