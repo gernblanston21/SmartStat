@@ -88,7 +88,13 @@ for ($i=0; $i -lt $lines.Count; $i++) {
     $secText = $buf.ToString()
 
     $status = "OPEN"
-    if ($secText -match '(?im)\bCLOSED\b') { $status = "CLOSED" }
+    $closedRx = '^\s*' + [regex]::Escape($wp) + '\b.*\bCLOSED\b'
+    for ($k = $i + 1; $k -lt $j; $k++) {
+      if ($lines[$k] -imatch $closedRx) {
+        $status = "CLOSED"
+        break
+      }
+    }
 
     $wpList.Add([pscustomobject]@{
       WP = $wp
