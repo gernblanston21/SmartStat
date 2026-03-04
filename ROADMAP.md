@@ -218,6 +218,13 @@ RC note:
 - Compatibility checks identified
 - No breaking changes without explicit versioning
 
+WP-14 implementation package (RC-safe, docs/tests/tooling only):
+- Contract spec: docs/contracts/smartstat_trayapp_contract.md
+- Validator suite: tests/wp-14/contract-validators/
+- Harness runner: tests/wp-14/run_wp14.ps1
+- Run command: pwsh -NoProfile -ExecutionPolicy Bypass -File tests/wp-14/run_wp14.ps1 -RunLabel <label>
+- Evidence location: tests/wp-14/contract-validators/artifacts/<runLabel>/
+- RC constraint: no SmartStat core VBScript behavior changes; no production INI schema/order mutations
 ---
 
 # Long-Term (v4.2+ / v5.0)

@@ -19,12 +19,12 @@ All new work proceeds from the post-RC baseline.
 We are operating under controlled, versioned Work Packages.
 
 Active WP:
-- WP-11 — CLOSED (harness regression pack framework implemented; evidence under tests/wp-11/regression-pack/)
-- WP-12 — CLOSED (enhanced learn system validation implemented; evidence under tests/wp-12/learn-validation/)
-- Active WP: WP-13 — Resolver performance optimization (open)
-- WP-13 RC note: harness/regression evidence implemented under tests/wp-13/resolver-perf/ (tests-only, RC-safe).
-- WP-13 RC note: core resolver perf micro-optimization deferred (stashed) for post-RC / post-guardrail approval.
-
+- WP-11 – CLOSED (harness regression pack framework implemented; evidence under tests/wp-11/regression-pack/)
+- WP-12 – CLOSED (enhanced learn system validation implemented; evidence under tests/wp-12/learn-validation/)
+- WP-13 – Resolver performance optimization (core behavior changes deferred; harness evidence remains under tests/wp-13/resolver-perf/)
+- Active WP: WP-14 – TrayApp alignment preparation (RC-safe docs/tests/tooling only)
+- WP-14 package: docs/contracts/smartstat_trayapp_contract.md + tests/wp-14/contract-validators/ + tests/wp-14/run_wp14.ps1
+- WP-14 evidence path: tests/wp-14/contract-validators/artifacts/<runLabel>/
 No opportunistic refactors.
 No scope creep.
 Each WP must be:

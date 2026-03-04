@@ -19,3 +19,5 @@ tests/wp-11/regression-pack/artifacts/
 tests/wp-12/learn-validation/artifacts/
 # WP-13 resolver perf generated outputs
 tests/wp-13/resolver-perf/artifacts/
+# WP-14 contract validator generated outputs
+tests/wp-14/**/artifacts/
