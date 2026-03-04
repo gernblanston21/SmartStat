@@ -15,3 +15,5 @@ PLAN.md
 .agents/**/logs/**
 # WP-11 regression pack generated outputs
 tests/wp-11/regression-pack/artifacts/
+# WP-12 learn validation generated outputs
+tests/wp-12/learn-validation/artifacts/

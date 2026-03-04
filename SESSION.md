@@ -20,7 +20,8 @@ We are operating under controlled, versioned Work Packages.
 
 Active WP:
 - WP-11 — CLOSED (harness regression pack framework implemented; evidence under tests/wp-11/regression-pack/)
-- Active WP: WP-12 — Enhanced learn system validation (RC-safe validation-only work)
+- WP-12 — CLOSED (enhanced learn system validation implemented; evidence under tests/wp-12/learn-validation/)
+- Active WP: WP-13 — Resolver performance optimization (open)
 
 No opportunistic refactors.
 No scope creep.
