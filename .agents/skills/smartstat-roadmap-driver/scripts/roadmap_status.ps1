@@ -1,0 +1,96 @@
+param(
+  [Parameter(Mandatory=$false)][string]$RoadmapPath = "ROADMAP.md",
+  [Parameter(Mandatory=$false)][string]$SessionPath = "SESSION.md",
+  [Parameter(Mandatory=$false)][string]$AgentsPath  = "AGENTS.md"
+)
+
+Set-StrictMode -Version Latest
+$ErrorActionPreference = "Stop"
+
+function ReadOrNull([string]$p) {
+  if (Test-Path $p) { return Get-Content -LiteralPath $p -Raw }
+  return $null
+}
+
+function InferMode([string]$roadmap, [string]$session) {
+  $mode = "DEV"
+  if ($session) {
+    if ($session -match '(?im)\bRC1\b' -or $session -match '(?im)\bRelease Candidate\b' -or $session -match '(?im)\bv4_RC\b' -or $session -match '(?im)\bv4\.0\.0_RC') {
+      return "RC"
+    }
+  }
+  if ($roadmap) {
+    # Look specifically in the Current State block first
+    if ($roadmap -match '(?ims)##\s*Current State\s*(.+?)(\r?\n\r?\n|$)') {
+      $blk = $Matches[1]
+      if ($blk -match '(?im)\bRC1\b' -or $blk -match '(?im)\b_RC\b' -or $blk -match '(?im)\bstabilization\b') {
+        return "RC"
+      }
+    }
+    # fallback scan
+    if ($roadmap -match '(?im)\bv4\.0\.0_RC\b' -or $roadmap -match '(?im)\bRC1\b') {
+      return "RC"
+    }
+  }
+  return $mode
+}
+
+$roadmap = ReadOrNull $RoadmapPath
+$session = ReadOrNull $SessionPath
+$agents  = ReadOrNull $AgentsPath
+
+$missing = @()
+if (-not $roadmap) { $missing += $RoadmapPath }
+if (-not $agents)  { $missing += $AgentsPath }
+
+if ($missing.Count -gt 0) {
+  Write-Host "MISSING_FILES:"
+  $missing | ForEach-Object { Write-Host " - $_" }
+  exit 2
+}
+
+$mode = InferMode $roadmap $session
+Write-Host "MODE=$mode"
+Write-Host ""
+
+# Extract WP headings: your roadmap uses "## WP-11 (v4.1.0): ..."
+$lines = $roadmap -split "`r?`n"
+$wpList = New-Object System.Collections.Generic.List[object]
+
+for ($i=0; $i -lt $lines.Count; $i++) {
+  $ln = $lines[$i]
+  if ($ln -match '^\s*##\s*(WP-\d{1,3})\b(.*)$') {
+    $wp = $Matches[1].Trim()
+    $titleRest = ($Matches[2] ?? "").Trim()
+    $title = ($wp + " " + $titleRest).Trim()
+
+    # Capture section text until next "## WP-" or end
+    $j = $i + 1
+    $buf = New-Object System.Text.StringBuilder
+    while ($j -lt $lines.Count -and ($lines[$j] -notmatch '^\s*##\s*WP-\d{1,3}\b')) {
+      [void]$buf.AppendLine($lines[$j])
+      $j++
+    }
+    $secText = $buf.ToString()
+
+    $status = "OPEN"
+    if ($secText -match '(?im)\bCLOSED\b') { $status = "CLOSED" }
+
+    $wpList.Add([pscustomobject]@{
+      WP = $wp
+      Status = $status
+      Title = $title
+    }) | Out-Null
+  }
+}
+
+if ($wpList.Count -eq 0) {
+  Write-Host "WARN: No WP headings detected with pattern '## WP-##'."
+  exit 0
+}
+
+Write-Host "WP_COUNT=$($wpList.Count)"
+Write-Host ""
+$wpList | Format-Table -AutoSize
+
+exit 0
