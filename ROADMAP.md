@@ -208,15 +208,16 @@ RC note:
 - Harness/regression evidence implemented under tests/wp-13/resolver-perf/ (tests-only, RC-safe).
 - Core resolver perf micro-optimization deferred (stashed) for post-RC / post-guardrail approval.
 
-## WP-14 (v4.1.0): TrayApp alignment preparation
+## WP-14 CLOSED (v4.1.0): TrayApp alignment preparation
 ### Scope
 - Define and stabilize the contract between SmartStat core + TrayApp
 - Ensure mappings/config expectations are explicit and version-safe
 
 ### Definition of Done
 - Contract documented
-- Compatibility checks identified
-- No breaking changes without explicit versioning
+- Validator suite implemented
+- Harness execution passing
+- No SmartStat core behavior changes
 
 WP-14 implementation package (RC-safe, docs/tests/tooling only):
 - Contract spec: docs/contracts/smartstat_trayapp_contract.md
@@ -225,6 +226,8 @@ WP-14 implementation package (RC-safe, docs/tests/tooling only):
 - Run command: pwsh -NoProfile -ExecutionPolicy Bypass -File tests/wp-14/run_wp14.ps1 -RunLabel <label>
 - Evidence location: tests/wp-14/contract-validators/artifacts/<runLabel>/
 - RC constraint: no SmartStat core VBScript behavior changes; no production INI schema/order mutations
+
+Evidence: tests/wp-14/contract-validators/artifacts/wp14_runB/ (RUN_PASS=True, REPO_GATE_FAILURES=0)
 ---
 
 # Long-Term (v4.2+ / v5.0)
