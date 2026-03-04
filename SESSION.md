@@ -19,7 +19,7 @@ All new work proceeds from the post-RC baseline.
 We are operating under controlled, versioned Work Packages.
 
 Active WP:
-- WP-10 — Explicit deterministic key sorting (controlled change)
+- WP-11 — Harness regression pack framework (tests/framework)
 
 No opportunistic refactors.
 No scope creep.
