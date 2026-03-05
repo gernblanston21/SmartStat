@@ -195,7 +195,7 @@ Evidence: tests/wp-11/regression-pack/artifacts/compare/wp11_runA__wp11_runB/ (P
 WP-12 CLOSED — Enhanced learn system validation implemented (tests-only).
 Evidence: tests/wp-12/learn-validation/artifacts/wp12_runC/ (RUN_PASS=True)
 
-## WP-13 (v4.1.0): Resolver performance optimization
+## WP-13 CLOSED (v4.1.0): Resolver performance optimization
 ### Scope
 - Optimize resolver hot paths without changing resolution outcomes
 - Preserve determinism and logging semantics
@@ -205,8 +205,11 @@ Evidence: tests/wp-12/learn-validation/artifacts/wp12_runC/ (RUN_PASS=True)
 - No behavioral diffs in STRICT harness regression pack
 
 RC note:
-- Harness/regression evidence implemented under tests/wp-13/resolver-perf/ (tests-only, RC-safe).
-- Core resolver perf micro-optimization deferred (stashed) for post-RC / post-guardrail approval.
+- Resolver performance optimization validated via regression harness under `tests/wp-13/resolver-perf/`.
+- Optimization itself modifies runtime code paths and is therefore **deferred until post-RC**.
+- Implementation change is preserved in local stash `WP-13 perf micro-opt (post-RC)`.
+
+Evidence: tests/wp-13/resolver-perf/ (STRICT regression harness validation)
 
 ## WP-14 (v4.1.0): TrayApp alignment preparation
 ### Scope
