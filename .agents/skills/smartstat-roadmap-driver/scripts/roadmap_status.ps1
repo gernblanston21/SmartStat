@@ -77,9 +77,29 @@ for ($i=0; $i -lt $lines.Count; $i++) {
     $wp = $Matches[1].Trim()
     $titleRest = if (($Matches.Count -ge 3) -and ($null -ne $Matches[2])) { $Matches[2].Trim() } else { "" }
     $title = ($wp + " " + $titleRest).Trim()
-    # Status and title must be derived from the same heading line.
+
+    # Section body extends until the next WP heading.
+    $j = $i + 1
+    while ($j -lt $lines.Count -and ($lines[$j] -notmatch '^\s*##\s*WP-\d{1,3}\b')) {
+      $j++
+    }
+
+    # Status rule:
+    # 1) CLOSED token in heading
+    # 2) Else CLOSED evidence line in section body: "^<WP> CLOSED"
+    # 3) Else OPEN
     $closedInHeadingRx = '^\s*##\s*' + [regex]::Escape($wp) + '\b.*\bCLOSED\b'
-    $status = if ($ln -imatch $closedInHeadingRx) { "CLOSED" } else { "OPEN" }
+    $closedEvidenceRx = '^\s*' + [regex]::Escape($wp) + '\s+CLOSED\b'
+    $hasClosedEvidence = $false
+    if ($ln -notmatch $closedInHeadingRx) {
+      for ($k = $i + 1; $k -lt $j; $k++) {
+        if ($lines[$k] -imatch $closedEvidenceRx) {
+          $hasClosedEvidence = $true
+          break
+        }
+      }
+    }
+    $status = if (($ln -imatch $closedInHeadingRx) -or $hasClosedEvidence) { "CLOSED" } else { "OPEN" }
 
     $wpList.Add([pscustomobject]@{
       WP = $wp
