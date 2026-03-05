@@ -182,7 +182,7 @@ No patch release permitted for this scope.
 WP-11 CLOSED — Harness regression pack framework implemented (tests-only).
 Evidence: tests/wp-11/regression-pack/artifacts/compare/wp11_runA__wp11_runB/ (PACK_PASS=True)
 
-## WP-12 CLOSED (v4.1.0): Enhanced learn system validation
+## WP-12 (v4.1.0): Enhanced learn system validation
 ### Scope
 - Verify learn file writes are correct, stable, and governed
 - Ensure learn updates are validated (format + intent) before acceptance
@@ -208,7 +208,7 @@ RC note:
 - Harness/regression evidence implemented under tests/wp-13/resolver-perf/ (tests-only, RC-safe).
 - Core resolver perf micro-optimization deferred (stashed) for post-RC / post-guardrail approval.
 
-## WP-14 CLOSED (v4.1.0): TrayApp alignment preparation
+## WP-14 (v4.1.0): TrayApp alignment preparation
 ### Scope
 - Define and stabilize the contract between SmartStat core + TrayApp
 - Ensure mappings/config expectations are explicit and version-safe
