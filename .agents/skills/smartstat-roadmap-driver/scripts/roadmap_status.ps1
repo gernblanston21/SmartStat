@@ -75,26 +75,11 @@ for ($i=0; $i -lt $lines.Count; $i++) {
   $ln = $lines[$i]
   if ($ln -match '^\s*##\s*(WP-\d{1,3})\b(.*)$') {
     $wp = $Matches[1].Trim()
-    $titleRest = ($Matches[2] ?? "").Trim()
+    $titleRest = if (($Matches.Count -ge 3) -and ($null -ne $Matches[2])) { $Matches[2].Trim() } else { "" }
     $title = ($wp + " " + $titleRest).Trim()
-
-    # Capture section text until next "## WP-" or end
-    $j = $i + 1
-    $buf = New-Object System.Text.StringBuilder
-    while ($j -lt $lines.Count -and ($lines[$j] -notmatch '^\s*##\s*WP-\d{1,3}\b')) {
-      [void]$buf.AppendLine($lines[$j])
-      $j++
-    }
-    $secText = $buf.ToString()
-
-    $status = "OPEN"
-    $closedRx = '^\s*' + [regex]::Escape($wp) + '\b.*\bCLOSED\b'
-    for ($k = $i + 1; $k -lt $j; $k++) {
-      if ($lines[$k] -imatch $closedRx) {
-        $status = "CLOSED"
-        break
-      }
-    }
+    # Status and title must be derived from the same heading line.
+    $closedInHeadingRx = '^\s*##\s*' + [regex]::Escape($wp) + '\b.*\bCLOSED\b'
+    $status = if ($ln -imatch $closedInHeadingRx) { "CLOSED" } else { "OPEN" }
 
     $wpList.Add([pscustomobject]@{
       WP = $wp
