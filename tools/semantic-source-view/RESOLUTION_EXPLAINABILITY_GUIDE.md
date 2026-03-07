@@ -26,6 +26,12 @@ Current model is `resolution-explainability.v0` with:
 - stable refs inside each step
 - explicit deferred boundaries (`runtime apply`, `planner execution`, runtime integration)
 
+## Phase 9 Relationship
+
+Phase 9 adds a separate candidate-resolution scaffold (`candidate-resolution.v0`) that sits after
+search explainability and alongside this selected-record explainability model.
+It remains read-only semantic tooling and does not claim runtime resolver behavior.
+
 ## Why This Is Separate From Runtime
 
 The scaffold is intentionally read-only.

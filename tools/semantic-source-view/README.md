@@ -54,6 +54,20 @@ See:
 - `resolution-explainability.schema.json`
 - `src/data/resolutionExplainability.fixture.ts`
 
+## Phase 9 Additions
+
+- adds deterministic candidate-resolution scaffold modeling (`candidate-resolution.v0`)
+- introduces explicit candidate statuses (`preferred`, `alternate`, `rejected`) for read-only inspection
+- adds deterministic ambiguity indicator and ranking metadata for semantic tooling only
+- renders candidate-resolution details in Record Detail without changing runtime/planner behavior
+- includes fixture fallback support that does not override real selected-record candidate modeling
+- adds lightweight deterministic tests for candidate ordering, labeling, and ambiguity signaling
+
+See:
+- `CANDIDATE_RESOLUTION_GUIDE.md`
+- `src/data/candidateResolution.ts`
+- `src/data/candidateResolution.fixture.ts`
+
 ## Deferred
 - editing semantic records
 - editing query paths

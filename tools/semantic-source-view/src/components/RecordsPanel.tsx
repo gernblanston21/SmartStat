@@ -1,5 +1,7 @@
 import React, { useMemo } from "react";
 import { matchLabel, notesToList } from "../data/viewModel";
+import { resolveCandidateResolutionViewModel } from "../data/candidateResolution";
+import { PHASE9_CANDIDATE_RESOLUTION_FIXTURE } from "../data/candidateResolution.fixture";
 import { buildResolutionExplainabilityModel } from "../data/resolutionExplainability";
 import { PHASE8_RESOLUTION_EXPLAINABILITY_FIXTURE } from "../data/resolutionExplainability.fixture";
 import { QueryPathRecord, RecordSearchResult, SearchNarrative } from "../types";
@@ -138,6 +140,18 @@ export function RecordsPanel({
     );
   }, [selectedResult, searchTerm, queryPathCountForRecord]);
 
+  const candidateResolutionView = useMemo(
+    () =>
+      resolveCandidateResolutionViewModel({
+        searchTerm,
+        selectedResult,
+        normalizedResults: results,
+        sourceOnlyResults,
+        fixtureModel: PHASE9_CANDIDATE_RESOLUTION_FIXTURE,
+      }),
+    [searchTerm, selectedResult, results, sourceOnlyResults]
+  );
+
   return (
     <section className="split-panel">
       <div className="list-pane">
@@ -230,6 +244,52 @@ export function RecordsPanel({
               </ul>
               <p>
                 Deferred: {(resolutionModel?.deferred ?? PHASE8_RESOLUTION_EXPLAINABILITY_FIXTURE.deferred).join(", ")}.
+              </p>
+            </section>
+
+            <section className="narrative-panel">
+              <h4>Candidate Resolution (Phase 9 Scaffold)</h4>
+              <p>
+                This is a deterministic, read-only candidate-resolution inspection scaffold. It is not
+                runtime resolution and does not generate plans.
+              </p>
+              <p>
+                Schema: <code>{candidateResolutionView.model.schema_version}</code>. Model source:{" "}
+                <strong>{candidateResolutionView.model_source}</strong>.
+              </p>
+              {candidateResolutionView.model_source === "fixture" ? (
+                <p>
+                  No selected normalized record is active, so a deterministic fixture is shown for
+                  panel stability.
+                </p>
+              ) : null}
+              <p>
+                Input term: <code>{candidateResolutionView.model.input_term || "(browse)"}</code>; normalized:{" "}
+                <code>{candidateResolutionView.model.normalized_input_term || "(none)"}</code>.
+              </p>
+              <p>
+                Preferred candidate:{" "}
+                <code>{candidateResolutionView.model.preferred_candidate_id ?? "none"}</code>; ambiguity:{" "}
+                {candidateResolutionView.model.ambiguity_flag ? "true" : "false"}
+                {candidateResolutionView.model.ambiguity_reason
+                  ? ` (${candidateResolutionView.model.ambiguity_reason})`
+                  : ""}
+                .
+              </p>
+              <p>
+                Ranking contract: <code>{candidateResolutionView.model.ranking_contract}</code>.
+              </p>
+              <ol>
+                {candidateResolutionView.model.candidates.map((candidate) => (
+                  <li key={`${candidate.status}:${candidate.candidate_id}`}>
+                    <strong>[{candidate.status}]</strong> <code>{candidate.candidate_id}</code>{" "}
+                    ({candidate.record_type}/{candidate.league ?? "global"}) rank={" "}
+                    {candidate.ranking_position ?? "n/a"} - {candidate.reason}
+                  </li>
+                ))}
+              </ol>
+              <p>
+                Deferred boundaries: {candidateResolutionView.model.deferred_boundaries.join(", ")}.
               </p>
             </section>
 
