@@ -23,3 +23,11 @@ tests/wp-12/learn-validation/artifacts/
 tests/wp-13/resolver-perf/artifacts/
 # WP-14 contract validator generated outputs
 tests/wp-14/**/artifacts/
+# Semantic Source View local/dependency/build outputs
+tools/semantic-source-view/node_modules/
+tools/semantic-source-view/dist/
+tools/semantic-source-view/.vite/
+tools/semantic-source-view/npm-debug.log*
+tools/semantic-source-view/.DS_Store
+# TypeScript build cache
+*.tsbuildinfo
