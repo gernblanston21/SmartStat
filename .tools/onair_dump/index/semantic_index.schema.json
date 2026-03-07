@@ -4,6 +4,107 @@
   "title": "SmartStat OnAir Normalized Semantic Index",
   "type": "object",
   "additionalProperties": false,
+  "$defs": {
+    "notesField": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "semanticRecord": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "league",
+        "source_type",
+        "source_path",
+        "source_ref",
+        "aliases"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "league": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_type": {
+          "type": "string",
+          "enum": [
+            "runtime",
+            "lookup_index",
+            "grammar",
+            "schema"
+          ]
+        },
+        "source_path": {
+          "type": "string"
+        },
+        "source_ref": {
+          "type": "string"
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "notes": {
+          "$ref": "#/$defs/notesField"
+        }
+      },
+      "additionalProperties": true
+    },
+    "entityRecord": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/semanticRecord"
+        }
+      ]
+    },
+    "measureRecord": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/semanticRecord"
+        }
+      ]
+    },
+    "filterRecord": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/semanticRecord"
+        }
+      ]
+    },
+    "profileRecord": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/semanticRecord"
+        }
+      ]
+    },
+    "qualifierRecord": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/semanticRecord"
+        }
+      ]
+    }
+  },
   "required": [
     "schema_version",
     "generated_utc",
@@ -42,37 +143,37 @@
     "entities": {
       "type": "array",
       "items": {
-        "type": "object"
+        "$ref": "#/$defs/entityRecord"
       },
-      "description": "Placeholder for normalized entities."
+      "description": "Normalized entities extracted with explicit provenance."
     },
     "measures": {
       "type": "array",
       "items": {
-        "type": "object"
+        "$ref": "#/$defs/measureRecord"
       },
-      "description": "Placeholder for normalized measures."
+      "description": "Normalized measures extracted from runtime and lookup sources."
     },
     "qualifiers": {
       "type": "array",
       "items": {
-        "type": "object"
+        "$ref": "#/$defs/qualifierRecord"
       },
-      "description": "Placeholder for normalized qualifiers."
+      "description": "Normalized qualifiers (only when source confidence is strong)."
     },
     "filters": {
       "type": "array",
       "items": {
-        "type": "object"
+        "$ref": "#/$defs/filterRecord"
       },
-      "description": "Placeholder for normalized filters."
+      "description": "Normalized filter records from runtime/lookup filter signals."
     },
     "profiles": {
       "type": "array",
       "items": {
-        "type": "object"
+        "$ref": "#/$defs/profileRecord"
       },
-      "description": "Placeholder for normalized profiles."
+      "description": "Normalized profile records from runtime profile payloads."
     },
     "raw_sources": {
       "type": "object",

@@ -1,14 +1,1249 @@
 {
-  "entities": [],
-  "filters": [],
+  "entities": [
+    {
+      "aliases": [],
+      "id": "entity:global:dialectengine_coach",
+      "league": null,
+      "name": "DialectEngine Coach",
+      "notes": [
+        "kind=OBJECT"
+      ],
+      "source_path": "schema/03__schema_types_list.response.json",
+      "source_ref": "DialectEngine_Coach",
+      "source_type": "schema"
+    },
+    {
+      "aliases": [],
+      "id": "entity:global:dialectengine_draft",
+      "league": null,
+      "name": "DialectEngine Draft",
+      "notes": [
+        "kind=OBJECT"
+      ],
+      "source_path": "schema/03__schema_types_list.response.json",
+      "source_ref": "DialectEngine_Draft",
+      "source_type": "schema"
+    },
+    {
+      "aliases": [],
+      "id": "entity:global:dialectengine_injury",
+      "league": null,
+      "name": "DialectEngine Injury",
+      "notes": [
+        "kind=OBJECT"
+      ],
+      "source_path": "schema/03__schema_types_list.response.json",
+      "source_ref": "DialectEngine_Injury",
+      "source_type": "schema"
+    },
+    {
+      "aliases": [],
+      "id": "entity:global:dialectengine_league",
+      "league": null,
+      "name": "DialectEngine League",
+      "notes": [
+        "kind=OBJECT"
+      ],
+      "source_path": "schema/03__schema_types_list.response.json",
+      "source_ref": "DialectEngine_League",
+      "source_type": "schema"
+    },
+    {
+      "aliases": [],
+      "id": "entity:global:dialectengine_player",
+      "league": null,
+      "name": "DialectEngine Player",
+      "notes": [
+        "kind=INTERFACE"
+      ],
+      "source_path": "schema/03__schema_types_list.response.json",
+      "source_ref": "DialectEngine_Player",
+      "source_type": "schema"
+    },
+    {
+      "aliases": [],
+      "id": "entity:global:dialectengine_venue",
+      "league": null,
+      "name": "DialectEngine Venue",
+      "notes": [
+        "kind=OBJECT"
+      ],
+      "source_path": "schema/03__schema_types_list.response.json",
+      "source_ref": "DialectEngine_Venue",
+      "source_type": "schema"
+    },
+    {
+      "aliases": [],
+      "id": "entity:global:profiles_availablegameplanfilters",
+      "league": null,
+      "name": "Profiles AvailableGamePlanFilters",
+      "notes": [
+        "kind=OBJECT"
+      ],
+      "source_path": "schema/03__schema_types_list.response.json",
+      "source_ref": "Profiles_AvailableGamePlanFilters",
+      "source_type": "schema"
+    },
+    {
+      "aliases": [],
+      "id": "entity:global:profiles_profile",
+      "league": null,
+      "name": "Profiles Profile",
+      "notes": [
+        "kind=OBJECT"
+      ],
+      "source_path": "schema/03__schema_types_list.response.json",
+      "source_ref": "Profiles_Profile",
+      "source_type": "schema"
+    },
+    {
+      "aliases": [],
+      "id": "entity:mlb:dialectengine_mlbplayer",
+      "league": "mlb",
+      "name": "DialectEngine MlbPlayer",
+      "notes": [
+        "kind=OBJECT"
+      ],
+      "source_path": "schema/03__schema_types_list.response.json",
+      "source_ref": "DialectEngine_MlbPlayer",
+      "source_type": "schema"
+    },
+    {
+      "aliases": [],
+      "id": "entity:nba:dialectengine_nbaplayer",
+      "league": "nba",
+      "name": "DialectEngine NbaPlayer",
+      "notes": [
+        "kind=OBJECT"
+      ],
+      "source_path": "schema/03__schema_types_list.response.json",
+      "source_ref": "DialectEngine_NbaPlayer",
+      "source_type": "schema"
+    },
+    {
+      "aliases": [],
+      "id": "entity:nhl:dialectengine_nhlplayer",
+      "league": "nhl",
+      "name": "DialectEngine NhlPlayer",
+      "notes": [
+        "kind=OBJECT"
+      ],
+      "source_path": "schema/03__schema_types_list.response.json",
+      "source_ref": "DialectEngine_NhlPlayer",
+      "source_type": "schema"
+    }
+  ],
+  "filters": [
+    {
+      "aliases": [
+        "7"
+      ],
+      "id": "filter:mlb:career",
+      "league": "mlb",
+      "name": "career",
+      "notes": [
+        "category=playerTimes",
+        "merged_from:lookup_index:lookup_index/mlb/lookup_index.json#playerTimesLookup.career"
+      ],
+      "source_path": "runtime/leagues/mlb/availableGamePlanFilters.response.json",
+      "source_ref": "availableGamePlanFilters.playerTimes.career",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "8"
+      ],
+      "id": "filter:mlb:career_post",
+      "league": "mlb",
+      "name": "career(post)",
+      "notes": [
+        "category=playerTimes",
+        "merged_from:lookup_index:lookup_index/mlb/lookup_index.json#playerTimesLookup.career(post)"
+      ],
+      "source_path": "runtime/leagues/mlb/availableGamePlanFilters.response.json",
+      "source_ref": "availableGamePlanFilters.playerTimes.career(post)",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "5"
+      ],
+      "id": "filter:mlb:conference",
+      "league": "mlb",
+      "name": "conference",
+      "notes": [
+        "category=playerSplits",
+        "category=teamSplits",
+        "merged_from:lookup_index:lookup_index/mlb/lookup_index.json#playerSplitsLookup.conference",
+        "merged_from:lookup_index:lookup_index/mlb/lookup_index.json#teamSplitsLookup.conference"
+      ],
+      "source_path": "runtime/leagues/mlb/availableGamePlanFilters.response.json",
+      "source_ref": "availableGamePlanFilters.playerSplits.conference",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "6"
+      ],
+      "id": "filter:mlb:conference_opp",
+      "league": "mlb",
+      "name": "conference(opp)",
+      "notes": [
+        "category=playerSplits",
+        "category=teamSplits",
+        "merged_from:lookup_index:lookup_index/mlb/lookup_index.json#playerSplitsLookup.conference(opp)",
+        "merged_from:lookup_index:lookup_index/mlb/lookup_index.json#teamSplitsLookup.conference(opp)"
+      ],
+      "source_path": "runtime/leagues/mlb/availableGamePlanFilters.response.json",
+      "source_ref": "availableGamePlanFilters.playerSplits.conference(opp)",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "3"
+      ],
+      "id": "filter:mlb:division",
+      "league": "mlb",
+      "name": "division",
+      "notes": [
+        "category=playerSplits",
+        "category=teamSplits",
+        "merged_from:lookup_index:lookup_index/mlb/lookup_index.json#playerSplitsLookup.division",
+        "merged_from:lookup_index:lookup_index/mlb/lookup_index.json#teamSplitsLookup.division"
+      ],
+      "source_path": "runtime/leagues/mlb/availableGamePlanFilters.response.json",
+      "source_ref": "availableGamePlanFilters.playerSplits.division",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "4"
+      ],
+      "id": "filter:mlb:division_opp",
+      "league": "mlb",
+      "name": "division(opp)",
+      "notes": [
+        "category=playerSplits",
+        "category=teamSplits",
+        "merged_from:lookup_index:lookup_index/mlb/lookup_index.json#playerSplitsLookup.division(opp)",
+        "merged_from:lookup_index:lookup_index/mlb/lookup_index.json#teamSplitsLookup.division(opp)"
+      ],
+      "source_path": "runtime/leagues/mlb/availableGamePlanFilters.response.json",
+      "source_ref": "availableGamePlanFilters.playerSplits.division(opp)",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "9"
+      ],
+      "id": "filter:mlb:last_game_1",
+      "league": "mlb",
+      "name": "last game(1)",
+      "notes": [
+        "category=playerTimes",
+        "merged_from:lookup_index:lookup_index/mlb/lookup_index.json#playerTimesLookup.last_game(1)"
+      ],
+      "source_path": "runtime/leagues/mlb/availableGamePlanFilters.response.json",
+      "source_ref": "availableGamePlanFilters.playerTimes.last_game(1)",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "2"
+      ],
+      "id": "filter:mlb:location_away",
+      "league": "mlb",
+      "name": "location(away)",
+      "notes": [
+        "category=playerSplits",
+        "category=teamSplits",
+        "merged_from:lookup_index:lookup_index/mlb/lookup_index.json#playerSplitsLookup.location(away)",
+        "merged_from:lookup_index:lookup_index/mlb/lookup_index.json#teamSplitsLookup.location(away)"
+      ],
+      "source_path": "runtime/leagues/mlb/availableGamePlanFilters.response.json",
+      "source_ref": "availableGamePlanFilters.playerSplits.location(away)",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "7"
+      ],
+      "id": "filter:nba:career",
+      "league": "nba",
+      "name": "career",
+      "notes": [
+        "category=playerTimes",
+        "merged_from:lookup_index:lookup_index/nba/lookup_index.json#playerTimesLookup.career"
+      ],
+      "source_path": "runtime/leagues/nba/availableGamePlanFilters.response.json",
+      "source_ref": "availableGamePlanFilters.playerTimes.career",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "8"
+      ],
+      "id": "filter:nba:career_post",
+      "league": "nba",
+      "name": "career(post)",
+      "notes": [
+        "category=playerTimes",
+        "merged_from:lookup_index:lookup_index/nba/lookup_index.json#playerTimesLookup.career(post)"
+      ],
+      "source_path": "runtime/leagues/nba/availableGamePlanFilters.response.json",
+      "source_ref": "availableGamePlanFilters.playerTimes.career(post)",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "5"
+      ],
+      "id": "filter:nba:conference",
+      "league": "nba",
+      "name": "conference",
+      "notes": [
+        "category=playerSplits",
+        "category=teamSplits",
+        "merged_from:lookup_index:lookup_index/nba/lookup_index.json#playerSplitsLookup.conference",
+        "merged_from:lookup_index:lookup_index/nba/lookup_index.json#teamSplitsLookup.conference"
+      ],
+      "source_path": "runtime/leagues/nba/availableGamePlanFilters.response.json",
+      "source_ref": "availableGamePlanFilters.playerSplits.conference",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "6"
+      ],
+      "id": "filter:nba:conference_opp",
+      "league": "nba",
+      "name": "conference(opp)",
+      "notes": [
+        "category=playerSplits",
+        "category=teamSplits",
+        "merged_from:lookup_index:lookup_index/nba/lookup_index.json#playerSplitsLookup.conference(opp)",
+        "merged_from:lookup_index:lookup_index/nba/lookup_index.json#teamSplitsLookup.conference(opp)"
+      ],
+      "source_path": "runtime/leagues/nba/availableGamePlanFilters.response.json",
+      "source_ref": "availableGamePlanFilters.playerSplits.conference(opp)",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "9"
+      ],
+      "id": "filter:nba:last_game_1",
+      "league": "nba",
+      "name": "last game(1)",
+      "notes": [
+        "category=playerTimes",
+        "merged_from:lookup_index:lookup_index/nba/lookup_index.json#playerTimesLookup.last_game(1)"
+      ],
+      "source_path": "runtime/leagues/nba/availableGamePlanFilters.response.json",
+      "source_ref": "availableGamePlanFilters.playerTimes.last_game(1)",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "2"
+      ],
+      "id": "filter:nba:location_away",
+      "league": "nba",
+      "name": "location(away)",
+      "notes": [
+        "category=playerSplits",
+        "category=teamSplits",
+        "merged_from:lookup_index:lookup_index/nba/lookup_index.json#playerSplitsLookup.location(away)",
+        "merged_from:lookup_index:lookup_index/nba/lookup_index.json#teamSplitsLookup.location(away)"
+      ],
+      "source_path": "runtime/leagues/nba/availableGamePlanFilters.response.json",
+      "source_ref": "availableGamePlanFilters.playerSplits.location(away)",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "1"
+      ],
+      "id": "filter:nba:location_home",
+      "league": "nba",
+      "name": "location(home)",
+      "notes": [
+        "category=playerSplits",
+        "category=teamSplits",
+        "merged_from:lookup_index:lookup_index/nba/lookup_index.json#playerSplitsLookup.location(home)",
+        "merged_from:lookup_index:lookup_index/nba/lookup_index.json#teamSplitsLookup.location(home)"
+      ],
+      "source_path": "runtime/leagues/nba/availableGamePlanFilters.response.json",
+      "source_ref": "availableGamePlanFilters.playerSplits.location(home)",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "4"
+      ],
+      "id": "filter:nba:month",
+      "league": "nba",
+      "name": "month",
+      "notes": [
+        "category=playerTimes",
+        "category=teamTimes",
+        "merged_from:lookup_index:lookup_index/nba/lookup_index.json#playerTimesLookup.month",
+        "merged_from:lookup_index:lookup_index/nba/lookup_index.json#teamTimesLookup.month"
+      ],
+      "source_path": "runtime/leagues/nba/availableGamePlanFilters.response.json",
+      "source_ref": "availableGamePlanFilters.playerTimes.month",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "7"
+      ],
+      "id": "filter:nhl:career",
+      "league": "nhl",
+      "name": "career",
+      "notes": [
+        "category=playerTimes",
+        "merged_from:lookup_index:lookup_index/nhl/lookup_index.json#playerTimesLookup.career"
+      ],
+      "source_path": "runtime/leagues/nhl/availableGamePlanFilters.response.json",
+      "source_ref": "availableGamePlanFilters.playerTimes.career",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "8"
+      ],
+      "id": "filter:nhl:career_post",
+      "league": "nhl",
+      "name": "career(post)",
+      "notes": [
+        "category=playerTimes",
+        "merged_from:lookup_index:lookup_index/nhl/lookup_index.json#playerTimesLookup.career(post)"
+      ],
+      "source_path": "runtime/leagues/nhl/availableGamePlanFilters.response.json",
+      "source_ref": "availableGamePlanFilters.playerTimes.career(post)",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "5"
+      ],
+      "id": "filter:nhl:conference",
+      "league": "nhl",
+      "name": "conference",
+      "notes": [
+        "category=playerSplits",
+        "category=teamSplits",
+        "merged_from:lookup_index:lookup_index/nhl/lookup_index.json#playerSplitsLookup.conference",
+        "merged_from:lookup_index:lookup_index/nhl/lookup_index.json#teamSplitsLookup.conference"
+      ],
+      "source_path": "runtime/leagues/nhl/availableGamePlanFilters.response.json",
+      "source_ref": "availableGamePlanFilters.playerSplits.conference",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "6"
+      ],
+      "id": "filter:nhl:conference_opp",
+      "league": "nhl",
+      "name": "conference(opp)",
+      "notes": [
+        "category=playerSplits",
+        "category=teamSplits",
+        "merged_from:lookup_index:lookup_index/nhl/lookup_index.json#playerSplitsLookup.conference(opp)",
+        "merged_from:lookup_index:lookup_index/nhl/lookup_index.json#teamSplitsLookup.conference(opp)"
+      ],
+      "source_path": "runtime/leagues/nhl/availableGamePlanFilters.response.json",
+      "source_ref": "availableGamePlanFilters.playerSplits.conference(opp)",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "9"
+      ],
+      "id": "filter:nhl:last_game_1",
+      "league": "nhl",
+      "name": "last game(1)",
+      "notes": [
+        "category=playerTimes",
+        "merged_from:lookup_index:lookup_index/nhl/lookup_index.json#playerTimesLookup.last_game(1)"
+      ],
+      "source_path": "runtime/leagues/nhl/availableGamePlanFilters.response.json",
+      "source_ref": "availableGamePlanFilters.playerTimes.last_game(1)",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "2"
+      ],
+      "id": "filter:nhl:location_away",
+      "league": "nhl",
+      "name": "location(away)",
+      "notes": [
+        "category=playerSplits",
+        "category=teamSplits",
+        "merged_from:lookup_index:lookup_index/nhl/lookup_index.json#playerSplitsLookup.location(away)",
+        "merged_from:lookup_index:lookup_index/nhl/lookup_index.json#teamSplitsLookup.location(away)"
+      ],
+      "source_path": "runtime/leagues/nhl/availableGamePlanFilters.response.json",
+      "source_ref": "availableGamePlanFilters.playerSplits.location(away)",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "1"
+      ],
+      "id": "filter:nhl:location_home",
+      "league": "nhl",
+      "name": "location(home)",
+      "notes": [
+        "category=playerSplits",
+        "category=teamSplits",
+        "merged_from:lookup_index:lookup_index/nhl/lookup_index.json#playerSplitsLookup.location(home)",
+        "merged_from:lookup_index:lookup_index/nhl/lookup_index.json#teamSplitsLookup.location(home)"
+      ],
+      "source_path": "runtime/leagues/nhl/availableGamePlanFilters.response.json",
+      "source_ref": "availableGamePlanFilters.playerSplits.location(home)",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "4"
+      ],
+      "id": "filter:nhl:month",
+      "league": "nhl",
+      "name": "month",
+      "notes": [
+        "category=playerTimes",
+        "category=teamTimes",
+        "merged_from:lookup_index:lookup_index/nhl/lookup_index.json#playerTimesLookup.month",
+        "merged_from:lookup_index:lookup_index/nhl/lookup_index.json#teamTimesLookup.month"
+      ],
+      "source_path": "runtime/leagues/nhl/availableGamePlanFilters.response.json",
+      "source_ref": "availableGamePlanFilters.playerTimes.month",
+      "source_type": "runtime"
+    }
+  ],
   "generated_utc": "1970-01-01T00:00:00Z",
   "leagues": [
     "mlb",
     "nba",
     "nhl"
   ],
-  "measures": [],
-  "profiles": [],
+  "measures": [
+    {
+      "aliases": [
+        "air_balls",
+        "b_airb"
+      ],
+      "id": "measure:mlb:air_balls",
+      "league": "mlb",
+      "name": "air balls",
+      "notes": [
+        "categories=Hitting",
+        "format_type=number",
+        "lookup_alias_enrichment",
+        "merged_from:lookup_index:lookup_index/mlb/lookup_index.json#measureByCatalogKey.air_balls",
+        "merged_from:lookup_index:lookup_index/mlb/lookup_index.json#normalizedMeasureLookup.air_balls",
+        "merged_from:lookup_index:lookup_index/mlb/lookup_index.json#normalizedMeasureLookup.b_airb"
+      ],
+      "source_path": "runtime/leagues/mlb/fetchBaseMeasures.response.json",
+      "source_ref": "fetchBaseMeasures.air_balls",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "air_balls_percentage",
+        "b_airb_pct"
+      ],
+      "id": "measure:mlb:air_balls_percentage",
+      "league": "mlb",
+      "name": "air balls percentage",
+      "notes": [
+        "categories=Hitting",
+        "format_type=number",
+        "lookup_alias_enrichment",
+        "merged_from:lookup_index:lookup_index/mlb/lookup_index.json#measureByCatalogKey.air_balls_percentage",
+        "merged_from:lookup_index:lookup_index/mlb/lookup_index.json#normalizedMeasureLookup.air_balls_percentage",
+        "merged_from:lookup_index:lookup_index/mlb/lookup_index.json#normalizedMeasureLookup.b_airb_pct"
+      ],
+      "source_path": "runtime/leagues/mlb/fetchBaseMeasures.response.json",
+      "source_ref": "fetchBaseMeasures.air_balls_percentage",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "arsenal_changeups",
+        "p_pitars_changeup"
+      ],
+      "id": "measure:mlb:arsenal_changeups",
+      "league": "mlb",
+      "name": "arsenal changeups",
+      "notes": [
+        "categories=Pitch Arsenal",
+        "format_type=number",
+        "lookup_alias_enrichment",
+        "merged_from:lookup_index:lookup_index/mlb/lookup_index.json#measureByCatalogKey.arsenal_changeups",
+        "merged_from:lookup_index:lookup_index/mlb/lookup_index.json#normalizedMeasureLookup.arsenal_changeups",
+        "merged_from:lookup_index:lookup_index/mlb/lookup_index.json#normalizedMeasureLookup.p_pitars_changeup"
+      ],
+      "source_path": "runtime/leagues/mlb/fetchBaseMeasures.response.json",
+      "source_ref": "fetchBaseMeasures.arsenal_changeups",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "arsenal_changeups_percentage",
+        "p_pitars_changeup_pct"
+      ],
+      "id": "measure:mlb:arsenal_changeups_percentage",
+      "league": "mlb",
+      "name": "arsenal changeups percentage",
+      "notes": [
+        "categories=Pitch Arsenal",
+        "format_type=number",
+        "lookup_alias_enrichment",
+        "merged_from:lookup_index:lookup_index/mlb/lookup_index.json#measureByCatalogKey.arsenal_changeups_percentage",
+        "merged_from:lookup_index:lookup_index/mlb/lookup_index.json#normalizedMeasureLookup.arsenal_changeups_percentage",
+        "merged_from:lookup_index:lookup_index/mlb/lookup_index.json#normalizedMeasureLookup.p_pitars_changeup_pct"
+      ],
+      "source_path": "runtime/leagues/mlb/fetchBaseMeasures.response.json",
+      "source_ref": "fetchBaseMeasures.arsenal_changeups_percentage",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "arsenal_curveballs",
+        "p_pitars_curve"
+      ],
+      "id": "measure:mlb:arsenal_curveballs",
+      "league": "mlb",
+      "name": "arsenal curveballs",
+      "notes": [
+        "categories=Pitch Arsenal",
+        "format_type=number",
+        "lookup_alias_enrichment",
+        "merged_from:lookup_index:lookup_index/mlb/lookup_index.json#measureByCatalogKey.arsenal_curveballs",
+        "merged_from:lookup_index:lookup_index/mlb/lookup_index.json#normalizedMeasureLookup.arsenal_curveballs",
+        "merged_from:lookup_index:lookup_index/mlb/lookup_index.json#normalizedMeasureLookup.p_pitars_curve"
+      ],
+      "source_path": "runtime/leagues/mlb/fetchBaseMeasures.response.json",
+      "source_ref": "fetchBaseMeasures.arsenal_curveballs",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "arsenal_curveballs_percentage",
+        "p_pitars_curve_pct"
+      ],
+      "id": "measure:mlb:arsenal_curveballs_percentage",
+      "league": "mlb",
+      "name": "arsenal curveballs percentage",
+      "notes": [
+        "categories=Pitch Arsenal",
+        "format_type=number",
+        "lookup_alias_enrichment",
+        "merged_from:lookup_index:lookup_index/mlb/lookup_index.json#measureByCatalogKey.arsenal_curveballs_percentage",
+        "merged_from:lookup_index:lookup_index/mlb/lookup_index.json#normalizedMeasureLookup.arsenal_curveballs_percentage",
+        "merged_from:lookup_index:lookup_index/mlb/lookup_index.json#normalizedMeasureLookup.p_pitars_curve_pct"
+      ],
+      "source_path": "runtime/leagues/mlb/fetchBaseMeasures.response.json",
+      "source_ref": "fetchBaseMeasures.arsenal_curveballs_percentage",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "arsenal_cutters",
+        "p_pitars_cutter"
+      ],
+      "id": "measure:mlb:arsenal_cutters",
+      "league": "mlb",
+      "name": "arsenal cutters",
+      "notes": [
+        "categories=Pitch Arsenal",
+        "format_type=number",
+        "lookup_alias_enrichment",
+        "merged_from:lookup_index:lookup_index/mlb/lookup_index.json#measureByCatalogKey.arsenal_cutters",
+        "merged_from:lookup_index:lookup_index/mlb/lookup_index.json#normalizedMeasureLookup.arsenal_cutters",
+        "merged_from:lookup_index:lookup_index/mlb/lookup_index.json#normalizedMeasureLookup.p_pitars_cutter"
+      ],
+      "source_path": "runtime/leagues/mlb/fetchBaseMeasures.response.json",
+      "source_ref": "fetchBaseMeasures.arsenal_cutters",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "arsenal_cutters_percentage",
+        "p_pitars_cutter_pct"
+      ],
+      "id": "measure:mlb:arsenal_cutters_percentage",
+      "league": "mlb",
+      "name": "arsenal cutters percentage",
+      "notes": [
+        "categories=Pitch Arsenal",
+        "format_type=number",
+        "lookup_alias_enrichment",
+        "merged_from:lookup_index:lookup_index/mlb/lookup_index.json#measureByCatalogKey.arsenal_cutters_percentage",
+        "merged_from:lookup_index:lookup_index/mlb/lookup_index.json#normalizedMeasureLookup.arsenal_cutters_percentage",
+        "merged_from:lookup_index:lookup_index/mlb/lookup_index.json#normalizedMeasureLookup.p_pitars_cutter_pct"
+      ],
+      "source_path": "runtime/leagues/mlb/fetchBaseMeasures.response.json",
+      "source_ref": "fetchBaseMeasures.arsenal_cutters_percentage",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "arsenal_eephuses",
+        "p_pitars_eephus"
+      ],
+      "id": "measure:mlb:arsenal_eephuses",
+      "league": "mlb",
+      "name": "arsenal eephuses",
+      "notes": [
+        "categories=Pitch Arsenal",
+        "format_type=number",
+        "lookup_alias_enrichment",
+        "merged_from:lookup_index:lookup_index/mlb/lookup_index.json#measureByCatalogKey.arsenal_eephuses",
+        "merged_from:lookup_index:lookup_index/mlb/lookup_index.json#normalizedMeasureLookup.arsenal_eephuses",
+        "merged_from:lookup_index:lookup_index/mlb/lookup_index.json#normalizedMeasureLookup.p_pitars_eephus"
+      ],
+      "source_path": "runtime/leagues/mlb/fetchBaseMeasures.response.json",
+      "source_ref": "fetchBaseMeasures.arsenal_eephuses",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "arsenal_eephuses_percentage",
+        "p_pitars_eephus_pct"
+      ],
+      "id": "measure:mlb:arsenal_eephuses_percentage",
+      "league": "mlb",
+      "name": "arsenal eephuses percentage",
+      "notes": [
+        "categories=Pitch Arsenal",
+        "format_type=number",
+        "lookup_alias_enrichment",
+        "merged_from:lookup_index:lookup_index/mlb/lookup_index.json#measureByCatalogKey.arsenal_eephuses_percentage",
+        "merged_from:lookup_index:lookup_index/mlb/lookup_index.json#normalizedMeasureLookup.arsenal_eephuses_percentage",
+        "merged_from:lookup_index:lookup_index/mlb/lookup_index.json#normalizedMeasureLookup.p_pitars_eephus_pct"
+      ],
+      "source_path": "runtime/leagues/mlb/fetchBaseMeasures.response.json",
+      "source_ref": "fetchBaseMeasures.arsenal_eephuses_percentage",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "assist_diff"
+      ],
+      "id": "measure:nba:assist_diff",
+      "league": "nba",
+      "name": "assist diff",
+      "notes": [
+        "categories=Assists|Differential",
+        "format_type=number",
+        "lookup_alias_enrichment",
+        "merged_from:lookup_index:lookup_index/nba/lookup_index.json#measureByCatalogKey.assist_diff",
+        "merged_from:lookup_index:lookup_index/nba/lookup_index.json#normalizedMeasureLookup.assist_diff"
+      ],
+      "source_path": "runtime/leagues/nba/fetchBaseMeasures.response.json",
+      "source_ref": "fetchBaseMeasures.assist_diff",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "assist_diff_per_game"
+      ],
+      "id": "measure:nba:assist_diff_per_game",
+      "league": "nba",
+      "name": "assist diff per game",
+      "notes": [
+        "categories=Assists|Per Game|Differential",
+        "format_type=number",
+        "lookup_alias_enrichment",
+        "merged_from:lookup_index:lookup_index/nba/lookup_index.json#measureByCatalogKey.assist_diff_per_game",
+        "merged_from:lookup_index:lookup_index/nba/lookup_index.json#normalizedMeasureLookup.assist_diff_per_game"
+      ],
+      "source_path": "runtime/leagues/nba/fetchBaseMeasures.response.json",
+      "source_ref": "fetchBaseMeasures.assist_diff_per_game",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "assist_to_ratio_players"
+      ],
+      "id": "measure:nba:assist_to_ratio_players",
+      "league": "nba",
+      "name": "assist to ratio players",
+      "notes": [
+        "categories=Assists|Turnovers",
+        "format_type=number",
+        "lookup_alias_enrichment",
+        "merged_from:lookup_index:lookup_index/nba/lookup_index.json#measureByCatalogKey.assist_to_ratio_players",
+        "merged_from:lookup_index:lookup_index/nba/lookup_index.json#normalizedMeasureLookup.assist_to_ratio_players"
+      ],
+      "source_path": "runtime/leagues/nba/fetchBaseMeasures.response.json",
+      "source_ref": "fetchBaseMeasures.assist_to_ratio_players",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "assist_to_ratio_team"
+      ],
+      "id": "measure:nba:assist_to_ratio_team",
+      "league": "nba",
+      "name": "assist to ratio team",
+      "notes": [
+        "categories=Assists|Turnovers",
+        "format_type=number",
+        "lookup_alias_enrichment",
+        "merged_from:lookup_index:lookup_index/nba/lookup_index.json#measureByCatalogKey.assist_to_ratio_team",
+        "merged_from:lookup_index:lookup_index/nba/lookup_index.json#normalizedMeasureLookup.assist_to_ratio_team"
+      ],
+      "source_path": "runtime/leagues/nba/fetchBaseMeasures.response.json",
+      "source_ref": "fetchBaseMeasures.assist_to_ratio_team",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "assisted_points_two_fg"
+      ],
+      "id": "measure:nba:assisted_points_two_fg",
+      "league": "nba",
+      "name": "assisted points two fg",
+      "notes": [
+        "categories=Assists|2s|Points",
+        "format_type=number",
+        "lookup_alias_enrichment",
+        "merged_from:lookup_index:lookup_index/nba/lookup_index.json#measureByCatalogKey.assisted_points_two_fg",
+        "merged_from:lookup_index:lookup_index/nba/lookup_index.json#normalizedMeasureLookup.assisted_points_two_fg"
+      ],
+      "source_path": "runtime/leagues/nba/fetchBaseMeasures.response.json",
+      "source_ref": "fetchBaseMeasures.assisted_points_two_fg",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "assists"
+      ],
+      "id": "measure:nba:assists",
+      "league": "nba",
+      "name": "assists",
+      "notes": [
+        "categories=Assists|Box Score",
+        "format_type=number",
+        "lookup_alias_enrichment",
+        "merged_from:lookup_index:lookup_index/nba/lookup_index.json#measureByCatalogKey.assists",
+        "merged_from:lookup_index:lookup_index/nba/lookup_index.json#normalizedMeasureLookup.assists"
+      ],
+      "source_path": "runtime/leagues/nba/fetchBaseMeasures.response.json",
+      "source_ref": "fetchBaseMeasures.assists",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "assists_layups"
+      ],
+      "id": "measure:nba:assists_layups",
+      "league": "nba",
+      "name": "assists layups",
+      "notes": [
+        "categories=Assists",
+        "format_type=number",
+        "lookup_alias_enrichment",
+        "merged_from:lookup_index:lookup_index/nba/lookup_index.json#measureByCatalogKey.assists_layups",
+        "merged_from:lookup_index:lookup_index/nba/lookup_index.json#normalizedMeasureLookup.assists_layups"
+      ],
+      "source_path": "runtime/leagues/nba/fetchBaseMeasures.response.json",
+      "source_ref": "fetchBaseMeasures.assists_layups",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "assists_on_dunks"
+      ],
+      "id": "measure:nba:assists_on_dunks",
+      "league": "nba",
+      "name": "assists on dunks",
+      "notes": [
+        "categories=Assists",
+        "format_type=number",
+        "lookup_alias_enrichment",
+        "merged_from:lookup_index:lookup_index/nba/lookup_index.json#measureByCatalogKey.assists_on_dunks",
+        "merged_from:lookup_index:lookup_index/nba/lookup_index.json#normalizedMeasureLookup.assists_on_dunks"
+      ],
+      "source_path": "runtime/leagues/nba/fetchBaseMeasures.response.json",
+      "source_ref": "fetchBaseMeasures.assists_on_dunks",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "assists_on_threes"
+      ],
+      "id": "measure:nba:assists_on_threes",
+      "league": "nba",
+      "name": "assists on threes",
+      "notes": [
+        "categories=Assists|3s",
+        "format_type=number",
+        "lookup_alias_enrichment",
+        "merged_from:lookup_index:lookup_index/nba/lookup_index.json#measureByCatalogKey.assists_on_threes",
+        "merged_from:lookup_index:lookup_index/nba/lookup_index.json#normalizedMeasureLookup.assists_on_threes"
+      ],
+      "source_path": "runtime/leagues/nba/fetchBaseMeasures.response.json",
+      "source_ref": "fetchBaseMeasures.assists_on_threes",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "assists_on_threes_per_game"
+      ],
+      "id": "measure:nba:assists_on_threes_per_game",
+      "league": "nba",
+      "name": "assists on threes per game",
+      "notes": [
+        "categories=Per Game|Assists",
+        "format_type=number",
+        "lookup_alias_enrichment",
+        "merged_from:lookup_index:lookup_index/nba/lookup_index.json#measureByCatalogKey.assists_on_threes_per_game",
+        "merged_from:lookup_index:lookup_index/nba/lookup_index.json#normalizedMeasureLookup.assists_on_threes_per_game"
+      ],
+      "source_path": "runtime/leagues/nba/fetchBaseMeasures.response.json",
+      "source_ref": "fetchBaseMeasures.assists_on_threes_per_game",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "assists"
+      ],
+      "id": "measure:nhl:assists",
+      "league": "nhl",
+      "name": "assists",
+      "notes": [
+        "categories=Scoring",
+        "format_type=number",
+        "lookup_alias_enrichment",
+        "merged_from:lookup_index:lookup_index/nhl/lookup_index.json#measureByCatalogKey.assists",
+        "merged_from:lookup_index:lookup_index/nhl/lookup_index.json#normalizedMeasureLookup.assists"
+      ],
+      "source_path": "runtime/leagues/nhl/fetchBaseMeasures.response.json",
+      "source_ref": "fetchBaseMeasures.assists",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "assists_per_game"
+      ],
+      "id": "measure:nhl:assists_per_game",
+      "league": "nhl",
+      "name": "assists per game",
+      "notes": [
+        "categories=Per Game",
+        "format_type=number",
+        "lookup_alias_enrichment",
+        "merged_from:lookup_index:lookup_index/nhl/lookup_index.json#measureByCatalogKey.assists_per_game",
+        "merged_from:lookup_index:lookup_index/nhl/lookup_index.json#normalizedMeasureLookup.assists_per_game"
+      ],
+      "source_path": "runtime/leagues/nhl/fetchBaseMeasures.response.json",
+      "source_ref": "fetchBaseMeasures.assists_per_game",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "awarded_own_goal"
+      ],
+      "id": "measure:nhl:awarded_own_goal",
+      "league": "nhl",
+      "name": "awarded own goal",
+      "notes": [
+        "categories=Scoring",
+        "format_type=number",
+        "lookup_alias_enrichment",
+        "merged_from:lookup_index:lookup_index/nhl/lookup_index.json#measureByCatalogKey.awarded_own_goal",
+        "merged_from:lookup_index:lookup_index/nhl/lookup_index.json#normalizedMeasureLookup.awarded_own_goal"
+      ],
+      "source_path": "runtime/leagues/nhl/fetchBaseMeasures.response.json",
+      "source_ref": "fetchBaseMeasures.awarded_own_goal",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "blocked_shots"
+      ],
+      "id": "measure:nhl:blocked_shots",
+      "league": "nhl",
+      "name": "blocked shots",
+      "notes": [
+        "categories=Defense",
+        "format_type=number",
+        "lookup_alias_enrichment",
+        "merged_from:lookup_index:lookup_index/nhl/lookup_index.json#measureByCatalogKey.blocked_shots",
+        "merged_from:lookup_index:lookup_index/nhl/lookup_index.json#normalizedMeasureLookup.blocked_shots"
+      ],
+      "source_path": "runtime/leagues/nhl/fetchBaseMeasures.response.json",
+      "source_ref": "fetchBaseMeasures.blocked_shots",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "blocked_shots_diff"
+      ],
+      "id": "measure:nhl:blocked_shots_diff",
+      "league": "nhl",
+      "name": "blocked shots diff",
+      "notes": [
+        "categories=Defense|Differentials",
+        "format_type=number",
+        "lookup_alias_enrichment",
+        "merged_from:lookup_index:lookup_index/nhl/lookup_index.json#measureByCatalogKey.blocked_shots_diff",
+        "merged_from:lookup_index:lookup_index/nhl/lookup_index.json#normalizedMeasureLookup.blocked_shots_diff"
+      ],
+      "source_path": "runtime/leagues/nhl/fetchBaseMeasures.response.json",
+      "source_ref": "fetchBaseMeasures.blocked_shots_diff",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "blocked_shots_per_game"
+      ],
+      "id": "measure:nhl:blocked_shots_per_game",
+      "league": "nhl",
+      "name": "blocked shots per game",
+      "notes": [
+        "categories=Per Game",
+        "format_type=number",
+        "lookup_alias_enrichment",
+        "merged_from:lookup_index:lookup_index/nhl/lookup_index.json#measureByCatalogKey.blocked_shots_per_game",
+        "merged_from:lookup_index:lookup_index/nhl/lookup_index.json#normalizedMeasureLookup.blocked_shots_per_game"
+      ],
+      "source_path": "runtime/leagues/nhl/fetchBaseMeasures.response.json",
+      "source_ref": "fetchBaseMeasures.blocked_shots_per_game",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "blocked_shots_plus_hits"
+      ],
+      "id": "measure:nhl:blocked_shots_plus_hits",
+      "league": "nhl",
+      "name": "blocked shots plus hits",
+      "notes": [
+        "categories=Defense",
+        "format_type=number",
+        "lookup_alias_enrichment",
+        "merged_from:lookup_index:lookup_index/nhl/lookup_index.json#measureByCatalogKey.blocked_shots_plus_hits",
+        "merged_from:lookup_index:lookup_index/nhl/lookup_index.json#normalizedMeasureLookup.blocked_shots_plus_hits"
+      ],
+      "source_path": "runtime/leagues/nhl/fetchBaseMeasures.response.json",
+      "source_ref": "fetchBaseMeasures.blocked_shots_plus_hits",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "coach"
+      ],
+      "id": "measure:nhl:coach",
+      "league": "nhl",
+      "name": "coach",
+      "notes": [
+        "format_type=number",
+        "lookup_alias_enrichment",
+        "merged_from:lookup_index:lookup_index/nhl/lookup_index.json#measureByCatalogKey.coach",
+        "merged_from:lookup_index:lookup_index/nhl/lookup_index.json#normalizedMeasureLookup.coach"
+      ],
+      "source_path": "runtime/leagues/nhl/fetchBaseMeasures.response.json",
+      "source_ref": "fetchBaseMeasures.coach",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "comb_goals_no_shootout"
+      ],
+      "id": "measure:nhl:comb_goals_no_shootout",
+      "league": "nhl",
+      "name": "comb goals no shootout",
+      "notes": [
+        "categories=Scoring",
+        "format_type=number",
+        "lookup_alias_enrichment",
+        "merged_from:lookup_index:lookup_index/nhl/lookup_index.json#measureByCatalogKey.comb_goals_no_shootout",
+        "merged_from:lookup_index:lookup_index/nhl/lookup_index.json#normalizedMeasureLookup.comb_goals_no_shootout"
+      ],
+      "source_path": "runtime/leagues/nhl/fetchBaseMeasures.response.json",
+      "source_ref": "fetchBaseMeasures.comb_goals_no_shootout",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "comb_goals_per_game"
+      ],
+      "id": "measure:nhl:comb_goals_per_game",
+      "league": "nhl",
+      "name": "comb goals per game",
+      "notes": [
+        "categories=Scoring",
+        "format_type=number",
+        "lookup_alias_enrichment",
+        "merged_from:lookup_index:lookup_index/nhl/lookup_index.json#measureByCatalogKey.comb_goals_per_game",
+        "merged_from:lookup_index:lookup_index/nhl/lookup_index.json#normalizedMeasureLookup.comb_goals_per_game"
+      ],
+      "source_path": "runtime/leagues/nhl/fetchBaseMeasures.response.json",
+      "source_ref": "fetchBaseMeasures.comb_goals_per_game",
+      "source_type": "runtime"
+    }
+  ],
+  "profiles": [
+    {
+      "aliases": [
+        "34ba59d5-aeb1-4a72-b6b6-1a94c4bd9671"
+      ],
+      "id": "profile:mlb:mlb_25_updates",
+      "league": "mlb",
+      "name": "MLB 25 Updates",
+      "notes": [
+        "season=2025",
+        "user_id_present"
+      ],
+      "source_path": "runtime/profiles/profiles.response.json",
+      "source_ref": "profile:34ba59d5-aeb1-4a72-b6b6-1a94c4bd9671",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "e42ec471-539d-47b3-be8c-49935b2b1c74"
+      ],
+      "id": "profile:mlb:mlb_network_26",
+      "league": "mlb",
+      "name": "MLB Network 26",
+      "notes": [
+        "season=2025",
+        "user_id_present"
+      ],
+      "source_path": "runtime/profiles/profiles.response.json",
+      "source_ref": "profile:e42ec471-539d-47b3-be8c-49935b2b1c74",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "878be732-d916-4234-89dd-0c7fa1db3dc8"
+      ],
+      "id": "profile:mlb:mlb_playbook_2025_jr",
+      "league": "mlb",
+      "name": "MLB Playbook 2025 JR",
+      "notes": [
+        "season=2024",
+        "user_id_present"
+      ],
+      "source_path": "runtime/profiles/profiles.response.json",
+      "source_ref": "profile:878be732-d916-4234-89dd-0c7fa1db3dc8",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "2546c434-f190-4968-8c40-6fb59875ac52"
+      ],
+      "id": "profile:mlb:mssg_mlb_25",
+      "league": "mlb",
+      "name": "MSSG MLB 25",
+      "notes": [
+        "season=2025",
+        "user_id_present"
+      ],
+      "source_path": "runtime/profiles/profiles.response.json",
+      "source_ref": "profile:2546c434-f190-4968-8c40-6fb59875ac52",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "77eaa4f6-61bd-4c40-b5aa-a48c8ed19f89"
+      ],
+      "id": "profile:mlb:mssg_mlb_25_4_25_25",
+      "league": "mlb",
+      "name": "MSSG MLB 25 - 4 25 25",
+      "notes": [
+        "season=2025",
+        "user_id_present"
+      ],
+      "source_path": "runtime/profiles/profiles.response.json",
+      "source_ref": "profile:77eaa4f6-61bd-4c40-b5aa-a48c8ed19f89",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "97dd527f-6afd-46c5-8d41-52d389c8f8c4"
+      ],
+      "id": "profile:mlb:tigers_mlb",
+      "league": "mlb",
+      "name": "Tigers MLB",
+      "notes": [
+        "season=2025",
+        "user_id_present"
+      ],
+      "source_path": "runtime/profiles/profiles.response.json",
+      "source_ref": "profile:97dd527f-6afd-46c5-8d41-52d389c8f8c4",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "86591a47-0fcc-47c1-b1f3-4abf88e8bf73"
+      ],
+      "id": "profile:nba:dsg_nba_2025_26_playbook",
+      "league": "nba",
+      "name": "DSG NBA 2025-26 Playbook",
+      "notes": [
+        "season=2024",
+        "user_id_present"
+      ],
+      "source_path": "runtime/profiles/profiles.response.json",
+      "source_ref": "profile:86591a47-0fcc-47c1-b1f3-4abf88e8bf73",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "6cdc07d3-9102-47d6-936d-354badaa8063"
+      ],
+      "id": "profile:nba:nba_calendar",
+      "league": "nba",
+      "name": "NBA-Calendar",
+      "notes": [
+        "season=2025",
+        "user_id_present"
+      ],
+      "source_path": "runtime/profiles/profiles.response.json",
+      "source_ref": "profile:6cdc07d3-9102-47d6-936d-354badaa8063",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "5162f3e5-74d2-4699-ac61-16cea60c2ea7"
+      ],
+      "id": "profile:nhl:dsg_nhl_24_25",
+      "league": "nhl",
+      "name": "DSG NHL 24-25",
+      "notes": [
+        "season=2025",
+        "user_id_present"
+      ],
+      "source_path": "runtime/profiles/profiles.response.json",
+      "source_ref": "profile:5162f3e5-74d2-4699-ac61-16cea60c2ea7",
+      "source_type": "runtime"
+    },
+    {
+      "aliases": [
+        "8941b90a-30ea-4eaa-b07d-b29976cc99e1"
+      ],
+      "id": "profile:nhl:nhl_calendar",
+      "league": "nhl",
+      "name": "NHL-Calendar",
+      "notes": [
+        "season=2025",
+        "user_id_present"
+      ],
+      "source_path": "runtime/profiles/profiles.response.json",
+      "source_ref": "profile:8941b90a-30ea-4eaa-b07d-b29976cc99e1",
+      "source_type": "runtime"
+    }
+  ],
   "qualifiers": [],
   "raw_sources": {
     "roots": {
@@ -99,7 +1334,7 @@
     },
     "total_files": 54
   },
-  "schema_version": "0.1.0",
+  "schema_version": "0.2.0",
   "source_roots": [
     "grammar",
     "grammar_snapshot",
