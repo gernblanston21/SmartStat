@@ -137,3 +137,43 @@ export interface TreeSelection {
   league: string | null;
   recordIds: string[];
 }
+
+export type SearchMatchKind =
+  | "browse"
+  | "exact_id"
+  | "exact_name"
+  | "exact_alias"
+  | "prefix"
+  | "exact_token"
+  | "substring"
+  | "source_ref"
+  | "source_path"
+  | "evidence";
+
+export type SearchMatchStrength = "none" | "high" | "medium" | "low";
+
+export interface RecordSearchResult {
+  record: TypedRecord;
+  match_kind: SearchMatchKind;
+  match_strength: SearchMatchStrength;
+  match_fields: string[];
+  match_scope: "normalized" | "source_hint";
+  score: number;
+  explanation: string;
+}
+
+export interface SearchSourceHint {
+  hint_type: "record_source" | "source_tree_label" | "source_path";
+  label: string;
+  detail: string;
+  record_ids: string[];
+}
+
+export interface SearchNarrative {
+  term: string;
+  normalized_match_count: number;
+  source_hint_count: number;
+  summary: string;
+  hints: SearchSourceHint[];
+  next_steps: string[];
+}

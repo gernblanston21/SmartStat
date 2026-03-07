@@ -17,6 +17,19 @@ This app:
 - traceability inspection (`trace_index`)
 - shared filtering by league, record type, source type (`ui_views` aware)
 
+## Phase 6 Additions
+
+- deterministic search explainability
+- deterministic match ranking
+- result badges for match strength/type
+- record detail debug narratives
+- empty-result guidance with source-oriented hints
+- read-only behavior preserved
+
+Example expectations:
+- search `air_balls` prioritizes `measure:mlb:air_balls` over `measure:mlb:air_balls_percentage`
+- search `playerSplits` may produce no normalized-record match and still show source/debug hints
+
 ## Deferred
 
 - editing semantic records

@@ -8,13 +8,14 @@ import { TabKey, Tabs } from "./components/Tabs";
 import { TraceabilityPanel } from "./components/TraceabilityPanel";
 import { loadSemanticIndex } from "./data/loadSemanticIndex";
 import {
+  buildSearchNarrative,
   buildAllowedRecordIdSet,
   buildFilterOptions,
   buildRecordById,
   filterQueryPathsByContext,
-  filterRecordsByContext,
   filterRelationshipsByContext,
   flattenRecords,
+  searchRecordsByContext,
 } from "./data/viewModel";
 import { FilterState, SemanticIndex, TreeSelection } from "./types";
 
@@ -85,9 +86,24 @@ export default function App(): JSX.Element {
     );
   }, [index, allRecords, filters.league, filters.recordType, filters.sourceType, selectedNode]);
 
-  const filteredRecords = useMemo(
-    () => filterRecordsByContext(allRecords, allowedRecordIds, filters.search),
+  const recordSearch = useMemo(
+    () => searchRecordsByContext(allRecords, allowedRecordIds, filters.search),
     [allRecords, allowedRecordIds, filters.search]
+  );
+  const filteredRecordResults = recordSearch.normalizedResults;
+  const sourceOnlyRecordResults = recordSearch.sourceOnlyResults;
+  const searchNarrative = useMemo(
+    () =>
+      index
+        ? buildSearchNarrative(
+            index,
+            filters.search,
+            filteredRecordResults,
+            sourceOnlyRecordResults,
+            allowedRecordIds
+          )
+        : null,
+    [index, filters.search, filteredRecordResults, sourceOnlyRecordResults, allowedRecordIds]
   );
 
   const filteredRelationships = useMemo(() => {
@@ -126,10 +142,13 @@ export default function App(): JSX.Element {
   }, [index, recordById, allowedRecordIds, filters.league, filters.recordType, filters.sourceType, selectedNode, filters.search]);
 
   useEffect(() => {
-    if (selectedRecordId && !filteredRecords.some((record) => record.id === selectedRecordId)) {
+    if (
+      selectedRecordId &&
+      !filteredRecordResults.some((result) => result.record.id === selectedRecordId)
+    ) {
       setSelectedRecordId(null);
     }
-  }, [filteredRecords, selectedRecordId]);
+  }, [filteredRecordResults, selectedRecordId]);
 
   useEffect(() => {
     if (
@@ -204,7 +223,11 @@ export default function App(): JSX.Element {
 
           {activeTab === "records" ? (
             <RecordsPanel
-              records={filteredRecords}
+              results={filteredRecordResults}
+              sourceOnlyResults={sourceOnlyRecordResults}
+              searchTerm={filters.search}
+              narrative={searchNarrative}
+              queryPaths={index.query_paths}
               selectedRecordId={selectedRecordId}
               onSelectRecord={setSelectedRecordId}
             />
