@@ -18,10 +18,15 @@ Phase 2 (completed):
   - `profiles`
   - `qualifiers` (only if confidently extractable; may remain empty)
 
-Phase 3 (this pass):
+Phase 3 (completed):
 - semantic relationship enrichment and source-to-plan traceability
 - deterministic relationship generation from high-confidence evidence only
 - deterministic lineage and evidence indexing for explainability workflows
+
+Phase 4 (this pass):
+- deterministic query-path modeling for semantic record entry flows
+- UI-facing source tree preparation from normalized + trace data
+- view-model prep for future React SPA Source View, without adding UI code
 
 ## Normalized Meaning In This Pass
 
@@ -39,6 +44,14 @@ Relationship enrichment means adding explicit, deterministic graph links between
 
 Traceability means every normalized record and emitted relationship can be followed back to concrete dump evidence (`source_type`, `source_path`, `source_ref`) and lineage metadata suitable for plan/debug explanation.
 
+## Query Path Meaning
+
+A query path is a deterministic, explainable navigation path from a semantic entry record (for example a measure/filter/profile/entity) through league context and source evidence steps.
+
+## UI-Facing Source Tree Meaning
+
+A UI-facing source tree is a deterministic browse structure organized by source type and logical buckets (league/path) with stable `record_ids` so a future React SPA can render semantic/source navigation directly.
+
 ## Expected Consumers
 
 - semantic-layer tooling
@@ -52,6 +65,15 @@ Relationship categories in this phase include:
 - `profile -> league`
 - `entity -> league`
 - `record -> source lineage`
+
+## Phase 4 Outputs
+
+Phase 4 introduces deterministic query-path and source-tree structures, including:
+- `league -> measure`
+- `league -> filter`
+- `profile -> measure/filter context`
+- `record -> source lineage -> raw file`
+- source tree nodes for `grammar` / `grammar_snapshot` / `runtime` / `lookup_index` / `schema` browsing
 
 ## Artifacts
 

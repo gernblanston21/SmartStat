@@ -33,6 +33,34 @@ This structure is intended to support:
 - Plan Engine explanation/debugging: show why a record exists and which evidence supports it
 - Future React SPA Source View: navigate from semantic nodes to source lineage and relationship context
 
+## Query Paths And Lineage
+
+Phase 4 adds `query_paths[]` to provide deterministic entry flows:
+- entry record -> league step -> source/lineage step -> terminal references
+
+`query_paths` are built from existing normalized records, `relationships`, and `trace_index` evidence. They do not replace lineage; they pre-compose high-confidence traversal paths for explainable navigation.
+
+## Navigating By League, Record, Source, And Path
+
+Future UI/plan tooling can navigate deterministically from:
+1. `league`:
+   - use `ui_views.by_league` for record IDs in that league
+2. `record`:
+   - use `trace_index.by_record_id[record_id]` for lineage/evidence and relationship IDs
+3. `source file`:
+   - use `trace_index.by_source_path[source_path]` for linked record IDs
+4. `query path`:
+   - use `query_paths[]` by `entry_record_id`/`path_type` for pre-modeled explanation flows
+
+## How Source Tree And Trace Index Complement Each Other
+
+- `source_tree` is optimized for browse/navigation (source-first hierarchy).
+- `trace_index` is optimized for explainability/provenance lookup (record-first and source-first maps).
+
+Together they provide both:
+- a UI-friendly source browser model
+- a deterministic evidence lookup backbone
+
 ## Intentionally Missing In Phase 3
 
 Not yet implemented:

@@ -73,3 +73,48 @@ The next likely step is:
 - semantic query-path modeling
 - plan-oriented trace rendering
 - UI-facing source tree preparation
+
+---
+
+# Phase 4 Query Path + Source Tree Notes
+
+## What Was Added In Phase 4
+
+Phase 4 adds deterministic navigation structures on top of normalized records, relationships, and traceability.
+
+Added structures:
+- top-level `query_paths`
+- top-level `source_tree`
+- top-level `ui_views` (deterministic helper groupings for future UI)
+
+High-confidence query path categories in this pass:
+- `measure_entry`
+- `filter_entry`
+- `profile_entry`
+- `entity_entry`
+
+## Source Tree Introduction
+
+`source_tree` is introduced as a stable browse model:
+- top-level source-type nodes (`grammar`, `grammar_snapshot`, `lookup_index`, `runtime`, `schema`)
+- league/logical buckets beneath each source type
+- deterministic file leaves with `record_ids`
+
+## Deferred In Phase 4
+
+Still deferred:
+- deep semantic query composition beyond single-entry deterministic paths
+- UI rendering concerns (layout/state/interaction)
+- plan-step visualization components and interactive graph behavior
+
+## Why React Files Are Still Deferred
+
+This phase intentionally keeps outputs data-only so React work can consume a stable contract first.
+No frontend code is introduced until semantic path/tree structures are validated.
+
+## Next Likely Phase Before UI Completion
+
+The next likely step is:
+- React SPA Source View skeleton
+- semantic browser rendering
+- plan/debug pane driven by `semantic_index.json`

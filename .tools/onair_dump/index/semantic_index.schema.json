@@ -5,6 +5,16 @@
   "type": "object",
   "additionalProperties": false,
   "$defs": {
+    "sourceTypeValue": {
+      "type": "string",
+      "enum": [
+        "runtime",
+        "lookup_index",
+        "grammar",
+        "grammar_snapshot",
+        "schema"
+      ]
+    },
     "confidenceField": {
       "anyOf": [
         {
@@ -37,13 +47,7 @@
       ],
       "properties": {
         "source_type": {
-          "type": "string",
-          "enum": [
-            "runtime",
-            "lookup_index",
-            "grammar",
-            "schema"
-          ]
+          "$ref": "#/$defs/sourceTypeValue"
         },
         "source_path": {
           "type": "string"
@@ -87,13 +91,7 @@
           ]
         },
         "source_type": {
-          "type": "string",
-          "enum": [
-            "runtime",
-            "lookup_index",
-            "grammar",
-            "schema"
-          ]
+          "$ref": "#/$defs/sourceTypeValue"
         },
         "source_path": {
           "type": "string"
@@ -173,13 +171,7 @@
           ]
         },
         "source_type": {
-          "type": "string",
-          "enum": [
-            "runtime",
-            "lookup_index",
-            "grammar",
-            "schema"
-          ]
+          "$ref": "#/$defs/sourceTypeValue"
         },
         "source_path": {
           "type": "string"
@@ -249,6 +241,206 @@
         }
       },
       "additionalProperties": false
+    },
+    "queryPathStep": {
+      "type": "object",
+      "required": [
+        "kind",
+        "ref_id",
+        "label",
+        "source_path",
+        "source_ref"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string"
+        },
+        "ref_id": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "source_path": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "queryPathRecord": {
+      "type": "object",
+      "required": [
+        "id",
+        "league",
+        "entry_record_id",
+        "path_type",
+        "steps",
+        "terminal_record_ids",
+        "source_evidence",
+        "confidence"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "league": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "entry_record_id": {
+          "type": "string"
+        },
+        "path_type": {
+          "type": "string"
+        },
+        "steps": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/queryPathStep"
+          }
+        },
+        "terminal_record_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "source_evidence": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "confidence": {
+          "$ref": "#/$defs/confidenceField"
+        },
+        "notes": {
+          "$ref": "#/$defs/notesField"
+        }
+      },
+      "additionalProperties": false
+    },
+    "sourceTreeNode": {
+      "type": "object",
+      "required": [
+        "id",
+        "label",
+        "node_type",
+        "source_type",
+        "source_path",
+        "league",
+        "record_ids",
+        "children"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "node_type": {
+          "type": "string",
+          "enum": [
+            "source_type_root",
+            "league_bucket",
+            "misc_bucket",
+            "source_file"
+          ]
+        },
+        "source_type": {
+          "$ref": "#/$defs/sourceTypeValue"
+        },
+        "source_path": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "league": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "record_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/sourceTreeNode"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "sourceTree": {
+      "type": "object",
+      "required": [
+        "roots"
+      ],
+      "properties": {
+        "roots": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/sourceTreeNode"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "uiViews": {
+      "type": "object",
+      "required": [
+        "by_league",
+        "by_record_type",
+        "by_source_type"
+      ],
+      "properties": {
+        "by_league": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "by_record_type": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "by_source_type": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
     }
   },
   "required": [
@@ -263,6 +455,9 @@
     "profiles",
     "relationships",
     "trace_index",
+    "query_paths",
+    "source_tree",
+    "ui_views",
     "raw_sources"
   ],
   "properties": {
@@ -322,6 +517,18 @@
     },
     "trace_index": {
       "$ref": "#/$defs/traceIndex"
+    },
+    "query_paths": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/queryPathRecord"
+      }
+    },
+    "source_tree": {
+      "$ref": "#/$defs/sourceTree"
+    },
+    "ui_views": {
+      "$ref": "#/$defs/uiViews"
     },
     "raw_sources": {
       "type": "object",

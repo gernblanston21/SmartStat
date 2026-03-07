@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Set, Tuple
 
 
-SCHEMA_VERSION = "0.3.0"
+SCHEMA_VERSION = "0.4.0"
 DETERMINISTIC_GENERATED_UTC = "1970-01-01T00:00:00Z"
 
 SOURCE_DIRS = ("grammar", "grammar_snapshot", "lookup_index", "runtime", "schema")
@@ -38,6 +38,13 @@ ENTITY_TYPE_ALLOWLIST = {
     "DialectEngine_Venue",
     "Profiles_Profile",
     "Profiles_AvailableGamePlanFilters",
+}
+
+QUERY_PATH_TYPE_BY_KIND = {
+    "measure": "measure_entry",
+    "filter": "filter_entry",
+    "profile": "profile_entry",
+    "entity": "entity_entry",
 }
 
 MERGED_FROM_PATTERN = re.compile(r"^merged_from:([^:]+):(.+)#(.+)$")
@@ -99,6 +106,14 @@ def detect_league_from_text(value: Any) -> Optional[str]:
     return None
 
 
+def detect_league_from_path(path: str) -> Optional[str]:
+    tokens = [t for t in LEAGUE_TOKEN_SPLIT.split(path.lower()) if t]
+    for league in KNOWN_LEAGUES:
+        if league in tokens:
+            return league
+    return None
+
+
 def make_semantic_id(kind: str, league: Optional[str], token: Any) -> str:
     league_part = normalize_token(league) if league else "global"
     return f"{kind}:{league_part}:{normalize_token(token)}"
@@ -124,12 +139,25 @@ def make_relationship_id(
     return ":".join(parts)
 
 
+def make_query_path_id(path_type: str, league: Optional[str], entry_record_id: str) -> str:
+    league_part = normalize_token(league) if league else "global"
+    return f"path:{normalize_token(path_type)}:{league_part}:{normalize_token(entry_record_id)}"
+
+
 def clean_aliases(values: Iterable[Any]) -> List[str]:
     return sorted({str(v).strip() for v in values if str(v).strip()})
 
 
 def clean_notes(values: Iterable[Any]) -> List[str]:
     return sorted({str(v).strip() for v in values if str(v).strip()})
+
+
+def unique_sorted_strings(values: Iterable[Any]) -> List[str]:
+    return sorted({str(v).strip() for v in values if str(v).strip()})
+
+
+def record_kind_from_id(record_id: str) -> str:
+    return record_id.split(":", 1)[0] if ":" in record_id else normalize_token(record_id)
 
 
 def make_record(
@@ -789,6 +817,138 @@ def build_trace_index(
     }
 
 
+def sorted_record_ids_from_relationships(
+    entry_record_id: str,
+    relationships: List[Dict[str, Any]],
+    known_record_ids: Set[str],
+) -> List[str]:
+    related: Set[str] = set()
+    for relation in relationships:
+        from_id = relation.get("from_id")
+        to_id = relation.get("to_id")
+        if from_id == entry_record_id and isinstance(to_id, str) and to_id in known_record_ids:
+            related.add(to_id)
+        elif to_id == entry_record_id and isinstance(from_id, str) and from_id in known_record_ids:
+            related.add(from_id)
+    return sorted(related)
+
+
+def make_query_path_step(
+    kind: str,
+    ref_id: str,
+    label: str,
+    source_path: Optional[str],
+    source_ref: Optional[str],
+) -> Dict[str, Any]:
+    return {
+        "kind": kind,
+        "ref_id": ref_id,
+        "label": label,
+        "source_path": source_path,
+        "source_ref": source_ref,
+    }
+
+
+def generate_query_paths(
+    records_by_id: Dict[str, Dict[str, Any]],
+    relationships: List[Dict[str, Any]],
+    trace_index: Dict[str, Any],
+) -> List[Dict[str, Any]]:
+    """Phase 4: deterministic query-path generation from high-confidence links."""
+    known_record_ids = set(records_by_id.keys())
+    trace_by_record_id = safe_dict(trace_index.get("by_record_id"))
+    paths: List[Dict[str, Any]] = []
+
+    for record_id in sorted(records_by_id.keys()):
+        record = records_by_id[record_id]
+        kind = record_kind_from_id(record_id)
+        path_type = QUERY_PATH_TYPE_BY_KIND.get(kind)
+        if not path_type:
+            continue
+
+        league = record.get("league")
+        related_record_ids = sorted_record_ids_from_relationships(record_id, relationships, known_record_ids)
+        trace_record = safe_dict(trace_by_record_id.get(record_id))
+        lineage = [x for x in safe_list(trace_record.get("lineage")) if isinstance(x, dict)]
+        lineage.sort(
+            key=lambda x: (
+                normalize_token(x.get("source_type")),
+                normalize_token(x.get("source_path")),
+                normalize_token(x.get("source_ref")),
+                normalize_token(x.get("role")),
+            )
+        )
+
+        steps: List[Dict[str, Any]] = [
+            make_query_path_step(
+                kind="entry_record",
+                ref_id=record_id,
+                label=record.get("name", record_id),
+                source_path=record.get("source_path"),
+                source_ref=record.get("source_ref"),
+            )
+        ]
+        if league:
+            steps.append(
+                make_query_path_step(
+                    kind="league_context",
+                    ref_id=f"league:{league}",
+                    label=f"League {str(league).upper()}",
+                    source_path=None,
+                    source_ref=None,
+                )
+            )
+
+        # Keep related-record traversal deterministic and conservative.
+        for related_id in related_record_ids:
+            related = records_by_id[related_id]
+            steps.append(
+                make_query_path_step(
+                    kind="related_record",
+                    ref_id=related_id,
+                    label=related.get("name", related_id),
+                    source_path=related.get("source_path"),
+                    source_ref=related.get("source_ref"),
+                )
+            )
+
+        for entry in lineage:
+            source_type = str(entry.get("source_type") or "unknown")
+            source_path = entry.get("source_path")
+            source_ref = entry.get("source_ref")
+            steps.append(
+                make_query_path_step(
+                    kind="source_lineage",
+                    ref_id=f"source:{source_type}:{normalize_token(source_path)}",
+                    label=f"{source_type}:{source_path}",
+                    source_path=source_path,
+                    source_ref=source_ref,
+                )
+            )
+
+        source_evidence = unique_sorted_strings(trace_record.get("evidence", []))
+        terminal_record_ids = sorted({record_id, *related_record_ids})
+        notes = ["deterministic_phase4_query_path"]
+        if not league:
+            notes.append("no_league_context_step")
+
+        path = {
+            "id": make_query_path_id(path_type, league, record_id),
+            "league": league,
+            "entry_record_id": record_id,
+            "path_type": path_type,
+            "steps": steps,
+            "terminal_record_ids": terminal_record_ids,
+            "source_evidence": source_evidence,
+            "confidence": record.get("confidence", "medium"),
+            "notes": notes,
+        }
+        paths.append(path)
+
+    paths.sort(key=lambda x: x["id"])
+    return paths
+
+
 def index_records_by_id(records: List[Dict[str, Any]]) -> Dict[str, Dict[str, Any]]:
     return {record["id"]: record for record in records}
 
@@ -800,13 +960,160 @@ def refresh_records_from_index(
     return [records_by_id[record["id"]] for record in base_records]
 
 
+def infer_misc_bucket(source_type: str, source_path: str) -> str:
+    parts = source_path.split("/")
+    if len(parts) >= 3 and parts[0] == source_type:
+        return parts[1]
+    if len(parts) >= 2 and parts[0] == source_type:
+        return "root"
+    return "misc"
+
+
+def build_source_tree(
+    roots: Dict[str, Dict[str, Any]],
+    trace_index: Dict[str, Any],
+) -> Dict[str, Any]:
+    """Phase 4: deterministic UI-facing source tree for browse/navigation."""
+    trace_by_source_path = safe_dict(trace_index.get("by_source_path"))
+    root_nodes: List[Dict[str, Any]] = []
+
+    for source_type in SOURCE_DIRS:
+        source_payload = safe_dict(roots.get(source_type))
+        files = [x for x in safe_list(source_payload.get("files")) if isinstance(x, str)]
+        files.sort()
+
+        buckets: Dict[Tuple[str, str], Dict[str, Any]] = {}
+        for source_path in files:
+            league = detect_league_from_path(source_path)
+            if league:
+                bucket_node_type = "league_bucket"
+                bucket_value = league
+                bucket_label = f"League {league.upper()}"
+            else:
+                bucket_node_type = "misc_bucket"
+                bucket_value = infer_misc_bucket(source_type, source_path)
+                bucket_label = f"Group {bucket_value}"
+
+            bucket_key = (bucket_node_type, bucket_value)
+            bucket = buckets.setdefault(
+                bucket_key,
+                {
+                    "label": bucket_label,
+                    "node_type": bucket_node_type,
+                    "league": league if league else None,
+                    "children": [],
+                },
+            )
+
+            record_ids = unique_sorted_strings(trace_by_source_path.get(source_path, []))
+            label = source_path.split("/", 1)[1] if "/" in source_path else source_path
+            leaf_node = {
+                "id": f"source_tree:file:{source_type}:{normalize_token(source_path)}",
+                "label": label,
+                "node_type": "source_file",
+                "source_type": source_type,
+                "source_path": source_path,
+                "league": league if league else None,
+                "record_ids": record_ids,
+                "children": [],
+            }
+            bucket["children"].append(leaf_node)
+
+        bucket_nodes: List[Dict[str, Any]] = []
+        for bucket_key in sorted(buckets.keys(), key=lambda x: (normalize_token(x[0]), normalize_token(x[1]))):
+            bucket = buckets[bucket_key]
+            children = sorted(bucket["children"], key=lambda x: x["id"])
+            bucket_record_ids = unique_sorted_strings(
+                record_id for child in children for record_id in child.get("record_ids", [])
+            )
+            node = {
+                "id": (
+                    f"source_tree:bucket:{source_type}:"
+                    f"{normalize_token(bucket['node_type'])}:{normalize_token(bucket_key[1])}"
+                ),
+                "label": bucket["label"],
+                "node_type": bucket["node_type"],
+                "source_type": source_type,
+                "source_path": None,
+                "league": bucket["league"],
+                "record_ids": bucket_record_ids,
+                "children": children,
+            }
+            bucket_nodes.append(node)
+
+        root_record_ids = unique_sorted_strings(
+            record_id for bucket_node in bucket_nodes for record_id in bucket_node.get("record_ids", [])
+        )
+        root_nodes.append(
+            {
+                "id": f"source_tree:root:{source_type}",
+                "label": source_type,
+                "node_type": "source_type_root",
+                "source_type": source_type,
+                "source_path": None,
+                "league": None,
+                "record_ids": root_record_ids,
+                "children": bucket_nodes,
+            }
+        )
+
+    return {"roots": root_nodes}
+
+
+def build_ui_views(records_by_id: Dict[str, Dict[str, Any]]) -> Dict[str, Dict[str, List[str]]]:
+    """Phase 4: compact deterministic helper groupings for future UI."""
+    by_league_sets: Dict[str, Set[str]] = {"global": set()}
+    for league in KNOWN_LEAGUES:
+        by_league_sets[league] = set()
+
+    by_record_type_sets: Dict[str, Set[str]] = {
+        "entities": set(),
+        "measures": set(),
+        "filters": set(),
+        "qualifiers": set(),
+        "profiles": set(),
+    }
+    by_source_type_sets: Dict[str, Set[str]] = {source_type: set() for source_type in SOURCE_DIRS}
+
+    for record_id in sorted(records_by_id.keys()):
+        record = records_by_id[record_id]
+        league = record.get("league")
+        by_league_sets[league if league else "global"].add(record_id)
+
+        kind = record_kind_from_id(record_id)
+        if kind == "entity":
+            by_record_type_sets["entities"].add(record_id)
+        elif kind == "measure":
+            by_record_type_sets["measures"].add(record_id)
+        elif kind == "filter":
+            by_record_type_sets["filters"].add(record_id)
+        elif kind == "qualifier":
+            by_record_type_sets["qualifiers"].add(record_id)
+        elif kind == "profile":
+            by_record_type_sets["profiles"].add(record_id)
+
+        source_type = str(record.get("source_type") or "")
+        if source_type in by_source_type_sets:
+            by_source_type_sets[source_type].add(record_id)
+
+    by_league = {key: sorted(values) for key, values in sorted(by_league_sets.items())}
+    by_record_type = {key: sorted(values) for key, values in sorted(by_record_type_sets.items())}
+    by_source_type = {key: sorted(values) for key, values in sorted(by_source_type_sets.items())}
+
+    return {
+        "by_league": by_league,
+        "by_record_type": by_record_type,
+        "by_source_type": by_source_type,
+    }
+
+
 def build_index_document() -> Dict[str, Any]:
     # Stage 1: deterministic inventory.
     roots, all_files = discover_sources()
     source_roots = sorted([name for name, payload in roots.items() if payload["exists"]])
     leagues = discover_leagues(all_files)
 
-    # Stage 2: deterministic extraction and normalization (Phase 2 behavior).
+    # Stage 2: deterministic extraction and normalization.
     entities = enrich_records_with_traceability(extract_entities())
     measures = enrich_records_with_traceability(extract_measures())
     filters = enrich_records_with_traceability(extract_filters())
@@ -817,7 +1124,7 @@ def build_index_document() -> Dict[str, Any]:
     for record in entities + measures + filters + qualifiers + profiles:
         records_by_id[record["id"]] = record
 
-    # Stage 3: deterministic relationship generation (Phase 3 behavior).
+    # Stage 3: deterministic relationship generation and record linkback.
     relationships = generate_relationships(entities, measures, filters, profiles, qualifiers)
     attach_relationship_refs_to_records(records_by_id, relationships)
 
@@ -828,8 +1135,11 @@ def build_index_document() -> Dict[str, Any]:
     qualifiers = refresh_records_from_index(qualifiers, records_by_id)
     profiles = refresh_records_from_index(profiles, records_by_id)
 
-    # Stage 4: deterministic trace index for source-to-record explainability.
+    # Stage 4: deterministic traceability, query-path, and browse-tree models.
     trace_index = build_trace_index(records_by_id)
+    query_paths = generate_query_paths(records_by_id, relationships, trace_index)
+    source_tree = build_source_tree(roots, trace_index)
+    ui_views = build_ui_views(records_by_id)
 
     # Stage 5: final document assembly.
     document: Dict[str, Any] = {
@@ -844,6 +1154,9 @@ def build_index_document() -> Dict[str, Any]:
         "profiles": profiles,
         "relationships": relationships,
         "trace_index": trace_index,
+        "query_paths": query_paths,
+        "source_tree": source_tree,
+        "ui_views": ui_views,
         "raw_sources": {
             "total_files": len(all_files),
             "roots": roots,
