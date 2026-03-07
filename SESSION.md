@@ -135,6 +135,11 @@ v4.1.0 Work Packages:
 
 - The semantic layer should be implemented only after the Plan Engine contract is established through WP-15 to WP-17.
 
+OnAir dump handling:
+- The current `onair_dump/` dataset is reserved for semantic-layer work.
+- Canonical repo location: `.tools/onair_dump/`
+- Move/commit of this dataset must occur only on `feature/semantic-layer`, not on `v4_Dev`.
+
 ---
 
 ## Operating Discipline

@@ -276,6 +276,11 @@ Evidence: tests/wp-14/contract-validators/artifacts/wp14_runB/ (RUN_PASS=True, R
 - Provide the foundation for a React SPA Source View
 - Recommended development branch: feature/semantic-layer
 
+Implementation note:
+- OnAir schema/grammar/runtime discovery dumps used for semantic-layer development belong under `.tools/onair_dump/`.
+- These dumps are tooling inputs for semantic indexing and source inspection, not general research notes.
+- The dataset should be moved into `.tools/onair_dump/` only on the dedicated semantic-layer branch.
+
 ### Definition of Done
 - Semantic model defined
 - Source inspection workflow documented
