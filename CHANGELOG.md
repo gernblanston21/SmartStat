@@ -6,20 +6,24 @@ Runtime versioning follows script identifiers (`SmartStat_v*.vbs`), while `VERSI
 ## [feature/semantic-layer] - 2026-03-07
 
 ### Summary
-- Completed Semantic Source View Phase 5 through Phase 7 as read-only semantic tooling.
+- Completed Semantic Source View Phase 5 through Phase 8 as read-only semantic tooling.
 - Established deterministic search explainability baseline and locked search-ranking behavior as a reusable contract with tests.
+- Added a validated semantic resolution explainability scaffold as the Phase 8 bridge from semantic inspection to future plan capture.
 - Kept scope tooling-only with no SmartStat runtime apply behavior changes.
 
 ### Added
 - Phase 5: local React Semantic Source View for deterministic inspection of semantic index data (`3101c8d`).
 - Phase 6: deterministic search explainability, ranking, debug narratives, and source-hint empty-result guidance (`9ea9977`).
 - Phase 7: extracted deterministic search contract module + lightweight regression tests (`30d15b6`).
-- Semantic checkpoint tag: `semantic-view-phase7` at `30d15b6`.
+- Phase 8: read-only semantic resolution explainability scaffold (`55c56ef`).
+- Semantic checkpoint tags:
+  - `semantic-view-phase7` at `30d15b6`.
+  - `semantic-view-phase8-scaffold` at `55c56ef`.
 
 ### Changed
 - Post-RC architecture sequencing is now semantic-inspection-first in planning docs (WP-15 through WP-20 ordering).
 - Runtime bridge sequencing remains intentionally deferred until semantic inspection/explainability/plan capture/plan validation are stable.
-
+- Phase 8 acceptance validated (`npm run build`, `npm run test` with `2` files / `8` tests, plus deterministic render/boundary checks).
 ## [v4_Dev] - 2026-02-26
 
 ### Summary

@@ -142,13 +142,18 @@ v4.1.0 Work Packages:
 - Phase 7 CLOSED - deterministic search contract extracted and locked with lightweight tests (`30d15b6`).
 - Phase 7 checkpoint tag pushed: `semantic-view-phase7` at `30d15b6`.
 
-## Phase 8 Start Block
+## Phase 8 Closeout
 
-- Phase 8 is a read-only architecture scaffold for semantic resolution explainability.
-- Phase 8 is not runtime apply behavior, not planner execution, and not SmartStat runtime integration.
-- Phase 8 provides an explainability bridge from semantic search inspection to future deterministic plan capture.
-- Phase 8 implementation is bounded to semantic tooling surfaces (primarily `tools/semantic-source-view`).
-
+- Phase 8 CLOSED - semantic resolution explainability scaffold accepted as read-only architecture tooling.
+- Validation accepted on 2026-03-07:
+  - `npm run build` passed.
+  - `npm run test` passed (`2` files, `8` tests).
+  - Baseline UI render and Phase 8 scaffold panel render passed.
+  - Search-driven selection updates, browse-mode behavior, and zero-normalized-result behavior passed.
+  - Deterministic visual repeatability passed.
+  - Boundary checks passed: no runtime/apply behavior, no planner execution, no candidate-resolution claims, and fixture fallback does not mask selected-record data.
+- Scope boundary preserved: explainability bridge only (no runtime SmartStat integration).
+- Next architecture handoff target: WP-17 (Plan Capture).
 OnAir dump handling:
 - The current `onair_dump/` dataset is reserved for semantic-layer work.
 - Canonical repo location: `.tools/onair_dump/`

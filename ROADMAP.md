@@ -245,6 +245,14 @@ Evidence: tests/wp-14/contract-validators/artifacts/wp14_runB/ (RUN_PASS=True, R
 - Read-only inspection workflow is reproducible on `feature/semantic-layer`.
 - No SmartStat runtime behavior changes introduced.
 
+WP-15 implementation package (read-only tooling):
+- React Semantic Source View baseline: `tools/semantic-source-view/` (Phase 5).
+- Deterministic search explainability/ranking: Phase 6.
+- Deterministic search contract + lightweight tests: Phase 7.
+- Checkpoint tag: `semantic-view-phase7` (`30d15b6`).
+
+WP-15 CLOSED - Semantic inspection foundation accepted (read-only tooling only).
+
 ## WP-16 (v4.2.0): Resolution Explainability
 ### Scope
 - Add a read-only explainability scaffold that models deterministic semantic resolution reasoning.
@@ -256,6 +264,19 @@ Evidence: tests/wp-14/contract-validators/artifacts/wp14_runB/ (RUN_PASS=True, R
 - Deterministic explainability fixture/scaffold available for local inspection.
 - Explainability boundaries documented against search explainability and plan execution.
 - No SmartStat runtime behavior changes introduced.
+
+WP-16 implementation package (read-only tooling):
+- Explainability guide: `tools/semantic-source-view/RESOLUTION_EXPLAINABILITY_GUIDE.md`.
+- Explainability schema: `tools/semantic-source-view/resolution-explainability.schema.json`.
+- Deterministic fixture + read-only panel scaffold: `tools/semantic-source-view/src/data/resolutionExplainability.fixture.ts`.
+- Scaffold checkpoint tag: `semantic-view-phase8-scaffold` (`55c56ef`).
+
+WP-16 CLOSED - Resolution explainability scaffold accepted (read-only tooling only).
+Validation evidence (2026-03-07):
+- `npm run build` passed.
+- `npm run test` passed (`2` files, `8` tests).
+- Baseline UI render, Phase 8 scaffold render, search-driven selection updates, browse-mode behavior, zero-normalized-result behavior, and deterministic visual repeatability all passed.
+- Boundary checks passed: no runtime/apply behavior, no planner execution, and no runtime integration implied.
 
 ## WP-17 (v4.2.0): Plan Capture
 ### Scope
