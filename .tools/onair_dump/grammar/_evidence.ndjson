@@ -1,0 +1,12 @@
+{"league": "mlb", "prefix": "stats", "probe": "stats", "template": "{{stats}}", "candidatesCount": 0, "candidates": [], "hasErrors": false, "errors": []}
+{"league": "mlb", "prefix": "stats", "probe": "stats.", "template": "{{stats.}}", "candidatesCount": 0, "candidates": [], "hasErrors": false, "errors": []}
+{"league": "mlb", "prefix": "info", "probe": "info", "template": "{{info}}", "candidatesCount": 0, "candidates": [], "hasErrors": false, "errors": []}
+{"league": "mlb", "prefix": "info", "probe": "info.", "template": "{{info.}}", "candidatesCount": 0, "candidates": [], "hasErrors": false, "errors": []}
+{"league": "nhl", "prefix": "stats", "probe": "stats", "template": "{{stats}}", "candidatesCount": 0, "candidates": [], "hasErrors": false, "errors": []}
+{"league": "nhl", "prefix": "stats", "probe": "stats.", "template": "{{stats.}}", "candidatesCount": 0, "candidates": [], "hasErrors": false, "errors": []}
+{"league": "nhl", "prefix": "info", "probe": "info", "template": "{{info}}", "candidatesCount": 0, "candidates": [], "hasErrors": false, "errors": []}
+{"league": "nhl", "prefix": "info", "probe": "info.", "template": "{{info.}}", "candidatesCount": 0, "candidates": [], "hasErrors": false, "errors": []}
+{"league": "nba", "prefix": "stats", "probe": "stats", "template": "{{stats}}", "candidatesCount": 0, "candidates": [], "hasErrors": false, "errors": []}
+{"league": "nba", "prefix": "stats", "probe": "stats.", "template": "{{stats.}}", "candidatesCount": 0, "candidates": [], "hasErrors": false, "errors": []}
+{"league": "nba", "prefix": "info", "probe": "info", "template": "{{info}}", "candidatesCount": 0, "candidates": [], "hasErrors": false, "errors": []}
+{"league": "nba", "prefix": "info", "probe": "info.", "template": "{{info.}}", "candidatesCount": 0, "candidates": [], "hasErrors": false, "errors": []}

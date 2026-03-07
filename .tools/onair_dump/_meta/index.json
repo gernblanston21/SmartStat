@@ -1,0 +1,28 @@
+{
+  "capturedAt": "2026-03-05T20:18:32-05:00",
+  "endpoint": "https://prod-api.srbroadcast.com/on-air-graph-gateway/graphqltoken",
+  "leagues": [
+    "mlb",
+    "nhl",
+    "nba"
+  ],
+  "artifacts": {
+    "schema_types_list": "schema/03__schema_types_list.response.json",
+    "schema_selected_types": [
+      "schema/types/Query.response.json",
+      "schema/types/Mutation.response.json",
+      "schema/types/DialectEngine_Measure.response.json",
+      "schema/types/DialectEngine_OnAirMeasureFormat.response.json",
+      "schema/types/DialectEngine_OnAirNumberMeasureFormat.response.json",
+      "schema/types/DialectEngine_OnAirTimeMeasureFormat.response.json",
+      "schema/types/Profiles_Profile.response.json",
+      "schema/types/Profiles_AvailableGamePlanFilters.response.json"
+    ],
+    "profiles": "runtime/profiles/profiles.response.json",
+    "league_dirs": [
+      "runtime/leagues/mlb/",
+      "runtime/leagues/nhl/",
+      "runtime/leagues/nba/"
+    ]
+  }
+}

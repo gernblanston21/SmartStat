@@ -1,0 +1,3 @@
+{
+  "query": "query {\n  profiles {\n    displayName\n    league\n    season\n    shareId\n    userId\n  }\n}"
+}

@@ -1,0 +1,7 @@
+{
+  "capturedAt": "2026-03-05T20:18:32-05:00",
+  "endpoint": "https://prod-api.srbroadcast.com/on-air-graph-gateway/graphqltoken",
+  "outDir": "E:\\EDRIVE\\UNIVERSAL\\SmartStat\\onair_dump",
+  "python": "3.13.11",
+  "notes": "Authorization token is supplied via ONAIR_AUTH env var and is never written to disk."
+}

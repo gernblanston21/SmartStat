@@ -1,0 +1,30 @@
+{
+  "data": {
+    "__type": {
+      "name": "DialectEngine_OnAirTimeMeasureFormat",
+      "kind": "OBJECT",
+      "description": null,
+      "fields": [
+        {
+          "name": "timeFormatType",
+          "description": null,
+          "args": [],
+          "type": {
+            "kind": "NON_NULL",
+            "name": null,
+            "ofType": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            }
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        }
+      ],
+      "inputFields": null,
+      "enumValues": null,
+      "possibleTypes": null
+    }
+  }
+}

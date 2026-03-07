@@ -1,0 +1,6 @@
+{
+  "query": "query($league:String!){\n  fetchBaseMeasures(league:$league){\n    categories\n    description\n    formatType\n    onAirCatalogMeasureKey\n    queryEngineMeasureKey\n    sortDirectionDesc\n    useLiveData\n    format {\n      __typename\n      ... on DialectEngine_OnAirNumberMeasureFormat {\n        decimalPlaceCount\n        decimalShiftCount\n        showPlusSymbol\n        showZeroBeforeDecimal\n        customSuffix\n      }\n      ... on DialectEngine_OnAirTimeMeasureFormat {\n        timeFormatType\n      }\n    }\n  }\n}",
+  "variables": {
+    "league": "nhl"
+  }
+}

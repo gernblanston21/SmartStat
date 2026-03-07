@@ -1,0 +1,22 @@
+{
+  "data": {
+    "__type": {
+      "name": "DialectEngine_OnAirMeasureFormat",
+      "kind": "UNION",
+      "description": null,
+      "fields": null,
+      "inputFields": null,
+      "enumValues": null,
+      "possibleTypes": [
+        {
+          "name": "DialectEngine_OnAirNumberMeasureFormat",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "DialectEngine_OnAirTimeMeasureFormat",
+          "kind": "OBJECT"
+        }
+      ]
+    }
+  }
+}

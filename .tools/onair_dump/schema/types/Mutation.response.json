@@ -1,0 +1,1313 @@
+{
+  "data": {
+    "__type": {
+      "name": "Mutation",
+      "kind": "OBJECT",
+      "description": null,
+      "fields": [
+        {
+          "name": "OnAirFeatureFlag",
+          "description": null,
+          "args": [
+            {
+              "name": "input",
+              "description": null,
+              "defaultValue": null,
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "Config_OnAirFeatureFlagMutationInput",
+                "ofType": null
+              }
+            }
+          ],
+          "type": {
+            "kind": "OBJECT",
+            "name": "Config_FeatureFlag",
+            "ofType": null
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "DeleteOnAirFeatureFlag",
+          "description": null,
+          "args": [
+            {
+              "name": "input",
+              "description": null,
+              "defaultValue": null,
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "Config_DeleteOnAirFeatureFlagInput",
+                "ofType": null
+              }
+            }
+          ],
+          "type": {
+            "kind": "OBJECT",
+            "name": "Config_DeleteOnAirFeatureFlagResponse",
+            "ofType": null
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "PurgeOnAirFeatureFlag",
+          "description": null,
+          "args": [
+            {
+              "name": "input",
+              "description": null,
+              "defaultValue": null,
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "Config_PurgeOnAirFeatureFlagInput",
+                "ofType": null
+              }
+            }
+          ],
+          "type": {
+            "kind": "OBJECT",
+            "name": "Config_PurgeOnAirFeatureFlagResponse",
+            "ofType": null
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "translatePlay",
+          "description": null,
+          "args": [
+            {
+              "name": "input",
+              "description": null,
+              "defaultValue": null,
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "DialectEngine_TranslatePlayInput",
+                "ofType": null
+              }
+            }
+          ],
+          "type": {
+            "kind": "LIST",
+            "name": null,
+            "ofType": {
+              "kind": "OBJECT",
+              "name": "DialectEngine_ResolvedPlay",
+              "ofType": null
+            }
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "translateGameplan",
+          "description": null,
+          "args": [
+            {
+              "name": "input",
+              "description": null,
+              "defaultValue": null,
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "DialectEngine_TranslateGameplanInput",
+                "ofType": null
+              }
+            }
+          ],
+          "type": {
+            "kind": "LIST",
+            "name": null,
+            "ofType": {
+              "kind": "OBJECT",
+              "name": "DialectEngine_ResolvedGameplan",
+              "ofType": null
+            }
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "translatePage",
+          "description": null,
+          "args": [
+            {
+              "name": "input",
+              "description": null,
+              "defaultValue": null,
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "DialectEngine_TranslatePageInput",
+                "ofType": null
+              }
+            }
+          ],
+          "type": {
+            "kind": "LIST",
+            "name": null,
+            "ofType": {
+              "kind": "OBJECT",
+              "name": "DialectEngine_ResolvedTemplates",
+              "ofType": null
+            }
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "checkPageSyntax",
+          "description": null,
+          "args": [
+            {
+              "name": "input",
+              "description": null,
+              "defaultValue": null,
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "DialectEngine_TranslatePageInput",
+                "ofType": null
+              }
+            }
+          ],
+          "type": {
+            "kind": "LIST",
+            "name": null,
+            "ofType": {
+              "kind": "OBJECT",
+              "name": "DialectEngine_SyntaxErrorMeta",
+              "ofType": null
+            }
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "checkPlaybookSyntax",
+          "description": null,
+          "args": [
+            {
+              "name": "input",
+              "description": null,
+              "defaultValue": null,
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "DialectEngine_CheckPlaybookSyntaxRequest",
+                "ofType": null
+              }
+            }
+          ],
+          "type": {
+            "kind": "LIST",
+            "name": null,
+            "ofType": {
+              "kind": "OBJECT",
+              "name": "DialectEngine_PlaybookSyntaxErrorMeta",
+              "ofType": null
+            }
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "startFileGeneration",
+          "description": null,
+          "args": [
+            {
+              "name": "userId",
+              "description": null,
+              "defaultValue": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            {
+              "name": "profileId",
+              "description": null,
+              "defaultValue": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
+              }
+            },
+            {
+              "name": "fileType",
+              "description": null,
+              "defaultValue": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "ENUM",
+                  "name": "FileGenerator_FileType",
+                  "ofType": null
+                }
+              }
+            }
+          ],
+          "type": {
+            "kind": "OBJECT",
+            "name": "FileGenerator_StartFileGenerationResponse",
+            "ofType": null
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "cancelBuildAndPendingJobs",
+          "description": null,
+          "args": [
+            {
+              "name": "userId",
+              "description": null,
+              "defaultValue": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            {
+              "name": "profileId",
+              "description": null,
+              "defaultValue": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
+              }
+            },
+            {
+              "name": "fileType",
+              "description": null,
+              "defaultValue": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "ENUM",
+                  "name": "FileGenerator_FileType",
+                  "ofType": null
+                }
+              }
+            }
+          ],
+          "type": {
+            "kind": "OBJECT",
+            "name": "FileGenerator_CancelBuildAndPendingJobsResponse",
+            "ofType": null
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "createProfile",
+          "description": null,
+          "args": [
+            {
+              "name": "input",
+              "description": null,
+              "defaultValue": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "Profiles_CreateProfileInput",
+                  "ofType": null
+                }
+              }
+            }
+          ],
+          "type": {
+            "kind": "OBJECT",
+            "name": "Profiles_Profile",
+            "ofType": null
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "updateProfile",
+          "description": null,
+          "args": [
+            {
+              "name": "input",
+              "description": null,
+              "defaultValue": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "Profiles_UpdateUserProfileInput",
+                  "ofType": null
+                }
+              }
+            }
+          ],
+          "type": {
+            "kind": "OBJECT",
+            "name": "Profiles_Profile",
+            "ofType": null
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "upsertPlay",
+          "description": null,
+          "args": [
+            {
+              "name": "input",
+              "description": null,
+              "defaultValue": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "Profiles_UserPlaybookPlayUpdateInput",
+                  "ofType": null
+                }
+              }
+            }
+          ],
+          "type": {
+            "kind": "OBJECT",
+            "name": "Profiles_UserPlaybookPlay",
+            "ofType": null
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "renamePlaybookGrouping",
+          "description": null,
+          "args": [
+            {
+              "name": "input",
+              "description": null,
+              "defaultValue": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "Profiles_UserPlaybookGroupingUpdateInput",
+                  "ofType": null
+                }
+              }
+            }
+          ],
+          "type": {
+            "kind": "LIST",
+            "name": null,
+            "ofType": {
+              "kind": "OBJECT",
+              "name": "Profiles_UserPlaybookPlay",
+              "ofType": null
+            }
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "deletePlay",
+          "description": null,
+          "args": [
+            {
+              "name": "input",
+              "description": null,
+              "defaultValue": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "Profiles_UserPlaybookPlayDeleteInput",
+                  "ofType": null
+                }
+              }
+            }
+          ],
+          "type": {
+            "kind": "LIST",
+            "name": null,
+            "ofType": {
+              "kind": "OBJECT",
+              "name": "Profiles_UserPlaybookPlay",
+              "ofType": null
+            }
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "deletePlays",
+          "description": null,
+          "args": [
+            {
+              "name": "input",
+              "description": null,
+              "defaultValue": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "Profiles_UserPlaybookPlaysDeleteInput",
+                  "ofType": null
+                }
+              }
+            }
+          ],
+          "type": {
+            "kind": "LIST",
+            "name": null,
+            "ofType": {
+              "kind": "OBJECT",
+              "name": "Profiles_UserPlaybookPlay",
+              "ofType": null
+            }
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "insertPlays",
+          "description": null,
+          "args": [
+            {
+              "name": "input",
+              "description": null,
+              "defaultValue": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "Profiles_UserPlaybookPlaysInsertInput",
+                  "ofType": null
+                }
+              }
+            }
+          ],
+          "type": {
+            "kind": "LIST",
+            "name": null,
+            "ofType": {
+              "kind": "OBJECT",
+              "name": "Profiles_UserPlaybookPlay",
+              "ofType": null
+            }
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "updateSettings",
+          "description": null,
+          "args": [
+            {
+              "name": "input",
+              "description": null,
+              "defaultValue": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "Profiles_UpdateUserProfileSettingsInput",
+                  "ofType": null
+                }
+              }
+            }
+          ],
+          "type": {
+            "kind": "OBJECT",
+            "name": "Profiles_UserProfileSettings",
+            "ofType": null
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "removeProfile",
+          "description": null,
+          "args": [
+            {
+              "name": "id",
+              "description": null,
+              "defaultValue": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
+              }
+            }
+          ],
+          "type": {
+            "kind": "SCALAR",
+            "name": "Boolean",
+            "ofType": null
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "setMatchup",
+          "description": null,
+          "args": [
+            {
+              "name": "input",
+              "description": null,
+              "defaultValue": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "Profiles_SetMatchupInput",
+                  "ofType": null
+                }
+              }
+            }
+          ],
+          "type": {
+            "kind": "OBJECT",
+            "name": "Profiles_Profile",
+            "ofType": null
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "createGamePlan",
+          "description": null,
+          "args": [
+            {
+              "name": "input",
+              "description": null,
+              "defaultValue": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "Profiles_CreateGamePlanInput",
+                  "ofType": null
+                }
+              }
+            }
+          ],
+          "type": {
+            "kind": "OBJECT",
+            "name": "Profiles_GamePlan",
+            "ofType": null
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "deleteGamePlan",
+          "description": null,
+          "args": [
+            {
+              "name": "index",
+              "description": null,
+              "defaultValue": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              }
+            }
+          ],
+          "type": {
+            "kind": "SCALAR",
+            "name": "Boolean",
+            "ofType": null
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "updateGamePlanSubject",
+          "description": null,
+          "args": [
+            {
+              "name": "input",
+              "description": null,
+              "defaultValue": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "Profiles_UpdateGamePlanSubjectInput",
+                  "ofType": null
+                }
+              }
+            }
+          ],
+          "type": {
+            "kind": "UNION",
+            "name": "Profiles_GamePlanSubject",
+            "ofType": null
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "importProfile",
+          "description": null,
+          "args": [
+            {
+              "name": "input",
+              "description": null,
+              "defaultValue": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "Profiles_ImportInput",
+                  "ofType": null
+                }
+              }
+            }
+          ],
+          "type": {
+            "kind": "NON_NULL",
+            "name": null,
+            "ofType": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            }
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "updateTestConfiguration",
+          "description": null,
+          "args": [
+            {
+              "name": "configuration",
+              "description": null,
+              "defaultValue": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              }
+            }
+          ],
+          "type": {
+            "kind": "NON_NULL",
+            "name": null,
+            "ofType": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            }
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "triggerEndToEndTests",
+          "description": null,
+          "args": [
+            {
+              "name": "league",
+              "description": null,
+              "defaultValue": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "ENUM",
+                  "name": "League",
+                  "ofType": null
+                }
+              }
+            }
+          ],
+          "type": {
+            "kind": "NON_NULL",
+            "name": null,
+            "ofType": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            }
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "updateExpectedTestResults",
+          "description": null,
+          "args": [
+            {
+              "name": "league",
+              "description": null,
+              "defaultValue": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "ENUM",
+                  "name": "League",
+                  "ofType": null
+                }
+              }
+            }
+          ],
+          "type": {
+            "kind": "NON_NULL",
+            "name": null,
+            "ofType": {
+              "kind": "OBJECT",
+              "name": "UpdateExpectedTestResultsResponse",
+              "ofType": null
+            }
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "createUser",
+          "description": null,
+          "args": [
+            {
+              "name": "input",
+              "description": null,
+              "defaultValue": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "Users_CreateUserInput",
+                  "ofType": null
+                }
+              }
+            }
+          ],
+          "type": {
+            "kind": "OBJECT",
+            "name": "Users_User",
+            "ofType": null
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "updateUser",
+          "description": null,
+          "args": [
+            {
+              "name": "input",
+              "description": null,
+              "defaultValue": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "Users_UpdateUserInput",
+                  "ofType": null
+                }
+              }
+            }
+          ],
+          "type": {
+            "kind": "OBJECT",
+            "name": "Users_User",
+            "ofType": null
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "upsertUserByCognitoId",
+          "description": null,
+          "args": [
+            {
+              "name": "input",
+              "description": null,
+              "defaultValue": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "Users_UpsertUserByCognitoIdInput",
+                  "ofType": null
+                }
+              }
+            }
+          ],
+          "type": {
+            "kind": "OBJECT",
+            "name": "Users_User",
+            "ofType": null
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "removeUser",
+          "description": null,
+          "args": [
+            {
+              "name": "id",
+              "description": null,
+              "defaultValue": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              }
+            }
+          ],
+          "type": {
+            "kind": "SCALAR",
+            "name": "Boolean",
+            "ofType": null
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "removeUsersByEmail",
+          "description": null,
+          "args": [
+            {
+              "name": "emails",
+              "description": null,
+              "defaultValue": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  }
+                }
+              }
+            }
+          ],
+          "type": {
+            "kind": "NON_NULL",
+            "name": null,
+            "ofType": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            }
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "createCognitoUser",
+          "description": null,
+          "args": [
+            {
+              "name": "input",
+              "description": null,
+              "defaultValue": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "Users_CreateCognitoUserInput",
+                  "ofType": null
+                }
+              }
+            }
+          ],
+          "type": {
+            "kind": "OBJECT",
+            "name": "Users_CognitoUser",
+            "ofType": null
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "updateCognitoUser",
+          "description": null,
+          "args": [
+            {
+              "name": "input",
+              "description": null,
+              "defaultValue": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "Users_UpdateCognitoUserInput",
+                  "ofType": null
+                }
+              }
+            }
+          ],
+          "type": {
+            "kind": "OBJECT",
+            "name": "Users_CognitoUser",
+            "ofType": null
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "resetCognitoUserPassword",
+          "description": null,
+          "args": [
+            {
+              "name": "email",
+              "description": null,
+              "defaultValue": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              }
+            }
+          ],
+          "type": {
+            "kind": "SCALAR",
+            "name": "String",
+            "ofType": null
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "provisionStream",
+          "description": null,
+          "args": [
+            {
+              "name": "input",
+              "description": null,
+              "defaultValue": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "Streams_ProvisionStreamInput",
+                  "ofType": null
+                }
+              }
+            }
+          ],
+          "type": {
+            "kind": "SCALAR",
+            "name": "String",
+            "ofType": null
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "startStream",
+          "description": null,
+          "args": [
+            {
+              "name": "input",
+              "description": null,
+              "defaultValue": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "Streams_StartStreamInput",
+                  "ofType": null
+                }
+              }
+            }
+          ],
+          "type": {
+            "kind": "OBJECT",
+            "name": "Streams_Stream",
+            "ofType": null
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "stopStream",
+          "description": null,
+          "args": [
+            {
+              "name": "input",
+              "description": null,
+              "defaultValue": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "Streams_StopStreamInput",
+                  "ofType": null
+                }
+              }
+            }
+          ],
+          "type": {
+            "kind": "OBJECT",
+            "name": "Streams_Stream",
+            "ofType": null
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "deprovisionStream",
+          "description": null,
+          "args": [
+            {
+              "name": "input",
+              "description": null,
+              "defaultValue": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "Streams_DeprovisionStreamInput",
+                  "ofType": null
+                }
+              }
+            }
+          ],
+          "type": {
+            "kind": "SCALAR",
+            "name": "String",
+            "ofType": null
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "createClip",
+          "description": null,
+          "args": [
+            {
+              "name": "input",
+              "description": null,
+              "defaultValue": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "Clips_CreateClipInput",
+                  "ofType": null
+                }
+              }
+            }
+          ],
+          "type": {
+            "kind": "OBJECT",
+            "name": "Clips_Clip",
+            "ofType": null
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "updateClip",
+          "description": null,
+          "args": [
+            {
+              "name": "input",
+              "description": null,
+              "defaultValue": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "Clips_UpdateClipInput",
+                  "ofType": null
+                }
+              }
+            }
+          ],
+          "type": {
+            "kind": "OBJECT",
+            "name": "Clips_Clip",
+            "ofType": null
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "deleteClip",
+          "description": null,
+          "args": [
+            {
+              "name": "id",
+              "description": null,
+              "defaultValue": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
+              }
+            }
+          ],
+          "type": {
+            "kind": "NON_NULL",
+            "name": null,
+            "ofType": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            }
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "createTemplate",
+          "description": null,
+          "args": [
+            {
+              "name": "input",
+              "description": null,
+              "defaultValue": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "Templates_CreateTemplateInput",
+                  "ofType": null
+                }
+              }
+            }
+          ],
+          "type": {
+            "kind": "OBJECT",
+            "name": "Templates_Template",
+            "ofType": null
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "deleteTemplate",
+          "description": null,
+          "args": [
+            {
+              "name": "input",
+              "description": null,
+              "defaultValue": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "Templates_DeleteTemplateInput",
+                  "ofType": null
+                }
+              }
+            }
+          ],
+          "type": {
+            "kind": "OBJECT",
+            "name": "Templates_Template",
+            "ofType": null
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        },
+        {
+          "name": "createGraphic",
+          "description": null,
+          "args": [
+            {
+              "name": "input",
+              "description": null,
+              "defaultValue": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "Graphics_CreateGraphicInput",
+                  "ofType": null
+                }
+              }
+            }
+          ],
+          "type": {
+            "kind": "OBJECT",
+            "name": "Graphics_Graphic",
+            "ofType": null
+          },
+          "isDeprecated": false,
+          "deprecationReason": null
+        }
+      ],
+      "inputFields": null,
+      "enumValues": null,
+      "possibleTypes": null
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "query": "query TypeDump($name:String!){\n  __type(name:$name){\n    name\n    kind\n    description\n    fields(includeDeprecated:true){\n      name\n      description\n      args{\n        name\n        description\n        defaultValue\n        type{ kind name ofType{ kind name ofType{ kind name ofType{ kind name ofType{ kind name }}}}}\n      }\n      type{ kind name ofType{ kind name ofType{ kind name ofType{ kind name ofType{ kind name }}}}}\n      isDeprecated\n      deprecationReason\n    }\n    inputFields{\n      name\n      description\n      defaultValue\n      type{ kind name ofType{ kind name ofType{ kind name ofType{ kind name ofType{ kind name }}}}}\n    }\n    enumValues(includeDeprecated:true){\n      name\n      description\n      isDeprecated\n      deprecationReason\n    }\n    possibleTypes{ name kind }\n  }\n}",
+  "variables": {
+    "name": "DialectEngine_OnAirTimeMeasureFormat"
+  }
+}

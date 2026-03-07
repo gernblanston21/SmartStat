@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://smartstat.local/tools/onair_dump/index/semantic_index.schema.json",
+  "title": "SmartStat OnAir Normalized Semantic Index",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "generated_utc",
+    "source_roots",
+    "leagues",
+    "entities",
+    "measures",
+    "qualifiers",
+    "filters",
+    "profiles",
+    "raw_sources"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "description": "Semantic index schema version."
+    },
+    "generated_utc": {
+      "type": "string",
+      "description": "Deterministic generation marker for this scaffold."
+    },
+    "source_roots": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Source roots discovered under .tools/onair_dump."
+    },
+    "leagues": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Known leagues discovered from source paths."
+    },
+    "entities": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "description": "Placeholder for normalized entities."
+    },
+    "measures": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "description": "Placeholder for normalized measures."
+    },
+    "qualifiers": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "description": "Placeholder for normalized qualifiers."
+    },
+    "filters": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "description": "Placeholder for normalized filters."
+    },
+    "profiles": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "description": "Placeholder for normalized profiles."
+    },
+    "raw_sources": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "total_files",
+        "roots"
+      ],
+      "properties": {
+        "total_files": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "roots": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "exists",
+              "file_count",
+              "files"
+            ],
+            "properties": {
+              "exists": {
+                "type": "boolean"
+              },
+              "file_count": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "files": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

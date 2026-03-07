@@ -1,0 +1,76 @@
+{
+  "data": {
+    "profiles": [
+      {
+        "displayName": "MLB_Network_26",
+        "league": "mlb",
+        "season": 2025,
+        "shareId": "e42ec471-539d-47b3-be8c-49935b2b1c74",
+        "userId": "64f7a0f0b5ec7156d2250f8c"
+      },
+      {
+        "displayName": "NHL-Calendar",
+        "league": "nhl",
+        "season": 2025,
+        "shareId": "8941b90a-30ea-4eaa-b07d-b29976cc99e1",
+        "userId": "64f7a0f0b5ec7156d2250f8c"
+      },
+      {
+        "displayName": "MLB 25 Updates",
+        "league": "mlb",
+        "season": 2025,
+        "shareId": "34ba59d5-aeb1-4a72-b6b6-1a94c4bd9671",
+        "userId": "64f7a0f0b5ec7156d2250f8c"
+      },
+      {
+        "displayName": "MSSG MLB 25",
+        "league": "mlb",
+        "season": 2025,
+        "shareId": "2546c434-f190-4968-8c40-6fb59875ac52",
+        "userId": "64f7a0f0b5ec7156d2250f8c"
+      },
+      {
+        "displayName": "NBA-Calendar",
+        "league": "nba",
+        "season": 2025,
+        "shareId": "6cdc07d3-9102-47d6-936d-354badaa8063",
+        "userId": "64f7a0f0b5ec7156d2250f8c"
+      },
+      {
+        "displayName": "MLB Playbook 2025 JR",
+        "league": "mlb",
+        "season": 2024,
+        "shareId": "878be732-d916-4234-89dd-0c7fa1db3dc8",
+        "userId": "64f7a0f0b5ec7156d2250f8c"
+      },
+      {
+        "displayName": "MSSG MLB 25 - 4_25_25",
+        "league": "mlb",
+        "season": 2025,
+        "shareId": "77eaa4f6-61bd-4c40-b5aa-a48c8ed19f89",
+        "userId": "64f7a0f0b5ec7156d2250f8c"
+      },
+      {
+        "displayName": "DSG NBA 2025-26 Playbook",
+        "league": "nba",
+        "season": 2024,
+        "shareId": "86591a47-0fcc-47c1-b1f3-4abf88e8bf73",
+        "userId": "64f7a0f0b5ec7156d2250f8c"
+      },
+      {
+        "displayName": "DSG NHL 24-25",
+        "league": "nhl",
+        "season": 2025,
+        "shareId": "5162f3e5-74d2-4699-ac61-16cea60c2ea7",
+        "userId": "64f7a0f0b5ec7156d2250f8c"
+      },
+      {
+        "displayName": "Tigers MLB",
+        "league": "mlb",
+        "season": 2025,
+        "shareId": "97dd527f-6afd-46c5-8d41-52d389c8f8c4",
+        "userId": "64f7a0f0b5ec7156d2250f8c"
+      }
+    ]
+  }
+}

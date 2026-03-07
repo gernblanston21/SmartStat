@@ -1,0 +1,30 @@
+{
+  "leaguesProcessed": [
+    "mlb",
+    "nba",
+    "nhl"
+  ],
+  "summary": {
+    "mlb": {
+      "measureCount": 773,
+      "playerTimeCount": 10,
+      "playerSplitCount": 7,
+      "teamTimeCount": 7,
+      "teamSplitCount": 7
+    },
+    "nba": {
+      "measureCount": 384,
+      "playerTimeCount": 9,
+      "playerSplitCount": 5,
+      "teamTimeCount": 6,
+      "teamSplitCount": 5
+    },
+    "nhl": {
+      "measureCount": 303,
+      "playerTimeCount": 9,
+      "playerSplitCount": 5,
+      "teamTimeCount": 6,
+      "teamSplitCount": 5
+    }
+  }
+}

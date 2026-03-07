@@ -1,0 +1,114 @@
+{
+  "data": {
+    "availableGamePlanFilters": {
+      "playerTimes": [
+        {
+          "id": "0",
+          "dsl": "season"
+        },
+        {
+          "id": "1",
+          "dsl": "season(prev1)"
+        },
+        {
+          "id": "2",
+          "dsl": "postseason"
+        },
+        {
+          "id": "3",
+          "dsl": "postseason(prev1)"
+        },
+        {
+          "id": "4",
+          "dsl": "month"
+        },
+        {
+          "id": "5",
+          "dsl": "month(prev1)"
+        },
+        {
+          "id": "7",
+          "dsl": "career"
+        },
+        {
+          "id": "8",
+          "dsl": "career(post)"
+        },
+        {
+          "id": "9",
+          "dsl": "last_game(1)"
+        }
+      ],
+      "playerSplits": [
+        {
+          "id": "0",
+          "dsl": "total"
+        },
+        {
+          "id": "1",
+          "dsl": "location(home)"
+        },
+        {
+          "id": "2",
+          "dsl": "location(away)"
+        },
+        {
+          "id": "5",
+          "dsl": "conference"
+        },
+        {
+          "id": "6",
+          "dsl": "conference(opp)"
+        }
+      ],
+      "teamTimes": [
+        {
+          "id": "0",
+          "dsl": "season"
+        },
+        {
+          "id": "1",
+          "dsl": "season(prev1)"
+        },
+        {
+          "id": "2",
+          "dsl": "postseason"
+        },
+        {
+          "id": "3",
+          "dsl": "postseason(prev1)"
+        },
+        {
+          "id": "4",
+          "dsl": "month"
+        },
+        {
+          "id": "5",
+          "dsl": "month(prev1)"
+        }
+      ],
+      "teamSplits": [
+        {
+          "id": "0",
+          "dsl": "total"
+        },
+        {
+          "id": "1",
+          "dsl": "location(home)"
+        },
+        {
+          "id": "2",
+          "dsl": "location(away)"
+        },
+        {
+          "id": "5",
+          "dsl": "conference"
+        },
+        {
+          "id": "6",
+          "dsl": "conference(opp)"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "endpoint": "https://prod-api.srbroadcast.com/on-air-graph-gateway/graphqltoken",
+  "leagues": [
+    "mlb",
+    "nhl",
+    "nba"
+  ],
+  "nodesProcessed": 6,
+  "maxNodes": 20000,
+  "maxDepth": 10,
+  "qps": 3.0,
+  "evidence": "E:\\EDRIVE\\UNIVERSAL\\SmartStat\\onair_dump\\grammar\\_evidence.ndjson",
+  "note": "Tree expansion depends on checkPageSyntax returning completion-like data."
+}

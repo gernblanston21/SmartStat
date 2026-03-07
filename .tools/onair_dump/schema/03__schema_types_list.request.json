@@ -1,0 +1,3 @@
+{
+  "query": "query {\n  __schema {\n    types { name kind }\n  }\n}"
+}

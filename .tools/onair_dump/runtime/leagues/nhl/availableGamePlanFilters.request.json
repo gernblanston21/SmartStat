@@ -1,0 +1,6 @@
+{
+  "query": "query($league:String!){\n  availableGamePlanFilters(league:$league){\n    playerTimes { id dsl }\n    playerSplits { id dsl }\n    teamTimes { id dsl }\n    teamSplits { id dsl }\n  }\n}",
+  "variables": {
+    "league": "nhl"
+  }
+}

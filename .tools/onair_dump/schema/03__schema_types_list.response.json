@@ -1,0 +1,1304 @@
+{
+  "data": {
+    "__schema": {
+      "types": [
+        {
+          "name": "AttackDirection",
+          "kind": "ENUM"
+        },
+        {
+          "name": "CameraAngle",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "String",
+          "kind": "SCALAR"
+        },
+        {
+          "name": "CfbPollRanking",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Int",
+          "kind": "SCALAR"
+        },
+        {
+          "name": "Clips_Clip",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "ID",
+          "kind": "SCALAR"
+        },
+        {
+          "name": "Clips_CreateClipInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Clips_DisplayedStatistics",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Boolean",
+          "kind": "SCALAR"
+        },
+        {
+          "name": "Clips_DisplayedStatisticsInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Clips_Event",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Clips_EventInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Clips_EventLocation",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Float",
+          "kind": "SCALAR"
+        },
+        {
+          "name": "CLips_EventLocationInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Clips_Matchup",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Clips_MatchupGame",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Clips_MatchupGameInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Clips_MatchupGameTeam",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Clips_MatchupGameTeamInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Clips_MatchupGameTimezone",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Clips_MatchupGameTimezoneInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Clips_MatchupGameVenue",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Clips_MatchupGameVenueInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Clips_MatchupInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Clips_Season",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Clips_SeasonInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Clips_SeasonType",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Clips_SeasonTypeInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Clips_Setting",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Clips_SettingInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Clips_ShotStats",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Clips_ShotStatsInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Clips_Subject",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Clips_SubjectInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Clips_TimeFrame",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Clips_TimeFrameInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Clips_UpdateClipInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Clips_VisualizationState",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Clips_VisualizationStateInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Config_DeleteOnAirFeatureFlagInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Config_DeleteOnAirFeatureFlagResponse",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Config_FeatureFlag",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Config_FeatureFlagScope",
+          "kind": "ENUM"
+        },
+        {
+          "name": "Config_FeatureFlagType",
+          "kind": "ENUM"
+        },
+        {
+          "name": "Config_OnAirFeatureFlagMutationInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Config_OnAirFeatureFlagQueryInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Config_OnAirFeatureFlagsInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Config_PurgeOnAirFeatureFlagInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Config_PurgeOnAirFeatureFlagResponse",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "DialectEngine_Broadcast",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "DialectEngine_Category",
+          "kind": "ENUM"
+        },
+        {
+          "name": "DialectEngine_CheckPlaybookSyntaxPlayInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "DialectEngine_CheckPlaybookSyntaxRequest",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "DialectEngine_Coach",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "DialectEngine_ConferenceQEKey",
+          "kind": "ENUM"
+        },
+        {
+          "name": "DialectEngine_DialectTabInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "DialectEngine_Draft",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "DialectEngine_GameplanCategory",
+          "kind": "ENUM"
+        },
+        {
+          "name": "DialectEngine_GameplanInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "DialectEngine_Injury",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "DialectEngine_League",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "DialectEngine_MatchupInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "DialectEngine_Measure",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "DialectEngine_MlbPlayer",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "DialectEngine_NbaPlayer",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "DialectEngine_NhlPlayer",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "DialectEngine_OnAirMeasureFormat",
+          "kind": "UNION"
+        },
+        {
+          "name": "DialectEngine_OnAirNumberMeasureFormat",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "DialectEngine_OnAirTimeMeasureFormat",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "DialectEngine_PlaybookSyntaxErrorMeta",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "DialectEngine_PlayContextInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "DialectEngine_Player",
+          "kind": "INTERFACE"
+        },
+        {
+          "name": "DialectEngine_PlayInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "DialectEngine_PlayTargetInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "DialectEngine_ResolvedGameplan",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "DialectEngine_ResolvedPlay",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "DialectEngine_ResolvedTab",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "DialectEngine_ResolvedTemplates",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "DialectEngine_SyntaxErrorMeta",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "DialectEngine_TargetTeam",
+          "kind": "ENUM"
+        },
+        {
+          "name": "DialectEngine_TimeZones",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "DialectEngine_TranslateGameplanInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "DialectEngine_TranslatePageInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "DialectEngine_TranslatePlayInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "DialectEngine_Venue",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Events_CurateIdentifier",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Events_Event",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Events_Location",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Events_Params",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "FileGenerator_CancelBuildAndPendingJobsResponse",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "FileGenerator_File",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "FileGenerator_FileType",
+          "kind": "ENUM"
+        },
+        {
+          "name": "FileGenerator_Job",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "FileGenerator_StartFileGenerationResponse",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "GameSummaryOnAirTeams",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "GameSummaryRosterPlayer",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Graphics_CameraAngle",
+          "kind": "ENUM"
+        },
+        {
+          "name": "Graphics_CreateGraphicInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Graphics_CurateIdentifier",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Graphics_DisplayedPlayer",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Graphics_EventMeta",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Graphics_Graphic",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Graphics_LabelValuePair",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Graphics_PoseDataRange",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Jobs_Job",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Jobs_JobLogEntries",
+          "kind": "ENUM"
+        },
+        {
+          "name": "JSON",
+          "kind": "SCALAR"
+        },
+        {
+          "name": "JSONObject",
+          "kind": "SCALAR"
+        },
+        {
+          "name": "League",
+          "kind": "ENUM"
+        },
+        {
+          "name": "Mutation",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "NBASeasonType",
+          "kind": "ENUM"
+        },
+        {
+          "name": "OnAirBaseTeam",
+          "kind": "INTERFACE"
+        },
+        {
+          "name": "OnAirBroadcast",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "OnAirCoach",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "OnAirGame",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "OnAirGameTeam",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "OnAirLeague",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "OnAirLeagueConference",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "OnAirLeagueDivision",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "OnAirLeagueDivisionTeam",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "OnAirPlayer",
+          "kind": "INTERFACE"
+        },
+        {
+          "name": "OnAirPlayerCfb",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "OnAirPlayerDraft",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "OnAirPlayerInjury",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "OnAirPlayerMcbk",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "OnAirPlayerMlb",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "OnAirPlayerNba",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "OnAirPlayerNfl",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "OnAirPlayerNhl",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "OnAirSchedule",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "OnAirScheduledGame",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "OnAirScheduleLeague",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "OnAirSeason",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "OnAirSeasonType",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "OnAirTeam",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "OnAirTeamCfb",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "OnAirTeamConference",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "OnAirTeamDivision",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "OnAirTeamMcbk",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "OnAirTeamsResponse",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "OnAirTimeZones",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "OnAirVenue",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_AprilAbbreviations",
+          "kind": "ENUM"
+        },
+        {
+          "name": "Profiles_AttributeTieDisplayStrategy",
+          "kind": "ENUM"
+        },
+        {
+          "name": "Profiles_AugustAbbreviations",
+          "kind": "ENUM"
+        },
+        {
+          "name": "Profiles_AutobuildScheduledProfiles",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_AutobuildScheduledSettings",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_AutobuildScheduleTime",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_AutobuildScheduleTimeInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_AutobuildSettings",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_AvailableGamePlanFilters",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_BaseGamePlanSubject",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_BaseGamePlanTab",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_CreateGamePlanInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_CreateProfileInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_DateAbbreviations",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_DateAbbreviationsInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_DateEndianness",
+          "kind": "ENUM"
+        },
+        {
+          "name": "Profiles_DateFormats",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_DateFormatsInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_DateStyle",
+          "kind": "ENUM"
+        },
+        {
+          "name": "Profiles_DayAbbreviations",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_DayAbbreviationsInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_DecemberAbbreviations",
+          "kind": "ENUM"
+        },
+        {
+          "name": "Profiles_DigitGroupSeparator",
+          "kind": "ENUM"
+        },
+        {
+          "name": "Profiles_ExportedGamePlan",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_ExportedProfile",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_FebruaryAbbreviations",
+          "kind": "ENUM"
+        },
+        {
+          "name": "Profiles_FileLink",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_FilenameFormat",
+          "kind": "ENUM"
+        },
+        {
+          "name": "Profiles_FilePath_TextFormat",
+          "kind": "ENUM"
+        },
+        {
+          "name": "Profiles_FoxGamePlanSubject",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_FoxGamePlanTab",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_FoxRenderType",
+          "kind": "ENUM"
+        },
+        {
+          "name": "Profiles_FridayAbbreviations",
+          "kind": "ENUM"
+        },
+        {
+          "name": "Profiles_GamePlan",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_GameplanAutobuildInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_GameplanAutobuildSettings",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_GamePlanFilter",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_GamePlanFilterInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_GamePlanFilters",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_GamePlanFiltersInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_GamePlanFilterType",
+          "kind": "ENUM"
+        },
+        {
+          "name": "Profiles_GamePlanSplit",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_GamePlanSubject",
+          "kind": "UNION"
+        },
+        {
+          "name": "Profiles_GamePlanSubjectInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_GamePlanSubjectType",
+          "kind": "ENUM"
+        },
+        {
+          "name": "Profiles_GamePlanTab",
+          "kind": "UNION"
+        },
+        {
+          "name": "Profiles_GamePlanTabInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_GamePlanTime",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_GamePlanType",
+          "kind": "ENUM"
+        },
+        {
+          "name": "Profiles_ImportFlagsInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_ImportInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_ImportMatchupInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_InningsFormats",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_InningsFormatsInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_JanuaryAbbreviations",
+          "kind": "ENUM"
+        },
+        {
+          "name": "Profiles_JSONOutputType",
+          "kind": "ENUM"
+        },
+        {
+          "name": "Profiles_JulyAbbreviations",
+          "kind": "ENUM"
+        },
+        {
+          "name": "Profiles_JuneAbbreviations",
+          "kind": "ENUM"
+        },
+        {
+          "name": "Profiles_LeaderboardAttributeSetting",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_LeaderboardAttributeSettingInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_LeaderboardDefaults",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_LeaderboardDefaultsInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_LongDateFormatOptions",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_LongDateFormatOptionsInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_MarchAbbreviations",
+          "kind": "ENUM"
+        },
+        {
+          "name": "Profiles_Matchup",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_MatchupGame",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_MatchupGameInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_MatchupTeam",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_MatchupTeamInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_MatchupTimeZones",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_MatchupTimeZonesInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_MatchupVenue",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_MatchupVenueInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_MayAbbreviations",
+          "kind": "ENUM"
+        },
+        {
+          "name": "Profiles_MondayAbbreviations",
+          "kind": "ENUM"
+        },
+        {
+          "name": "Profiles_MonthAbbreviations",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_MonthAbbreviationsInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_NovemberAbbreviations",
+          "kind": "ENUM"
+        },
+        {
+          "name": "Profiles_OctoberAbbreviations",
+          "kind": "ENUM"
+        },
+        {
+          "name": "Profiles_OnAirMeasure",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_OnAirMeasureFormat",
+          "kind": "UNION"
+        },
+        {
+          "name": "Profiles_OnAirMeasureInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_OnAirNumberMeasureFormat",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_OnAirNumberMeasureFormatInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_OnAirTimeMeasureFormat",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_OnAirTimeMeasureFormatInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_PlaybookAutobuildInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_PlaybookAutobuildSettings",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_Profile",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_ProfileTabInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_SaturdayAbbreviations",
+          "kind": "ENUM"
+        },
+        {
+          "name": "Profiles_SeptemberAbbreviations",
+          "kind": "ENUM"
+        },
+        {
+          "name": "Profiles_SetMatchupInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_ShortDateFormatOptions",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_ShortDateFormatOptionsInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_SportSpecificSettings",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_SportSpecificSettingsInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_SundayAbbreviations",
+          "kind": "ENUM"
+        },
+        {
+          "name": "Profiles_Tab",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_TextFormat",
+          "kind": "ENUM"
+        },
+        {
+          "name": "Profiles_TextFormatting",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_TextFormattingInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_ThursdayAbbreviations",
+          "kind": "ENUM"
+        },
+        {
+          "name": "Profiles_TieFormat",
+          "kind": "ENUM"
+        },
+        {
+          "name": "Profiles_TuesdayAbbreviations",
+          "kind": "ENUM"
+        },
+        {
+          "name": "Profiles_UpdateGamePlanSubjectInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_UpdateUserProfileInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_UpdateUserProfileSettingsInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_UserDefaultFieldFormat",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_UserDefaultFieldFormatInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_UserDescriptor",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_UserDescriptorInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_UserDescriptors",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_UserDescriptorsInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_UserDictionary",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_UserDictionaryInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_UserFormatter",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_UserFormatterInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_UserOverride",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_UserOverrideInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_UserPageNumberCustomRange",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_UserPageNumberCustomRangeInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_UserPageNumberRange",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_UserPageNumberRangeInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_UserPlaybook",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_UserPlaybookDeleteTabInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_UserPlaybookGroupingUpdateInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_UserPlaybookPlay",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_UserPlaybookPlayDeleteInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_UserPlaybookPlayInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_UserPlaybookPlaysDeleteInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_UserPlaybookPlaysInsertInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_UserPlaybookPlayUpdateInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_UserPreferredTeam",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_UserPreferredTeamInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_UserProfileSettings",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_UserProfileSettingsInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_UserShortcut",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_UserShortcutInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_UserVariable",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_UserVariableInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_VersusLiterals",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Profiles_VersusLiteralsInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Profiles_WednesdayAbbreviations",
+          "kind": "ENUM"
+        },
+        {
+          "name": "Query",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "SportradarKeys",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "SportradarKeysResponse",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Streams_DeprovisionStreamInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Streams_ProvisionStreamInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Streams_StartStreamInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Streams_StopStreamInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Streams_Stream",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Templates_CreateTemplateInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Templates_DeleteTemplateInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Templates_Template",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "TodaysPlayingTeamsResponse",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "UpdateExpectedTestResultsResponse",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Users_CognitoUser",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Users_CognitoUsersResponse",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Users_CreateCognitoUserInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Users_CreateUserInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Users_Network",
+          "kind": "ENUM"
+        },
+        {
+          "name": "Users_Role",
+          "kind": "ENUM"
+        },
+        {
+          "name": "Users_TokenPayload",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Users_UpdateCognitoUserInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Users_UpdateUserInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Users_UpsertUserByCognitoIdInput",
+          "kind": "INPUT_OBJECT"
+        },
+        {
+          "name": "Users_User",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Users_ValidationResult",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Users_ValidationStatus",
+          "kind": "ENUM"
+        },
+        {
+          "name": "VizGames_Game",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "__Schema",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "__Type",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "__TypeKind",
+          "kind": "ENUM"
+        },
+        {
+          "name": "__Field",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "__InputValue",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "__EnumValue",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "__Directive",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "__DirectiveLocation",
+          "kind": "ENUM"
+        }
+      ]
+    }
+  }
+}

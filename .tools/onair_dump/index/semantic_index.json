@@ -1,0 +1,110 @@
+{
+  "entities": [],
+  "filters": [],
+  "generated_utc": "1970-01-01T00:00:00Z",
+  "leagues": [
+    "mlb",
+    "nba",
+    "nhl"
+  ],
+  "measures": [],
+  "profiles": [],
+  "qualifiers": [],
+  "raw_sources": {
+    "roots": {
+      "grammar": {
+        "exists": true,
+        "file_count": 5,
+        "files": [
+          "grammar/_evidence.ndjson",
+          "grammar/_meta.json",
+          "grammar/mlb/grammar_tree.json",
+          "grammar/nba/grammar_tree.json",
+          "grammar/nhl/grammar_tree.json"
+        ]
+      },
+      "grammar_snapshot": {
+        "exists": true,
+        "file_count": 4,
+        "files": [
+          "grammar_snapshot/_meta/index.json",
+          "grammar_snapshot/mlb/grammar_snapshot.json",
+          "grammar_snapshot/nba/grammar_snapshot.json",
+          "grammar_snapshot/nhl/grammar_snapshot.json"
+        ]
+      },
+      "lookup_index": {
+        "exists": true,
+        "file_count": 4,
+        "files": [
+          "lookup_index/_meta/index.json",
+          "lookup_index/mlb/lookup_index.json",
+          "lookup_index/nba/lookup_index.json",
+          "lookup_index/nhl/lookup_index.json"
+        ]
+      },
+      "runtime": {
+        "exists": true,
+        "file_count": 15,
+        "files": [
+          "runtime/leagues/mlb/availableGamePlanFilters.request.json",
+          "runtime/leagues/mlb/availableGamePlanFilters.response.json",
+          "runtime/leagues/mlb/fetchBaseMeasures.request.json",
+          "runtime/leagues/mlb/fetchBaseMeasures.response.json",
+          "runtime/leagues/nba/availableGamePlanFilters.request.json",
+          "runtime/leagues/nba/availableGamePlanFilters.response.json",
+          "runtime/leagues/nba/fetchBaseMeasures.request.json",
+          "runtime/leagues/nba/fetchBaseMeasures.response.json",
+          "runtime/leagues/nhl/availableGamePlanFilters.request.json",
+          "runtime/leagues/nhl/availableGamePlanFilters.response.json",
+          "runtime/leagues/nhl/fetchBaseMeasures.request.json",
+          "runtime/leagues/nhl/fetchBaseMeasures.response.json",
+          "runtime/profiles/leagues_detected.json",
+          "runtime/profiles/profiles.request.json",
+          "runtime/profiles/profiles.response.json"
+        ]
+      },
+      "schema": {
+        "exists": true,
+        "file_count": 26,
+        "files": [
+          "schema/01__type_Query.request.json",
+          "schema/01__type_Query.response.json",
+          "schema/02__type_Mutation.request.json",
+          "schema/02__type_Mutation.response.json",
+          "schema/03__schema_types_list.request.json",
+          "schema/03__schema_types_list.response.json",
+          "schema/03__type_DialectEngine_Measure.request.json",
+          "schema/03__type_DialectEngine_Measure.response.json",
+          "schema/04__type_DialectEngine_OnAirMeasureFormat.request.json",
+          "schema/04__type_DialectEngine_OnAirMeasureFormat.response.json",
+          "schema/05__type_DialectEngine_OnAirNumberMeasureFormat.request.json",
+          "schema/05__type_DialectEngine_OnAirNumberMeasureFormat.response.json",
+          "schema/06__type_DialectEngine_OnAirTimeMeasureFormat.request.json",
+          "schema/06__type_DialectEngine_OnAirTimeMeasureFormat.response.json",
+          "schema/07__type_Profiles_Profile.request.json",
+          "schema/07__type_Profiles_Profile.response.json",
+          "schema/08__type_Profiles_AvailableGamePlanFilters.request.json",
+          "schema/08__type_Profiles_AvailableGamePlanFilters.response.json",
+          "schema/types/DialectEngine_Measure.response.json",
+          "schema/types/DialectEngine_OnAirMeasureFormat.response.json",
+          "schema/types/DialectEngine_OnAirNumberMeasureFormat.response.json",
+          "schema/types/DialectEngine_OnAirTimeMeasureFormat.response.json",
+          "schema/types/Mutation.response.json",
+          "schema/types/Profiles_AvailableGamePlanFilters.response.json",
+          "schema/types/Profiles_Profile.response.json",
+          "schema/types/Query.response.json"
+        ]
+      }
+    },
+    "total_files": 54
+  },
+  "schema_version": "0.1.0",
+  "source_roots": [
+    "grammar",
+    "grammar_snapshot",
+    "lookup_index",
+    "runtime",
+    "schema"
+  ]
+}

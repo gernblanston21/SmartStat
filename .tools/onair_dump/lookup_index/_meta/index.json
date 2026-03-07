@@ -1,0 +1,36 @@
+{
+  "leaguesProcessed": [
+    "mlb",
+    "nba",
+    "nhl"
+  ],
+  "summary": {
+    "mlb": {
+      "measureByCatalogKeyCount": 773,
+      "measureByEngineKeyCount": 773,
+      "normalizedMeasureLookupCount": 1414,
+      "playerSplitsLookupCount": 7,
+      "playerTimesLookupCount": 10,
+      "teamSplitsLookupCount": 7,
+      "teamTimesLookupCount": 7
+    },
+    "nba": {
+      "measureByCatalogKeyCount": 384,
+      "measureByEngineKeyCount": 384,
+      "normalizedMeasureLookupCount": 384,
+      "playerSplitsLookupCount": 5,
+      "playerTimesLookupCount": 9,
+      "teamSplitsLookupCount": 5,
+      "teamTimesLookupCount": 6
+    },
+    "nhl": {
+      "measureByCatalogKeyCount": 303,
+      "measureByEngineKeyCount": 303,
+      "normalizedMeasureLookupCount": 303,
+      "playerSplitsLookupCount": 5,
+      "playerTimesLookupCount": 9,
+      "teamSplitsLookupCount": 5,
+      "teamTimesLookupCount": 6
+    }
+  }
+}

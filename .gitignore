@@ -1,7 +1,9 @@
 .vscode/*
 !.vscode/tasks.json
 !.vscode/settings.json
-.tools/
+.tools/*
+!.tools/onair_dump/
+!.tools/onair_dump/**
 DiagLogs/
 _EXPORT/
 Logs/
