@@ -4,9 +4,9 @@
 
 - Stable Baseline: v4.0.0_RC1 (FROZEN + TAGGED)
 - RC1 Merge Commit: c7ee0e8 (merged back into v4_Dev)
-- Active Development Branch: v4_Dev
+- Active Development Branch: feature/semantic-layer (architecture track), with v4_Dev as RC lineage baseline
 - Current Development Track: v4.1.0 (Post-RC)
-- Source of Truth: v4_Dev branch workspace
+- Source of Truth: feature/semantic-layer workspace for WP-15+ architecture sequencing
 - Viz Trio Reference: docs/viz-trio/ (Method A — repo grounded)
 
 RC1 is complete and must not be re-reviewed or modified.
@@ -125,15 +125,29 @@ v4.1.0 Work Packages:
 
 ## Next Architecture Track
 
-- WP-15 — Plan Engine: deterministic plan capture + harness evidence
-- WP-16 — Plan Engine validation
-- WP-17 — TrayApp preview on plan output (read-only)
-- WP-18 — Semantic Layer + Source View
-- Recommended implementation branches:
-- feature/plan-engine
-- feature/semantic-layer
+- WP-15 - Semantic Inspection Foundation
+- WP-16 - Resolution Explainability
+- WP-17 - Plan Capture
+- WP-18 - Plan Validation
+- WP-19 - Plan Viewer
+- WP-20 - Runtime Bridge (intentionally deferred until WP-15 through WP-19 are stable)
+- Strategic target: `Stat Query -> Deterministic Execution Plan`
+- Sequence rationale: Semantic Source View now exists, so semantic inspection/explainability leads the plan-engine track.
+- Active branch for this sequence: `feature/semantic-layer`
 
-- The semantic layer should be implemented only after the Plan Engine contract is established through WP-15 to WP-17.
+## Semantic Source View Closeout
+
+- Phase 5 CLOSED - React Semantic Source View read-only skeleton established (`3101c8d`).
+- Phase 6 CLOSED - deterministic search explainability/ranking/debug narratives delivered (`9ea9977`).
+- Phase 7 CLOSED - deterministic search contract extracted and locked with lightweight tests (`30d15b6`).
+- Local checkpoint tag present: `semantic-view-phase7` at `30d15b6` (to be pushed).
+
+## Phase 8 Start Block
+
+- Phase 8 is a read-only architecture scaffold for semantic resolution explainability.
+- Phase 8 is not runtime apply behavior, not planner execution, and not SmartStat runtime integration.
+- Phase 8 provides an explainability bridge from semantic search inspection to future deterministic plan capture.
+- Phase 8 implementation is bounded to semantic tooling surfaces (primarily `tools/semantic-source-view`).
 
 OnAir dump handling:
 - The current `onair_dump/` dataset is reserved for semantic-layer work.

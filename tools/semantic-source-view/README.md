@@ -30,6 +30,16 @@ Example expectations:
 - search `air_balls` prioritizes `measure:mlb:air_balls` over `measure:mlb:air_balls_percentage`
 - search `playerSplits` may produce no normalized-record match and still show source/debug hints
 
+## Phase 7 Additions
+
+- extracted deterministic search contract helpers into a reusable module
+- added lightweight deterministic ranking tests
+- locked normalized-vs-source-hint search behavior for future planner/explainability work
+
+Phase 7 checkpoint:
+- commit: `30d15b6`
+- tag: `semantic-view-phase7`
+
 ## Deferred
 
 - editing semantic records

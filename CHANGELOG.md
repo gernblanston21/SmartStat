@@ -3,6 +3,23 @@
 All notable changes to the SmartStat Core Engine are documented in this file.
 Runtime versioning follows script identifiers (`SmartStat_v*.vbs`), while `VERSION.txt` remains VIZOR UI display metadata.
 
+## [feature/semantic-layer] - 2026-03-07
+
+### Summary
+- Completed Semantic Source View Phase 5 through Phase 7 as read-only semantic tooling.
+- Established deterministic search explainability baseline and locked search-ranking behavior as a reusable contract with tests.
+- Kept scope tooling-only with no SmartStat runtime apply behavior changes.
+
+### Added
+- Phase 5: local React Semantic Source View for deterministic inspection of semantic index data (`3101c8d`).
+- Phase 6: deterministic search explainability, ranking, debug narratives, and source-hint empty-result guidance (`9ea9977`).
+- Phase 7: extracted deterministic search contract module + lightweight regression tests (`30d15b6`).
+- Semantic checkpoint tag: `semantic-view-phase7` at `30d15b6`.
+
+### Changed
+- Post-RC architecture sequencing is now semantic-inspection-first in planning docs (WP-15 through WP-20 ordering).
+- Runtime bridge sequencing remains intentionally deferred until semantic inspection/explainability/plan capture/plan validation are stable.
+
 ## [v4_Dev] - 2026-02-26
 
 ### Summary

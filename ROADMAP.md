@@ -233,62 +233,84 @@ WP-14 implementation package (RC-safe, docs/tests/tooling only):
 WP-14 CLOSED - TrayApp contract + validator harness implemented (docs/tests/tooling only).
 Evidence: tests/wp-14/contract-validators/artifacts/wp14_runB/ (RUN_PASS=True, REPO_GATE_FAILURES=0)
 
-## WP-15 (v4.2.0): Plan Engine — Phase 1 Plan Capture + Harness Evidence
+## WP-15 (v4.2.0): Semantic Inspection Foundation
 ### Scope
-- Add deterministic plan output as an additive observability artifact
-- Capture resolved execution state without changing SmartStat runtime decisions
-- Include plan output in strict regression pack comparisons
+- Establish semantic inspection as the first architecture baseline for post-RC planning work.
+- Lock the existing Semantic Source View capability as the canonical read-only inspection surface.
+- Preserve deterministic search/inspection contracts as reusable inputs for later explainability and planning work.
 
 ### Definition of Done
-- Plan schema documented
-- Plan output generated deterministically for strict cases
-- STRICT harness compare passes with plan included
-- No SmartStat runtime behavior changes introduced by plan capture
+- Semantic inspection baseline documented (records, relationships, query paths, traceability, deterministic search).
+- Deterministic inspection contracts are explicit and reusable.
+- Read-only inspection workflow is reproducible on `feature/semantic-layer`.
+- No SmartStat runtime behavior changes introduced.
 
-## WP-16 (v4.2.0): Plan Engine — Phase 2 Plan Validation
+## WP-16 (v4.2.0): Resolution Explainability
 ### Scope
-- Add validator tooling for SmartStat execution plans
-- Add good/bad fixtures for plan validation
-- Enforce deterministic, diffable plan structure
+- Add a read-only explainability scaffold that models deterministic semantic resolution reasoning.
+- Keep this as architecture/tooling only (no runtime apply behavior, no planner execution).
+- Bridge semantic search inspection outputs to future plan-capture contracts.
 
 ### Definition of Done
-- Plan validator implemented
-- Fixture suite passes expected good/bad cases
-- Harness runner reports RUN_PASS=True
-- No SmartStat runtime behavior changes introduced by validation tooling
+- Resolution explainability data model/schema defined for semantic tooling.
+- Deterministic explainability fixture/scaffold available for local inspection.
+- Explainability boundaries documented against search explainability and plan execution.
+- No SmartStat runtime behavior changes introduced.
 
-## WP-17 (v4.2.0): Plan Engine — Phase 3 TrayApp Preview (Read-Only)
+## WP-17 (v4.2.0): Plan Capture
 ### Scope
-- Allow TrayApp to read SmartStat plan output for preview only
-- Do not change apply behavior or runtime SmartStat execution
-- Use plan output as the inspection/preview layer for future integration
+- Add deterministic plan capture as an additive observability artifact.
+- Capture resolved execution state without changing SmartStat runtime decisions.
+- Include deterministic plan artifacts in strict comparison workflows.
 
 ### Definition of Done
-- TrayApp preview contract documented
-- Read-only preview path defined
-- No runtime apply behavior changes
-- Contract/version compatibility rules documented
+- Plan capture schema documented.
+- Deterministic plan capture generated for strict cases.
+- Strict compare path includes plan capture artifacts.
+- No SmartStat runtime behavior changes introduced by plan capture.
 
-## WP-18 (v4.2.0): Semantic Layer + Source View
+## WP-18 (v4.2.0): Plan Validation
 ### Scope
-- Introduce a semantic inspection layer derived from SmartStat plan output and OnAir schema/grammar discovery
-- Build developer tooling for source inspection and grammar exploration
-- Provide the foundation for a React SPA Source View
-- Recommended development branch: feature/semantic-layer
-
-Implementation note:
-- OnAir schema/grammar/runtime discovery dumps used for semantic-layer development belong under `.tools/onair_dump/`.
-- These dumps are tooling inputs for semantic indexing and source inspection, not general research notes.
-- The dataset should be moved into `.tools/onair_dump/` only on the dedicated semantic-layer branch.
+- Add deterministic validation tooling for captured execution plans.
+- Add good/bad fixtures for validator coverage.
+- Enforce stable, diffable plan contract structure.
 
 ### Definition of Done
-- Semantic model defined
-- Source inspection workflow documented
-- React SPA Source View architecture defined
-- Semantic-layer work isolated to a dedicated branch
+- Plan validator implemented.
+- Fixture suite passes expected good/bad cases.
+- Harness runner reports RUN_PASS=True for plan validation scope.
+- No SmartStat runtime behavior changes introduced by validation tooling.
+
+## WP-19 (v4.2.0): Plan Viewer
+### Scope
+- Extend read-only inspection UX to include deterministic plan-view semantics.
+- Provide explainable plan browsing/debugging without apply/runtime integration.
+- Keep viewer contracts versioned and compatible with semantic + validation outputs.
+
+### Definition of Done
+- Read-only plan viewer contract documented.
+- Deterministic plan browsing path implemented for local developer inspection.
+- Compatibility rules documented across semantic/explainability/plan contracts.
+- No runtime apply behavior changes introduced.
+
+## WP-20 (v4.2.0+): Runtime Bridge
+### Scope
+- Introduce controlled bridge points from validated plan artifacts toward runtime integration.
+- Defer runtime bridge implementation until semantic inspection, explainability, plan capture, and plan validation are stable.
+- Preserve fail-closed and deterministic discipline while defining bridge constraints.
+
+### Definition of Done
+- Runtime bridge contract documented with explicit guardrails.
+- Bridge activation criteria tied to WP-15 through WP-19 stability evidence.
+- Integration sequencing approved with deterministic regression requirements.
+- No unvalidated runtime coupling introduced.
+
+Strategic sequencing note:
+- Strategic target remains `Stat Query -> Deterministic Execution Plan`.
+- Semantic viewer capability now exists and changes optimal milestone order.
+- Runtime bridging is intentionally deferred until inspection/explainability/capture/validation are stable.
 
 ---
-
 # Long-Term (v4.2+ / v5.0)
 
 - Plan schema formalization
