@@ -140,7 +140,7 @@ v4.1.0 Work Packages:
 - Phase 5 CLOSED - React Semantic Source View read-only skeleton established (`3101c8d`).
 - Phase 6 CLOSED - deterministic search explainability/ranking/debug narratives delivered (`9ea9977`).
 - Phase 7 CLOSED - deterministic search contract extracted and locked with lightweight tests (`30d15b6`).
-- Local checkpoint tag present: `semantic-view-phase7` at `30d15b6` (to be pushed).
+- Phase 7 checkpoint tag pushed: `semantic-view-phase7` at `30d15b6`.
 
 ## Phase 8 Start Block
 
