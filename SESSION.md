@@ -123,6 +123,18 @@ v4.1.0 Work Packages:
 - WP-13: Resolver performance optimization
 - WP-14: TrayApp alignment preparation
 
+## Next Architecture Track
+
+- WP-15 — Plan Engine: deterministic plan capture + harness evidence
+- WP-16 — Plan Engine validation
+- WP-17 — TrayApp preview on plan output (read-only)
+- WP-18 — Semantic Layer + Source View
+- Recommended implementation branches:
+- feature/plan-engine
+- feature/semantic-layer
+
+- The semantic layer should be implemented only after the Plan Engine contract is established through WP-15 to WP-17.
+
 ---
 
 ## Operating Discipline

@@ -232,6 +232,56 @@ WP-14 implementation package (RC-safe, docs/tests/tooling only):
 
 WP-14 CLOSED - TrayApp contract + validator harness implemented (docs/tests/tooling only).
 Evidence: tests/wp-14/contract-validators/artifacts/wp14_runB/ (RUN_PASS=True, REPO_GATE_FAILURES=0)
+
+## WP-15 (v4.2.0): Plan Engine — Phase 1 Plan Capture + Harness Evidence
+### Scope
+- Add deterministic plan output as an additive observability artifact
+- Capture resolved execution state without changing SmartStat runtime decisions
+- Include plan output in strict regression pack comparisons
+
+### Definition of Done
+- Plan schema documented
+- Plan output generated deterministically for strict cases
+- STRICT harness compare passes with plan included
+- No SmartStat runtime behavior changes introduced by plan capture
+
+## WP-16 (v4.2.0): Plan Engine — Phase 2 Plan Validation
+### Scope
+- Add validator tooling for SmartStat execution plans
+- Add good/bad fixtures for plan validation
+- Enforce deterministic, diffable plan structure
+
+### Definition of Done
+- Plan validator implemented
+- Fixture suite passes expected good/bad cases
+- Harness runner reports RUN_PASS=True
+- No SmartStat runtime behavior changes introduced by validation tooling
+
+## WP-17 (v4.2.0): Plan Engine — Phase 3 TrayApp Preview (Read-Only)
+### Scope
+- Allow TrayApp to read SmartStat plan output for preview only
+- Do not change apply behavior or runtime SmartStat execution
+- Use plan output as the inspection/preview layer for future integration
+
+### Definition of Done
+- TrayApp preview contract documented
+- Read-only preview path defined
+- No runtime apply behavior changes
+- Contract/version compatibility rules documented
+
+## WP-18 (v4.2.0): Semantic Layer + Source View
+### Scope
+- Introduce a semantic inspection layer derived from SmartStat plan output and OnAir schema/grammar discovery
+- Build developer tooling for source inspection and grammar exploration
+- Provide the foundation for a React SPA Source View
+- Recommended development branch: feature/semantic-layer
+
+### Definition of Done
+- Semantic model defined
+- Source inspection workflow documented
+- React SPA Source View architecture defined
+- Semantic-layer work isolated to a dedicated branch
+
 ---
 
 # Long-Term (v4.2+ / v5.0)
