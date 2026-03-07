@@ -271,7 +271,9 @@ WP-16 implementation package (read-only tooling):
 - Deterministic fixture + read-only panel scaffold: `tools/semantic-source-view/src/data/resolutionExplainability.fixture.ts`.
 - Scaffold checkpoint tag: `semantic-view-phase8-scaffold` (`55c56ef`).
 
-WP-16 CLOSED - Resolution explainability scaffold accepted (read-only tooling only).
+WP-16 IN PROGRESS - Phase 8 resolution explainability scaffold accepted (read-only tooling only).
+Next WP-16 milestone: Phase 9 deterministic candidate-resolution scaffolding (read-only architecture/tooling).
+WP-17 (Plan Capture) begins after WP-16 maturity.
 Validation evidence (2026-03-07):
 - `npm run build` passed.
 - `npm run test` passed (`2` files, `8` tests).

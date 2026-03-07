@@ -153,7 +153,8 @@ v4.1.0 Work Packages:
   - Deterministic visual repeatability passed.
   - Boundary checks passed: no runtime/apply behavior, no planner execution, no candidate-resolution claims, and fixture fallback does not mask selected-record data.
 - Scope boundary preserved: explainability bridge only (no runtime SmartStat integration).
-- Next architecture handoff target: WP-17 (Plan Capture).
+- Next architecture handoff target: WP-16 Phase 9 (deterministic candidate-resolution scaffolding).
+- WP-17 (Plan Capture) remains the subsequent work package after WP-16 maturity.
 OnAir dump handling:
 - The current `onair_dump/` dataset is reserved for semantic-layer work.
 - Canonical repo location: `.tools/onair_dump/`
