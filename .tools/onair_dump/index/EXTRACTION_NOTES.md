@@ -32,3 +32,44 @@ The next likely step before React SPA work is:
 - semantic relationship enrichment
 - source-to-plan traceability
 - React SPA Source View consuming `semantic_index.json`
+
+---
+
+# Phase 3 Relationship + Traceability Notes
+
+## What Was Added In Phase 3
+
+Phase 3 adds deterministic relationship and traceability structures on top of normalized records.
+
+Added structures:
+- top-level `relationships`
+- top-level `trace_index`
+- per-record lineage/evidence fields for explainability
+- per-record relationship references (`related_ids`, `relationship_refs`)
+
+Relationship types emitted in this pass:
+- `measure_to_filter` (strict token-match evidence only)
+- `profile_to_league`
+- `entity_to_league`
+- `record_to_source`
+
+## Conservative Inference Policy
+
+This pass remains intentionally conservative:
+- relationships are emitted only when source evidence is explicit or string-token linkage is strong
+- no broad domain-logic assumptions are introduced
+- ambiguous links are omitted rather than guessed
+
+## Deferred In Phase 3
+
+Still deferred:
+- deeper semantic dependency inference between measure categories and filter semantics
+- cross-record relationship scoring beyond deterministic confidence tiers
+- richer qualifier graph extraction from weak/implicit signals
+
+## Next Likely Phase Before React Work
+
+The next likely step is:
+- semantic query-path modeling
+- plan-oriented trace rendering
+- UI-facing source tree preparation

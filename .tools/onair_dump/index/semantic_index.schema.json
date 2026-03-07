@@ -5,6 +5,16 @@
   "type": "object",
   "additionalProperties": false,
   "$defs": {
+    "confidenceField": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "number"
+        }
+      ]
+    },
     "notesField": {
       "anyOf": [
         {
@@ -18,6 +28,35 @@
         }
       ]
     },
+    "lineageEntry": {
+      "type": "object",
+      "required": [
+        "source_type",
+        "source_path",
+        "source_ref"
+      ],
+      "properties": {
+        "source_type": {
+          "type": "string",
+          "enum": [
+            "runtime",
+            "lookup_index",
+            "grammar",
+            "schema"
+          ]
+        },
+        "source_path": {
+          "type": "string"
+        },
+        "source_ref": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
     "semanticRecord": {
       "type": "object",
       "required": [
@@ -27,7 +66,12 @@
         "source_type",
         "source_path",
         "source_ref",
-        "aliases"
+        "aliases",
+        "related_ids",
+        "relationship_refs",
+        "lineage",
+        "evidence",
+        "confidence"
       ],
       "properties": {
         "id": {
@@ -63,46 +107,148 @@
             "type": "string"
           }
         },
+        "related_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "relationship_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "lineage": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/lineageEntry"
+          }
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "confidence": {
+          "$ref": "#/$defs/confidenceField"
+        },
         "notes": {
           "$ref": "#/$defs/notesField"
         }
       },
       "additionalProperties": true
     },
-    "entityRecord": {
-      "allOf": [
-        {
-          "$ref": "#/$defs/semanticRecord"
+    "relationshipRecord": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "from_id",
+        "to_id",
+        "league",
+        "source_type",
+        "source_path",
+        "source_ref",
+        "confidence"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "from_id": {
+          "type": "string"
+        },
+        "to_id": {
+          "type": "string"
+        },
+        "league": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_type": {
+          "type": "string",
+          "enum": [
+            "runtime",
+            "lookup_index",
+            "grammar",
+            "schema"
+          ]
+        },
+        "source_path": {
+          "type": "string"
+        },
+        "source_ref": {
+          "type": "string"
+        },
+        "confidence": {
+          "$ref": "#/$defs/confidenceField"
+        },
+        "notes": {
+          "$ref": "#/$defs/notesField"
         }
-      ]
+      },
+      "additionalProperties": false
     },
-    "measureRecord": {
-      "allOf": [
-        {
-          "$ref": "#/$defs/semanticRecord"
+    "traceRecord": {
+      "type": "object",
+      "required": [
+        "lineage",
+        "evidence",
+        "relationship_ids"
+      ],
+      "properties": {
+        "lineage": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/lineageEntry"
+          }
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "relationship_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
-      ]
+      },
+      "additionalProperties": false
     },
-    "filterRecord": {
-      "allOf": [
-        {
-          "$ref": "#/$defs/semanticRecord"
+    "traceIndex": {
+      "type": "object",
+      "required": [
+        "by_record_id",
+        "by_source_path"
+      ],
+      "properties": {
+        "by_record_id": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/traceRecord"
+          }
+        },
+        "by_source_path": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
         }
-      ]
-    },
-    "profileRecord": {
-      "allOf": [
-        {
-          "$ref": "#/$defs/semanticRecord"
-        }
-      ]
-    },
-    "qualifierRecord": {
-      "allOf": [
-        {
-          "$ref": "#/$defs/semanticRecord"
-        }
-      ]
+      },
+      "additionalProperties": false
     }
   },
   "required": [
@@ -115,65 +261,67 @@
     "qualifiers",
     "filters",
     "profiles",
+    "relationships",
+    "trace_index",
     "raw_sources"
   ],
   "properties": {
     "schema_version": {
-      "type": "string",
-      "description": "Semantic index schema version."
+      "type": "string"
     },
     "generated_utc": {
-      "type": "string",
-      "description": "Deterministic generation marker for this scaffold."
+      "type": "string"
     },
     "source_roots": {
       "type": "array",
       "items": {
         "type": "string"
-      },
-      "description": "Source roots discovered under .tools/onair_dump."
+      }
     },
     "leagues": {
       "type": "array",
       "items": {
         "type": "string"
-      },
-      "description": "Known leagues discovered from source paths."
+      }
     },
     "entities": {
       "type": "array",
       "items": {
-        "$ref": "#/$defs/entityRecord"
-      },
-      "description": "Normalized entities extracted with explicit provenance."
+        "$ref": "#/$defs/semanticRecord"
+      }
     },
     "measures": {
       "type": "array",
       "items": {
-        "$ref": "#/$defs/measureRecord"
-      },
-      "description": "Normalized measures extracted from runtime and lookup sources."
+        "$ref": "#/$defs/semanticRecord"
+      }
     },
     "qualifiers": {
       "type": "array",
       "items": {
-        "$ref": "#/$defs/qualifierRecord"
-      },
-      "description": "Normalized qualifiers (only when source confidence is strong)."
+        "$ref": "#/$defs/semanticRecord"
+      }
     },
     "filters": {
       "type": "array",
       "items": {
-        "$ref": "#/$defs/filterRecord"
-      },
-      "description": "Normalized filter records from runtime/lookup filter signals."
+        "$ref": "#/$defs/semanticRecord"
+      }
     },
     "profiles": {
       "type": "array",
       "items": {
-        "$ref": "#/$defs/profileRecord"
-      },
-      "description": "Normalized profile records from runtime profile payloads."
+        "$ref": "#/$defs/semanticRecord"
+      }
+    },
+    "relationships": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/relationshipRecord"
+      }
+    },
+    "trace_index": {
+      "$ref": "#/$defs/traceIndex"
     },
     "raw_sources": {
       "type": "object",

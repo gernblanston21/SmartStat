@@ -9,14 +9,13 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Set, Tuple
 
 
-SCHEMA_VERSION = "0.2.0"
+SCHEMA_VERSION = "0.3.0"
 DETERMINISTIC_GENERATED_UTC = "1970-01-01T00:00:00Z"
 
 SOURCE_DIRS = ("grammar", "grammar_snapshot", "lookup_index", "runtime", "schema")
 KNOWN_LEAGUES = ("mlb", "nba", "nhl")
 
-# Conservative cap for Phase 2 extraction breadth. This keeps the first pass
-# high-confidence and diffable while still emitting real normalized objects.
+# Conservative caps keep Phase 3 deterministic and high-confidence.
 MEASURE_LIMIT_PER_LEAGUE = 10
 FILTER_LIMIT_PER_LEAGUE = 8
 
@@ -41,11 +40,12 @@ ENTITY_TYPE_ALLOWLIST = {
     "Profiles_AvailableGamePlanFilters",
 }
 
+MERGED_FROM_PATTERN = re.compile(r"^merged_from:([^:]+):(.+)#(.+)$")
+LEAGUE_TOKEN_SPLIT = re.compile(r"[^a-z0-9]+")
+
 SCRIPT_DIR = Path(__file__).resolve().parent
 ONAIR_ROOT = SCRIPT_DIR.parent
 OUTPUT_PATH = SCRIPT_DIR / "semantic_index.json"
-
-LEAGUE_TOKEN_SPLIT = re.compile(r"[^a-z0-9]+")
 
 
 def iter_files_sorted(root: Path) -> Iterable[Path]:
@@ -77,6 +77,10 @@ def normalize_token(value: Any) -> str:
     return text or "unknown"
 
 
+def token_parts(value: Any) -> List[str]:
+    return [x for x in normalize_token(value).split("_") if x]
+
+
 def display_name(value: Any) -> str:
     text = str(value or "").strip()
     if not text:
@@ -100,14 +104,32 @@ def make_semantic_id(kind: str, league: Optional[str], token: Any) -> str:
     return f"{kind}:{league_part}:{normalize_token(token)}"
 
 
+def make_relationship_id(
+    rel_type: str,
+    league: Optional[str],
+    from_id: str,
+    to_id: str,
+    source_ref: str = "",
+) -> str:
+    league_part = normalize_token(league) if league else "global"
+    parts = [
+        "rel",
+        normalize_token(rel_type),
+        league_part,
+        normalize_token(from_id),
+        normalize_token(to_id),
+    ]
+    if source_ref:
+        parts.append(normalize_token(source_ref))
+    return ":".join(parts)
+
+
 def clean_aliases(values: Iterable[Any]) -> List[str]:
-    aliases = sorted({str(v).strip() for v in values if str(v).strip()})
-    return aliases
+    return sorted({str(v).strip() for v in values if str(v).strip()})
 
 
 def clean_notes(values: Iterable[Any]) -> List[str]:
-    notes = sorted({str(v).strip() for v in values if str(v).strip()})
-    return notes
+    return sorted({str(v).strip() for v in values if str(v).strip()})
 
 
 def make_record(
@@ -146,7 +168,7 @@ def notes_as_list(record: Dict[str, Any]) -> List[str]:
 
 
 def merge_record(records_by_id: Dict[str, Dict[str, Any]], candidate: Dict[str, Any]) -> None:
-    """Normalize duplicates by stable id and preserve provenance notes."""
+    """Deduplicate by stable id and preserve merged provenance notes."""
     record_id = candidate["id"]
     if record_id not in records_by_id:
         records_by_id[record_id] = candidate
@@ -169,8 +191,8 @@ def records_to_sorted_list(records_by_id: Dict[str, Dict[str, Any]]) -> List[Dic
 
 
 def discover_sources() -> Tuple[Dict[str, Dict[str, Any]], List[str]]:
-    """Inventory stage: discover deterministic raw source files."""
-    roots: Dict[str, dict] = {}
+    """Phase 1: deterministic inventory."""
+    roots: Dict[str, Dict[str, Any]] = {}
     all_files: List[str] = []
 
     for source_name in SOURCE_DIRS:
@@ -194,15 +216,12 @@ def discover_sources() -> Tuple[Dict[str, Dict[str, Any]], List[str]]:
 
 
 def discover_leagues(file_paths: Iterable[str]) -> List[str]:
-    """Inventory stage: infer leagues only from path tokens."""
     found: Set[str] = set()
-
     for rel_path in file_paths:
         tokens = [t for t in LEAGUE_TOKEN_SPLIT.split(rel_path.lower()) if t]
         for league in KNOWN_LEAGUES:
             if league in tokens:
                 found.add(league)
-
     return sorted(found)
 
 
@@ -212,11 +231,7 @@ def extract_profiles() -> List[Dict[str, Any]]:
     payload = load_json(ONAIR_ROOT / source_path)
     profiles = safe_list(safe_dict(safe_dict(payload).get("data")).get("profiles"))
 
-    sortable_profiles: List[Dict[str, Any]] = []
-    for item in profiles:
-        if isinstance(item, dict):
-            sortable_profiles.append(item)
-
+    sortable_profiles: List[Dict[str, Any]] = [x for x in profiles if isinstance(x, dict)]
     sortable_profiles.sort(
         key=lambda x: (
             normalize_token(x.get("league")),
@@ -229,7 +244,6 @@ def extract_profiles() -> List[Dict[str, Any]]:
         league = normalize_token(profile.get("league")) if profile.get("league") else None
         display = profile.get("displayName") or profile.get("shareId") or "unknown_profile"
         share_id = profile.get("shareId")
-
         notes: List[str] = []
         if profile.get("season") is not None:
             notes.append(f"season={profile.get('season')}")
@@ -255,7 +269,7 @@ def extract_profiles() -> List[Dict[str, Any]]:
 def extract_filters() -> List[Dict[str, Any]]:
     records: Dict[str, Dict[str, Any]] = {}
 
-    # Runtime filter extraction from availableGamePlanFilters responses.
+    # High-confidence source: runtime availableGamePlanFilters.
     for league in KNOWN_LEAGUES:
         source_path = f"runtime/leagues/{league}/availableGamePlanFilters.response.json"
         payload = load_json(ONAIR_ROOT / source_path)
@@ -297,7 +311,7 @@ def extract_filters() -> List[Dict[str, Any]]:
             )
             merge_record(records, record)
 
-    # Lookup enrichment for filter aliases and provenance.
+    # Lookup enrichment only for already confirmed runtime filters.
     for league in KNOWN_LEAGUES:
         source_path = f"lookup_index/{league}/lookup_index.json"
         payload = load_json(ONAIR_ROOT / source_path)
@@ -336,7 +350,7 @@ def extract_measures() -> List[Dict[str, Any]]:
     records: Dict[str, Dict[str, Any]] = {}
     selected_measure_keys: Dict[str, Set[str]] = {league: set() for league in KNOWN_LEAGUES}
 
-    # Runtime extraction is canonical for Phase 2 measure records.
+    # High-confidence source: runtime fetchBaseMeasures.
     for league in KNOWN_LEAGUES:
         source_path = f"runtime/leagues/{league}/fetchBaseMeasures.response.json"
         payload = load_json(ONAIR_ROOT / source_path)
@@ -374,7 +388,7 @@ def extract_measures() -> List[Dict[str, Any]]:
             )
             merge_record(records, record)
 
-    # Lookup measureByCatalogKey enrichment.
+    # Lookup enrichment for selected runtime measures only.
     for league in KNOWN_LEAGUES:
         source_path = f"lookup_index/{league}/lookup_index.json"
         payload = load_json(ONAIR_ROOT / source_path)
@@ -403,7 +417,6 @@ def extract_measures() -> List[Dict[str, Any]]:
             )
             merge_record(records, record)
 
-        # normalizedMeasureLookup alias enrichment for selected catalog keys only.
         normalized_map = safe_dict(lookup.get("normalizedMeasureLookup"))
         for alias_key, info in sorted(normalized_map.items(), key=lambda kv: normalize_token(kv[0])):
             details = safe_dict(info)
@@ -429,8 +442,6 @@ def extract_measures() -> List[Dict[str, Any]]:
 
 def extract_entities() -> List[Dict[str, Any]]:
     records: Dict[str, Dict[str, Any]] = {}
-
-    # High-confidence entity extraction from schema type list.
     schema_path = "schema/03__schema_types_list.response.json"
     payload = load_json(ONAIR_ROOT / schema_path)
     schema_root = safe_dict(safe_dict(safe_dict(payload).get("data")).get("__schema"))
@@ -459,32 +470,369 @@ def extract_entities() -> List[Dict[str, Any]]:
         )
         merge_record(records, record)
 
-    # Grammar tree currently contains only minimal node count stats in this dump.
-    # Hook retained for future entity extraction from richer grammar nodes.
+    # Grammar hook remains intentionally deferred for sparse grammar tree content.
     return records_to_sorted_list(records)
 
 
 def extract_qualifiers() -> List[Dict[str, Any]]:
-    # No strong standalone qualifier object shape is currently present in the dump.
-    # Keep deterministic empty output and preserve this hook for Phase 3+.
+    # No strong standalone qualifier object shape currently in dump evidence.
     return []
 
 
-def build_index_document() -> dict:
+def split_plain_and_merged_notes(notes: Iterable[str]) -> Tuple[List[str], List[Tuple[str, str, str]]]:
+    plain_notes: List[str] = []
+    merged_entries: List[Tuple[str, str, str]] = []
+    for note in notes:
+        match = MERGED_FROM_PATTERN.match(note)
+        if not match:
+            plain_notes.append(note)
+            continue
+        merged_entries.append((match.group(1), match.group(2), match.group(3)))
+    return sorted(set(plain_notes)), sorted(set(merged_entries))
+
+
+def build_lineage_entries(record: Dict[str, Any]) -> List[Dict[str, str]]:
+    lineage: List[Dict[str, str]] = [
+        {
+            "role": "primary",
+            "source_type": record["source_type"],
+            "source_path": record["source_path"],
+            "source_ref": record["source_ref"],
+        }
+    ]
+
+    plain_notes, merged_entries = split_plain_and_merged_notes(notes_as_list(record))
+    if plain_notes:
+        record["notes"] = plain_notes
+    elif "notes" in record:
+        del record["notes"]
+
+    for source_type, source_path, source_ref in merged_entries:
+        lineage.append(
+            {
+                "role": "merged",
+                "source_type": source_type,
+                "source_path": source_path,
+                "source_ref": source_ref,
+            }
+        )
+
+    lineage = sorted(
+        lineage,
+        key=lambda x: (
+            normalize_token(x.get("source_type")),
+            normalize_token(x.get("source_path")),
+            normalize_token(x.get("source_ref")),
+            normalize_token(x.get("role")),
+        ),
+    )
+    return lineage
+
+
+def lineage_to_evidence(lineage: List[Dict[str, str]]) -> List[str]:
+    evidence = [f"{x['source_type']}:{x['source_path']}#{x['source_ref']}" for x in lineage]
+    return sorted(set(evidence))
+
+
+def infer_record_confidence(record: Dict[str, Any], lineage: List[Dict[str, str]]) -> str:
+    if len(lineage) > 1:
+        return "high"
+    if record.get("source_type") == "schema":
+        return "medium"
+    return "high"
+
+
+def enrich_records_with_traceability(records: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    enriched: List[Dict[str, Any]] = []
+    for record in records:
+        item = dict(record)
+        lineage = build_lineage_entries(item)
+        item["lineage"] = lineage
+        item["evidence"] = lineage_to_evidence(lineage)
+        item["confidence"] = infer_record_confidence(item, lineage)
+        item["related_ids"] = []
+        item["relationship_refs"] = []
+        enriched.append(item)
+    enriched.sort(key=lambda x: x["id"])
+    return enriched
+
+
+def merge_relationship(
+    relationships_by_id: Dict[str, Dict[str, Any]],
+    candidate: Dict[str, Any],
+) -> None:
+    rel_id = candidate["id"]
+    if rel_id not in relationships_by_id:
+        relationships_by_id[rel_id] = candidate
+        return
+
+    current = relationships_by_id[rel_id]
+    merged_notes = clean_notes(notes_as_list(current) + notes_as_list(candidate))
+    if merged_notes:
+        current["notes"] = merged_notes
+
+
+def make_relationship(
+    rel_type: str,
+    from_id: str,
+    to_id: str,
+    league: Optional[str],
+    source_type: str,
+    source_path: str,
+    source_ref: str,
+    confidence: str,
+    notes: Iterable[str] = (),
+) -> Dict[str, Any]:
+    rel_id = make_relationship_id(rel_type, league, from_id, to_id, source_ref)
+    relation: Dict[str, Any] = {
+        "id": rel_id,
+        "type": rel_type,
+        "from_id": from_id,
+        "to_id": to_id,
+        "league": league,
+        "source_type": source_type,
+        "source_path": source_path,
+        "source_ref": source_ref,
+        "confidence": confidence,
+    }
+    cleaned_notes = clean_notes(notes)
+    if cleaned_notes:
+        relation["notes"] = cleaned_notes
+    return relation
+
+
+def generate_profile_to_league_relationships(
+    profiles: List[Dict[str, Any]],
+    relationships_by_id: Dict[str, Dict[str, Any]],
+) -> None:
+    for profile in profiles:
+        league = profile.get("league")
+        if not league:
+            continue
+        league_node = f"league:{league}"
+        rel = make_relationship(
+            rel_type="profile_to_league",
+            from_id=profile["id"],
+            to_id=league_node,
+            league=league,
+            source_type=profile["source_type"],
+            source_path=profile["source_path"],
+            source_ref=profile["source_ref"],
+            confidence="high",
+            notes=["explicit_profile_league_field"],
+        )
+        merge_relationship(relationships_by_id, rel)
+
+
+def generate_entity_to_league_relationships(
+    entities: List[Dict[str, Any]],
+    relationships_by_id: Dict[str, Dict[str, Any]],
+) -> None:
+    for entity in entities:
+        league = entity.get("league")
+        if not league:
+            continue
+        league_node = f"league:{league}"
+        rel = make_relationship(
+            rel_type="entity_to_league",
+            from_id=entity["id"],
+            to_id=league_node,
+            league=league,
+            source_type=entity["source_type"],
+            source_path=entity["source_path"],
+            source_ref=entity["source_ref"],
+            confidence="high",
+            notes=["league_inferred_from_entity_name"],
+        )
+        merge_relationship(relationships_by_id, rel)
+
+
+def get_record_token_from_id(record_id: str) -> str:
+    parts = record_id.split(":", 2)
+    if len(parts) < 3:
+        return normalize_token(record_id)
+    return normalize_token(parts[2])
+
+
+def generate_measure_to_filter_relationships(
+    measures: List[Dict[str, Any]],
+    filters: List[Dict[str, Any]],
+    relationships_by_id: Dict[str, Dict[str, Any]],
+) -> None:
+    # Conservative rule only: emit link if filter token appears explicitly in
+    # measure id token parts. This avoids speculative graph inflation.
+    filters_by_league: Dict[str, List[Dict[str, Any]]] = {league: [] for league in KNOWN_LEAGUES}
+    for filt in filters:
+        league = filt.get("league")
+        if league in filters_by_league:
+            filters_by_league[league].append(filt)
+    for league in KNOWN_LEAGUES:
+        filters_by_league[league].sort(key=lambda x: x["id"])
+
+    for measure in measures:
+        league = measure.get("league")
+        if league not in filters_by_league:
+            continue
+        measure_tokens = set(token_parts(get_record_token_from_id(measure["id"])))
+        for filt in filters_by_league[league]:
+            filter_token = normalize_token(get_record_token_from_id(filt["id"]))
+            if not filter_token or filter_token not in measure_tokens:
+                continue
+            rel = make_relationship(
+                rel_type="measure_to_filter",
+                from_id=measure["id"],
+                to_id=filt["id"],
+                league=league,
+                source_type=measure["source_type"],
+                source_path=measure["source_path"],
+                source_ref=f"token_match:{filter_token}",
+                confidence="medium",
+                notes=["strict_token_overlap_rule"],
+            )
+            merge_relationship(relationships_by_id, rel)
+
+
+def generate_record_to_source_relationships(
+    all_records: List[Dict[str, Any]],
+    relationships_by_id: Dict[str, Dict[str, Any]],
+) -> None:
+    for record in sorted(all_records, key=lambda x: x["id"]):
+        league = record.get("league")
+        for lineage in record.get("lineage", []):
+            source_node = (
+                f"source:{lineage['source_type']}:{normalize_token(lineage['source_path'])}"
+            )
+            rel = make_relationship(
+                rel_type="record_to_source",
+                from_id=record["id"],
+                to_id=source_node,
+                league=league,
+                source_type=lineage["source_type"],
+                source_path=lineage["source_path"],
+                source_ref=lineage["source_ref"],
+                confidence="high",
+                notes=[f"lineage_role={lineage.get('role', 'unknown')}"],
+            )
+            merge_relationship(relationships_by_id, rel)
+
+
+def generate_relationships(
+    entities: List[Dict[str, Any]],
+    measures: List[Dict[str, Any]],
+    filters: List[Dict[str, Any]],
+    profiles: List[Dict[str, Any]],
+    qualifiers: List[Dict[str, Any]],
+) -> List[Dict[str, Any]]:
+    relationships_by_id: Dict[str, Dict[str, Any]] = {}
+    all_records = entities + measures + filters + profiles + qualifiers
+
+    generate_profile_to_league_relationships(profiles, relationships_by_id)
+    generate_entity_to_league_relationships(entities, relationships_by_id)
+    generate_measure_to_filter_relationships(measures, filters, relationships_by_id)
+    generate_record_to_source_relationships(all_records, relationships_by_id)
+
+    return [relationships_by_id[key] for key in sorted(relationships_by_id.keys())]
+
+
+def attach_relationship_refs_to_records(
+    records_by_id: Dict[str, Dict[str, Any]],
+    relationships: List[Dict[str, Any]],
+) -> None:
+    relationship_refs: Dict[str, Set[str]] = {record_id: set() for record_id in records_by_id}
+    related_ids: Dict[str, Set[str]] = {record_id: set() for record_id in records_by_id}
+
+    for relation in relationships:
+        rel_id = relation["id"]
+        from_id = relation["from_id"]
+        to_id = relation["to_id"]
+
+        if from_id in records_by_id:
+            relationship_refs[from_id].add(rel_id)
+            related_ids[from_id].add(to_id)
+        if to_id in records_by_id:
+            relationship_refs[to_id].add(rel_id)
+            related_ids[to_id].add(from_id)
+
+    for record_id, record in records_by_id.items():
+        record["relationship_refs"] = sorted(relationship_refs[record_id])
+        record["related_ids"] = sorted(related_ids[record_id])
+
+
+def build_trace_index(
+    records_by_id: Dict[str, Dict[str, Any]],
+) -> Dict[str, Dict[str, Any]]:
+    by_record_id: Dict[str, Dict[str, Any]] = {}
+    by_source_path_sets: Dict[str, Set[str]] = {}
+
+    for record_id in sorted(records_by_id.keys()):
+        record = records_by_id[record_id]
+        lineage = record.get("lineage", [])
+        by_record_id[record_id] = {
+            "lineage": lineage,
+            "evidence": record.get("evidence", []),
+            "relationship_ids": record.get("relationship_refs", []),
+        }
+        for lineage_entry in lineage:
+            source_path = lineage_entry["source_path"]
+            if source_path not in by_source_path_sets:
+                by_source_path_sets[source_path] = set()
+            by_source_path_sets[source_path].add(record_id)
+
+    by_source_path = {
+        source_path: sorted(record_ids)
+        for source_path, record_ids in sorted(by_source_path_sets.items())
+    }
+
+    return {
+        "by_record_id": by_record_id,
+        "by_source_path": by_source_path,
+    }
+
+
+def index_records_by_id(records: List[Dict[str, Any]]) -> Dict[str, Dict[str, Any]]:
+    return {record["id"]: record for record in records}
+
+
+def refresh_records_from_index(
+    base_records: List[Dict[str, Any]],
+    records_by_id: Dict[str, Dict[str, Any]],
+) -> List[Dict[str, Any]]:
+    return [records_by_id[record["id"]] for record in base_records]
+
+
+def build_index_document() -> Dict[str, Any]:
     # Stage 1: deterministic inventory.
     roots, all_files = discover_sources()
     source_roots = sorted([name for name, payload in roots.items() if payload["exists"]])
     leagues = discover_leagues(all_files)
 
-    # Stage 2: deterministic extraction + normalization.
-    entities = extract_entities()
-    measures = extract_measures()
-    filters = extract_filters()
-    qualifiers = extract_qualifiers()
-    profiles = extract_profiles()
+    # Stage 2: deterministic extraction and normalization (Phase 2 behavior).
+    entities = enrich_records_with_traceability(extract_entities())
+    measures = enrich_records_with_traceability(extract_measures())
+    filters = enrich_records_with_traceability(extract_filters())
+    qualifiers = enrich_records_with_traceability(extract_qualifiers())
+    profiles = enrich_records_with_traceability(extract_profiles())
 
-    # Stage 3: stable output document.
-    document = {
+    records_by_id: Dict[str, Dict[str, Any]] = {}
+    for record in entities + measures + filters + qualifiers + profiles:
+        records_by_id[record["id"]] = record
+
+    # Stage 3: deterministic relationship generation (Phase 3 behavior).
+    relationships = generate_relationships(entities, measures, filters, profiles, qualifiers)
+    attach_relationship_refs_to_records(records_by_id, relationships)
+
+    # Refresh category arrays after relationship refs were attached.
+    entities = refresh_records_from_index(entities, records_by_id)
+    measures = refresh_records_from_index(measures, records_by_id)
+    filters = refresh_records_from_index(filters, records_by_id)
+    qualifiers = refresh_records_from_index(qualifiers, records_by_id)
+    profiles = refresh_records_from_index(profiles, records_by_id)
+
+    # Stage 4: deterministic trace index for source-to-record explainability.
+    trace_index = build_trace_index(records_by_id)
+
+    # Stage 5: final document assembly.
+    document: Dict[str, Any] = {
         "schema_version": SCHEMA_VERSION,
         "generated_utc": DETERMINISTIC_GENERATED_UTC,
         "source_roots": source_roots,
@@ -494,6 +842,8 @@ def build_index_document() -> dict:
         "qualifiers": qualifiers,
         "filters": filters,
         "profiles": profiles,
+        "relationships": relationships,
+        "trace_index": trace_index,
         "raw_sources": {
             "total_files": len(all_files),
             "roots": roots,
@@ -502,8 +852,7 @@ def build_index_document() -> dict:
     return document
 
 
-def write_index(document: dict) -> None:
-    """Output stage: write deterministic JSON under .tools/onair_dump/index/ only."""
+def write_index(document: Dict[str, Any]) -> None:
     serialized = json.dumps(document, indent=2, sort_keys=True)
     OUTPUT_PATH.write_text(serialized + "\n", encoding="utf-8")
 
