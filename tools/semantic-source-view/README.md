@@ -40,6 +40,18 @@ Phase 7 checkpoint:
 - commit: `30d15b6`
 - tag: `semantic-view-phase7`
 
+## Phase 8 Scaffold Start
+
+- adds read-only semantic resolution explainability model scaffolding (`resolution-explainability.v0`)
+- introduces deterministic explainability steps for selected records
+- includes a minimal fixture for scaffold/demo usage
+- keeps runtime apply behavior, planner execution, and SmartStat runtime integration out of scope
+
+See:
+- `RESOLUTION_EXPLAINABILITY_GUIDE.md`
+- `resolution-explainability.schema.json`
+- `src/data/resolutionExplainability.fixture.ts`
+
 ## Deferred
 
 - editing semantic records

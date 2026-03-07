@@ -62,6 +62,9 @@ Search explainability helps developers answer:
 
 This improves semantic debugging today and supports future Plan Engine explanation UX.
 
+For Phase 8 semantic-resolution scaffolding, see:
+- `RESOLUTION_EXPLAINABILITY_GUIDE.md`
+
 ## Deferred
 
 - editable search rules

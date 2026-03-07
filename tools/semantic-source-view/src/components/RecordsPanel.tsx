@@ -1,5 +1,7 @@
 import React, { useMemo } from "react";
 import { matchLabel, notesToList } from "../data/viewModel";
+import { buildResolutionExplainabilityModel } from "../data/resolutionExplainability";
+import { PHASE8_RESOLUTION_EXPLAINABILITY_FIXTURE } from "../data/resolutionExplainability.fixture";
 import { QueryPathRecord, RecordSearchResult, SearchNarrative } from "../types";
 
 interface RecordsPanelProps {
@@ -125,6 +127,17 @@ export function RecordsPanel({
     ).length;
   }, [selectedResult, queryPaths]);
 
+  const resolutionModel = useMemo(() => {
+    if (!selectedResult) {
+      return null;
+    }
+    return buildResolutionExplainabilityModel(
+      selectedResult,
+      searchTerm,
+      queryPathCountForRecord
+    );
+  }, [selectedResult, searchTerm, queryPathCountForRecord]);
+
   return (
     <section className="split-panel">
       <div className="list-pane">
@@ -197,6 +210,27 @@ export function RecordsPanel({
                   </ul>
                 </>
               ) : null}
+            </section>
+
+            <section className="narrative-panel">
+              <h4>Resolution Explainability (Phase 8 Scaffold)</h4>
+              <p>
+                This is a deterministic, read-only semantic-resolution scaffold. It is not runtime
+                apply behavior and not planner execution.
+              </p>
+              <p>
+                Schema: <code>{resolutionModel?.schema_version ?? PHASE8_RESOLUTION_EXPLAINABILITY_FIXTURE.schema_version}</code>.
+              </p>
+              <ul>
+                {(resolutionModel?.steps ?? PHASE8_RESOLUTION_EXPLAINABILITY_FIXTURE.steps).map((step) => (
+                  <li key={`${step.order}:${step.kind}`}>
+                    <strong>{step.order}. {step.label}</strong> - {step.detail}
+                  </li>
+                ))}
+              </ul>
+              <p>
+                Deferred: {(resolutionModel?.deferred ?? PHASE8_RESOLUTION_EXPLAINABILITY_FIXTURE.deferred).join(", ")}.
+              </p>
             </section>
 
             <dl className="detail-grid">

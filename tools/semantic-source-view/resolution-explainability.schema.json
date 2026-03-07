@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "smartstat.semantic-source-view.resolution-explainability.v0",
+  "title": "Resolution Explainability Model",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "mode",
+    "record_id",
+    "record_type",
+    "league",
+    "search_term",
+    "match_kind",
+    "match_strength",
+    "steps",
+    "deferred"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "resolution-explainability.v0"
+    },
+    "mode": {
+      "type": "string",
+      "const": "read_only_scaffold"
+    },
+    "record_id": {
+      "type": "string"
+    },
+    "record_type": {
+      "type": "string"
+    },
+    "league": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "search_term": {
+      "type": "string"
+    },
+    "match_kind": {
+      "type": "string"
+    },
+    "match_strength": {
+      "type": "string"
+    },
+    "steps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "order",
+          "kind",
+          "label",
+          "detail",
+          "refs"
+        ],
+        "properties": {
+          "order": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "kind": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "detail": {
+            "type": "string"
+          },
+          "refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "deferred": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false
+}
