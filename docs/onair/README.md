@@ -30,6 +30,7 @@ The extracted references provide deterministic source-grounded inputs for:
 - `onair_semantic_grammar.md`
 - `slot-resolution-model.md` (grammar-to-candidate-resolution bridge for future plan capture architecture)
 - `plan-capture-shape.md` (conceptual deterministic captured-plan shape after slot resolution)
+- `plan-validation-model.md` (conceptual semantic plan validation layer before execution planning)
 
 ## Explicit non-scope
 
