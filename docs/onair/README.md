@@ -29,6 +29,7 @@ The extracted references provide deterministic source-grounded inputs for:
 - `query-skeletons.md`
 - `onair_semantic_grammar.md`
 - `slot-resolution-model.md` (grammar-to-candidate-resolution bridge for future plan capture architecture)
+- `plan-capture-shape.md` (conceptual deterministic captured-plan shape after slot resolution)
 
 ## Explicit non-scope
 

@@ -122,6 +122,8 @@ Slot-aware resolution provides a deterministic bridge toward future plan capture
 
 This is an architecture bridge toward WP-17 plan capture direction, not plan execution behavior.
 
+This slot-resolution model leads directly to the plan-capture structure described in [plan-capture-shape.md](e:/EDRIVE/UNIVERSAL/SmartStat/docs/onair/plan-capture-shape.md).
+
 ## 9. Deferred / Non-Goals
 
 This document does not define:
