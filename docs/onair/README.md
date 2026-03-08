@@ -28,6 +28,7 @@ The extracted references provide deterministic source-grounded inputs for:
 - `formatter-dictionary.md`
 - `query-skeletons.md`
 - `onair_semantic_grammar.md`
+- `slot-resolution-model.md` (grammar-to-candidate-resolution bridge for future plan capture architecture)
 
 ## Explicit non-scope
 

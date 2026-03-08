@@ -95,6 +95,8 @@ Future planner work may apply slot-aware candidate resolution rather than treati
 
 This is an architecture interpretation note for direction-setting only, not implemented runtime behavior.
 
+See [slot-resolution-model.md](e:/EDRIVE/UNIVERSAL/SmartStat/docs/onair/slot-resolution-model.md) for the slot-class architecture bridge between grammar interpretation, candidate resolution, and future plan capture.
+
 ## Argument Shape Taxonomy
 
 ### Literal placeholders
