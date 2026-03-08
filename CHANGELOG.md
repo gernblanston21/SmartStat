@@ -3,6 +3,30 @@
 All notable changes to the SmartStat Core Engine are documented in this file.
 Runtime versioning follows script identifiers (`SmartStat_v*.vbs`), while `VERSION.txt` remains VIZOR UI display metadata.
 
+## [feature/semantic-layer] - 2026-03-08
+
+### Summary
+- Recovery pass for contract/tooling/governance alignment without SmartStat runtime behavior changes.
+- Restored WP-14 contract validator reliability against current repo TemplateConfig.
+- Extended WP-14 default repo coverage to include sport-aware mappings used by runtime selection logic.
+- Updated roadmap/session/doc truth to reflect Phase 9 semantic-source-view state and current test counts.
+
+### Changed
+- WP-14 TemplateConfig validator token policy now accepts runtime-evidenced numeric tab tokens (for example `0500`, `1101`) alongside alpha-prefixed tokens.
+- WP-14 runner now validates:
+  - `SmartStat_Mappings.ini`
+  - `SmartStat_MappingsNBA.ini`
+  - `SmartStat_MappingsNHL.ini`
+  - `SmartStat_Mappings.learn.ini`
+  - `SmartStat_MappingsNBA.learn.ini`
+  - `SmartStat_MappingsNHL.learn.ini`
+- Contract docs now align with validator/runtime token policy and sport-aware mapping coverage.
+- Viz Trio docs now explicitly track unsupported-but-used runtime command surfaces and observed socket payload risk notes.
+
+### Validation
+- `tests/wp-14/run_wp14.ps1` rerun with recovery label and passed (`RUN_PASS=True`, `REPO_GATE_FAILURES=0`).
+- Required deterministic regression packs rerun (`wp-11`, `wp-10 phase-4`) and passed with no core runtime behavior changes introduced.
+
 ## [feature/semantic-layer] - 2026-03-07
 
 ### Summary
@@ -163,3 +187,4 @@ Runtime versioning follows script identifiers (`SmartStat_v*.vbs`), while `VERSI
 
 ### Summary
 - Last pre-v4 production line before staged transaction architecture and ambiguity-gating overhaul.
+

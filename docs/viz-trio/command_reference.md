@@ -71,3 +71,11 @@ When you expand this reference further, categorize by:
 - Rundown/show operations
 
 This makes retrieval much cleaner than one long list.
+
+---
+
+## Unsupported Runtime Surfaces
+
+For SmartStat runtime command usage that is currently observed in repo code but not fully grounded in the current local Viz Trio docs, see:
+
+- `unsupported_runtime_surfaces.md`

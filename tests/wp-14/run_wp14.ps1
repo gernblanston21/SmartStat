@@ -154,10 +154,45 @@ $repoCases = @(
     Expected = $true
   },
   @{
-    Name = "repo_mappings"
+    Name = "repo_mappings_mlb"
     Group = "repo"
     Validator = $mappingsValidator
     Target = (Join-Path $repoRoot "SmartStat_Mappings.ini")
+    Expected = $true
+  },
+  @{
+    Name = "repo_mappings_nba"
+    Group = "repo"
+    Validator = $mappingsValidator
+    Target = (Join-Path $repoRoot "SmartStat_MappingsNBA.ini")
+    Expected = $true
+  },
+  @{
+    Name = "repo_mappings_nhl"
+    Group = "repo"
+    Validator = $mappingsValidator
+    Target = (Join-Path $repoRoot "SmartStat_MappingsNHL.ini")
+    Expected = $true
+  },
+  @{
+    Name = "repo_mappings_learn_mlb"
+    Group = "repo"
+    Validator = $mappingsValidator
+    Target = (Join-Path $repoRoot "SmartStat_Mappings.learn.ini")
+    Expected = $true
+  },
+  @{
+    Name = "repo_mappings_learn_nba"
+    Group = "repo"
+    Validator = $mappingsValidator
+    Target = (Join-Path $repoRoot "SmartStat_MappingsNBA.learn.ini")
+    Expected = $true
+  },
+  @{
+    Name = "repo_mappings_learn_nhl"
+    Group = "repo"
+    Validator = $mappingsValidator
+    Target = (Join-Path $repoRoot "SmartStat_MappingsNHL.learn.ini")
     Expected = $true
   },
   @{

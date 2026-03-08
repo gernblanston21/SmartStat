@@ -1,9 +1,10 @@
 # ROADMAP - SmartStat v4 Lifecycle
 
 ## Current State
-v4.0.0_beta - Frozen and stable
-Transitioning to v4.0.0_RC1
-v4.1.0_RC1 stabilization (Path A) is active.
+- v4.0.0_beta and v4.0.0_RC1 are frozen historical baselines.
+- WP-10 through WP-14 are complete and retained as post-RC stabilization evidence.
+- Active working lane in this repo is feature/semantic-layer (v4.2.0 architecture/tooling track).
+- Current semantic posture: Phase 9 candidate-resolution scaffold is present in tools/semantic-source-view/.
 
 ## Determinism Doctrine (v4+)
 
@@ -32,7 +33,7 @@ SmartStat guarantees (within a given version + config):
 
 ---
 
-# Post-RC Track (v4.1.0)
+# Post-RC Tracks (v4.1.0 -> v4.2.0)
 
 ## Guardrails (Post-RC)
 - RC1 behavior is the baseline; changes must be intentional, scoped, and validated.
@@ -231,7 +232,7 @@ WP-14 implementation package (RC-safe, docs/tests/tooling only):
 - RC constraint: no SmartStat core VBScript behavior changes; no production INI schema/order mutations
 
 WP-14 CLOSED - TrayApp contract + validator harness implemented (docs/tests/tooling only).
-Evidence: tests/wp-14/contract-validators/artifacts/wp14_runB/ (RUN_PASS=True, REPO_GATE_FAILURES=0)
+Evidence: tests/wp-14/contract-validators/artifacts/wp14_runB/ (historical closeout record) and tests/wp-14/contract-validators/artifacts/recovery_wp14_20260308/ (RUN_PASS=True, REPO_GATE_FAILURES=0; expanded sport-aware coverage).
 
 ## WP-15 (v4.2.0): Semantic Inspection Foundation
 ### Scope
@@ -271,13 +272,13 @@ WP-16 implementation package (read-only tooling):
 - Deterministic fixture + read-only panel scaffold: `tools/semantic-source-view/src/data/resolutionExplainability.fixture.ts`.
 - Scaffold checkpoint tag: `semantic-view-phase8-scaffold` (`55c56ef`).
 
-WP-16 IN PROGRESS - Phase 8 resolution explainability scaffold accepted (read-only tooling only).
-Next WP-16 milestone: Phase 9 deterministic candidate-resolution scaffolding (read-only architecture/tooling).
+WP-16 IN PROGRESS - Phase 8 and Phase 9 read-only explainability scaffolds are accepted.
+Next WP-16 milestone: closeout handoff into WP-17 plan-capture planning.
 WP-17 (Plan Capture) begins after WP-16 maturity.
-Validation evidence (2026-03-07):
+Validation evidence (2026-03-08):
 - `npm run build` passed.
-- `npm run test` passed (`2` files, `8` tests).
-- Baseline UI render, Phase 8 scaffold render, search-driven selection updates, browse-mode behavior, zero-normalized-result behavior, and deterministic visual repeatability all passed.
+- `npm run test` passed (`3` files, `13` tests).
+- Baseline UI render, Phase 8 scaffold render, Phase 9 candidate-resolution scaffold render, search-driven selection updates, browse-mode behavior, zero-normalized-result behavior, and deterministic visual repeatability all passed.
 - Boundary checks passed: no runtime/apply behavior, no planner execution, and no runtime integration implied.
 
 ## WP-17 (v4.2.0): Plan Capture

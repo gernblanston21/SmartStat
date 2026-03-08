@@ -2,7 +2,7 @@
 
 Contract version: `1.0.0`  
 Status: `RC-safe preparation (docs/tests/tooling only)`  
-Last updated: `2026-03-04`
+Last updated: `2026-03-08`
 
 ## Purpose
 
@@ -47,6 +47,8 @@ Required:
 
 - `SmartStat_TemplateConfig.ini`
 - `SmartStat_Mappings.ini`
+- `SmartStat_MappingsNBA.ini`
+- `SmartStat_MappingsNHL.ini`
 - `SmartStat_StaticOverrides.ini`
 
 Optional (only when learn-aware workflows are enabled):
@@ -100,19 +102,19 @@ No unknown keys are permitted inside `[TEMPLATE:<name>]` blocks for this contrac
 `qualifier`
 
 - Type: tabfield token or sentinel
-- Allowed: `none` or tabfield id like `B0200`, `H0020`
+- Allowed: `none` or tabfield id like `B0200`, `H0020`, or `0500`
 - Purpose: the qualifier input field used by resolver/filter logic
 
 `filter_tabfields`
 
 - Type: comma list or sentinel
-- Allowed: `none` or comma-separated tabfield ids (`H0100,H0200`)
+- Allowed: `none` or comma-separated tabfield ids (`H0100,H0200` or `1101,1201`)
 - Purpose: filter operand source fields
 
 `category_tabfields`
 
 - Type: comma list
-- Allowed: comma-separated tabfield ids (`H1101,H1201,...`)
+- Allowed: comma-separated tabfield ids (`H1101,H1201,...` or `1101,1201,...`)
 - Purpose: category selector source fields
 
 `row_limit`
@@ -121,9 +123,9 @@ No unknown keys are permitted inside `[TEMPLATE:<name>]` blocks for this contrac
 - Allowed format: `<token>,<positive-int>`
 - `<token>` may be:
   - `none`
-  - tabfield id (`C0000`)
-  - tabfield id with suffix (`C0000-NumRows`)
-- Examples: `none,1`, `C0000,7`, `C0000-NumRows,8`
+  - tabfield id (`C0000` or `0000`)
+  - tabfield id with suffix (`C0000-NumRows` or `0000-NumRows`)
+- Examples: `none,1`, `C0000,7`, `C0000-NumRows,8`, `0000-NumRows,8`
 
 `output_map`
 
@@ -131,7 +133,29 @@ No unknown keys are permitted inside `[TEMPLATE:<name>]` blocks for this contrac
 - Allowed:
   - empty value (explicitly allowed)
   - or entries formatted as `<tabfield>:<column>:<row>`
-- Example: `H1110:1:1,H1120:1:2,H1210:2:1`
+- `<tabfield>` accepts `A0000`-style or `0000`-style IDs.
+- Example: `H1110:1:1,H1120:1:2,H1210:2:1` or `1111:1:1,1211:2:1`
+
+### Tabfield Token Policy (Runtime-Aligned)
+
+TemplateConfig token validation in this contract follows repo runtime behavior and existing production config evidence.
+
+Base token forms:
+
+- Alpha-prefixed form: `[A-Z][0-9]{4}` (example: `H1101`)
+- Numeric-only form: `[0-9]{4}` (example: `1101`)
+
+Suffix form (when field supports suffixes):
+
+- `<base>-<suffix>` where `<suffix>` matches `[A-Za-z0-9_]+`
+
+Field usage:
+
+- `qualifier`: `none` or base token (no suffix)
+- `filter_tabfields`: `none` or comma-separated tokens (suffix allowed)
+- `category_tabfields`: comma-separated tokens (suffix allowed)
+- `row_limit`: `none` or token/suffixed-token + positive integer tuple
+- `output_map`: empty or comma-separated `<base-token>:<column>:<row>`
 
 ## Parsing Rules
 
@@ -169,6 +193,26 @@ On refusal:
 - No implicit ordering: iteration/file load order must not define winner unless contract specifies it.
 - Determinism required: identical inputs + same contract version => identical validation/apply decision and output plan.
 - Live-safe behavior: non-blocking UX and fail-closed behavior are mandatory.
+
+## Observed Runtime Surfaces Outside TrayApp Apply Contract
+
+The following SmartStat runtime surfaces are currently observed in core script and documented for governance visibility, but are **not** part of the TrayApp apply contract:
+
+- `trio:get_global_variable league`
+- `page:getpagedescription`
+- `sock:socket_is_connected`
+- `sock:send_socket_data`
+- `SmartStat_RefreshSocketData` socket payload shape (`on_air_get message_number=... query=... message_context=...`)
+
+These surfaces are tracked in:
+
+- `docs/viz-trio/unsupported_runtime_surfaces.md`
+
+Policy for these surfaces:
+
+- Treat as unsupported assumptions unless grounded by repo Viz Trio docs.
+- Keep fail-closed behavior where command support is uncertain.
+- Do not couple TrayApp apply logic to these surfaces without explicit contract versioning.
 
 ## TrayApp Dev Checklist
 

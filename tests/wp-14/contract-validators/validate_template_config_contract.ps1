@@ -35,7 +35,15 @@ function Test-TabfieldToken {
     [Parameter(Mandatory = $true)][string]$Token
   )
 
-  return [System.Text.RegularExpressions.Regex]::IsMatch($Token, "^[A-Z][0-9]{4}(?:-[A-Za-z0-9_]+)?$")
+  return [System.Text.RegularExpressions.Regex]::IsMatch($Token, "^(?:[A-Z][0-9]{4}|[0-9]{4})(?:-[A-Za-z0-9_]+)?$")
+}
+
+function Test-BaseTabfieldToken {
+  param(
+    [Parameter(Mandatory = $true)][string]$Token
+  )
+
+  return [System.Text.RegularExpressions.Regex]::IsMatch($Token, "^(?:[A-Z][0-9]{4}|[0-9]{4})$")
 }
 
 function Test-TabfieldListValue {
@@ -82,7 +90,27 @@ function Test-OutputMapValue {
       return $false
     }
 
-    if (-not [System.Text.RegularExpressions.Regex]::IsMatch($token, "^[A-Z][0-9]{4}:[0-9]+:[0-9]+$")) {
+    $segments = $token.Split(":")
+    if ($segments.Count -ne 3) {
+      return $false
+    }
+
+    $tabToken = $segments[0].Trim()
+    $colToken = $segments[1].Trim()
+    $rowToken = $segments[2].Trim()
+    if ([string]::IsNullOrWhiteSpace($tabToken) -or [string]::IsNullOrWhiteSpace($colToken) -or [string]::IsNullOrWhiteSpace($rowToken)) {
+      return $false
+    }
+
+    if (-not (Test-BaseTabfieldToken -Token $tabToken)) {
+      return $false
+    }
+
+    if (-not [System.Text.RegularExpressions.Regex]::IsMatch($colToken, "^[0-9]+$")) {
+      return $false
+    }
+
+    if (-not [System.Text.RegularExpressions.Regex]::IsMatch($rowToken, "^[0-9]+$")) {
       return $false
     }
   }
@@ -193,8 +221,8 @@ foreach ($section in $parseResult.sections) {
 
     if ($keyMap.ContainsKey("qualifier")) {
       $qualifierValue = [string]$keyMap["qualifier"][0].value
-      if (-not [string]::IsNullOrWhiteSpace($qualifierValue) -and -not [System.Text.RegularExpressions.Regex]::IsMatch($qualifierValue, "^(none|[A-Z][0-9]{4})$")) {
-        Add-Issue -Issues $issues -Code "INVALID_QUALIFIER_VALUE" -Line $keyMap["qualifier"][0].line -Section $section.name -Key "qualifier" -Message "qualifier must be 'none' or a tabfield token like B0200."
+      if (-not [string]::IsNullOrWhiteSpace($qualifierValue) -and -not [System.Text.RegularExpressions.Regex]::IsMatch($qualifierValue, "^(none|(?:[A-Z][0-9]{4}|[0-9]{4}))$")) {
+        Add-Issue -Issues $issues -Code "INVALID_QUALIFIER_VALUE" -Line $keyMap["qualifier"][0].line -Section $section.name -Key "qualifier" -Message "qualifier must be 'none' or a tabfield token like B0200 or 0500."
       }
     }
 
@@ -214,7 +242,7 @@ foreach ($section in $parseResult.sections) {
 
     if ($keyMap.ContainsKey("row_limit")) {
       $rowValue = [string]$keyMap["row_limit"][0].value
-      if (-not [string]::IsNullOrWhiteSpace($rowValue) -and -not [System.Text.RegularExpressions.Regex]::IsMatch($rowValue, "^(none|[A-Z][0-9]{4}(?:-[A-Za-z0-9_]+)?),[1-9][0-9]*$")) {
+      if (-not [string]::IsNullOrWhiteSpace($rowValue) -and -not [System.Text.RegularExpressions.Regex]::IsMatch($rowValue, "^(none|(?:[A-Z][0-9]{4}|[0-9]{4})(?:-[A-Za-z0-9_]+)?),[1-9][0-9]*$")) {
         Add-Issue -Issues $issues -Code "INVALID_ROW_LIMIT" -Line $keyMap["row_limit"][0].line -Section $section.name -Key "row_limit" -Message "row_limit must match '<token>,<positive-int>' with token 'none', tabfield, or tabfield-suffix."
       }
     }
