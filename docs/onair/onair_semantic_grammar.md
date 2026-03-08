@@ -40,6 +40,17 @@ Future SmartStat planner work may refine or formalize these structures.
 
 Workbook-observed families in this section may represent higher-order query operators, workbook-defined categories, or macro-style queries. They should not be assumed to be canonical semantic families.
 
+## Operator Classes
+
+Workbook query examples indicate an operator layer that is distinct from base families like `info` and `stats`.
+
+- Analytical operators (workbook-observed): `rank(asc)`, `leader(1, home_runs)`, `streak(runs, >=3)`
+- Dataset-selection operators (workbook-observed): `previous`, `game_high(at_bats)`, `games_with`
+- Utility/calendar operators (workbook-observed): `calendar(1, sun)`
+- Workbook-defined operator-style constructs: `conditional`, `custom`, `math`
+
+These are documented as observed operator-style constructs from workbook/query evidence. They are not yet formalized as canonical planner nodes in this Phase 0 reference.
+
 ## Semantic Component Classes
 
 - `entity`: actor/scope token from `Entities` (examples: `player`, `team`, `coach`, `time`).
@@ -56,6 +67,33 @@ Baseline canonical patterns observed in workbook examples:
 - `{{stats.entity.filter.measure}}`
 
 Observed workbook examples also show formatter pipes (for example `{{ ... | formatter }}`) and higher-order wrappers (for example `leader`, `rank`, `streak`, `previous`). Additional compositions may exist beyond this Phase 0 baseline.
+
+## Slot-Oriented Interpretation
+
+Observed OnAir expressions can be interpreted as typed semantic slots instead of a single unresolved string.
+
+Example A: `{{stats.player.career.month(april).innings(7-9).hits}}`
+
+- family slot = `stats`
+- entity slot = `player`
+- scope/filter slot = `career`
+- filter slot = `month(april)`
+- filter slot = `innings(7-9)`
+- terminal measure slot = `hits`
+
+Example B: `{{leader(1, home_runs).player.season(2023).location(away).full_name}}`
+
+- operator slot = `leader(1, home_runs)`
+- entity slot = `player`
+- filter slot = `season(2023)`
+- filter slot = `location(away)`
+- terminal attribute slot = `full_name`
+
+SmartStat Phase 9 candidate-resolution scaffolding can be interpreted as an early model for resolving candidates within a semantic slot.
+
+Future planner work may apply slot-aware candidate resolution rather than treating an entire query as one unresolved blob.
+
+This is an architecture interpretation note for direction-setting only, not implemented runtime behavior.
 
 ## Argument Shape Taxonomy
 

@@ -28,24 +28,31 @@ Additional operator-style templates are present in workbook categories (`leader`
 
 ## Section 2: Workbook Query Families
 
-- `calendar`
-- `conditional`
-- `custom`
+### Base query families
+
+- `info`
+- `stats`
+
+### Operator-style/workbook-observed families
+
+- `leader`
+- `rank`
+- `previous`
+- `streak`
 - `game high`
 - `game_high`
 - `games with`
 - `games_with`
-- `info`
-- `leader`
+- `calendar`
+- `conditional`
+- `custom`
 - `math`
-- `previous`
-- `rank`
-- `stats`
-- `streak`
 
 These labels represent workbook-defined categories and should not be assumed to be canonical grammar families.
 
 ## Section 3: Example Queries
+
+Workbook categories in this section are preserved as evidence labels from source sheets and are not necessarily the final SmartStat semantic family taxonomy.
 
 | workbook_family_label | query_string | explanatory_notes | league |
 | --- | --- | --- | --- |
