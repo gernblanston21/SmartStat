@@ -3,6 +3,17 @@
 All notable changes to the SmartStat Core Engine are documented in this file.
 Runtime versioning follows script identifiers (`SmartStat_v*.vbs`), while `VERSION.txt` remains VIZOR UI display metadata.
 
+## [feature/semantic-layer] - 2026-03-08 (Governance Re-Baseline)
+### Summary
+- Re-baselined roadmap/branch governance to lock the repo into one active lane before WP-18 kickoff.
+- Clarified active vs frozen vs deferred scope boundaries across roadmap/session/governance docs.
+### Changed
+- Active lane explicitly locked to `feature/semantic-layer` semantic architecture/tooling work only.
+- Runtime/core baseline explicitly frozen (`v4.0.0_beta`, `v4.0.0_RC1`) with no implied runtime bridge/apply activation.
+- WP-18, WP-19, and WP-20 explicitly deferred until explicit kickoff.
+- Branch policy now states runtime bridge/execution work requires explicit approval and may require a separate dedicated branch.
+### Validation
+- Governance-only pass: no SmartStat runtime script, production INI, validator, schema, or fixture mutations.
 ## [feature/semantic-layer] - 2026-03-08 (WP-17)
 
 ### Summary

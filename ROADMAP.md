@@ -6,6 +6,12 @@
 - Active working lane in this repo is feature/semantic-layer (v4.2.0 architecture/tooling track).
 - Current semantic posture: Phase 9 candidate-resolution scaffold is present in tools/semantic-source-view/.
 - WP-17 now defines a versioned, deterministic plan-capture contract layer (docs/tests/tooling only).
+## Lane Re-Baseline (2026-03-08)
+- Single active lane: `feature/semantic-layer` for semantic architecture/tooling only (docs/tests/read-only tooling).
+- Frozen runtime/core baseline: `v4.0.0_beta` and `v4.0.0_RC1` (no implicit runtime execution lane is active).
+- Deferred lane items: WP-18, WP-19, and WP-20 are defined but not started and require explicit kickoff.
+- Branch boundary: runtime bridge/execution work requires explicit approval and should run on a separate dedicated branch when started.
+- WP-15 through WP-17 closeout does not imply runtime bridge/apply integration.
 
 ## Determinism Doctrine (v4+)
 
@@ -17,7 +23,7 @@ SmartStat guarantees (within a given version + config):
 
 ---
 
-# RC1 Phase (Immediate)
+# RC1 Phase (Historical Baseline - Locked)
 
 ## Objectives
 - Validate STRICT harness across representative templates
@@ -308,6 +314,8 @@ WP-17 CLOSED - Standalone capture contract layer defined (docs/tests/tooling onl
 Evidence: `tests/wp-17/contract-validators/artifacts/wp17_contract_20260308/` (`RUN_PASS=True`, `DETERMINISM_REPLAY_PASS=True`).
 
 ## WP-18 (v4.2.0): Plan Validation
+Status: DEFERRED (not started; explicit kickoff required).
+
 ### Scope
 - Add deterministic validation tooling for WP-17 captured-plan artifacts.
 - Add good/bad fixtures for validator coverage.
@@ -320,6 +328,8 @@ Evidence: `tests/wp-17/contract-validators/artifacts/wp17_contract_20260308/` (`
 - No SmartStat runtime behavior changes introduced by validation tooling.
 
 ## WP-19 (v4.2.0): Plan Viewer
+Status: DEFERRED (not started; explicit kickoff required).
+
 ### Scope
 - Extend read-only inspection UX to include deterministic plan-view semantics.
 - Provide explainable plan browsing/debugging without apply/runtime integration.
@@ -332,6 +342,8 @@ Evidence: `tests/wp-17/contract-validators/artifacts/wp17_contract_20260308/` (`
 - No runtime apply behavior changes introduced.
 
 ## WP-20 (v4.2.0+): Runtime Bridge
+Status: DEFERRED (not started; explicit kickoff required + explicit approval).
+
 ### Scope
 - Introduce controlled bridge points from validated plan artifacts toward runtime integration.
 - Defer runtime bridge implementation until semantic inspection, explainability, plan capture, and plan validation are stable.
@@ -347,6 +359,7 @@ Strategic sequencing note:
 - Strategic target remains `Stat Query -> Deterministic Execution Plan`.
 - Semantic viewer capability now exists and changes optimal milestone order.
 - Runtime bridging is intentionally deferred until inspection/explainability/capture/validation are stable.
+- Runtime bridge/execution sequencing is out-of-lane for current `feature/semantic-layer` work until separately approved and kicked off.
 
 ---
 # Long-Term (v4.2+ / v5.0)

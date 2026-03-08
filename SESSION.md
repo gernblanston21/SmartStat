@@ -11,6 +11,12 @@
 
 RC1 is complete and must not be re-reviewed or modified.
 All new work proceeds from the post-RC baseline.
+## Single Active Lane Lock (2026-03-08 Re-Baseline)
+- Active lane only: `feature/semantic-layer` semantic architecture/tooling work (docs/tests/read-only tooling).
+- Frozen baseline: SmartStat runtime/core behavior anchored to `v4.0.0_beta` and `v4.0.0_RC1` lineage.
+- Deferred by default: WP-18, WP-19, and WP-20 remain not started until explicit kickoff.
+- Branch boundary: runtime bridge/execution proposals require explicit approval and may require a separate branch to avoid lane contamination.
+- No implicit runtime integration: WP-15 through WP-17 artifacts do not imply runtime bridge/apply behavior.
 
 ---
 
@@ -27,6 +33,8 @@ Active WP:
 - WP-16 CLOSED (Phase 8 + Phase 9 read-only explainability/candidate-resolution scaffolds accepted as read-only tooling).
 - WP-17 CLOSED (plan-capture contract layer implemented as docs/tests/tooling-only package under tests/wp-17 + docs/onair contract/schema).
 - WP-18 NEXT (deferred until explicit start; validation layer builds on WP-17 contract and remains non-runtime).
+- WP-19 DEFERRED (not started; explicit kickoff required).
+- WP-20 DEFERRED (not started; explicit kickoff required + explicit approval).
 No opportunistic refactors.
 No scope creep.
 Each WP must be:
@@ -128,9 +136,9 @@ v4.1.0 stabilization work packages (historical complete):
 - WP-15 - Semantic Inspection Foundation
 - WP-16 - Resolution Explainability
 - WP-17 - Plan Capture Contract Layer
-- WP-18 - Plan Validation (deferred)
-- WP-19 - Plan Viewer (deferred)
-- WP-20 - Runtime Bridge (deferred; no runtime coupling until WP-15 through WP-19 are stable)
+- WP-18 - Plan Validation (deferred; explicit kickoff required)
+- WP-19 - Plan Viewer (deferred; explicit kickoff required)
+- WP-20 - Runtime Bridge (deferred; explicit kickoff + approval required; no runtime coupling until WP-15 through WP-19 are stable)
 - Strategic target: `Stat Query -> Deterministic Execution Plan`
 - Sequence rationale: Semantic Source View now exists, so semantic inspection/explainability leads the plan-engine track.
 - Active branch for this sequence: `feature/semantic-layer`
@@ -156,8 +164,8 @@ v4.1.0 stabilization work packages (historical complete):
 - Scope boundary preserved: explainability bridge only (no runtime SmartStat integration).
 - WP-17 CLOSED on 2026-03-08: versioned plan-capture contract + schema + validator harness accepted (docs/tests/tooling only).
 - WP-17 evidence: tests/wp-17/contract-validators/artifacts/wp17_contract_20260308/.
-- Next architecture handoff target: WP-18 (Plan Validation).
-- WP-18 (Plan Validation), WP-19 (Plan Viewer), and WP-20 (Runtime Bridge) remain deferred roadmap items.
+- Next eligible architecture handoff target (requires explicit kickoff): WP-18 (Plan Validation).
+- WP-18 (Plan Validation), WP-19 (Plan Viewer), and WP-20 (Runtime Bridge) remain deferred roadmap items and are not active until explicitly kicked off.
 OnAir dump handling:
 - The current `onair_dump/` dataset is reserved for semantic-layer work.
 - Canonical repo location: `.tools/onair_dump/`

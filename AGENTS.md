@@ -92,6 +92,13 @@ All changes must:
 - Preserve transaction integrity
 - Avoid unintended behavioral drift
 
+### Branch / Lane Separation (Mandatory)
+- Single active lane is `feature/semantic-layer` for semantic architecture/tooling only.
+- Do not mix runtime execution work with semantic architecture/tooling work in one pass.
+- Runtime bridge/execution proposals require explicit approval before implementation.
+- Runtime bridge/execution implementation may require a separate dedicated branch.
+- If lane boundaries are unclear, halt and request explicit scope confirmation.
+
 ---
 
 ## Code Delivery Rules
@@ -123,10 +130,13 @@ Fail closed by default.
 
 ---
 
-## Current Release Target
+## Current Release Target and Branch Strategy
 
-v4.0.0_RC1 frozen
-Post-RC development continues on `v4_Dev` branch toward v4.1.0.
+- Frozen runtime/core baselines: `v4.0.0_beta` and `v4.0.0_RC1`.
+- Single active development lane: `feature/semantic-layer` (semantic architecture/tooling only).
+- WP-18, WP-19, and WP-20 are deferred until explicit kickoff.
+- Runtime bridge/execution work requires explicit approval and may require a separate dedicated branch.
+- `v4_Dev` remains historical RC lineage baseline, not the active semantic feature lane.
 
 ---
 
