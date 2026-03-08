@@ -11,28 +11,29 @@ Conservative alias phrase mapping to canonical qualifier/filter forms derived fr
 
 ## Extraction notes / normalization notes
 
-- v3 sheets do not provide a dedicated alias column; mappings here are marked as inferred when derived from explicit parameter semantics.
-- No free-form alias invention is performed beyond strongly indicated parameterized forms.
+- v3 sheets do not include a dedicated alias-column map.
+- `mapping_basis=explicit` is reserved for direct workbook alias rows (none observed in this phase).
+- `mapping_basis=inferred_from_parameters` is used when mapping is derived from available-parameter forms and examples.
 
 ## Extracted reference
 
-| alias_phrase | canonical_filter | canonical_parameter | league | example | notes |
+| alias_phrase | canonical_filter | canonical_parameter | league | example | mapping_basis |
 | --- | --- | --- | --- | --- | --- |
-| LAST N GAMES | last_game | N | MLB | last_game(1), last_game(5) | Inferred from numeric placeholder examples. |
-| LAST N SEASONS | season | lastN | MLB | season, season(last3), season(2024) | Inferred from `last#` parameter pattern. |
-| POST ALL-STAR BREAK | all_star_break | after | MLB | all_star_break(after) | Inferred from explicit before/after parameter semantics. |
-| PRE ALL-STAR BREAK | all_star_break | before | MLB | all_star_break(after) | Inferred from explicit before/after parameter semantics. |
-| PREVIOUS N SEASONS | season | prevN | MLB | season, season(last3), season(2024) | Inferred from `prev#` parameter pattern. |
-| SINCE ALL-STAR BREAK | all_star_break | after | MLB | all_star_break(after) | Inferred from explicit before/after parameter semantics. |
-| LAST N GAMES | last_game | N | NHL | last_game(1), last_game(5) | Inferred from numeric placeholder examples. |
-| LAST N SEASONS | season | lastN | NHL | season, season(last3), season(2024) | Inferred from `last#` parameter pattern. |
-| POST ALL-STAR BREAK | all_star_break | after | NHL | all_star_break(after) | Inferred from explicit before/after parameter semantics. |
-| PRE ALL-STAR BREAK | all_star_break | before | NHL | all_star_break(before) | Inferred from explicit before/after parameter semantics. |
-| PREVIOUS N SEASONS | season | prevN | NHL | season, season(last3), season(2024) | Inferred from `prev#` parameter pattern. |
-| SINCE ALL-STAR BREAK | all_star_break | after | NHL | all_star_break(after) | Inferred from explicit before/after parameter semantics. |
+| LAST N GAMES | last_game | N | MLB | last_game(5) | inferred_from_parameters |
+| LAST N SEASONS | season | lastN | MLB | season(last3) | inferred_from_parameters |
+| POST ALL-STAR BREAK | all_star_break | after | MLB | all_star_break(after) | inferred_from_parameters |
+| PRE ALL-STAR BREAK | all_star_break | before | MLB | all_star_break(before) | inferred_from_parameters |
+| PREVIOUS N SEASONS | season | prevN | MLB | season(prev2) | inferred_from_parameters |
+| SINCE ALL-STAR BREAK | all_star_break | after | MLB | all_star_break(after) | inferred_from_parameters |
+| LAST N GAMES | last_game | N | NHL | last_game(5) | inferred_from_parameters |
+| LAST N SEASONS | season | lastN | NHL | season(last3) | inferred_from_parameters |
+| POST ALL-STAR BREAK | all_star_break | after | NHL | all_star_break(after) | inferred_from_parameters |
+| PRE ALL-STAR BREAK | all_star_break | before | NHL | all_star_break(before) | inferred_from_parameters |
+| PREVIOUS N SEASONS | season | prevN | NHL | season(prev2) | inferred_from_parameters |
+| SINCE ALL-STAR BREAK | all_star_break | after | NHL | all_star_break(after) | inferred_from_parameters |
 
 ## SmartStat Relevance
 
 - Seeds deterministic qualifier alias normalization.
 - Improves candidate-resolution explainability for human phrase variants.
-- Provides a controlled synonym layer for future semantic/planner work.
+- Preserves mapping provenance (`explicit` vs `inferred_from_parameters`) for downstream planner work.

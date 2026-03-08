@@ -2,7 +2,7 @@
 
 ## Purpose / Overview
 
-Workbook-grounded query template reference extracted from Available Queries sheets.
+Workbook-grounded query reference that separates baseline canonical skeleton patterns, workbook family labels, and full example evidence rows.
 
 ## Source workbook coverage
 
@@ -11,12 +11,43 @@ Workbook-grounded query template reference extracted from Available Queries shee
 
 ## Extraction notes / normalization notes
 
-- Rows are included only when `Query` contains an explicit `{{...}}` template.
-- Query families are taken directly from the workbook `Type` column (normalized to lowercase).
+- Canonical skeleton patterns below are normalized from workbook evidence and intended as Phase 0 baseline patterns.
+- Workbook family labels are preserved from the `Type` column and should be interpreted as workbook categories, not guaranteed canonical semantic families.
+- Example query strings are preserved exactly as they appear in workbook query rows.
 
-## Extracted reference
+## Section 1: Canonical Skeleton Patterns
 
-| query_family | skeleton | example | league |
+Baseline canonical patterns observed in workbook examples:
+
+| normalized_skeleton | evidence_basis |
+| --- | --- |
+| `{{info.entity.attribute}}` | `INFO` family template row in both workbooks |
+| `{{stats.entity.filter.measure}}` | `STATS` family template row in both workbooks |
+
+Additional operator-style templates are present in workbook categories (`leader`, `rank`, `previous`, `streak`, etc.) and are preserved in Section 3 as evidence rows.
+
+## Section 2: Workbook Query Families
+
+- `calendar`
+- `conditional`
+- `custom`
+- `game high`
+- `game_high`
+- `games with`
+- `games_with`
+- `info`
+- `leader`
+- `math`
+- `previous`
+- `rank`
+- `stats`
+- `streak`
+
+These labels represent workbook-defined categories and should not be assumed to be canonical grammar families.
+
+## Section 3: Example Queries
+
+| workbook_family_label | query_string | explanatory_notes | league |
 | --- | --- | --- | --- |
 | calendar | {{ calendar(1, sun).team.game_vs }} |  | MLB |
 | calendar | {{ calendar(1, sun).time.day_of_month }} |  | MLB |
@@ -127,6 +158,6 @@ Workbook-grounded query template reference extracted from Available Queries shee
 
 ## SmartStat Relevance
 
-- Provides canonical query-shape references for semantic parsing.
-- Supports candidate-resolution explainability by query-family context.
-- Supplies baseline planner grammar templates for future phases.
+- Separates baseline semantic skeleton interpretation from workbook query category labels.
+- Preserves complete workbook query evidence for deterministic semantic/planner analysis.
+- Supports candidate-resolution explainability and future grammar formalization without asserting runtime behavior.

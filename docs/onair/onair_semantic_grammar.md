@@ -1,8 +1,16 @@
-# OnAir Semantic Grammar (Canonical Phase 0 Reference)
+# OnAir Semantic Grammar (Phase 0 Synthesized Reference)
 
 ## Purpose / Overview
 
-Canonical semantic grammar reference synthesized from the MLB/NHL OnAir v3 workbook sheets. This document defines stable query/component composition patterns for SmartStat semantic tooling.
+Phase 0 synthesized semantic reference derived from MLB/NHL OnAir v3 workbook documentation.
+
+## Phase Status
+
+This document represents a **Phase 0 synthesized semantic reference model** derived from the OnAir workbook documentation.
+
+It reflects observed patterns in the reference sheets but does not claim to be the final canonical grammar of the OnAir language.
+
+Future SmartStat planner work may refine or formalize these structures.
 
 ## Source workbook coverage
 
@@ -10,35 +18,29 @@ Canonical semantic grammar reference synthesized from the MLB/NHL OnAir v3 workb
 - NHL workbook: `NHL_OnAir_v3_Stat_Syntax_v3.xlsx`
 - Source sheets used: `Entities`, `CATEGORY_TO_MEASURE*`, `QUALIFIER_TO_FILTER`, `Player-Coach Attributes`, `Team Attributes`, `Time Attribute`, `Formatters`, `Available Queries`
 
-## Extraction notes / normalization notes
+## Observed Query Families
 
-- Grammar statements are grounded in explicit workbook syntax/examples.
-- Core SmartStat planning focus remains `info` and `stats` query families; other observed families are listed as workbook-observed extensions.
-- No runtime resolution/execution semantics are inferred in this phase.
-
-## Query families
-
-### Core families
+### Core semantic families
 
 - `info`
 - `stats`
 
-### Additional workbook-observed families
+### Workbook-observed families
 
 - `calendar`
 - `conditional`
 - `custom`
-- `game high`
-- `game_high`
-- `games with`
-- `games_with`
+- `game high` (also observed as `game_high`)
+- `games with` (also observed as `games_with`)
 - `leader`
 - `math`
 - `previous`
 - `rank`
 - `streak`
 
-## Semantic component classes
+Workbook-observed families in this section may represent higher-order query operators, workbook-defined categories, or macro-style queries. They should not be assumed to be canonical semantic families.
+
+## Semantic Component Classes
 
 - `entity`: actor/scope token from `Entities` (examples: `player`, `team`, `coach`, `time`).
 - `attribute`: `info`-oriented field tokens from attribute sheets.
@@ -46,54 +48,51 @@ Canonical semantic grammar reference synthesized from the MLB/NHL OnAir v3 workb
 - `filter`: qualifier token from `QUALIFIER_TO_FILTER`.
 - `formatter`: post-expression transform token from `Formatters`.
 
-## Canonical composition patterns
+## Baseline Composition Patterns
+
+Baseline canonical patterns observed in workbook examples:
 
 - `{{info.entity.attribute}}`
 - `{{stats.entity.filter.measure}}`
-- Formatter application observed in workbook examples: `{{ ... | formatter }}`
 
-Representative workbook examples:
+Observed workbook examples also show formatter pipes (for example `{{ ... | formatter }}`) and higher-order wrappers (for example `leader`, `rank`, `streak`, `previous`). Additional compositions may exist beyond this Phase 0 baseline.
 
-- `{{ info.coach(DET).first_name }}` (MLB)
-- `{{ info.league.alias }}` (MLB)
-- `{{ info.player.full_name }}` (MLB)
-- `{{ info.team.name }}` (MLB)
-- `{{ info.time.month(prev) }}` (MLB)
-- `{{ info.time.season(last) }}` (MLB)
-- `{{info.entity.attribute}}` (MLB)
-- `{{ stats.away.season(2015).venue(DET).extra_inning_games(yes).team_wins }}` (MLB)
+## Argument Shape Taxonomy
 
-## Argument grammar (source-grounded)
+### Literal placeholders
 
-| argument_shape | description | source evidence |
-| --- | --- | --- |
-| `TRICODE` | Team shorthand code parameter | Entities `team(TRICODE)`; filters like `on_team(TRICODE)` |
-| `##` | Integer slot (example: player index/id parameter) | Entities `player(TRICODE, ##)` |
-| `##:##` | Clock-time parameter | Filter examples for `game_clock` |
-| `#-#` | Range interval | Filters like `innings(7-9)` examples |
-| `<#`, `>#`, `=#`, `<=#`, `=>#` | Comparison operators | Margin/comparison filter examples |
-| `last#`, `prev#` | Relative time/count selectors | `season`, `month`, `postseason` available parameters |
-| enum lists | Explicit token sets | Available-parameter lists in `QUALIFIER_TO_FILTER` |
+- `TRICODE`: team shorthand code parameter in entities and team-scoped filters.
+- `##`: integer slot (for example entity secondary parameter).
+- `##:##`: clock-time literal for time-threshold comparisons.
 
-## League / subtype deltas
+### Comparison operators
 
-- MLB adds pitcher-specific measure sheet: `CATEGORY_TO_MEASURE_PITCHER`.
-- NHL adds goalie-specific measure sheet: `CATEGORY_TO_MEASURE_GOALIE`.
+- `<#`, `>#`, `=#`, `<=#`, `=>#`: numeric threshold operators used in comparison-style filters.
+
+### Range forms
+
+- `#-#`: inclusive range-style value form used in inning/range examples.
+
+### Relative forms
+
+- `last#`: relative recent-window selector.
+- `prev#`: previous-window selector.
+
+### Enumerated token forms
+
+- Explicit token lists (for example `home/away`, `yes/no`, position codes, period/state tokens).
+
+## League/Subtype Differences
+
+- MLB includes pitcher-specific measure sheet: `CATEGORY_TO_MEASURE_PITCHER`.
+- NHL includes goalie-specific measure sheet: `CATEGORY_TO_MEASURE_GOALIE`.
 - MLB entities include `batter` and `pitcher`; NHL entity sheet omits those tokens.
-- Header naming differs across leagues (`Measure Syntax` vs `Measure`, `Filter (Qualifier) Syntax` vs `Qualifier/Filter`) and is normalized in extraction output.
+- Header naming differs across leagues (`Measure Syntax` vs `Measure`, `Filter (Qualifier) Syntax` vs `Qualifier/Filter`) and is normalized in extracted references.
 
-## SmartStat Relevance
+## SmartStat Interpretation Notes
 
-- Provides canonical semantic dictionaries for entities/measures/filters/attributes/formatters.
-- Provides source-grounded qualifier alias normalization scaffolding.
-- Provides deterministic input structure for candidate-resolution explainability.
-- Provides grammar scaffolding for later planner and Plan Engine phases.
-- Keeps runtime behavior unchanged while formalizing the semantic language surface.
-
-## Source evidence snapshots
-
-- Entity parameter forms observed: (info requests only), TRICODE, TRICODE, ##, TRICODE, home, away, us, opp, them, only available in Batter vs Pitcher category Playbook pages, player, team
-- Filter parameter evidence examples (sample): # | innings(3), innings(7-25), # | last_game(1), last_game(5), (REG, [year]) or (PST, [year]) year = cutoff for stats | all_time, all_time(REG, 2002), all_time(2009), (REG, [year]), (PST, [year]) 'year = cutoff for stats eg. 2004' | all_time, all_time(REG, 2002), all_time(2009), 0, 1, 2 | outs(2), 0, 1, 2 | strikes(2), 0-0, 1-0, 2-0, 3-0, 0-1, 0-2, 1-1, 1-2, 2-1, 3-1, 3-2, 2-2 | count(0-0), count(0-2), 1, 2, 3, OT1, OT2, OT3, OT4, OT5, SO | period(2), period(OT1)
-- Measure rows extracted: 1323
-- Attribute rows extracted: 80
-- Formatter rows extracted: 38
+- Supports semantic dictionaries for entities, attributes, measures, filters, and formatters.
+- Supports alias normalization scaffolding with explicit provenance labels (`explicit` vs inferred mappings).
+- Supports deterministic candidate-resolution explainability inputs.
+- Provides Phase 0 grammar interpretation notes for future planner grammar formalization.
+- This document is not the final canonical SmartStat planner grammar.
