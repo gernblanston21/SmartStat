@@ -1,28 +1,39 @@
 # OnAir Extraction Tooling
 
-This directory contains deterministic extraction helpers for the Phase 0 OnAir semantic reference layer.
+## Purpose
+
+Deterministic extraction tooling for the Phase 0 OnAir semantic reference layer.
+
+## Source inputs
+
+- `docs/onair/source/MLB_OnAir_v3_Stat_Syntax_v3.xlsx`
+- `docs/onair/source/NHL_OnAir_v3_Stat_Syntax_v3.xlsx`
 
 ## Script
 
 - `extract_onair_reference.py`
 
-## What It Does
-
-- Parses MLB/NHL OnAir XLSX files using standard library XML readers
-- Inventories actual workbook sheet names/order/header structure
-- Extracts reference scaffolding data (measures, filters, aliases, entities, attributes, formatters, queries)
-- Writes documentation artifacts under `docs/onair/`
-- Writes structured extraction output to `docs/onair/_extracted/onair_reference.extracted.json`
-
-## Scope Guardrail
-
-This is read-only semantic reference extraction tooling.
-It does not implement runtime SmartStat behavior, planner execution, or resolver logic.
-
 ## Usage
 
-From repo root:
-
-```powershell
+```bash
 python tools/onair/extract_onair_reference.py
 ```
+
+## Output targets
+
+- `docs/onair/workbook-inventory.md`
+- `docs/onair/README.md`
+- `docs/onair/measure-dictionary.md`
+- `docs/onair/filter-grammar-dictionary.md`
+- `docs/onair/alias-map.qualifiers.md`
+- `docs/onair/entity-dictionary.md`
+- `docs/onair/attribute-dictionary.md`
+- `docs/onair/formatter-dictionary.md`
+- `docs/onair/query-skeletons.md`
+- `docs/onair/onair_semantic_grammar.md`
+
+## Boundaries
+
+- Read-only semantic reference extraction only
+- No runtime SmartStat behavior changes
+- No resolver/planner execution logic

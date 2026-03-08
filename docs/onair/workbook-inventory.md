@@ -2,42 +2,43 @@
 
 ## Purpose / Overview
 
-Deterministic inventory of actual workbook sheets, order, and header structures.
+Deterministic inventory of workbook sheet order, headers, and sheet-level purpose for the v3 reference sources.
 
-## MLB - `MLB_OnAir_v3_Stat_Syntax_v2.xlsx`
+## MLB - `MLB_OnAir_v3_Stat_Syntax_v3.xlsx`
 
-| order | sheet_name | header_row | headers | data_row_count |
-| --- | --- | --- | --- | --- |
-| 1 | CATEGORY_TO_MEASURE | 1 | VALUE, DESCRIPTION | 775 |
-| 2 | CATEGORY_TO_MEASURE_PITCHER | 1 | SYNTAX, DESCRIPTION | 242 |
-| 3 | QUALIFIER_TO_FILTER | 1 | Filter, Available Parameters | 50 |
-| 4 | Entities | 1 | Entity, Available Parameters | 11 |
-| 5 | Player-Coach Attributes | 1 | Player/Coach Attribute, Entity Supported | 28 |
-| 6 | Team Attributes | 1 | Team Attribute,  | 9 |
-| 7 | Time Attribute | 1 | Formatter, Function | 4 |
-| 8 | Formatters | 1 | Formatter, Function | 20 |
-| 9 | Additional Measures | 1 | Measure,  | 2 |
-| 10 | Available Queries | 1 | Type, Query, Info | 62 |
+| order | sheet_name | header_row | headers | data_row_count | purpose |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Entities | 1 | Entity Syntax, Available Parameters | 11 | Entity tokens and parameter signatures |
+| 2 | CATEGORY_TO_MEASURE | 1 | Measure Syntax, Description | 775 | General measure syntax catalog |
+| 3 | CATEGORY_TO_MEASURE_PITCHER | 1 | Measure Syntax, Description | 242 | Pitcher-specific measure syntax catalog (MLB) |
+| 4 | QUALIFIER_TO_FILTER | 1 | Filter (Qualifier) Syntax, Available Parameters, Example(s) | 50 | Filter/qualifier syntax and parameter forms |
+| 5 | Player-Coach Attributes | 1 | Main, Player/Coach Attribute, Entity Supported | 28 | Player and coach attribute names |
+| 6 | Team Attributes | 1 | Main, Team Attribute,  | 9 | Team attribute names |
+| 7 | Time Attribute | 1 | Formatter, Function | 4 | Time attribute and relative selectors |
+| 8 | Formatters | 1 | Formatter, Function | 20 | Formatter names and descriptions |
+| 9 | Additional Measures | 1 | Measure,  | 2 | Extra standalone measure tokens |
+| 10 | Available Queries | 1 | Type, Query, Info | 62 | Query-family skeletons and examples |
 
-## NHL - `NHL_OnAir_v3_Stat_Syntax_v2.xlsx`
+## NHL - `NHL_OnAir_v3_Stat_Syntax_v3.xlsx`
 
-| order | sheet_name | header_row | headers | data_row_count |
-| --- | --- | --- | --- | --- |
-| 1 | Entities | 1 | Key, Entity, Available Parameters, Example A, Example B, Example C, Example D | 9 |
-| 2 | QUALIFIER_TO_FILTER | 1 | Aliases, Qualifier/Filter, Available Parameters, Example A, Example B, Example C, Example D | 39 |
-| 3 | CATEGORY_TO_MEASURE | 1 | Measure, Description | 274 |
-| 4 | CATEGORY_TO_MEASURE_GOALIE | 1 | Measure, Description | 45 |
-| 5 | Player-Coach Attributes | 1 | Player/Coach Measure, Entity Supported | 26 |
-| 6 | Team Attributes | 1 | Team Measure,  | 9 |
-| 7 | Time Attribute | 1 | Formatter, Function | 4 |
-| 8 | Formatters | 1 | Formatter, Function | 18 |
-| 9 | Additional Measures | 1 | Measure,  | 2 |
-| 10 | Available Queries | 1 | Type, Query, Info | 62 |
+| order | sheet_name | header_row | headers | data_row_count | purpose |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Entities | 1 | Entity, Available Parameters | 9 | Entity tokens and parameter signatures |
+| 2 | CATEGORY_TO_MEASURE | 1 | Measure, Description | 274 | General measure syntax catalog |
+| 3 | CATEGORY_TO_MEASURE_GOALIE | 1 | Measure, Description | 45 | Goalie-specific measure syntax catalog (NHL) |
+| 4 | QUALIFIER_TO_FILTER | 1 | Qualifier/Filter, Available Parameters, Example(s) | 39 | Filter/qualifier syntax and parameter forms |
+| 5 | Player-Coach Attributes | 1 | Main, Player/Coach Measure, Entity Supported | 26 | Player and coach attribute names |
+| 6 | Team Attributes | 1 | Main, Team Measure,  | 9 | Team attribute names |
+| 7 | Time Attribute | 1 | Formatter, Function | 4 | Time attribute and relative selectors |
+| 8 | Formatters | 1 | Formatter, Function | 18 | Formatter names and descriptions |
+| 9 | Additional Measures | 1 | Measure,  | 2 | Extra standalone measure tokens |
+| 10 | Available Queries | 1 | Type, Query, Info | 62 | Query-family skeletons and examples |
 
-## Structural differences noted
+## MLB vs NHL structural differences
 
-- NHL `Entities` includes `Key` and example columns; MLB `Entities` is compact.
-- MLB `CATEGORY_TO_MEASURE_PITCHER` uses header `SYNTAX`; other measure sheets use `VALUE`/`Measure`.
-- NHL `QUALIFIER_TO_FILTER` has explicit `Aliases`; MLB does not.
-- `Available Queries` includes shifted rows where query text appears under `Type`.
-- `Time Attribute` uses `Formatter`/`Function` headers and is treated as attribute reference input.
+- MLB `Entities` header is `Entity Syntax`; NHL uses `Entity`.
+- MLB measure headers use `Measure Syntax`; NHL uses `Measure`.
+- MLB filter header is `Filter (Qualifier) Syntax`; NHL uses `Qualifier/Filter`.
+- Player/coach attribute header differs: MLB `Player/Coach Attribute`, NHL `Player/Coach Measure`.
+- Team attribute header differs: MLB `Team Attribute`, NHL `Team Measure`.
+- MLB has `CATEGORY_TO_MEASURE_PITCHER`; NHL has `CATEGORY_TO_MEASURE_GOALIE`.

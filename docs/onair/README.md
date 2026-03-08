@@ -1,31 +1,25 @@
-# OnAir Semantic Reference Layer (Phase 0)
+# OnAir Semantic Reference Layer
 
-## What This Is
+## Purpose / Overview
 
-This directory contains read-only semantic reference artifacts extracted from OnAir workbook references.
+This directory contains read-only semantic reference artifacts extracted from the OnAir v3 workbook references.
 
 ## Source material location
 
-- `docs/onair/source/MLB_OnAir_v3_Stat_Syntax_v2.xlsx`
-- `docs/onair/source/NHL_OnAir_v3_Stat_Syntax_v2.xlsx`
+- `docs/onair/source/MLB_OnAir_v3_Stat_Syntax_v3.xlsx`
+- `docs/onair/source/NHL_OnAir_v3_Stat_Syntax_v3.xlsx`
 
-## Why these docs exist
+## Why this documentation exists
 
-These references support:
+The extracted references provide deterministic source-grounded inputs for:
 - semantic dictionaries
-- alias normalization
+- qualifier alias normalization
 - candidate-resolution explainability
-- planner grammar preparation
+- future SmartStat plan grammar and Plan Engine preparation
 
-## Explicit non-scope
+## Included artifacts
 
-- No SmartStat runtime behavior implementation
-- No resolver logic implementation
-- No planner execution implementation
-- No runtime integration
-
-## Artifact index
-
+- `workbook-inventory.md`
 - `measure-dictionary.md`
 - `filter-grammar-dictionary.md`
 - `alias-map.qualifiers.md`
@@ -33,4 +27,12 @@ These references support:
 - `attribute-dictionary.md`
 - `formatter-dictionary.md`
 - `query-skeletons.md`
-- `workbook-inventory.md`
+- `onair_semantic_grammar.md`
+
+## Explicit non-scope
+
+- No SmartStat runtime behavior changes
+- No resolver/planner execution changes
+- No runtime integration dependencies
+
+This layer is documentation and extraction tooling only.
