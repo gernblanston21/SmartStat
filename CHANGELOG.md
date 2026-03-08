@@ -3,6 +3,31 @@
 All notable changes to the SmartStat Core Engine are documented in this file.
 Runtime versioning follows script identifiers (`SmartStat_v*.vbs`), while `VERSION.txt` remains VIZOR UI display metadata.
 
+## [feature/semantic-layer] - 2026-03-08 (WP-17)
+
+### Summary
+- Implemented WP-17 as a standalone plan-capture contract layer (docs/tests/tooling only).
+- Added versioned contract + schema for deterministic captured-plan artifacts.
+- Added WP-17 validator harness with fail-closed refusal semantics and deterministic replay hash checks.
+- Preserved runtime boundaries: no SmartStat core behavior changes, no planner execution, no runtime bridge/apply behavior.
+
+### Added
+- `docs/onair/plan-capture-contract.md`
+- `docs/onair/plan-capture.schema.json`
+- `tests/wp-17/contract-validators/common_plan_capture_validator.ps1`
+- `tests/wp-17/contract-validators/validate_plan_capture_contract.ps1`
+- `tests/wp-17/run_wp17.ps1`
+- `tests/wp-17/README.md`
+- WP-17 good/bad deterministic fixtures under `tests/wp-17/fixtures/`
+
+### Changed
+- OnAir architecture docs now explicitly route to WP-17 enforceable contract surface.
+- Roadmap/session truth now marks WP-17 contract-layer closeout and WP-18+ deferrals.
+
+### Validation
+- `tests/wp-17/run_wp17.ps1` passed (`RUN_PASS=True`, `DETERMINISM_REPLAY_PASS=True`).
+- Existing semantic source-view test/build baselines rerun and passed.
+- Confirmed no SmartStat runtime script changes in this pass.
 ## [feature/semantic-layer] - 2026-03-08
 
 ### Summary
@@ -187,4 +212,3 @@ Runtime versioning follows script identifiers (`SmartStat_v*.vbs`), while `VERSI
 
 ### Summary
 - Last pre-v4 production line before staged transaction architecture and ambiguity-gating overhaul.
-

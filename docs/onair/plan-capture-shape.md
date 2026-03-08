@@ -1,5 +1,9 @@
 # OnAir Plan Capture Shape (Phase 0 Architecture Reference)
 
+> WP-17 note: the enforceable capture contract is now defined in
+> `docs/onair/plan-capture-contract.md` and `docs/onair/plan-capture.schema.json`.
+> This document remains conceptual background and rationale.
+
 ## 1. Purpose / Overview
 
 This document defines a conceptual deterministic plan-capture shape for OnAir expressions after slot-aware semantic resolution.

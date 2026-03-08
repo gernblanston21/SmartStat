@@ -31,6 +31,8 @@ The extracted references provide deterministic source-grounded inputs for:
 - `slot-resolution-model.md` (grammar-to-candidate-resolution bridge for future plan capture architecture)
 - `plan-capture-shape.md` (conceptual deterministic captured-plan shape after slot resolution)
 - `plan-validation-model.md` (conceptual semantic plan validation layer before execution planning)
+- `plan-capture-contract.md` (WP-17 enforceable captured-plan contract; docs/tests/tooling-only)
+- `plan-capture.schema.json` (WP-17 versioned schema for captured-plan artifacts)
 
 ## Explicit non-scope
 

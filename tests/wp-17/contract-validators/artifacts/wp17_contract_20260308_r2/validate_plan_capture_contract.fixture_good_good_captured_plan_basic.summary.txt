@@ -1,0 +1,9 @@
+VALIDATOR=validate_plan_capture_contract
+CONTRACT_VERSION=wp17.plan_capture.v1
+RUN_LABEL=wp17_contract_20260308_r2
+CASE_LABEL=fixture_good_good_captured_plan_basic
+TARGET_PATH=E:\EDRIVE\UNIVERSAL\SmartStat\tests\wp-17\fixtures\good\good_captured_plan_basic.json
+PARSEABLE=True
+ISSUE_COUNT=0
+CANONICAL_SHA256=579DBE1B06F24218B5A6E07DA82E968F1D99844AF525CAA3D48BB2E66A608A2C
+RESULT=PASS

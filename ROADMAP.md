@@ -5,6 +5,7 @@
 - WP-10 through WP-14 are complete and retained as post-RC stabilization evidence.
 - Active working lane in this repo is feature/semantic-layer (v4.2.0 architecture/tooling track).
 - Current semantic posture: Phase 9 candidate-resolution scaffold is present in tools/semantic-source-view/.
+- WP-17 now defines a versioned, deterministic plan-capture contract layer (docs/tests/tooling only).
 
 ## Determinism Doctrine (v4+)
 
@@ -272,30 +273,43 @@ WP-16 implementation package (read-only tooling):
 - Deterministic fixture + read-only panel scaffold: `tools/semantic-source-view/src/data/resolutionExplainability.fixture.ts`.
 - Scaffold checkpoint tag: `semantic-view-phase8-scaffold` (`55c56ef`).
 
-WP-16 IN PROGRESS - Phase 8 and Phase 9 read-only explainability scaffolds are accepted.
-Next WP-16 milestone: closeout handoff into WP-17 plan-capture planning.
-WP-17 (Plan Capture) begins after WP-16 maturity.
+WP-16 CLOSED - Phase 8 and Phase 9 read-only explainability/candidate-resolution scaffolds are accepted.
+WP-16 handoff into WP-17 contract work is complete.
+
 Validation evidence (2026-03-08):
 - `npm run build` passed.
 - `npm run test` passed (`3` files, `13` tests).
 - Baseline UI render, Phase 8 scaffold render, Phase 9 candidate-resolution scaffold render, search-driven selection updates, browse-mode behavior, zero-normalized-result behavior, and deterministic visual repeatability all passed.
 - Boundary checks passed: no runtime/apply behavior, no planner execution, and no runtime integration implied.
 
-## WP-17 (v4.2.0): Plan Capture
+## WP-17 (v4.2.0): Plan Capture Contract Layer (Docs/Tests/Tooling Only)
 ### Scope
-- Add deterministic plan capture as an additive observability artifact.
-- Capture resolved execution state without changing SmartStat runtime decisions.
-- Include deterministic plan artifacts in strict comparison workflows.
+- Define a versioned captured-plan artifact contract and schema.
+- Enforce contract shape via validator tooling and deterministic fixture harness.
+- Keep capture layer read-only and explicitly separated from validation, viewer, and runtime execution.
 
 ### Definition of Done
-- Plan capture schema documented.
-- Deterministic plan capture generated for strict cases.
-- Strict compare path includes plan capture artifacts.
-- No SmartStat runtime behavior changes introduced by plan capture.
+- Contract doc + schema published.
+- Validator + runner implemented under `tests/wp-17/`.
+- Good/bad fixtures pass expected outcomes.
+- Deterministic replay hash check passes in runner summary.
+- No SmartStat runtime behavior changes introduced.
+
+WP-17 implementation package (read-only docs/tests/tooling):
+- Contract doc: `docs/onair/plan-capture-contract.md`
+- Contract schema: `docs/onair/plan-capture.schema.json`
+- Validator: `tests/wp-17/contract-validators/validate_plan_capture_contract.ps1`
+- Harness runner: `tests/wp-17/run_wp17.ps1`
+- Run command: `pwsh -NoProfile -ExecutionPolicy Bypass -File tests/wp-17/run_wp17.ps1 -RunLabel <label>`
+- Evidence location: `tests/wp-17/contract-validators/artifacts/<runLabel>/`
+- Constraint: no SmartStat runtime behavior changes; no planner execution; no runtime bridge/apply behavior.
+
+WP-17 CLOSED - Standalone capture contract layer defined (docs/tests/tooling only).
+Evidence: `tests/wp-17/contract-validators/artifacts/wp17_contract_20260308/` (`RUN_PASS=True`, `DETERMINISM_REPLAY_PASS=True`).
 
 ## WP-18 (v4.2.0): Plan Validation
 ### Scope
-- Add deterministic validation tooling for captured execution plans.
+- Add deterministic validation tooling for WP-17 captured-plan artifacts.
 - Add good/bad fixtures for validator coverage.
 - Enforce stable, diffable plan contract structure.
 

@@ -1,5 +1,9 @@
 # OnAir Plan Validation Model (Phase 0 Architecture Reference)
 
+> WP-17 note: plan capture artifact shape is now enforceable via
+> `docs/onair/plan-capture-contract.md` and `docs/onair/plan-capture.schema.json`.
+> This document remains the architecture model for WP-18 validation policy.
+
 ## 1 Purpose / Overview
 
 This document defines an architecture-level validation model for captured OnAir semantic plans.
@@ -16,6 +20,7 @@ Validation is derived from:
 - semantic dictionaries (`entity`, `filter`, `measure`, `attribute`, `formatter`, aliases)
 - [slot-resolution-model.md](e:/EDRIVE/UNIVERSAL/SmartStat/docs/onair/slot-resolution-model.md)
 - [plan-capture-shape.md](e:/EDRIVE/UNIVERSAL/SmartStat/docs/onair/plan-capture-shape.md)
+- [plan-capture-contract.md](e:/EDRIVE/UNIVERSAL/SmartStat/docs/onair/plan-capture-contract.md)
 
 ## 3 Validation Layer in Architecture
 

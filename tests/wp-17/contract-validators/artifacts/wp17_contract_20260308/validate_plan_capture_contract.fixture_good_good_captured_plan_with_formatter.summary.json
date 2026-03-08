@@ -1,0 +1,12 @@
+{
+  "validator": "validate_plan_capture_contract",
+  "contract_version": "wp17.plan_capture.v1",
+  "run_label": "wp17_contract_20260308",
+  "case_label": "fixture_good_good_captured_plan_with_formatter",
+  "target_path": "E:\\EDRIVE\\UNIVERSAL\\SmartStat\\tests\\wp-17\\fixtures\\good\\good_captured_plan_with_formatter.json",
+  "parseable": true,
+  "issue_count": 0,
+  "canonical_sha256": "1F723FC364610E033A0C056FAD9E8F3B7806CFE3ED47E6C53DAE006E02A3D2C5",
+  "result": "PASS",
+  "issues": []
+}

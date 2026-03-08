@@ -1,0 +1,63 @@
+{
+  "contract_version": "wp17.plan_capture.v1",
+  "artifact_type": "capture_refusal",
+  "mode": "read_only_contract",
+  "source": {
+    "query_text": "{{leader(1, home_runs).player.last#(7).full_name}}",
+    "normalized_query_text": "leader(1,home_runs).player.last#(7).full_name",
+    "semantic_record_id": "attribute:mlb:full_name",
+    "semantic_record_type": "attribute",
+    "league": "mlb"
+  },
+  "determinism": {
+    "ordering_contract": "slot_sequence.order_asc.v1",
+    "canonicalization_version": "wp17.canonical_json.v1",
+    "input_fingerprint_sha256": "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"
+  },
+  "slot_sequence": [
+    {
+      "order": 1,
+      "slot_class": "operator",
+      "token": "leader",
+      "token_kind": "canonical",
+      "parameters": [
+        "1",
+        "home_runs"
+      ],
+      "source_dictionary": "operator_grammar",
+      "candidate_status": "resolved"
+    },
+    {
+      "order": 2,
+      "slot_class": "entity",
+      "token": "player",
+      "token_kind": "canonical",
+      "parameters": [],
+      "source_dictionary": "entity_dictionary",
+      "candidate_status": "resolved"
+    },
+    {
+      "order": 3,
+      "slot_class": "filter",
+      "token": "last#",
+      "token_kind": "alias_normalized",
+      "parameters": [
+        "7"
+      ],
+      "source_dictionary": "filter_grammar_dictionary",
+      "candidate_status": "inferred"
+    }
+  ],
+  "terminal": null,
+  "refusal": {
+    "stage": "capture",
+    "code": "AMBIGUOUS_SLOT",
+    "message": "Alias normalized filter remained ambiguous in capture stage.",
+    "blocking_slot_order": 3
+  },
+  "deferred_boundaries": [
+    "runtime apply behavior",
+    "planner execution",
+    "runtime bridge behavior"
+  ]
+}

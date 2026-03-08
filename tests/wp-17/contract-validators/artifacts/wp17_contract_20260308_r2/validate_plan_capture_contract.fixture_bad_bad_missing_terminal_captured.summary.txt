@@ -1,0 +1,11 @@
+VALIDATOR=validate_plan_capture_contract
+CONTRACT_VERSION=wp17.plan_capture.v1
+RUN_LABEL=wp17_contract_20260308_r2
+CASE_LABEL=fixture_bad_bad_missing_terminal_captured
+TARGET_PATH=E:\EDRIVE\UNIVERSAL\SmartStat\tests\wp-17\fixtures\bad\bad_missing_terminal_captured.json
+PARSEABLE=True
+ISSUE_COUNT=2
+CANONICAL_SHA256=4AD9D7844C42F4E977F0A1E2639017CDC63A3FF056A8A865DC029DDE9EBA2E6F
+RESULT=FAIL
+ISSUE CODE=MISSING_TERMINAL PATH=$.terminal MSG=captured_plan requires terminal object.
+ISSUE CODE=INVALID_TERMINAL_SLOT_COUNT PATH=$.slot_sequence MSG=captured_plan must contain exactly one terminal slot.

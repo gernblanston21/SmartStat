@@ -1,0 +1,18 @@
+{
+  "validator": "validate_plan_capture_contract",
+  "contract_version": "wp17.plan_capture.v1",
+  "run_label": "wp17_smoke",
+  "case_label": "bad_formatter_before_terminal",
+  "target_path": "E:\\EDRIVE\\UNIVERSAL\\SmartStat\\tests\\wp-17\\fixtures\\bad\\bad_formatter_before_terminal.json",
+  "parseable": true,
+  "issue_count": 1,
+  "canonical_sha256": "DCC43CDCDF84DAA231A447AC848CF3F68D0C767E92FDFAF7534CFFE8916A0EF1",
+  "result": "FAIL",
+  "issues": [
+    {
+      "code": "FORMATTER_NOT_LAST",
+      "path": "$.slot_sequence",
+      "message": "formatter slot must be last."
+    }
+  ]
+}

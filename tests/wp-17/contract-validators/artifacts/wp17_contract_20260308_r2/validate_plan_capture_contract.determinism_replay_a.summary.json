@@ -1,0 +1,12 @@
+{
+  "validator": "validate_plan_capture_contract",
+  "contract_version": "wp17.plan_capture.v1",
+  "run_label": "wp17_contract_20260308_r2",
+  "case_label": "determinism_replay_a",
+  "target_path": "E:\\EDRIVE\\UNIVERSAL\\SmartStat\\tests\\wp-17\\fixtures\\good\\good_capture_refusal_ambiguous.json",
+  "parseable": true,
+  "issue_count": 0,
+  "canonical_sha256": "904AE46581DFFC61AB17B62DD7AF8013E97DA0D44351B102A0BB4634EC30899C",
+  "result": "PASS",
+  "issues": []
+}

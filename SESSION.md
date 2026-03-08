@@ -24,7 +24,9 @@ Active WP:
 - WP-13 CLOSED (resolver perf optimization validated via harness; runtime optimization deferred to preserve post-RC behavioral guarantees).
 - WP-14 CLOSED (TrayApp contract + validator harness implemented; docs/tests/tooling only).
 - WP-15 CLOSED (semantic inspection foundation accepted; read-only tooling only).
-- WP-16 IN PROGRESS (Phase 8 + Phase 9 read-only explainability/candidate-resolution scaffolds are present in repo).
+- WP-16 CLOSED (Phase 8 + Phase 9 read-only explainability/candidate-resolution scaffolds accepted as read-only tooling).
+- WP-17 CLOSED (plan-capture contract layer implemented as docs/tests/tooling-only package under tests/wp-17 + docs/onair contract/schema).
+- WP-18 NEXT (deferred until explicit start; validation layer builds on WP-17 contract and remains non-runtime).
 No opportunistic refactors.
 No scope creep.
 Each WP must be:
@@ -125,10 +127,10 @@ v4.1.0 stabilization work packages (historical complete):
 
 - WP-15 - Semantic Inspection Foundation
 - WP-16 - Resolution Explainability
-- WP-17 - Plan Capture
-- WP-18 - Plan Validation
-- WP-19 - Plan Viewer
-- WP-20 - Runtime Bridge (intentionally deferred until WP-15 through WP-19 are stable)
+- WP-17 - Plan Capture Contract Layer
+- WP-18 - Plan Validation (deferred)
+- WP-19 - Plan Viewer (deferred)
+- WP-20 - Runtime Bridge (deferred; no runtime coupling until WP-15 through WP-19 are stable)
 - Strategic target: `Stat Query -> Deterministic Execution Plan`
 - Sequence rationale: Semantic Source View now exists, so semantic inspection/explainability leads the plan-engine track.
 - Active branch for this sequence: `feature/semantic-layer`
@@ -152,7 +154,9 @@ v4.1.0 stabilization work packages (historical complete):
   - Deterministic visual repeatability passed.
   - Boundary checks passed: no runtime/apply behavior, no planner execution, and no runtime integration implied.
 - Scope boundary preserved: explainability bridge only (no runtime SmartStat integration).
-- Next architecture handoff target: WP-17 (Plan Capture).
+- WP-17 CLOSED on 2026-03-08: versioned plan-capture contract + schema + validator harness accepted (docs/tests/tooling only).
+- WP-17 evidence: tests/wp-17/contract-validators/artifacts/wp17_contract_20260308/.
+- Next architecture handoff target: WP-18 (Plan Validation).
 - WP-18 (Plan Validation), WP-19 (Plan Viewer), and WP-20 (Runtime Bridge) remain deferred roadmap items.
 OnAir dump handling:
 - The current `onair_dump/` dataset is reserved for semantic-layer work.

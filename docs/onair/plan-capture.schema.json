@@ -1,0 +1,305 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "smartstat.onair.plan-capture.v1",
+  "title": "SmartStat OnAir Plan Capture Contract (WP-17)",
+  "type": "object",
+  "required": [
+    "contract_version",
+    "artifact_type",
+    "mode",
+    "source",
+    "determinism",
+    "slot_sequence",
+    "terminal",
+    "refusal",
+    "deferred_boundaries"
+  ],
+  "properties": {
+    "contract_version": {
+      "type": "string",
+      "const": "wp17.plan_capture.v1"
+    },
+    "artifact_type": {
+      "type": "string",
+      "enum": [
+        "captured_plan",
+        "capture_refusal"
+      ]
+    },
+    "mode": {
+      "type": "string",
+      "const": "read_only_contract"
+    },
+    "source": {
+      "$ref": "#/$defs/source"
+    },
+    "determinism": {
+      "$ref": "#/$defs/determinism"
+    },
+    "slot_sequence": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/slot"
+      }
+    },
+    "terminal": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/terminal"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "refusal": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/refusal"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "deferred_boundaries": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "artifact_type": {
+            "const": "captured_plan"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "terminal": {
+            "$ref": "#/$defs/terminal"
+          },
+          "refusal": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "artifact_type": {
+            "const": "capture_refusal"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "terminal": {
+            "type": "null"
+          },
+          "refusal": {
+            "$ref": "#/$defs/refusal"
+          }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "source": {
+      "type": "object",
+      "required": [
+        "query_text",
+        "normalized_query_text",
+        "semantic_record_id",
+        "semantic_record_type",
+        "league"
+      ],
+      "properties": {
+        "query_text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "normalized_query_text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "semantic_record_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "semantic_record_type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "league": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "determinism": {
+      "type": "object",
+      "required": [
+        "ordering_contract",
+        "canonicalization_version",
+        "input_fingerprint_sha256"
+      ],
+      "properties": {
+        "ordering_contract": {
+          "type": "string",
+          "const": "slot_sequence.order_asc.v1"
+        },
+        "canonicalization_version": {
+          "type": "string",
+          "const": "wp17.canonical_json.v1"
+        },
+        "input_fingerprint_sha256": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "slot": {
+      "type": "object",
+      "required": [
+        "order",
+        "slot_class",
+        "token",
+        "token_kind",
+        "parameters",
+        "source_dictionary",
+        "candidate_status"
+      ],
+      "properties": {
+        "order": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "slot_class": {
+          "type": "string",
+          "enum": [
+            "family",
+            "operator",
+            "entity",
+            "scope",
+            "filter",
+            "terminal_measure",
+            "terminal_attribute",
+            "formatter"
+          ]
+        },
+        "token": {
+          "type": "string",
+          "minLength": 1
+        },
+        "token_kind": {
+          "type": "string",
+          "enum": [
+            "canonical",
+            "alias_normalized",
+            "literal_parameter"
+          ]
+        },
+        "parameters": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "source_dictionary": {
+          "type": "string",
+          "enum": [
+            "query_skeletons",
+            "operator_grammar",
+            "entity_dictionary",
+            "filter_grammar_dictionary",
+            "measure_dictionary",
+            "attribute_dictionary",
+            "formatter_dictionary",
+            "derived"
+          ]
+        },
+        "candidate_status": {
+          "type": "string",
+          "enum": [
+            "resolved",
+            "inferred"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "terminal": {
+      "type": "object",
+      "required": [
+        "slot_class",
+        "token"
+      ],
+      "properties": {
+        "slot_class": {
+          "type": "string",
+          "enum": [
+            "terminal_measure",
+            "terminal_attribute"
+          ]
+        },
+        "token": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "refusal": {
+      "type": "object",
+      "required": [
+        "stage",
+        "code",
+        "message",
+        "blocking_slot_order"
+      ],
+      "properties": {
+        "stage": {
+          "type": "string",
+          "const": "capture"
+        },
+        "code": {
+          "type": "string",
+          "enum": [
+            "AMBIGUOUS_SLOT",
+            "MISSING_TERMINAL",
+            "UNSUPPORTED_SLOT_CLASS",
+            "ORDER_VIOLATION",
+            "UNSUPPORTED_OPERATOR_FORM",
+            "UNSUPPORTED_STATE"
+          ]
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1
+        },
+        "blocking_slot_order": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
