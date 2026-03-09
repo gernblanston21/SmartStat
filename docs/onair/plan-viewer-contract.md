@@ -51,6 +51,27 @@ WP-19 Target-01 defines minimum read-only view-model surfaces for future impleme
 
 These are contract expectations only; no UI behavior is implemented in this target.
 
+## Target-03 Projection Contract Shape (Read-Only)
+
+WP-19 Target-03 defines deterministic projection fixtures with a stable contract surface:
+
+1. `projection_contract`
+2. `projection_kind`
+3. `input_artifact`
+4. `input_identity`
+5. `status_summary`
+6. `issues_summary`
+7. `rule_evaluation_summary`
+8. `deterministic_identity_summary`
+9. `semantic_interpretation_summary`
+
+Projection rules:
+
+1. Projection is derived from WP-17/WP-18 artifacts only.
+2. Projection preserves WP-18 rule evaluation ordering.
+3. Projection remains read-only and non-mutating.
+4. Projection must not introduce runtime/apply/bridge fields.
+
 ## Forbidden Behaviors
 
 WP-19 must not:

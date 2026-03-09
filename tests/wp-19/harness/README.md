@@ -3,6 +3,7 @@
 Target-02 now adds a read-only intake contract harness:
 
 - `tests/wp-19/harness/read_only_intake_contract_test.py`
+- `tests/wp-19/harness/viewer_projection_contract_test.py`
 
 Future WP-19 harnesses should validate:
 
@@ -13,5 +14,6 @@ Future WP-19 harnesses should validate:
 Run command:
 
 - `python tests/wp-19/harness/read_only_intake_contract_test.py`
+- `python tests/wp-19/harness/viewer_projection_contract_test.py`
 
 No viewer UI harness is introduced in this target.

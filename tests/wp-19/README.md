@@ -19,6 +19,8 @@ Target-01 scope in this directory is scaffolding only:
   Target-specific scaffold notes and placeholders for this pass.
 - `tests/wp-19/target-02/`  
   Target-specific evidence placeholders for read-only intake contract tests.
+- `tests/wp-19/target-03/`  
+  Projection contract fixtures and evidence for deterministic read-only view-model projection.
 
 ## Planned Harness Focus (Future Targets)
 
