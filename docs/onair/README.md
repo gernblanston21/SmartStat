@@ -34,6 +34,12 @@ The extracted references provide deterministic source-grounded inputs for:
 - `plan-capture-contract.md` (WP-17 enforceable captured-plan contract; docs/tests/tooling-only)
 - `plan-capture.schema.json` (WP-17 versioned schema for captured-plan artifacts)
 
+## System Architecture
+
+See the full architecture overview:
+
+`docs/architecture/smartstat-architecture.md`
+
 ## Explicit non-scope
 
 - No SmartStat runtime behavior changes
