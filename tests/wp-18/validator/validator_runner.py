@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-WP-18 Target-03 validator runner.
+WP-18 Target-05 validator runner.
 
 This runner performs:
 - captured-plan JSON loading
@@ -8,6 +8,7 @@ This runner performs:
 - structural rule evaluation
 - semantic rule evaluation
 - determinism rule evaluation
+- boundary rule evaluation
 - deterministic validation_result emission
 
 This runner is validation-only, deterministic, read-only, and runtime-independent.
@@ -16,13 +17,14 @@ This runner is validation-only, deterministic, read-only, and runtime-independen
 from __future__ import annotations
 
 import argparse
+import ast
 import hashlib
 import json
 import sys
 from pathlib import Path
 from typing import Any
 
-VALIDATOR_CONTRACT = "wp18.validator_runner.determinism.v1"
+VALIDATOR_CONTRACT = "wp18.validator_runner.boundary.v1"
 HASH_PLACEHOLDER_CONTRACT = "wp18.normalized_plan_hash.placeholder.v1"
 REPLAY_IDENTITY_CONTRACT = "wp18.replay_identity.v1"
 
@@ -73,6 +75,18 @@ DETERMINISM_RULE_ORDER = [
 ]
 
 PRE_DETERMINISM_RULE_ORDER = STRUCTURAL_RULE_ORDER + SEMANTIC_RULE_ORDER
+
+RULE_BOUND_VALIDATION_RUNTIME_INDEPENDENT = "BOUND_VALIDATION_RUNTIME_INDEPENDENT"
+RULE_BOUND_NO_TRIO_OR_ENGINE_APPLY_CALLS = "BOUND_NO_TRIO_OR_ENGINE_APPLY_CALLS"
+RULE_BOUND_CAPTURED_PLAN_READ_ONLY = "BOUND_CAPTURED_PLAN_READ_ONLY"
+RULE_BOUND_NO_RUNTIME_SIDE_EFFECT_INFERENCE = "BOUND_NO_RUNTIME_SIDE_EFFECT_INFERENCE"
+
+BOUNDARY_RULE_ORDER = [
+    RULE_BOUND_VALIDATION_RUNTIME_INDEPENDENT,
+    RULE_BOUND_NO_TRIO_OR_ENGINE_APPLY_CALLS,
+    RULE_BOUND_CAPTURED_PLAN_READ_ONLY,
+    RULE_BOUND_NO_RUNTIME_SIDE_EFFECT_INFERENCE,
+]
 
 TERMINAL_SLOT_CLASSES = {"terminal_measure", "terminal_attribute"}
 
@@ -146,6 +160,23 @@ DATE_LIKE_ATTRIBUTE_HINTS = (
 
 SCHEMA_SKIP_DETAIL = "Skipped because schema compatibility failed."
 STRUCTURAL_SKIP_DETAIL = "Skipped because structural rules failed."
+FORBIDDEN_RUNTIME_REFERENCE_MARKERS = [
+    "smartstat_v4.0.0_beta.vbs",
+    "smartstat_templateconfig.ini",
+    "smartstat_mappings.ini",
+    "smartstat_staticoverrides.ini",
+    "smartstatvalidator.exe",
+]
+FORBIDDEN_TRIO_OR_ENGINE_CALL_NAME_MARKERS = [
+    "triocmd",
+    "engine_apply",
+    "applyplan",
+]
+FORBIDDEN_TRIO_OR_ENGINE_LITERAL_MARKERS = [
+    "page:get_property",
+    "page:set_property",
+    "script:run",
+]
 
 
 def find_repo_root(start: Path) -> Path:
@@ -199,6 +230,51 @@ def issue_sort_key(item: dict[str, Any]) -> tuple[str, str, str, str]:
 
 def sort_issues(issues: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return sorted(issues, key=issue_sort_key)
+
+
+def only_expected_keys(rows: list[dict[str, Any]], expected_keys: set[str]) -> bool:
+    for row in rows:
+        if set(row.keys()) != expected_keys:
+            return False
+    return True
+
+
+def dotted_name(node: ast.AST) -> str:
+    if isinstance(node, ast.Name):
+        return node.id
+    if isinstance(node, ast.Attribute):
+        parent = dotted_name(node.value)
+        if parent:
+            return f"{parent}.{node.attr}"
+        return node.attr
+    return ""
+
+
+def string_literals(node: ast.AST) -> list[str]:
+    literals: list[str] = []
+    for child in ast.walk(node):
+        if isinstance(child, ast.Constant) and isinstance(child.value, str):
+            literals.append(child.value)
+    return literals
+
+
+def collect_call_sites(source_text: str) -> list[tuple[str, list[str]]]:
+    tree = ast.parse(source_text)
+    call_sites: list[tuple[str, list[str]]] = []
+
+    for node in ast.walk(tree):
+        if not isinstance(node, ast.Call):
+            continue
+        call_name = dotted_name(node.func).lower()
+        arg_literals: list[str] = []
+        for arg in node.args:
+            arg_literals.extend(string_literals(arg))
+        for kwarg in node.keywords:
+            if kwarg.value is not None:
+                arg_literals.extend(string_literals(kwarg.value))
+        call_sites.append((call_name, [text.lower() for text in arg_literals]))
+
+    return call_sites
 
 
 def build_normalized_plan_hash(payload: Any, raw_text: str) -> str:
@@ -501,6 +577,18 @@ def skipped_determinism_evaluations(detail: str) -> list[dict[str, str]]:
             category="DETERMINISM",
         )
         for rule_id in DETERMINISM_RULE_ORDER
+    ]
+
+
+def skipped_boundary_evaluations(detail: str) -> list[dict[str, str]]:
+    return [
+        make_rule_evaluation(
+            rule_id=rule_id,
+            outcome="WARN",
+            detail=detail,
+            category="BOUNDARY",
+        )
+        for rule_id in BOUNDARY_RULE_ORDER
     ]
 
 
@@ -1352,9 +1440,230 @@ def evaluate_determinism_rules(
     return (evaluations, det_errors, det_warnings)
 
 
+def evaluate_boundary_rules(
+    artifact_path: Path,
+    raw_text: str,
+    errors: list[dict[str, Any]],
+    warnings: list[dict[str, Any]],
+    rule_evaluations_before_boundary: list[dict[str, str]],
+) -> tuple[list[dict[str, str]], list[dict[str, Any]], list[dict[str, Any]]]:
+    evaluations: list[dict[str, str]] = []
+    boundary_errors: list[dict[str, Any]] = []
+    boundary_warnings: list[dict[str, Any]] = []
+
+    validator_source_text = Path(__file__).read_text(encoding="utf-8")
+    source_analysis_error = ""
+    call_sites: list[tuple[str, list[str]]] = []
+
+    try:
+        call_sites = collect_call_sites(validator_source_text)
+    except SyntaxError as exc:
+        source_analysis_error = (
+            "Unable to parse validator source for boundary analysis. "
+            f"{exc.__class__.__name__}: {exc}."
+        )
+
+    # 1) Validation runtime-independence guard.
+    runtime_reference_hits: list[str] = []
+    if not source_analysis_error:
+        for call_name, arg_literals in call_sites:
+            for literal in arg_literals:
+                for marker in FORBIDDEN_RUNTIME_REFERENCE_MARKERS:
+                    if marker in literal:
+                        runtime_reference_hits.append(f"{call_name}:{marker}")
+    runtime_reference_hits = sorted(set(runtime_reference_hits))
+
+    if source_analysis_error:
+        detail = source_analysis_error
+        evaluations.append(
+            make_rule_evaluation(
+                rule_id=RULE_BOUND_VALIDATION_RUNTIME_INDEPENDENT,
+                outcome="REFUSE",
+                detail=detail,
+                category="BOUNDARY",
+            )
+        )
+        boundary_errors.append(
+            make_issue(
+                code="BOUND_RUNTIME_BEHAVIOR_DETECTED",
+                message=detail,
+                rule_id=RULE_BOUND_VALIDATION_RUNTIME_INDEPENDENT,
+                slot_order=None,
+            )
+        )
+    elif runtime_reference_hits:
+        detail = (
+            "Runtime artifact references detected in validator call sites: "
+            f"{runtime_reference_hits}."
+        )
+        evaluations.append(
+            make_rule_evaluation(
+                rule_id=RULE_BOUND_VALIDATION_RUNTIME_INDEPENDENT,
+                outcome="REFUSE",
+                detail=detail,
+                category="BOUNDARY",
+            )
+        )
+        boundary_errors.append(
+            make_issue(
+                code="BOUND_RUNTIME_BEHAVIOR_DETECTED",
+                message=detail,
+                rule_id=RULE_BOUND_VALIDATION_RUNTIME_INDEPENDENT,
+                slot_order=None,
+            )
+        )
+    else:
+        evaluations.append(
+            make_rule_evaluation(
+                rule_id=RULE_BOUND_VALIDATION_RUNTIME_INDEPENDENT,
+                outcome="PASS",
+                detail="Validator call sites contain no SmartStat runtime artifact references.",
+                category="BOUNDARY",
+            )
+        )
+
+    # 2) No Trio/apply call surface guard.
+    trio_or_engine_hits: list[str] = []
+    if not source_analysis_error:
+        for call_name, arg_literals in call_sites:
+            for marker in FORBIDDEN_TRIO_OR_ENGINE_CALL_NAME_MARKERS:
+                if marker in call_name:
+                    trio_or_engine_hits.append(f"call:{call_name}")
+            for literal in arg_literals:
+                for marker in FORBIDDEN_TRIO_OR_ENGINE_LITERAL_MARKERS:
+                    if marker in literal:
+                        trio_or_engine_hits.append(f"literal:{marker}")
+    trio_or_engine_hits = sorted(set(trio_or_engine_hits))
+
+    if source_analysis_error:
+        detail = source_analysis_error
+        evaluations.append(
+            make_rule_evaluation(
+                rule_id=RULE_BOUND_NO_TRIO_OR_ENGINE_APPLY_CALLS,
+                outcome="REFUSE",
+                detail=detail,
+                category="BOUNDARY",
+            )
+        )
+        boundary_errors.append(
+            make_issue(
+                code="BOUND_TRIO_OR_ENGINE_CALL_DETECTED",
+                message=detail,
+                rule_id=RULE_BOUND_NO_TRIO_OR_ENGINE_APPLY_CALLS,
+                slot_order=None,
+            )
+        )
+    elif trio_or_engine_hits:
+        detail = (
+            "Trio/apply call surfaces detected in validator call sites: "
+            f"{trio_or_engine_hits}."
+        )
+        evaluations.append(
+            make_rule_evaluation(
+                rule_id=RULE_BOUND_NO_TRIO_OR_ENGINE_APPLY_CALLS,
+                outcome="REFUSE",
+                detail=detail,
+                category="BOUNDARY",
+            )
+        )
+        boundary_errors.append(
+            make_issue(
+                code="BOUND_TRIO_OR_ENGINE_CALL_DETECTED",
+                message=detail,
+                rule_id=RULE_BOUND_NO_TRIO_OR_ENGINE_APPLY_CALLS,
+                slot_order=None,
+            )
+        )
+    else:
+        evaluations.append(
+            make_rule_evaluation(
+                rule_id=RULE_BOUND_NO_TRIO_OR_ENGINE_APPLY_CALLS,
+                outcome="PASS",
+                detail="Validator call sites contain no Trio integration or engine/apply surfaces.",
+                category="BOUNDARY",
+            )
+        )
+
+    # 3) Captured-plan read-only guarantee.
+    raw_text_after = artifact_path.read_text(encoding="utf-8")
+    if raw_text_after != raw_text:
+        detail = (
+            "Input artifact changed during validation; runner must remain read-only."
+        )
+        evaluations.append(
+            make_rule_evaluation(
+                rule_id=RULE_BOUND_CAPTURED_PLAN_READ_ONLY,
+                outcome="REFUSE",
+                detail=detail,
+                category="BOUNDARY",
+            )
+        )
+        boundary_errors.append(
+            make_issue(
+                code="BOUND_CAPTURED_PLAN_MUTATION_DETECTED",
+                message=detail,
+                rule_id=RULE_BOUND_CAPTURED_PLAN_READ_ONLY,
+                slot_order=None,
+            )
+        )
+    else:
+        evaluations.append(
+            make_rule_evaluation(
+                rule_id=RULE_BOUND_CAPTURED_PLAN_READ_ONLY,
+                outcome="PASS",
+                detail="Input artifact remained byte-identical before/after validation.",
+                category="BOUNDARY",
+            )
+        )
+
+    # 4) No runtime side-effect inference in validator output contract.
+    valid_error_shape = only_expected_keys(errors, {"code", "message", "rule_id", "slot_order"})
+    valid_warning_shape = only_expected_keys(warnings, {"code", "message", "rule_id", "slot_order"})
+    valid_rule_eval_shape = only_expected_keys(
+        rule_evaluations_before_boundary,
+        {"rule_id", "category", "outcome", "detail"},
+    )
+    valid_categories = all(
+        str(item.get("category", "")) in {"STRUCTURAL", "SEMANTIC", "DETERMINISM"}
+        for item in rule_evaluations_before_boundary
+    )
+
+    if valid_error_shape and valid_warning_shape and valid_rule_eval_shape and valid_categories:
+        evaluations.append(
+            make_rule_evaluation(
+                rule_id=RULE_BOUND_NO_RUNTIME_SIDE_EFFECT_INFERENCE,
+                outcome="PASS",
+                detail="Output contract remains validation-only with no runtime side-effect fields inferred.",
+                category="BOUNDARY",
+            )
+        )
+    else:
+        detail = (
+            "Output contract shape/category drift detected; runtime side-effect inference risk."
+        )
+        evaluations.append(
+            make_rule_evaluation(
+                rule_id=RULE_BOUND_NO_RUNTIME_SIDE_EFFECT_INFERENCE,
+                outcome="REFUSE",
+                detail=detail,
+                category="BOUNDARY",
+            )
+        )
+        boundary_errors.append(
+            make_issue(
+                code="BOUND_RUNTIME_SIDE_EFFECT_INFERENCE_DETECTED",
+                message=detail,
+                rule_id=RULE_BOUND_NO_RUNTIME_SIDE_EFFECT_INFERENCE,
+                slot_order=None,
+            )
+        )
+
+    return (evaluations, boundary_errors, boundary_warnings)
+
+
 def parse_args(argv: list[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="WP-18 validator runner (schema + structural + semantic + determinism rules)."
+        description="WP-18 validator runner (schema + structural + semantic + determinism + boundary rules)."
     )
     parser.add_argument(
         "--input",
@@ -1414,7 +1723,8 @@ def process_artifact(
         structural_evals = skipped_structural_evaluations(SCHEMA_SKIP_DETAIL)
         semantic_evals = skipped_semantic_evaluations(SCHEMA_SKIP_DETAIL)
         determinism_evals = skipped_determinism_evaluations(SCHEMA_SKIP_DETAIL)
-        rule_evaluations = structural_evals + semantic_evals + determinism_evals
+        boundary_evals = skipped_boundary_evaluations(SCHEMA_SKIP_DETAIL)
+        rule_evaluations = structural_evals + semantic_evals + determinism_evals + boundary_evals
     else:
         structural_evals, structural_errors = evaluate_structural_rules(payload)
         errors.extend(structural_errors)
@@ -1422,7 +1732,8 @@ def process_artifact(
         if structural_errors:
             semantic_evals = skipped_semantic_evaluations(STRUCTURAL_SKIP_DETAIL)
             determinism_evals = skipped_determinism_evaluations(STRUCTURAL_SKIP_DETAIL)
-            rule_evaluations = structural_evals + semantic_evals + determinism_evals
+            boundary_evals = skipped_boundary_evaluations(STRUCTURAL_SKIP_DETAIL)
+            rule_evaluations = structural_evals + semantic_evals + determinism_evals + boundary_evals
         else:
             semantic_evals, semantic_errors = evaluate_semantic_rules(
                 payload,
@@ -1445,7 +1756,21 @@ def process_artifact(
             )
             errors.extend(determinism_errors)
             warnings.extend(determinism_warnings)
-            rule_evaluations = pre_determinism_rule_evals + determinism_evals
+            pre_boundary_rule_evals = pre_determinism_rule_evals + determinism_evals
+
+            # Boundary assertions evaluate only after schema + structural + semantic + determinism phases.
+            errors = sort_issues(errors)
+            warnings = sort_issues(warnings)
+            boundary_evals, boundary_errors, boundary_warnings = evaluate_boundary_rules(
+                artifact_path=artifact_path,
+                raw_text=raw_text,
+                errors=errors,
+                warnings=warnings,
+                rule_evaluations_before_boundary=pre_boundary_rule_evals,
+            )
+            errors.extend(boundary_errors)
+            warnings.extend(boundary_warnings)
+            rule_evaluations = pre_boundary_rule_evals + boundary_evals
 
     errors = sort_issues(errors)
     warnings = sort_issues(warnings)

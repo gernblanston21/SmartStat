@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""WP-18 Target-04 determinism-rule harness."""
+"""WP-18 Target-05 determinism+boundary replay harness."""
 
 from __future__ import annotations
 
@@ -34,7 +34,19 @@ DETERMINISM_RULE_ORDER = [
     "DET_REPLAY_IDENTITY_STABLE",
 ]
 
-EXPECTED_RULE_ORDER = STRUCTURAL_RULE_ORDER + SEMANTIC_RULE_ORDER + DETERMINISM_RULE_ORDER
+BOUNDARY_RULE_ORDER = [
+    "BOUND_VALIDATION_RUNTIME_INDEPENDENT",
+    "BOUND_NO_TRIO_OR_ENGINE_APPLY_CALLS",
+    "BOUND_CAPTURED_PLAN_READ_ONLY",
+    "BOUND_NO_RUNTIME_SIDE_EFFECT_INFERENCE",
+]
+
+EXPECTED_RULE_ORDER = (
+    STRUCTURAL_RULE_ORDER
+    + SEMANTIC_RULE_ORDER
+    + DETERMINISM_RULE_ORDER
+    + BOUNDARY_RULE_ORDER
+)
 
 
 def find_repo_root(start: Path) -> Path:

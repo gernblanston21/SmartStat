@@ -1,4 +1,4 @@
-# WP-18 Validation Result Model (Target-04 Determinism Layer)
+# WP-18 Validation Result Model (Target-05 Boundary Layer)
 
 Reference contract:
 - `docs/onair/plan-validation-contract.md`
@@ -6,11 +6,12 @@ Reference contract:
 This document captures the Target-01 output model emitted by:
 - `tests/wp-18/validator/validator_runner.py`
 
-Target-04 scope:
+Target-05 scope:
 - schema compatibility checks
 - structural rule evaluation
 - semantic rule evaluation
 - determinism rule evaluation
+- boundary rule evaluation
 - deterministic output ordering
 
 ## Output Shape
@@ -23,7 +24,7 @@ validation_result:
   normalized_plan_hash: string
   rule_evaluations:
     - rule_id: string
-      category: STRUCTURAL | SEMANTIC | DETERMINISM
+      category: STRUCTURAL | SEMANTIC | DETERMINISM | BOUNDARY
       outcome: PASS | REFUSE | WARN
       detail: string
 ```
@@ -46,9 +47,14 @@ Notes:
   - `DET_OUTPUT_NORMALIZATION_STABLE`
   - `DET_AMBIGUOUS_INTERPRETATION_REFUSED`
   - `DET_REPLAY_IDENTITY_STABLE`
-- `status` is driven by schema + structural + semantic + determinism failures.
-- If schema compatibility fails, structural + semantic + determinism evaluations are emitted as deterministic `WARN`.
-- If structural rules fail, semantic + determinism evaluations are emitted as deterministic `WARN`.
-- If semantic rules fail, determinism rules still evaluate where meaningful.
+- Boundary rule IDs are emitted after determinism rules in stable declared order:
+  - `BOUND_VALIDATION_RUNTIME_INDEPENDENT`
+  - `BOUND_NO_TRIO_OR_ENGINE_APPLY_CALLS`
+  - `BOUND_CAPTURED_PLAN_READ_ONLY`
+  - `BOUND_NO_RUNTIME_SIDE_EFFECT_INFERENCE`
+- `status` is driven by schema + structural + semantic + determinism + boundary failures.
+- If schema compatibility fails, structural + semantic + determinism + boundary evaluations are emitted as deterministic `WARN`.
+- If structural rules fail, semantic + determinism + boundary evaluations are emitted as deterministic `WARN`.
+- If semantic rules fail, determinism + boundary rules still evaluate where meaningful.
+- If determinism rules fail, boundary rules still evaluate where meaningful.
 - `normalized_plan_hash` is a deterministic placeholder hash for replay stability.
-- Boundary rule layer remains deferred for later WP-18 targets.
