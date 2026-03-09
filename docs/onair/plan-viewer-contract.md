@@ -121,6 +121,89 @@ Hardening guarantees:
 4. Projection remains read-only and non-mutating for source artifacts.
 5. Projection remains free of runtime/apply/bridge fields.
 
+## Target-05 Projection Consumption Contract Consolidation (Read-Only)
+
+WP-19 Target-05 consolidates the projection contract into a stable
+implementation handoff surface for future viewer work.
+
+### Authoritative Projection Fields (Must Remain Stable)
+
+The following top-level projection fields are authoritative and are consumed as
+contract fields in this exact order:
+
+1. `projection_contract`
+2. `projection_kind`
+3. `input_artifact`
+4. `input_identity`
+5. `status_summary`
+6. `issues_summary`
+7. `rule_evaluation_summary`
+8. `deterministic_identity_summary`
+9. `semantic_interpretation_summary`
+
+### Display/Summary Surfaces
+
+These fields are viewer display/summary surfaces:
+
+1. `status_summary`
+2. `issues_summary`
+3. `rule_evaluation_summary`
+4. `semantic_interpretation_summary`
+
+Display/summary rules:
+
+1. These fields are derived from WP-18 validation artifacts only.
+2. Ordering within these fields must remain deterministic.
+3. `rule_evaluation_summary.ordered_rules` must preserve upstream WP-18 order.
+
+### Traceability Surfaces
+
+These fields are traceability and lineage surfaces:
+
+1. `projection_contract`
+2. `projection_kind`
+3. `input_artifact`
+4. `input_identity`
+5. `deterministic_identity_summary`
+
+Traceability rules:
+
+1. Traceability fields are not execution signals.
+2. Traceability fields must remain read-only metadata.
+3. Traceability fields must support reproducible replay and audit paths.
+
+### Semantic Interpretation Boundaries
+
+`semantic_interpretation_summary` is validation interpretation metadata only:
+
+1. `scope_resolution`
+2. `effective_scope`
+3. `evidence_source`
+
+Interpretation rules:
+
+1. These values represent validator interpretation, not runtime execution.
+2. Omitted stats scope default behavior is represented metadata-only.
+3. No projection field may imply apply or bridge behavior.
+
+### Deterministic Ordering Guarantees
+
+1. Top-level field order is stable and contract-bound.
+2. Nested summary key order is stable and contract-bound.
+3. Rule-evaluation phase order remains `STRUCTURAL`, `SEMANTIC`,
+   `DETERMINISM`, `BOUNDARY`.
+4. Identical input artifacts must yield identical projection JSON content.
+
+### Explicit Non-Goals
+
+WP-19 projection consumption does not perform:
+
+1. Runtime execution.
+2. Apply behavior.
+3. Bridge behavior.
+4. Artifact mutation.
+5. Runtime inference beyond validation artifacts.
+
 ## Forbidden Behaviors
 
 WP-19 must not:

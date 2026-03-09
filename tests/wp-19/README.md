@@ -23,6 +23,8 @@ Target-01 scope in this directory is scaffolding only:
   Projection contract fixtures and evidence for deterministic read-only view-model projection.
 - `tests/wp-19/target-04/`  
   Projection summary contract hardening notes and artifacts for exact key-shape assertions.
+- `tests/wp-19/target-05/`  
+  Projection consumption contract consolidation notes and handoff artifacts.
 
 ## Planned Harness Focus (Future Targets)
 

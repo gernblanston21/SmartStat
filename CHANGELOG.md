@@ -3,6 +3,27 @@
 All notable changes to the SmartStat Core Engine are documented in this file.
 Runtime versioning follows script identifiers (`SmartStat_v*.vbs`), while `VERSION.txt` remains VIZOR UI display metadata.
 
+## [feature/semantic-layer] - 2026-03-09 (WP-19 Target-05 Projection Consumption Contract Consolidation)
+### Summary
+- Consolidated WP-19 projection consumption contract expectations into a clear read-only implementation handoff surface.
+- Defined authoritative projection fields and explicit display/summary versus traceability surface boundaries.
+- Added a Target-05 handoff harness asserting stable contract shape, deterministic ordering, and explicit non-goal boundaries.
+
+### Added
+- `tests/wp-19/harness/projection_consumption_contract_test.py`
+- `tests/wp-19/target-05/README.md`
+- `tests/wp-19/target-05/artifacts/.gitkeep`
+
+### Changed
+- `docs/onair/plan-viewer-contract.md`
+- `tests/wp-19/README.md`
+- `tests/wp-19/harness/README.md`
+
+### Validation
+- Ran `python tests/wp-19/harness/read_only_intake_contract_test.py`.
+- Ran `python tests/wp-19/harness/viewer_projection_contract_test.py`.
+- Ran `python tests/wp-19/harness/projection_consumption_contract_test.py`.
+
 ## [feature/semantic-layer] - 2026-03-09 (WP-19 Target-04 Projection Summary Contract Hardening)
 ### Summary
 - Hardened WP-19 projection summary contract shape with explicit top-level and nested key-order assertions.
