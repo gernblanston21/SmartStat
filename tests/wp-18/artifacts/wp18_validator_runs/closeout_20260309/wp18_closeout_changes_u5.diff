@@ -1,0 +1,225 @@
+diff --git a/CHANGELOG.md b/CHANGELOG.md
+index 49b5d6f..08817df 100644
+--- a/CHANGELOG.md
++++ b/CHANGELOG.md
+@@ -1,10 +1,35 @@
+ # Changelog
+ 
+ All notable changes to the SmartStat Core Engine are documented in this file.
+ Runtime versioning follows script identifiers (`SmartStat_v*.vbs`), while `VERSION.txt` remains VIZOR UI display metadata.
+ 
++## [feature/semantic-layer] - 2026-03-09 (WP-18 Closeout / Acceptance)
++### Summary
++- Closed WP-18 as a complete validation-layer package (docs/tests/tooling only).
++- Consolidated acceptance evidence for structural, semantic, determinism, and boundary rule layers.
++- Hardened the WP-18 result model with deterministic identity fields and semantic interpretation metadata.
++- Preserved strict runtime independence (no SmartStat runtime/apply behavior changes).
++
++### Changed
++- Governance truth alignment updates in roadmap/session docs to mark WP-18 CLOSED and keep WP-19/WP-20 deferred.
++- WP-18 acceptance documentation added/updated:
++  - tests/wp-18/README.md
++  - tests/wp-18/validator/validation_result_model.md
++  - tests/wp-18/ACCEPTANCE.md
++- WP-18 closeout evidence consolidated under tests/wp-18/artifacts/wp18_validator_runs/target06/.
++
++### Validation
++- validator_runner.py good fixtures: pass.
++- validator_runner.py bad fixtures: refuse as expected.
++- deterministic_replay_test.py: pass.
++- determinism_rule_layer_test.py: pass.
++- boundary_rule_layer_test.py: pass.
++- result_model_hardening_test.py: pass.
++- Canonical scope verification pass, including:
++  - omitted stats scope interpreted as implicit/default career
++  - explicit career and explicit season retained as explicit interpretation metadata.
+ ## [feature/semantic-layer] - 2026-03-08 (Governance Re-Baseline)
+ ### Summary
+ - Re-baselined roadmap/branch governance to lock the repo into one active lane before WP-18 kickoff.
+ - Clarified active vs frozen vs deferred scope boundaries across roadmap/session/governance docs.
+ ### Changed
+diff --git a/ROADMAP.md b/ROADMAP.md
+index bf1235d..2a9fcf1 100644
+--- a/ROADMAP.md
++++ b/ROADMAP.md
+@@ -4,15 +4,15 @@
+ - v4.0.0_beta and v4.0.0_RC1 are frozen historical baselines.
+ - WP-10 through WP-14 are complete and retained as post-RC stabilization evidence.
+ - Active working lane in this repo is feature/semantic-layer (v4.2.0 architecture/tooling track).
+ - Current semantic posture: Phase 9 candidate-resolution scaffold is present in tools/semantic-source-view/.
+ - WP-17 now defines a versioned, deterministic plan-capture contract layer (docs/tests/tooling only).
+-- WP-18 kickoff gate is complete: validation layer is eligible to start, but implementation has not started.
++- WP-18 is CLOSED as a validation-layer package (docs/tests/tooling only; runtime-independent).
+ ## Lane Re-Baseline (2026-03-08)
+ - Single active lane: `feature/semantic-layer` for semantic architecture/tooling only (docs/tests/read-only tooling).
+ - Frozen runtime/core baseline: `v4.0.0_beta` and `v4.0.0_RC1` (no implicit runtime execution lane is active).
+-- WP-18 lane state: kickoff gate passed (2026-03-09), eligible to start as validation-layer-only work.
++- WP-18 lane state: CLOSED (2026-03-09) with acceptance evidence under `tests/wp-18/artifacts/wp18_validator_runs/`.
+ - Deferred lane items: WP-19 and WP-20 remain defined but not started.
+ - Branch boundary: runtime bridge/execution work requires explicit approval and should run on a separate dedicated branch when started.
+ - WP-15 through WP-17 closeout does not imply runtime bridge/apply integration.
+ 
+ ## Determinism Doctrine (v4+)
+@@ -314,11 +314,11 @@ WP-17 implementation package (read-only docs/tests/tooling):
+ 
+ WP-17 CLOSED - Standalone capture contract layer defined (docs/tests/tooling only).
+ Evidence: `tests/wp-17/contract-validators/artifacts/wp17_contract_20260308/` (`RUN_PASS=True`, `DETERMINISM_REPLAY_PASS=True`).
+ 
+ ## WP-18 (v4.2.0): Plan Validation
+-Status: ELIGIBLE TO START (kickoff gate passed on 2026-03-09; implementation not started).
++Status: CLOSED (accepted on 2026-03-09; validation-layer-only, runtime-independent).
+ 
+ ### Scope
+ - Define the Plan Validation Contract Layer between WP-17 capture and future WP-19/WP-20 layers.
+ - Validate captured plans using deterministic, read-only architecture rules.
+ - Keep validator work runtime-independent (no runtime execution, no Trio/apply behavior).
+@@ -336,10 +336,32 @@ WP-18 explicit boundaries:
+ - Fixture suite passes expected good/bad cases.
+ - Harness runner reports RUN_PASS=True for plan validation scope.
+ - Deterministic replay check is stable across repeated runs.
+ - No SmartStat runtime behavior changes introduced by validation tooling.
+ 
++WP-18 implementation package (read-only docs/tests/tooling):
++- Validator runner: tests/wp-18/validator/validator_runner.py
++- Result-model doc: tests/wp-18/validator/validation_result_model.md
++- Validation phase/readme doc: tests/wp-18/README.md
++- Replay/harness tests:
++  - tests/wp-18/replay/deterministic_replay_test.py
++  - tests/wp-18/replay/determinism_rule_layer_test.py
++  - tests/wp-18/replay/boundary_rule_layer_test.py
++  - tests/wp-18/replay/result_model_hardening_test.py
++- Acceptance note: tests/wp-18/ACCEPTANCE.md
++- Evidence location: tests/wp-18/artifacts/wp18_validator_runs/target06/
++
++WP-18 CLOSED - Plan validation layer accepted with:
++- structural + semantic + determinism + boundary rules
++- hardened result model
++- deterministic semantic interpretation metadata for default stats scope (omitted scope => career in stats context)
++- deterministic replay/harness evidence
++
++WP-19 consumption boundary (allowed):
++- Consume WP-18 validation_result payloads as read-only artifacts only.
++- Consume rule evaluations, refusal diagnostics, deterministic identities, and semantic interpretation metadata.
++- Must not imply runtime apply behavior or runtime bridge activation.
+ ## WP-19 (v4.2.0): Plan Viewer
+ Status: DEFERRED (not started; explicit kickoff required).
+ 
+ ### Scope
+ - Extend read-only inspection UX to include deterministic plan-view semantics.
+@@ -369,10 +391,11 @@ Status: DEFERRED (not started; explicit kickoff required + explicit approval).
+ Strategic sequencing note:
+ - Strategic target remains `Stat Query -> Deterministic Execution Plan`.
+ - Semantic viewer capability now exists and changes optimal milestone order.
+ - Runtime bridging is intentionally deferred until inspection/explainability/capture/validation are stable.
+ - Runtime bridge/execution sequencing is out-of-lane for current `feature/semantic-layer` work until separately approved and kicked off.
++- WP-18 closeout does not activate WP-20 and does not imply runtime bridge behavior.
+ 
+ ---
+ # Long-Term (v4.2+ / v5.0)
+ 
+ - Plan schema formalization
+diff --git a/SESSION.md b/SESSION.md
+index 6983684..c9ae6ce 100644
+--- a/SESSION.md
++++ b/SESSION.md
+@@ -12,11 +12,11 @@
+ RC1 is complete and must not be re-reviewed or modified.
+ All new work proceeds from the post-RC baseline.
+ ## Single Active Lane Lock (2026-03-08 Re-Baseline)
+ - Active lane only: `feature/semantic-layer` semantic architecture/tooling work (docs/tests/read-only tooling).
+ - Frozen baseline: SmartStat runtime/core behavior anchored to `v4.0.0_beta` and `v4.0.0_RC1` lineage.
+-- WP-18 lane state: kickoff gate passed (2026-03-09), eligible to start, implementation not started.
++- WP-18 lane state: CLOSED (2026-03-09) with acceptance evidence in tests/wp-18/artifacts/wp18_validator_runs/target06/.
+ - Deferred by default: WP-19 and WP-20 remain not started until explicit kickoff.
+ - Branch boundary: runtime bridge/execution proposals require explicit approval and may require a separate branch to avoid lane contamination.
+ - No implicit runtime integration: WP-15 through WP-17 artifacts do not imply runtime bridge/apply behavior.
+ 
+ ---
+@@ -31,11 +31,11 @@ Active WP:
+ - WP-13 CLOSED (resolver perf optimization validated via harness; runtime optimization deferred to preserve post-RC behavioral guarantees).
+ - WP-14 CLOSED (TrayApp contract + validator harness implemented; docs/tests/tooling only).
+ - WP-15 CLOSED (semantic inspection foundation accepted; read-only tooling only).
+ - WP-16 CLOSED (Phase 8 + Phase 9 read-only explainability/candidate-resolution scaffolds accepted as read-only tooling).
+ - WP-17 CLOSED (plan-capture contract layer implemented as docs/tests/tooling-only package under tests/wp-17 + docs/onair contract/schema).
+-- WP-18 NEXT (eligible to start after kickoff gate; implementation not started; validation-layer-only and runtime-independent).
++- WP-18 CLOSED (validation-layer package accepted; structural/semantic/determinism/boundary + hardened result model + interpretation metadata).
+ - WP-19 DEFERRED (not started; explicit kickoff required).
+ - WP-20 DEFERRED (not started; explicit kickoff required + explicit approval).
+ No opportunistic refactors.
+ No scope creep.
+ Each WP must be:
+@@ -135,11 +135,11 @@ v4.1.0 stabilization work packages (historical complete):
+ ## Next Architecture Track
+ 
+ - WP-15 - Semantic Inspection Foundation
+ - WP-16 - Resolution Explainability
+ - WP-17 - Plan Capture Contract Layer
+-- WP-18 - Plan Validation (eligible to start; kickoff gate complete; implementation not started)
++- WP-18 - Plan Validation CLOSED (accepted 2026-03-09; validation-only, runtime-independent)
+ - WP-19 - Plan Viewer (deferred; explicit kickoff required)
+ - WP-20 - Runtime Bridge (deferred; explicit kickoff + approval required; no runtime coupling until WP-15 through WP-19 are stable)
+ - Strategic target: `Stat Query -> Deterministic Execution Plan`
+ - Sequence rationale: Semantic Source View now exists, so semantic inspection/explainability leads the plan-engine track.
+ - Active branch for this sequence: `feature/semantic-layer`
+@@ -163,13 +163,14 @@ v4.1.0 stabilization work packages (historical complete):
+   - Deterministic visual repeatability passed.
+   - Boundary checks passed: no runtime/apply behavior, no planner execution, and no runtime integration implied.
+ - Scope boundary preserved: explainability bridge only (no runtime SmartStat integration).
+ - WP-17 CLOSED on 2026-03-08: versioned plan-capture contract + schema + validator harness accepted (docs/tests/tooling only).
+ - WP-17 evidence: tests/wp-17/contract-validators/artifacts/wp17_contract_20260308/.
+-- Next eligible architecture handoff target: WP-18 (Plan Validation kickoff gate complete; implementation not started).
+-- WP-18 (Plan Validation) is now eligible to start and remains runtime-independent; implementation is not started.
++- WP-18 CLOSED on 2026-03-09: validator scaffolding + structural/semantic/determinism/boundary layers + hardened result model + interpretation metadata accepted (docs/tests/tooling only).
++- WP-18 evidence: tests/wp-18/artifacts/wp18_validator_runs/target06/.
+ - WP-19 (Plan Viewer) and WP-20 (Runtime Bridge) remain deferred roadmap items and are not active until explicitly kicked off.
++- WP-20 remains deferred and is not implied by WP-18 closeout.
+ OnAir dump handling:
+ - The current `onair_dump/` dataset is reserved for semantic-layer work.
+ - Canonical repo location: `.tools/onair_dump/`
+ - Move/commit of this dataset must occur only on `feature/semantic-layer`, not on `v4_Dev`.
+ 
+diff --git a/tests/wp-18/ACCEPTANCE.md b/tests/wp-18/ACCEPTANCE.md
+new file mode 100644
+index 0000000..178cefe
+--- /dev/null
++++ b/tests/wp-18/ACCEPTANCE.md
+@@ -0,0 +1,39 @@
++# WP-18 Acceptance Note
++
++WP-18 is CLOSED as of 2026-03-09.
++
++## Scope Accepted
++- Validation-layer only under `tests/wp-18/`.
++- Runtime-independent, read-only, deterministic behavior.
++- No SmartStat runtime/apply integration.
++
++## Accepted Rule Layers
++- Structural
++- Semantic
++- Determinism
++- Boundary
++
++## Result Model Status
++- Hardened output contract with stable key shape and ordering.
++- Stable identities: `input_identity`, `normalized_plan_hash`, `replay_identity`, `validator_run_identity`.
++- Stable per-rule emission in declared phase/rule order.
++
++## Interpretation Metadata
++- `semantic_interpretation` is validation-only metadata.
++- For `stats` syntax, omitted scope is represented as:
++  - `scope_resolution=implicit_default`
++  - `effective_scope=career`
++  - `evidence_source=operator_grounded_default`
++- Explicit scope remains explicit and artifact-derived.
++
++## Evidence
++- Run artifacts: `tests/wp-18/artifacts/wp18_validator_runs/target06/`
++- Harnesses:
++  - `tests/wp-18/replay/deterministic_replay_test.py`
++  - `tests/wp-18/replay/determinism_rule_layer_test.py`
++  - `tests/wp-18/replay/boundary_rule_layer_test.py`
++  - `tests/wp-18/replay/result_model_hardening_test.py`
++
++## Consumption Boundary
++- WP-19 may consume WP-18 validation outputs as read-only artifacts.
++- WP-20 remains deferred and is not implied by WP-18 closeout.

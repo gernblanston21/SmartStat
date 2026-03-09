@@ -3,6 +3,31 @@
 All notable changes to the SmartStat Core Engine are documented in this file.
 Runtime versioning follows script identifiers (`SmartStat_v*.vbs`), while `VERSION.txt` remains VIZOR UI display metadata.
 
+## [feature/semantic-layer] - 2026-03-09 (WP-18 Closeout / Acceptance)
+### Summary
+- Closed WP-18 as a complete validation-layer package (docs/tests/tooling only).
+- Consolidated acceptance evidence for structural, semantic, determinism, and boundary rule layers.
+- Hardened the WP-18 result model with deterministic identity fields and semantic interpretation metadata.
+- Preserved strict runtime independence (no SmartStat runtime/apply behavior changes).
+
+### Changed
+- Governance truth alignment updates in roadmap/session docs to mark WP-18 CLOSED and keep WP-19/WP-20 deferred.
+- WP-18 acceptance documentation added/updated:
+  - tests/wp-18/README.md
+  - tests/wp-18/validator/validation_result_model.md
+  - tests/wp-18/ACCEPTANCE.md
+- WP-18 closeout evidence consolidated under tests/wp-18/artifacts/wp18_validator_runs/target06/.
+
+### Validation
+- validator_runner.py good fixtures: pass.
+- validator_runner.py bad fixtures: refuse as expected.
+- deterministic_replay_test.py: pass.
+- determinism_rule_layer_test.py: pass.
+- boundary_rule_layer_test.py: pass.
+- result_model_hardening_test.py: pass.
+- Canonical scope verification pass, including:
+  - omitted stats scope interpreted as implicit/default career
+  - explicit career and explicit season retained as explicit interpretation metadata.
 ## [feature/semantic-layer] - 2026-03-08 (Governance Re-Baseline)
 ### Summary
 - Re-baselined roadmap/branch governance to lock the repo into one active lane before WP-18 kickoff.
