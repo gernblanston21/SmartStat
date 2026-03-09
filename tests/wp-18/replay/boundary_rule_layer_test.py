@@ -106,10 +106,34 @@ class BoundaryRuleLayerTest(unittest.TestCase):
         )
 
         row = self.first_result(payload)
+        self.assertEqual(
+            set(row.keys()),
+            {"input_artifact", "input_identity", "validation_result"},
+        )
+
+        self.assertEqual(
+            set(row["input_identity"].keys()),
+            {"artifact_path", "input_fingerprint_sha256"},
+        )
+
         result = row["validation_result"]
         self.assertEqual(
             set(result.keys()),
-            {"status", "errors", "warnings", "normalized_plan_hash", "rule_evaluations"},
+            {
+                "status",
+                "errors",
+                "warnings",
+                "normalized_plan_hash",
+                "replay_identity",
+                "validator_run_identity",
+                "semantic_interpretation",
+                "rule_evaluations",
+            },
+        )
+
+        self.assertEqual(
+            set(result["semantic_interpretation"].keys()),
+            {"scope_resolution", "effective_scope", "evidence_source"},
         )
 
         for issue in result["errors"] + result["warnings"]:

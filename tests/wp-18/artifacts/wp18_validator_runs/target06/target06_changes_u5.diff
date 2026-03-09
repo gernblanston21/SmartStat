@@ -1,0 +1,692 @@
+diff --git a/tests/wp-18/README.md b/tests/wp-18/README.md
+index b06c106..1193079 100644
+--- a/tests/wp-18/README.md
++++ b/tests/wp-18/README.md
+@@ -13,5 +13,15 @@ Phase behavior:
+ - Schema failure: structural + semantic + determinism + boundary phases are emitted as `WARN` (deterministic skip).
+ - Structural failure: semantic + determinism + boundary phases are emitted as `WARN` (deterministic skip).
+ - Semantic failure: determinism + boundary rules still evaluate where meaningful; validation `status=REFUSE`.
+ - Determinism failure: boundary rules still evaluate where meaningful; prior refusal status remains.
+ - Boundary checks are represented by both rule evaluations and replay harness assertions (read-only + architecture-only contract checks).
++
++Result-model hardening (Target-06):
++
++- `results[*].input_identity` is emitted as a stable input-artifact identity object.
++- `validation_result` emits stable identity/interpretation fields:
++  - `normalized_plan_hash`
++  - `replay_identity`
++  - `validator_run_identity`
++  - `semantic_interpretation`
++- `semantic_interpretation` is validation-only metadata; it does not mutate captured plans and does not imply runtime execution.
+diff --git a/tests/wp-18/replay/boundary_rule_layer_test.py b/tests/wp-18/replay/boundary_rule_layer_test.py
+index 684fce2..1892a87 100644
+--- a/tests/wp-18/replay/boundary_rule_layer_test.py
++++ b/tests/wp-18/replay/boundary_rule_layer_test.py
+@@ -104,14 +104,38 @@ class BoundaryRuleLayerTest(unittest.TestCase):
+             set(payload.keys()),
+             {"artifact_count", "results", "schema_path", "validator_contract"},
+         )
+ 
+         row = self.first_result(payload)
++        self.assertEqual(
++            set(row.keys()),
++            {"input_artifact", "input_identity", "validation_result"},
++        )
++
++        self.assertEqual(
++            set(row["input_identity"].keys()),
++            {"artifact_path", "input_fingerprint_sha256"},
++        )
++
+         result = row["validation_result"]
+         self.assertEqual(
+             set(result.keys()),
+-            {"status", "errors", "warnings", "normalized_plan_hash", "rule_evaluations"},
++            {
++                "status",
++                "errors",
++                "warnings",
++                "normalized_plan_hash",
++                "replay_identity",
++                "validator_run_identity",
++                "semantic_interpretation",
++                "rule_evaluations",
++            },
++        )
++
++        self.assertEqual(
++            set(result["semantic_interpretation"].keys()),
++            {"scope_resolution", "effective_scope", "evidence_source"},
+         )
+ 
+         for issue in result["errors"] + result["warnings"]:
+             self.assertEqual(set(issue.keys()), {"code", "message", "rule_id", "slot_order"})
+ 
+diff --git a/tests/wp-18/validator/validation_result_model.md b/tests/wp-18/validator/validation_result_model.md
+index 56547cf..326b69a 100644
+--- a/tests/wp-18/validator/validation_result_model.md
++++ b/tests/wp-18/validator/validation_result_model.md
+@@ -1,34 +1,55 @@
+-# WP-18 Validation Result Model (Target-05 Boundary Layer)
++# WP-18 Validation Result Model (Target-06 Hardening Layer)
+ 
+ Reference contract:
+ - `docs/onair/plan-validation-contract.md`
+ 
+ This document captures the Target-01 output model emitted by:
+ - `tests/wp-18/validator/validator_runner.py`
+ 
+-Target-05 scope:
++Target-06 scope:
+ - schema compatibility checks
+ - structural rule evaluation
+ - semantic rule evaluation
+ - determinism rule evaluation
+ - boundary rule evaluation
+ - deterministic output ordering
++- hardened result-model shape
++- deterministic semantic interpretation metadata
+ 
+ ## Output Shape
+ 
+ ```yaml
+-validation_result:
+-  status: PASS | REFUSE
+-  errors: []
+-  warnings: []
+-  normalized_plan_hash: string
+-  rule_evaluations:
+-    - rule_id: string
+-      category: STRUCTURAL | SEMANTIC | DETERMINISM | BOUNDARY
+-      outcome: PASS | REFUSE | WARN
+-      detail: string
++result:
++  input_artifact: string
++  input_identity:
++    artifact_path: string
++    input_fingerprint_sha256: string   # sha256 hex from captured artifact, or "unknown"
++  validation_result:
++    status: PASS | REFUSE
++    errors:
++      - code: string
++        message: string
++        rule_id: string
++        slot_order: integer | null
++    warnings:
++      - code: string
++        message: string
++        rule_id: string
++        slot_order: integer | null
++    normalized_plan_hash: string        # canonicalized captured-plan hash identity
++    replay_identity: string             # deterministic identity of (input_artifact + normalized_plan_hash)
++    validator_run_identity: string      # deterministic identity of (validator_contract + replay_identity)
++    semantic_interpretation:
++      scope_resolution: explicit | implicit_default | not_applicable | unknown
++      effective_scope: career | season | none | unknown
++      evidence_source: artifact_explicit | operator_grounded_default | not_applicable | unknown
++    rule_evaluations:
++      - rule_id: string
++        category: STRUCTURAL | SEMANTIC | DETERMINISM | BOUNDARY
++        outcome: PASS | REFUSE | WARN
++        detail: string
+ ```
+ 
+ Notes:
+ - Structural rule IDs are emitted in stable declared order:
+   - `STRUCT_SLOT_ORDER_CONTIGUOUS_ASC`
+@@ -55,6 +76,10 @@ Notes:
+ - `status` is driven by schema + structural + semantic + determinism + boundary failures.
+ - If schema compatibility fails, structural + semantic + determinism + boundary evaluations are emitted as deterministic `WARN`.
+ - If structural rules fail, semantic + determinism + boundary evaluations are emitted as deterministic `WARN`.
+ - If semantic rules fail, determinism + boundary rules still evaluate where meaningful.
+ - If determinism rules fail, boundary rules still evaluate where meaningful.
+-- `normalized_plan_hash` is a deterministic placeholder hash for replay stability.
++- `normalized_plan_hash`, `replay_identity`, and `validator_run_identity` are separate deterministic identities and must not be conflated.
++- `semantic_interpretation` is validation-only metadata and must not mutate captured artifacts or inject synthetic slots.
++- For `stats` context:
++  - explicit scope slot (`career`/`season`) -> `scope_resolution=explicit`, `evidence_source=artifact_explicit`
++  - omitted scope with operator-grounded default behavior -> `scope_resolution=implicit_default`, `effective_scope=career`, `evidence_source=operator_grounded_default`
+diff --git a/tests/wp-18/validator/validator_runner.py b/tests/wp-18/validator/validator_runner.py
+index 1f1c6dc..262211d 100644
+--- a/tests/wp-18/validator/validator_runner.py
++++ b/tests/wp-18/validator/validator_runner.py
+@@ -1,16 +1,17 @@
+ #!/usr/bin/env python3
+ """
+-WP-18 Target-05 validator runner.
++WP-18 Target-06 validator runner.
+ 
+ This runner performs:
+ - captured-plan JSON loading
+ - schema compatibility checks against docs/onair/plan-capture.schema.json
+ - structural rule evaluation
+ - semantic rule evaluation
+ - determinism rule evaluation
+ - boundary rule evaluation
++- result-model hardening and deterministic semantic interpretation metadata
+ - deterministic validation_result emission
+ 
+ This runner is validation-only, deterministic, read-only, and runtime-independent.
+ """
+ 
+@@ -22,13 +23,14 @@ import hashlib
+ import json
+ import sys
+ from pathlib import Path
+ from typing import Any
+ 
+-VALIDATOR_CONTRACT = "wp18.validator_runner.boundary.v1"
++VALIDATOR_CONTRACT = "wp18.validator_runner.result_model.v1"
+ HASH_PLACEHOLDER_CONTRACT = "wp18.normalized_plan_hash.placeholder.v1"
+ REPLAY_IDENTITY_CONTRACT = "wp18.replay_identity.v1"
++VALIDATOR_RUN_IDENTITY_CONTRACT = "wp18.validator_run_identity.v1"
+ 
+ SCHEMA_RULE_ID = "SCHEMA_COMPATIBILITY"
+ 
+ RULE_SLOT_ORDER_CONTIGUOUS_ASC = "STRUCT_SLOT_ORDER_CONTIGUOUS_ASC"
+ RULE_CAPTURED_PLAN_TERMINAL_REQUIRED = "STRUCT_CAPTURED_PLAN_TERMINAL_REQUIRED"
+@@ -156,10 +158,25 @@ DATE_LIKE_ATTRIBUTE_HINTS = (
+     "month",
+     "season",
+     "year",
+ )
+ 
++SCOPE_RESOLUTION_EXPLICIT = "explicit"
++SCOPE_RESOLUTION_IMPLICIT_DEFAULT = "implicit_default"
++SCOPE_RESOLUTION_NOT_APPLICABLE = "not_applicable"
++SCOPE_RESOLUTION_UNKNOWN = "unknown"
++
++EFFECTIVE_SCOPE_CAREER = "career"
++EFFECTIVE_SCOPE_SEASON = "season"
++EFFECTIVE_SCOPE_NONE = "none"
++EFFECTIVE_SCOPE_UNKNOWN = "unknown"
++
++EVIDENCE_ARTIFACT_EXPLICIT = "artifact_explicit"
++EVIDENCE_OPERATOR_GROUNDED_DEFAULT = "operator_grounded_default"
++EVIDENCE_NOT_APPLICABLE = "not_applicable"
++EVIDENCE_UNKNOWN = "unknown"
++
+ SCHEMA_SKIP_DETAIL = "Skipped because schema compatibility failed."
+ STRUCTURAL_SKIP_DETAIL = "Skipped because structural rules failed."
+ FORBIDDEN_RUNTIME_REFERENCE_MARKERS = [
+     "smartstat_v4.0.0_beta.vbs",
+     "smartstat_templateconfig.ini",
+@@ -296,10 +313,98 @@ def make_replay_identity(input_artifact: str, normalized_plan_hash: str) -> str:
+         + normalized_plan_hash
+     ).encode("utf-8")
+     return hashlib.sha256(digest_input).hexdigest()
+ 
+ 
++def make_validator_run_identity(replay_identity: str) -> str:
++    digest_input = (
++        VALIDATOR_RUN_IDENTITY_CONTRACT
++        + "\n"
++        + VALIDATOR_CONTRACT
++        + "\n"
++        + replay_identity
++    ).encode("utf-8")
++    return hashlib.sha256(digest_input).hexdigest()
++
++
++def is_sha256_hex(value: str) -> bool:
++    if len(value) != 64:
++        return False
++    for char in value:
++        if char not in "0123456789abcdefABCDEF":
++            return False
++    return True
++
++
++def extract_input_fingerprint(payload: Any) -> str:
++    if not isinstance(payload, dict):
++        return "unknown"
++    determinism = payload.get("determinism")
++    if not isinstance(determinism, dict):
++        return "unknown"
++    fingerprint = determinism.get("input_fingerprint_sha256")
++    if not isinstance(fingerprint, str):
++        return "unknown"
++    return fingerprint if is_sha256_hex(fingerprint) else "unknown"
++
++
++def scope_slots(slots: list[dict[str, Any]]) -> list[dict[str, Any]]:
++    return ordered_slots([slot for slot in slots if slot_class(slot) == "scope"])
++
++
++def unknown_semantic_interpretation() -> dict[str, str]:
++    return {
++        "scope_resolution": SCOPE_RESOLUTION_UNKNOWN,
++        "effective_scope": EFFECTIVE_SCOPE_UNKNOWN,
++        "evidence_source": EVIDENCE_UNKNOWN,
++    }
++
++
++def derive_semantic_interpretation(
++    payload: Any,
++    schema_failed: bool,
++    structural_failed: bool,
++) -> dict[str, str]:
++    if schema_failed or structural_failed:
++        return unknown_semantic_interpretation()
++
++    slots = get_slots(payload)
++    family_slot = first_slot_of_class(slots, "family")
++    family_base = token_base(slot_token(family_slot)) if family_slot is not None else ""
++    if family_base != "stats":
++        return {
++            "scope_resolution": SCOPE_RESOLUTION_NOT_APPLICABLE,
++            "effective_scope": EFFECTIVE_SCOPE_NONE,
++            "evidence_source": EVIDENCE_NOT_APPLICABLE,
++        }
++
++    scopes = scope_slots(slots)
++    if not scopes:
++        return {
++            "scope_resolution": SCOPE_RESOLUTION_IMPLICIT_DEFAULT,
++            "effective_scope": EFFECTIVE_SCOPE_CAREER,
++            "evidence_source": EVIDENCE_OPERATOR_GROUNDED_DEFAULT,
++        }
++
++    if len(scopes) > 1:
++        return unknown_semantic_interpretation()
++
++    explicit_scope = token_base(slot_token(scopes[0]))
++    if explicit_scope == EFFECTIVE_SCOPE_CAREER:
++        effective_scope = EFFECTIVE_SCOPE_CAREER
++    elif explicit_scope == EFFECTIVE_SCOPE_SEASON:
++        effective_scope = EFFECTIVE_SCOPE_SEASON
++    else:
++        effective_scope = EFFECTIVE_SCOPE_UNKNOWN
++
++    return {
++        "scope_resolution": SCOPE_RESOLUTION_EXPLICIT,
++        "effective_scope": effective_scope,
++        "evidence_source": EVIDENCE_ARTIFACT_EXPLICIT,
++    }
++
++
+ def json_path(parts: list[Any]) -> str:
+     path = "$"
+     for part in parts:
+         if isinstance(part, int):
+             path += f"[{part}]"
+@@ -1692,14 +1797,17 @@ def process_artifact(
+     input_artifact = rel_path(artifact_path, repo_root)
+     raw_text = artifact_path.read_text(encoding="utf-8")
+     payload: Any | None = None
+     errors: list[dict[str, Any]] = []
+     warnings: list[dict[str, Any]] = []
++    schema_failed = False
++    structural_failed = False
+ 
+     try:
+         payload = json.loads(raw_text)
+     except json.JSONDecodeError as exc:
++        schema_failed = True
+         errors.append(
+             make_issue(
+                 "JSON_PARSE_ERROR",
+                 f"Invalid JSON at {artifact_path.name}:{exc.lineno}:{exc.colno}.",
+             )
+@@ -1714,24 +1822,33 @@ def process_artifact(
+                     "jsonschema package unavailable; using minimal schema compatibility checks.",
+                 )
+             )
+             schema_issues = validate_schema_fallback(payload, schema)
+         errors.extend(schema_issues)
++        if schema_issues:
++            schema_failed = True
+ 
+     normalized_plan_hash = build_normalized_plan_hash(payload, raw_text)
++    replay_identity = make_replay_identity(input_artifact, normalized_plan_hash)
++    validator_run_identity = make_validator_run_identity(replay_identity)
++    input_identity = {
++        "artifact_path": input_artifact,
++        "input_fingerprint_sha256": extract_input_fingerprint(payload),
++    }
+ 
+     if errors:
+         structural_evals = skipped_structural_evaluations(SCHEMA_SKIP_DETAIL)
+         semantic_evals = skipped_semantic_evaluations(SCHEMA_SKIP_DETAIL)
+         determinism_evals = skipped_determinism_evaluations(SCHEMA_SKIP_DETAIL)
+         boundary_evals = skipped_boundary_evaluations(SCHEMA_SKIP_DETAIL)
+         rule_evaluations = structural_evals + semantic_evals + determinism_evals + boundary_evals
+     else:
+         structural_evals, structural_errors = evaluate_structural_rules(payload)
+         errors.extend(structural_errors)
++        structural_failed = len(structural_errors) > 0
+ 
+-        if structural_errors:
++        if structural_failed:
+             semantic_evals = skipped_semantic_evaluations(STRUCTURAL_SKIP_DETAIL)
+             determinism_evals = skipped_determinism_evaluations(STRUCTURAL_SKIP_DETAIL)
+             boundary_evals = skipped_boundary_evaluations(STRUCTURAL_SKIP_DETAIL)
+             rule_evaluations = structural_evals + semantic_evals + determinism_evals + boundary_evals
+         else:
+@@ -1772,21 +1889,30 @@ def process_artifact(
+             warnings.extend(boundary_warnings)
+             rule_evaluations = pre_boundary_rule_evals + boundary_evals
+ 
+     errors = sort_issues(errors)
+     warnings = sort_issues(warnings)
++    semantic_interpretation = derive_semantic_interpretation(
++        payload=payload,
++        schema_failed=schema_failed,
++        structural_failed=structural_failed,
++    )
+ 
+     validation_result = {
+         "status": "PASS" if not errors else "REFUSE",
+         "errors": errors,
+         "warnings": warnings,
+         "normalized_plan_hash": normalized_plan_hash,
++        "replay_identity": replay_identity,
++        "validator_run_identity": validator_run_identity,
++        "semantic_interpretation": semantic_interpretation,
+         "rule_evaluations": rule_evaluations,
+     }
+ 
+     return {
+         "input_artifact": input_artifact,
++        "input_identity": input_identity,
+         "validation_result": validation_result,
+     }
+ 
+ 
+ def main(argv: list[str]) -> int:
+diff --git a/tests/wp-18/replay/result_model_hardening_test.py b/tests/wp-18/replay/result_model_hardening_test.py
+new file mode 100644
+index 0000000..fa31f08
+--- /dev/null
++++ b/tests/wp-18/replay/result_model_hardening_test.py
+@@ -0,0 +1,290 @@
++#!/usr/bin/env python3
++"""WP-18 Target-06 result-model hardening harness."""
++
++from __future__ import annotations
++
++import hashlib
++import json
++import subprocess
++import sys
++import tempfile
++import unittest
++from pathlib import Path
++from typing import Any
++
++TOP_LEVEL_KEYS = ["artifact_count", "results", "schema_path", "validator_contract"]
++RESULT_ROW_KEYS = ["input_artifact", "input_identity", "validation_result"]
++INPUT_IDENTITY_KEYS = ["artifact_path", "input_fingerprint_sha256"]
++VALIDATION_RESULT_KEYS = [
++    "errors",
++    "normalized_plan_hash",
++    "replay_identity",
++    "rule_evaluations",
++    "semantic_interpretation",
++    "status",
++    "validator_run_identity",
++    "warnings",
++]
++ISSUE_KEYS = ["code", "message", "rule_id", "slot_order"]
++RULE_EVALUATION_KEYS = ["category", "detail", "outcome", "rule_id"]
++SEMANTIC_INTERPRETATION_KEYS = ["effective_scope", "evidence_source", "scope_resolution"]
++
++ALL_RULE_CATEGORIES = {"STRUCTURAL", "SEMANTIC", "DETERMINISM", "BOUNDARY"}
++
++SOURCE_DICTIONARY_BY_SLOT_CLASS = {
++    "family": "query_skeletons",
++    "entity": "entity_dictionary",
++    "scope": "filter_grammar_dictionary",
++    "filter": "filter_grammar_dictionary",
++    "terminal_measure": "measure_dictionary",
++}
++
++
++def find_repo_root(start: Path) -> Path:
++    current = start.resolve()
++    for candidate in [current, *current.parents]:
++        if (candidate / "AGENTS.md").exists():
++            return candidate
++    raise FileNotFoundError(f"Unable to locate repo root from: {start}")
++
++
++def make_slot(order: int, slot_class: str, token: str, parameters: list[str] | None = None) -> dict[str, Any]:
++    return {
++        "order": order,
++        "slot_class": slot_class,
++        "token": token,
++        "token_kind": "canonical",
++        "parameters": [] if parameters is None else parameters,
++        "source_dictionary": SOURCE_DICTIONARY_BY_SLOT_CLASS[slot_class],
++        "candidate_status": "resolved",
++    }
++
++
++def build_captured_plan(
++    query_text: str,
++    normalized_query_text: str,
++    slots: list[dict[str, Any]],
++) -> dict[str, Any]:
++    fingerprint = hashlib.sha256(query_text.encode("utf-8")).hexdigest().upper()
++    terminal_slot = next(slot for slot in slots if slot["slot_class"] == "terminal_measure")
++    return {
++        "contract_version": "wp17.plan_capture.v1",
++        "artifact_type": "captured_plan",
++        "mode": "read_only_contract",
++        "source": {
++            "query_text": query_text,
++            "normalized_query_text": normalized_query_text,
++            "semantic_record_id": "measure:mlb:hits",
++            "semantic_record_type": "measure",
++            "league": "mlb",
++        },
++        "determinism": {
++            "ordering_contract": "slot_sequence.order_asc.v1",
++            "canonicalization_version": "wp17.canonical_json.v1",
++            "input_fingerprint_sha256": fingerprint,
++        },
++        "slot_sequence": slots,
++        "terminal": {
++            "slot_class": terminal_slot["slot_class"],
++            "token": terminal_slot["token"],
++        },
++        "refusal": None,
++        "deferred_boundaries": [
++            "runtime apply behavior",
++            "planner execution",
++            "runtime bridge behavior",
++        ],
++    }
++
++
++class ResultModelHardeningTest(unittest.TestCase):
++    @classmethod
++    def setUpClass(cls) -> None:
++        cls.repo_root = find_repo_root(Path(__file__).resolve().parent)
++        cls.runner = cls.repo_root / "tests" / "wp-18" / "validator" / "validator_runner.py"
++        cls.good_fixture = (
++            cls.repo_root
++            / "tests"
++            / "wp-18"
++            / "fixtures"
++            / "good"
++            / "good_semantic_dependency_chain.json"
++        )
++        cls.refused_fixture = (
++            cls.repo_root
++            / "tests"
++            / "wp-18"
++            / "fixtures"
++            / "bad"
++            / "bad_semantic_ambiguous_combination_refused.json"
++        )
++
++    def run_validator(self, fixture: Path, output_path: Path) -> tuple[int, dict[str, Any]]:
++        cmd = [
++            sys.executable,
++            str(self.runner),
++            "--input",
++            str(fixture),
++            "--output",
++            str(output_path),
++        ]
++        completed = subprocess.run(
++            cmd,
++            cwd=self.repo_root,
++            capture_output=True,
++            text=True,
++            check=False,
++        )
++        with output_path.open("r", encoding="utf-8") as handle:
++            payload = json.load(handle)
++        return completed.returncode, payload
++
++    def assert_hardened_shape(self, payload: dict[str, Any]) -> None:
++        self.assertEqual(list(payload.keys()), sorted(TOP_LEVEL_KEYS))
++        self.assertEqual(set(payload.keys()), set(TOP_LEVEL_KEYS))
++        self.assertEqual(payload["artifact_count"], len(payload["results"]))
++
++        for row in payload["results"]:
++            self.assertEqual(list(row.keys()), sorted(RESULT_ROW_KEYS))
++            self.assertEqual(set(row.keys()), set(RESULT_ROW_KEYS))
++
++            input_identity = row["input_identity"]
++            self.assertEqual(list(input_identity.keys()), sorted(INPUT_IDENTITY_KEYS))
++            self.assertEqual(set(input_identity.keys()), set(INPUT_IDENTITY_KEYS))
++
++            result = row["validation_result"]
++            self.assertEqual(list(result.keys()), sorted(VALIDATION_RESULT_KEYS))
++            self.assertEqual(set(result.keys()), set(VALIDATION_RESULT_KEYS))
++
++            interpretation = result["semantic_interpretation"]
++            self.assertEqual(list(interpretation.keys()), sorted(SEMANTIC_INTERPRETATION_KEYS))
++            self.assertEqual(set(interpretation.keys()), set(SEMANTIC_INTERPRETATION_KEYS))
++
++            for issue in result["errors"] + result["warnings"]:
++                self.assertEqual(list(issue.keys()), sorted(ISSUE_KEYS))
++                self.assertEqual(set(issue.keys()), set(ISSUE_KEYS))
++
++            categories = set()
++            for rule_eval in result["rule_evaluations"]:
++                self.assertEqual(list(rule_eval.keys()), sorted(RULE_EVALUATION_KEYS))
++                self.assertEqual(set(rule_eval.keys()), set(RULE_EVALUATION_KEYS))
++                categories.add(str(rule_eval["category"]))
++            self.assertEqual(categories, ALL_RULE_CATEGORIES)
++
++    def test_result_model_shape_on_pass_and_refuse(self) -> None:
++        with tempfile.TemporaryDirectory() as temp_dir:
++            pass_output = Path(temp_dir) / "pass.json"
++            refuse_output = Path(temp_dir) / "refuse.json"
++            rc_pass, payload_pass = self.run_validator(self.good_fixture, pass_output)
++            rc_refuse, payload_refuse = self.run_validator(self.refused_fixture, refuse_output)
++
++        self.assertEqual(rc_pass, 0)
++        self.assertEqual(rc_refuse, 2)
++        self.assert_hardened_shape(payload_pass)
++        self.assert_hardened_shape(payload_refuse)
++
++    def test_canonical_scope_example_interpretation(self) -> None:
++        cases = [
++            (
++                "stats_player_hits",
++                "{{stats.player.hits}}",
++                "stats.player.hits",
++                [
++                    make_slot(1, "family", "stats"),
++                    make_slot(2, "entity", "player"),
++                    make_slot(3, "terminal_measure", "hits"),
++                ],
++                {
++                    "scope_resolution": "implicit_default",
++                    "effective_scope": "career",
++                    "evidence_source": "operator_grounded_default",
++                },
++            ),
++            (
++                "stats_player_career_hits",
++                "{{stats.player.career.hits}}",
++                "stats.player.career.hits",
++                [
++                    make_slot(1, "family", "stats"),
++                    make_slot(2, "entity", "player"),
++                    make_slot(3, "scope", "career"),
++                    make_slot(4, "terminal_measure", "hits"),
++                ],
++                {
++                    "scope_resolution": "explicit",
++                    "effective_scope": "career",
++                    "evidence_source": "artifact_explicit",
++                },
++            ),
++            (
++                "stats_player_month_april_hits",
++                "{{stats.player.month(april).hits}}",
++                "stats.player.month(april).hits",
++                [
++                    make_slot(1, "family", "stats"),
++                    make_slot(2, "entity", "player"),
++                    make_slot(3, "filter", "month", ["april"]),
++                    make_slot(4, "terminal_measure", "hits"),
++                ],
++                {
++                    "scope_resolution": "implicit_default",
++                    "effective_scope": "career",
++                    "evidence_source": "operator_grounded_default",
++                },
++            ),
++            (
++                "stats_player_career_month_april_hits",
++                "{{stats.player.career.month(april).hits}}",
++                "stats.player.career.month(april).hits",
++                [
++                    make_slot(1, "family", "stats"),
++                    make_slot(2, "entity", "player"),
++                    make_slot(3, "scope", "career"),
++                    make_slot(4, "filter", "month", ["april"]),
++                    make_slot(5, "terminal_measure", "hits"),
++                ],
++                {
++                    "scope_resolution": "explicit",
++                    "effective_scope": "career",
++                    "evidence_source": "artifact_explicit",
++                },
++            ),
++            (
++                "stats_player_season_month_april_hits",
++                "{{stats.player.season.month(april).hits}}",
++                "stats.player.season.month(april).hits",
++                [
++                    make_slot(1, "family", "stats"),
++                    make_slot(2, "entity", "player"),
++                    make_slot(3, "scope", "season"),
++                    make_slot(4, "filter", "month", ["april"]),
++                    make_slot(5, "terminal_measure", "hits"),
++                ],
++                {
++                    "scope_resolution": "explicit",
++                    "effective_scope": "season",
++                    "evidence_source": "artifact_explicit",
++                },
++            ),
++        ]
++
++        with tempfile.TemporaryDirectory() as temp_dir:
++            temp_root = Path(temp_dir)
++            for name, query_text, normalized_query_text, slots, expected_interpretation in cases:
++                fixture_path = temp_root / f"{name}.json"
++                output_path = temp_root / f"{name}.out.json"
++                payload = build_captured_plan(query_text, normalized_query_text, slots)
++                fixture_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
++
++                rc, run_payload = self.run_validator(fixture_path, output_path)
++                self.assertEqual(rc, 0, msg=f"Canonical scope case failed: {name}")
++                self.assertEqual(run_payload["artifact_count"], 1)
++
++                row = run_payload["results"][0]
++                result = row["validation_result"]
++                self.assertEqual(result["status"], "PASS")
++                self.assertEqual(result["semantic_interpretation"], expected_interpretation)
++
++
++if __name__ == "__main__":
++    unittest.main()

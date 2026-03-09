@@ -1,0 +1,67 @@
+{
+  "contract_version": "wp17.plan_capture.v1",
+  "artifact_type": "captured_plan",
+  "mode": "read_only_contract",
+  "source": {
+    "query_text": "{{stats.player.month(april).hits}}",
+    "normalized_query_text": "stats.player.month(april).hits",
+    "semantic_record_id": "measure:mlb:hits",
+    "semantic_record_type": "measure",
+    "league": "mlb"
+  },
+  "determinism": {
+    "ordering_contract": "slot_sequence.order_asc.v1",
+    "canonicalization_version": "wp17.canonical_json.v1",
+    "input_fingerprint_sha256": "E9AB43011C725070906DF58D8BF0467DB00587F263C999311DB07763AB9E8D70"
+  },
+  "slot_sequence": [
+    {
+      "order": 1,
+      "slot_class": "family",
+      "token": "stats",
+      "token_kind": "canonical",
+      "parameters": [],
+      "source_dictionary": "query_skeletons",
+      "candidate_status": "resolved"
+    },
+    {
+      "order": 2,
+      "slot_class": "entity",
+      "token": "player",
+      "token_kind": "canonical",
+      "parameters": [],
+      "source_dictionary": "entity_dictionary",
+      "candidate_status": "resolved"
+    },
+    {
+      "order": 3,
+      "slot_class": "filter",
+      "token": "month",
+      "token_kind": "canonical",
+      "parameters": [
+        "april"
+      ],
+      "source_dictionary": "filter_grammar_dictionary",
+      "candidate_status": "resolved"
+    },
+    {
+      "order": 4,
+      "slot_class": "terminal_measure",
+      "token": "hits",
+      "token_kind": "canonical",
+      "parameters": [],
+      "source_dictionary": "measure_dictionary",
+      "candidate_status": "resolved"
+    }
+  ],
+  "terminal": {
+    "slot_class": "terminal_measure",
+    "token": "hits"
+  },
+  "refusal": null,
+  "deferred_boundaries": [
+    "runtime apply behavior",
+    "planner execution",
+    "runtime bridge behavior"
+  ]
+}

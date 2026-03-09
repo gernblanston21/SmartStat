@@ -1,4 +1,4 @@
-# WP-18 Validation Result Model (Target-05 Boundary Layer)
+# WP-18 Validation Result Model (Target-06 Hardening Layer)
 
 Reference contract:
 - `docs/onair/plan-validation-contract.md`
@@ -6,27 +6,48 @@ Reference contract:
 This document captures the Target-01 output model emitted by:
 - `tests/wp-18/validator/validator_runner.py`
 
-Target-05 scope:
+Target-06 scope:
 - schema compatibility checks
 - structural rule evaluation
 - semantic rule evaluation
 - determinism rule evaluation
 - boundary rule evaluation
 - deterministic output ordering
+- hardened result-model shape
+- deterministic semantic interpretation metadata
 
 ## Output Shape
 
 ```yaml
-validation_result:
-  status: PASS | REFUSE
-  errors: []
-  warnings: []
-  normalized_plan_hash: string
-  rule_evaluations:
-    - rule_id: string
-      category: STRUCTURAL | SEMANTIC | DETERMINISM | BOUNDARY
-      outcome: PASS | REFUSE | WARN
-      detail: string
+result:
+  input_artifact: string
+  input_identity:
+    artifact_path: string
+    input_fingerprint_sha256: string   # sha256 hex from captured artifact, or "unknown"
+  validation_result:
+    status: PASS | REFUSE
+    errors:
+      - code: string
+        message: string
+        rule_id: string
+        slot_order: integer | null
+    warnings:
+      - code: string
+        message: string
+        rule_id: string
+        slot_order: integer | null
+    normalized_plan_hash: string        # canonicalized captured-plan hash identity
+    replay_identity: string             # deterministic identity of (input_artifact + normalized_plan_hash)
+    validator_run_identity: string      # deterministic identity of (validator_contract + replay_identity)
+    semantic_interpretation:
+      scope_resolution: explicit | implicit_default | not_applicable | unknown
+      effective_scope: career | season | none | unknown
+      evidence_source: artifact_explicit | operator_grounded_default | not_applicable | unknown
+    rule_evaluations:
+      - rule_id: string
+        category: STRUCTURAL | SEMANTIC | DETERMINISM | BOUNDARY
+        outcome: PASS | REFUSE | WARN
+        detail: string
 ```
 
 Notes:
@@ -57,4 +78,8 @@ Notes:
 - If structural rules fail, semantic + determinism + boundary evaluations are emitted as deterministic `WARN`.
 - If semantic rules fail, determinism + boundary rules still evaluate where meaningful.
 - If determinism rules fail, boundary rules still evaluate where meaningful.
-- `normalized_plan_hash` is a deterministic placeholder hash for replay stability.
+- `normalized_plan_hash`, `replay_identity`, and `validator_run_identity` are separate deterministic identities and must not be conflated.
+- `semantic_interpretation` is validation-only metadata and must not mutate captured artifacts or inject synthetic slots.
+- For `stats` context:
+  - explicit scope slot (`career`/`season`) -> `scope_resolution=explicit`, `evidence_source=artifact_explicit`
+  - omitted scope with operator-grounded default behavior -> `scope_resolution=implicit_default`, `effective_scope=career`, `evidence_source=operator_grounded_default`

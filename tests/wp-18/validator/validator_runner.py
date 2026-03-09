@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-WP-18 Target-05 validator runner.
+WP-18 Target-06 validator runner.
 
 This runner performs:
 - captured-plan JSON loading
@@ -9,6 +9,7 @@ This runner performs:
 - semantic rule evaluation
 - determinism rule evaluation
 - boundary rule evaluation
+- result-model hardening and deterministic semantic interpretation metadata
 - deterministic validation_result emission
 
 This runner is validation-only, deterministic, read-only, and runtime-independent.
@@ -24,9 +25,10 @@ import sys
 from pathlib import Path
 from typing import Any
 
-VALIDATOR_CONTRACT = "wp18.validator_runner.boundary.v1"
+VALIDATOR_CONTRACT = "wp18.validator_runner.result_model.v1"
 HASH_PLACEHOLDER_CONTRACT = "wp18.normalized_plan_hash.placeholder.v1"
 REPLAY_IDENTITY_CONTRACT = "wp18.replay_identity.v1"
+VALIDATOR_RUN_IDENTITY_CONTRACT = "wp18.validator_run_identity.v1"
 
 SCHEMA_RULE_ID = "SCHEMA_COMPATIBILITY"
 
@@ -157,6 +159,21 @@ DATE_LIKE_ATTRIBUTE_HINTS = (
     "season",
     "year",
 )
+
+SCOPE_RESOLUTION_EXPLICIT = "explicit"
+SCOPE_RESOLUTION_IMPLICIT_DEFAULT = "implicit_default"
+SCOPE_RESOLUTION_NOT_APPLICABLE = "not_applicable"
+SCOPE_RESOLUTION_UNKNOWN = "unknown"
+
+EFFECTIVE_SCOPE_CAREER = "career"
+EFFECTIVE_SCOPE_SEASON = "season"
+EFFECTIVE_SCOPE_NONE = "none"
+EFFECTIVE_SCOPE_UNKNOWN = "unknown"
+
+EVIDENCE_ARTIFACT_EXPLICIT = "artifact_explicit"
+EVIDENCE_OPERATOR_GROUNDED_DEFAULT = "operator_grounded_default"
+EVIDENCE_NOT_APPLICABLE = "not_applicable"
+EVIDENCE_UNKNOWN = "unknown"
 
 SCHEMA_SKIP_DETAIL = "Skipped because schema compatibility failed."
 STRUCTURAL_SKIP_DETAIL = "Skipped because structural rules failed."
@@ -296,6 +313,94 @@ def make_replay_identity(input_artifact: str, normalized_plan_hash: str) -> str:
         + normalized_plan_hash
     ).encode("utf-8")
     return hashlib.sha256(digest_input).hexdigest()
+
+
+def make_validator_run_identity(replay_identity: str) -> str:
+    digest_input = (
+        VALIDATOR_RUN_IDENTITY_CONTRACT
+        + "\n"
+        + VALIDATOR_CONTRACT
+        + "\n"
+        + replay_identity
+    ).encode("utf-8")
+    return hashlib.sha256(digest_input).hexdigest()
+
+
+def is_sha256_hex(value: str) -> bool:
+    if len(value) != 64:
+        return False
+    for char in value:
+        if char not in "0123456789abcdefABCDEF":
+            return False
+    return True
+
+
+def extract_input_fingerprint(payload: Any) -> str:
+    if not isinstance(payload, dict):
+        return "unknown"
+    determinism = payload.get("determinism")
+    if not isinstance(determinism, dict):
+        return "unknown"
+    fingerprint = determinism.get("input_fingerprint_sha256")
+    if not isinstance(fingerprint, str):
+        return "unknown"
+    return fingerprint if is_sha256_hex(fingerprint) else "unknown"
+
+
+def scope_slots(slots: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    return ordered_slots([slot for slot in slots if slot_class(slot) == "scope"])
+
+
+def unknown_semantic_interpretation() -> dict[str, str]:
+    return {
+        "scope_resolution": SCOPE_RESOLUTION_UNKNOWN,
+        "effective_scope": EFFECTIVE_SCOPE_UNKNOWN,
+        "evidence_source": EVIDENCE_UNKNOWN,
+    }
+
+
+def derive_semantic_interpretation(
+    payload: Any,
+    schema_failed: bool,
+    structural_failed: bool,
+) -> dict[str, str]:
+    if schema_failed or structural_failed:
+        return unknown_semantic_interpretation()
+
+    slots = get_slots(payload)
+    family_slot = first_slot_of_class(slots, "family")
+    family_base = token_base(slot_token(family_slot)) if family_slot is not None else ""
+    if family_base != "stats":
+        return {
+            "scope_resolution": SCOPE_RESOLUTION_NOT_APPLICABLE,
+            "effective_scope": EFFECTIVE_SCOPE_NONE,
+            "evidence_source": EVIDENCE_NOT_APPLICABLE,
+        }
+
+    scopes = scope_slots(slots)
+    if not scopes:
+        return {
+            "scope_resolution": SCOPE_RESOLUTION_IMPLICIT_DEFAULT,
+            "effective_scope": EFFECTIVE_SCOPE_CAREER,
+            "evidence_source": EVIDENCE_OPERATOR_GROUNDED_DEFAULT,
+        }
+
+    if len(scopes) > 1:
+        return unknown_semantic_interpretation()
+
+    explicit_scope = token_base(slot_token(scopes[0]))
+    if explicit_scope == EFFECTIVE_SCOPE_CAREER:
+        effective_scope = EFFECTIVE_SCOPE_CAREER
+    elif explicit_scope == EFFECTIVE_SCOPE_SEASON:
+        effective_scope = EFFECTIVE_SCOPE_SEASON
+    else:
+        effective_scope = EFFECTIVE_SCOPE_UNKNOWN
+
+    return {
+        "scope_resolution": SCOPE_RESOLUTION_EXPLICIT,
+        "effective_scope": effective_scope,
+        "evidence_source": EVIDENCE_ARTIFACT_EXPLICIT,
+    }
 
 
 def json_path(parts: list[Any]) -> str:
@@ -1694,10 +1799,13 @@ def process_artifact(
     payload: Any | None = None
     errors: list[dict[str, Any]] = []
     warnings: list[dict[str, Any]] = []
+    schema_failed = False
+    structural_failed = False
 
     try:
         payload = json.loads(raw_text)
     except json.JSONDecodeError as exc:
+        schema_failed = True
         errors.append(
             make_issue(
                 "JSON_PARSE_ERROR",
@@ -1716,8 +1824,16 @@ def process_artifact(
             )
             schema_issues = validate_schema_fallback(payload, schema)
         errors.extend(schema_issues)
+        if schema_issues:
+            schema_failed = True
 
     normalized_plan_hash = build_normalized_plan_hash(payload, raw_text)
+    replay_identity = make_replay_identity(input_artifact, normalized_plan_hash)
+    validator_run_identity = make_validator_run_identity(replay_identity)
+    input_identity = {
+        "artifact_path": input_artifact,
+        "input_fingerprint_sha256": extract_input_fingerprint(payload),
+    }
 
     if errors:
         structural_evals = skipped_structural_evaluations(SCHEMA_SKIP_DETAIL)
@@ -1728,8 +1844,9 @@ def process_artifact(
     else:
         structural_evals, structural_errors = evaluate_structural_rules(payload)
         errors.extend(structural_errors)
+        structural_failed = len(structural_errors) > 0
 
-        if structural_errors:
+        if structural_failed:
             semantic_evals = skipped_semantic_evaluations(STRUCTURAL_SKIP_DETAIL)
             determinism_evals = skipped_determinism_evaluations(STRUCTURAL_SKIP_DETAIL)
             boundary_evals = skipped_boundary_evaluations(STRUCTURAL_SKIP_DETAIL)
@@ -1774,17 +1891,26 @@ def process_artifact(
 
     errors = sort_issues(errors)
     warnings = sort_issues(warnings)
+    semantic_interpretation = derive_semantic_interpretation(
+        payload=payload,
+        schema_failed=schema_failed,
+        structural_failed=structural_failed,
+    )
 
     validation_result = {
         "status": "PASS" if not errors else "REFUSE",
         "errors": errors,
         "warnings": warnings,
         "normalized_plan_hash": normalized_plan_hash,
+        "replay_identity": replay_identity,
+        "validator_run_identity": validator_run_identity,
+        "semantic_interpretation": semantic_interpretation,
         "rule_evaluations": rule_evaluations,
     }
 
     return {
         "input_artifact": input_artifact,
+        "input_identity": input_identity,
         "validation_result": validation_result,
     }
 
