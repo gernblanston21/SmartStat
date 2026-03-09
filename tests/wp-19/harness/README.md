@@ -1,6 +1,8 @@
-# WP-19 Harness Placeholder (Target-01)
+# WP-19 Harness (Read-Only Contract Tests)
 
-This folder is intentionally scaffold-only in Target-01.
+Target-02 now adds a read-only intake contract harness:
+
+- `tests/wp-19/harness/read_only_intake_contract_test.py`
 
 Future WP-19 harnesses should validate:
 
@@ -8,4 +10,8 @@ Future WP-19 harnesses should validate:
 2. Stable and deterministic projection of validation status/errors/warnings/rule order.
 3. Read-only boundary enforcement (no input mutation, no runtime/apply/bridge behavior).
 
-No executable viewer harness is introduced in this target.
+Run command:
+
+- `python tests/wp-19/harness/read_only_intake_contract_test.py`
+
+No viewer UI harness is introduced in this target.

@@ -3,6 +3,23 @@
 All notable changes to the SmartStat Core Engine are documented in this file.
 Runtime versioning follows script identifiers (`SmartStat_v*.vbs`), while `VERSION.txt` remains VIZOR UI display metadata.
 
+## [feature/semantic-layer] - 2026-03-09 (WP-19 Target-02 Read-Only Intake Harness)
+### Summary
+- Added WP-19 read-only intake contract tests/harness for WP-17/WP-18 artifact consumption.
+- Added contract-shape assertions, deterministic ordering preservation checks, and no-mutation assertions.
+- Added boundary assertions that reject runtime/apply/bridge call surfaces in WP-19 harness scope.
+
+### Added
+- `tests/wp-19/harness/read_only_intake_contract_test.py`
+- `tests/wp-19/target-02/README.md`
+- `tests/wp-19/target-02/artifacts/.gitkeep`
+
+### Changed
+- `tests/wp-19/README.md`
+- `tests/wp-19/harness/README.md`
+
+### Validation
+- Ran `python tests/wp-19/harness/read_only_intake_contract_test.py` (read-only contract test harness).
 ## [feature/semantic-layer] - 2026-03-09 (WP-19 Target-01 Contract Scaffolding)
 ### Summary
 - Added WP-19 read-only plan-viewer contract scaffolding (docs/tests/tooling only).

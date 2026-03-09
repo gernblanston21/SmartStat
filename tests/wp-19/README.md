@@ -14,9 +14,11 @@ Target-01 scope in this directory is scaffolding only:
 - `tests/wp-19/artifacts/`  
   Evidence/output placeholder location for future WP-19 harness runs.
 - `tests/wp-19/harness/`  
-  Placeholder harness notes for future read-only consumption tests.
+  Read-only intake harness notes and tests.
 - `tests/wp-19/target-01/`  
   Target-specific scaffold notes and placeholders for this pass.
+- `tests/wp-19/target-02/`  
+  Target-specific evidence placeholders for read-only intake contract tests.
 
 ## Planned Harness Focus (Future Targets)
 
