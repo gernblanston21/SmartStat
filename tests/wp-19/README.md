@@ -1,0 +1,26 @@
+# WP-19 (Plan Viewer) - Contract Scaffolding
+
+WP-19 is a read-only consumer layer over WP-17/WP-18 artifacts.
+
+Target-01 scope in this directory is scaffolding only:
+
+- No viewer UI implementation.
+- No runtime/apply/bridge behavior.
+- No SmartStat engine calls.
+- No artifact mutation.
+
+## Directory Layout
+
+- `tests/wp-19/artifacts/`  
+  Evidence/output placeholder location for future WP-19 harness runs.
+- `tests/wp-19/harness/`  
+  Placeholder harness notes for future read-only consumption tests.
+- `tests/wp-19/target-01/`  
+  Target-specific scaffold notes and placeholders for this pass.
+
+## Planned Harness Focus (Future Targets)
+
+1. Read-only artifact intake checks (WP-17 + WP-18 inputs).
+2. Contract-shape checks for viewer-consumable summary surfaces.
+3. Deterministic ordering checks for rule-evaluation presentation.
+4. Boundary checks proving no runtime/apply/bridge behavior.

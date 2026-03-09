@@ -3,6 +3,22 @@
 All notable changes to the SmartStat Core Engine are documented in this file.
 Runtime versioning follows script identifiers (`SmartStat_v*.vbs`), while `VERSION.txt` remains VIZOR UI display metadata.
 
+## [feature/semantic-layer] - 2026-03-09 (WP-19 Target-01 Contract Scaffolding)
+### Summary
+- Added WP-19 read-only plan-viewer contract scaffolding (docs/tests/tooling only).
+- Defined accepted WP-17/WP-18 inputs and minimal read-only view-model expectations.
+- Reconfirmed forbidden behavior boundaries (no runtime/apply/bridge behavior and no artifact mutation).
+
+### Added
+- `docs/onair/plan-viewer-contract.md`
+- `tests/wp-19/README.md`
+- `tests/wp-19/harness/README.md`
+- `tests/wp-19/target-01/README.md`
+- `tests/wp-19/artifacts/.gitkeep`
+- `tests/wp-19/target-01/artifacts/.gitkeep`
+
+### Validation
+- Governance/docs/tests scaffolding pass only; no SmartStat runtime, production INI, WP-17 schema, or WP-18 validator logic changes.
 ## [feature/semantic-layer] - 2026-03-09 (WP-19 Kickoff Planning)
 ### Summary
 - Defined WP-19 kickoff gate as a read-only consumer layer over WP-17/WP-18 artifacts (governance/docs only).
