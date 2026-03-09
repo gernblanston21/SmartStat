@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""WP-19 Target-03 viewer projection contract harness."""
+"""WP-19 Target-04 viewer projection summary contract hardening harness."""
 
 from __future__ import annotations
 
@@ -23,7 +23,7 @@ FORBIDDEN_VIEW_MODEL_FIELDS = {
     "runtime_side_effects",
 }
 
-PROJECTION_KEYS = {
+PROJECTION_KEY_ORDER = [
     "projection_contract",
     "projection_kind",
     "input_artifact",
@@ -33,18 +33,22 @@ PROJECTION_KEYS = {
     "rule_evaluation_summary",
     "deterministic_identity_summary",
     "semantic_interpretation_summary",
-}
-
-RULE_SUMMARY_KEYS = {"category", "rule_id", "outcome"}
-STATUS_SUMMARY_KEYS = {"status", "error_count", "warning_count"}
-ISSUES_SUMMARY_KEYS = {"errors", "warnings"}
-DETERMINISTIC_IDENTITY_KEYS = {
+]
+INPUT_IDENTITY_KEY_ORDER = ["artifact_path", "input_fingerprint_sha256"]
+STATUS_SUMMARY_KEY_ORDER = ["status", "error_count", "warning_count"]
+ISSUES_SUMMARY_KEY_ORDER = ["errors", "warnings"]
+RULE_EVALUATION_SUMMARY_KEY_ORDER = ["phase_order", "ordered_rules"]
+RULE_SUMMARY_KEY_ORDER = ["category", "rule_id", "outcome"]
+DETERMINISTIC_IDENTITY_KEY_ORDER = [
     "normalized_plan_hash",
     "replay_identity",
     "validator_run_identity",
-}
-SEMANTIC_INTERPRETATION_KEYS = {"scope_resolution", "effective_scope", "evidence_source"}
-INPUT_IDENTITY_KEYS = {"artifact_path", "input_fingerprint_sha256"}
+]
+SEMANTIC_INTERPRETATION_KEY_ORDER = [
+    "scope_resolution",
+    "effective_scope",
+    "evidence_source",
+]
 
 
 def find_repo_root(start: Path) -> Path:
@@ -100,7 +104,12 @@ def build_projection(result_row: dict[str, Any]) -> dict[str, Any]:
         "projection_contract": PROJECTION_CONTRACT,
         "projection_kind": "read_only_view_model",
         "input_artifact": result_row["input_artifact"],
-        "input_identity": copy.deepcopy(result_row["input_identity"]),
+        "input_identity": {
+            "artifact_path": result_row["input_identity"]["artifact_path"],
+            "input_fingerprint_sha256": result_row["input_identity"][
+                "input_fingerprint_sha256"
+            ],
+        },
         "status_summary": {
             "status": validation_result["status"],
             "error_count": len(errors),
@@ -119,9 +128,17 @@ def build_projection(result_row: dict[str, Any]) -> dict[str, Any]:
             "replay_identity": validation_result["replay_identity"],
             "validator_run_identity": validation_result["validator_run_identity"],
         },
-        "semantic_interpretation_summary": copy.deepcopy(
-            validation_result["semantic_interpretation"]
-        ),
+        "semantic_interpretation_summary": {
+            "scope_resolution": validation_result["semantic_interpretation"][
+                "scope_resolution"
+            ],
+            "effective_scope": validation_result["semantic_interpretation"][
+                "effective_scope"
+            ],
+            "evidence_source": validation_result["semantic_interpretation"][
+                "evidence_source"
+            ],
+        },
     }
 
 
@@ -201,8 +218,13 @@ class ViewerProjectionContractTest(unittest.TestCase):
             projection_b = build_projection(row)
 
             self.assertEqual(projection_a, projection_b)
+            self.assertEqual(
+                json.dumps(projection_a, separators=(",", ":"), ensure_ascii=False),
+                json.dumps(projection_b, separators=(",", ":"), ensure_ascii=False),
+            )
             self.assertEqual(row, row_snapshot)
             self.assert_projection_shape(projection_a)
+            self.assert_summary_sections(projection_a, row)
             self.assert_order_preserved(projection_a, row)
             self.assert_projection_has_no_forbidden_fields(projection_a)
 
@@ -214,27 +236,76 @@ class ViewerProjectionContractTest(unittest.TestCase):
         self.assertEqual(hashes_before, hashes_after)
 
     def assert_projection_shape(self, projection: dict[str, Any]) -> None:
-        self.assertEqual(set(projection.keys()), PROJECTION_KEYS)
+        self.assertEqual(list(projection.keys()), PROJECTION_KEY_ORDER)
         self.assertEqual(projection["projection_contract"], PROJECTION_CONTRACT)
         self.assertEqual(projection["projection_kind"], "read_only_view_model")
 
-        self.assertEqual(set(projection["input_identity"].keys()), INPUT_IDENTITY_KEYS)
-        self.assertEqual(set(projection["status_summary"].keys()), STATUS_SUMMARY_KEYS)
-        self.assertEqual(set(projection["issues_summary"].keys()), ISSUES_SUMMARY_KEYS)
         self.assertEqual(
-            set(projection["deterministic_identity_summary"].keys()),
-            DETERMINISTIC_IDENTITY_KEYS,
+            list(projection["input_identity"].keys()), INPUT_IDENTITY_KEY_ORDER
         )
         self.assertEqual(
-            set(projection["semantic_interpretation_summary"].keys()),
-            SEMANTIC_INTERPRETATION_KEYS,
+            list(projection["status_summary"].keys()), STATUS_SUMMARY_KEY_ORDER
+        )
+        self.assertEqual(
+            list(projection["issues_summary"].keys()), ISSUES_SUMMARY_KEY_ORDER
+        )
+        self.assertEqual(
+            list(projection["deterministic_identity_summary"].keys()),
+            DETERMINISTIC_IDENTITY_KEY_ORDER,
+        )
+        self.assertEqual(
+            list(projection["semantic_interpretation_summary"].keys()),
+            SEMANTIC_INTERPRETATION_KEY_ORDER,
         )
 
         rule_summary = projection["rule_evaluation_summary"]
-        self.assertEqual(set(rule_summary.keys()), {"phase_order", "ordered_rules"})
+        self.assertEqual(
+            list(rule_summary.keys()), RULE_EVALUATION_SUMMARY_KEY_ORDER
+        )
         self.assertEqual(rule_summary["phase_order"], EXPECTED_PHASE_ORDER)
         for rule in rule_summary["ordered_rules"]:
-            self.assertEqual(set(rule.keys()), RULE_SUMMARY_KEYS)
+            self.assertEqual(list(rule.keys()), RULE_SUMMARY_KEY_ORDER)
+
+    def assert_summary_sections(
+        self, projection: dict[str, Any], source_row: dict[str, Any]
+    ) -> None:
+        validation_result = source_row["validation_result"]
+        issues_summary = projection["issues_summary"]
+        status_summary = projection["status_summary"]
+        deterministic_identity_summary = projection["deterministic_identity_summary"]
+        semantic_summary = projection["semantic_interpretation_summary"]
+
+        self.assertEqual(status_summary["status"], validation_result["status"])
+        self.assertEqual(status_summary["error_count"], len(issues_summary["errors"]))
+        self.assertEqual(status_summary["warning_count"], len(issues_summary["warnings"]))
+        self.assertEqual(issues_summary["errors"], validation_result["errors"])
+        self.assertEqual(issues_summary["warnings"], validation_result["warnings"])
+
+        self.assertEqual(
+            deterministic_identity_summary["normalized_plan_hash"],
+            validation_result["normalized_plan_hash"],
+        )
+        self.assertEqual(
+            deterministic_identity_summary["replay_identity"],
+            validation_result["replay_identity"],
+        )
+        self.assertEqual(
+            deterministic_identity_summary["validator_run_identity"],
+            validation_result["validator_run_identity"],
+        )
+
+        self.assertEqual(
+            semantic_summary["scope_resolution"],
+            validation_result["semantic_interpretation"]["scope_resolution"],
+        )
+        self.assertEqual(
+            semantic_summary["effective_scope"],
+            validation_result["semantic_interpretation"]["effective_scope"],
+        )
+        self.assertEqual(
+            semantic_summary["evidence_source"],
+            validation_result["semantic_interpretation"]["evidence_source"],
+        )
 
     def assert_order_preserved(
         self, projection: dict[str, Any], source_row: dict[str, Any]

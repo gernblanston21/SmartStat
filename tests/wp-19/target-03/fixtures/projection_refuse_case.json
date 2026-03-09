@@ -134,8 +134,8 @@
     "validator_run_identity": "60b1ca2f9c7dc199d931d3c2aad6bbc1b07178fa7cb1dfd3ceb733b0d8727f52"
   },
   "semantic_interpretation_summary": {
+    "scope_resolution": "implicit_default",
     "effective_scope": "career",
-    "evidence_source": "operator_grounded_default",
-    "scope_resolution": "implicit_default"
+    "evidence_source": "operator_grounded_default"
   }
 }

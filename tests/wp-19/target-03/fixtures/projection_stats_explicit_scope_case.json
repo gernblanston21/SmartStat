@@ -121,8 +121,8 @@
     "validator_run_identity": "97809c8bb3416ad7b970ffe77c1a1dd65ea8c03341076d74eee9d7b6b032f228"
   },
   "semantic_interpretation_summary": {
+    "scope_resolution": "explicit",
     "effective_scope": "season",
-    "evidence_source": "artifact_explicit",
-    "scope_resolution": "explicit"
+    "evidence_source": "artifact_explicit"
   }
 }
