@@ -1,0 +1,65 @@
+{
+  "contract_version": "wp17.plan_capture.v1",
+  "artifact_type": "captured_plan",
+  "mode": "read_only_contract",
+  "source": {
+    "query_text": "{{info.team.alias | numeric_1dp}}",
+    "normalized_query_text": "info.team.alias|numeric_1dp",
+    "semantic_record_id": "attribute:mlb:alias",
+    "semantic_record_type": "attribute",
+    "league": "mlb"
+  },
+  "determinism": {
+    "ordering_contract": "slot_sequence.order_asc.v1",
+    "canonicalization_version": "wp17.canonical_json.v1",
+    "input_fingerprint_sha256": "F6F6F6F6F6F6F6F6F6F6F6F6F6F6F6F6F6F6F6F6F6F6F6F6F6F6F6F6F6F6F6F6"
+  },
+  "slot_sequence": [
+    {
+      "order": 1,
+      "slot_class": "family",
+      "token": "info",
+      "token_kind": "canonical",
+      "parameters": [],
+      "source_dictionary": "query_skeletons",
+      "candidate_status": "resolved"
+    },
+    {
+      "order": 2,
+      "slot_class": "entity",
+      "token": "team",
+      "token_kind": "canonical",
+      "parameters": [],
+      "source_dictionary": "entity_dictionary",
+      "candidate_status": "resolved"
+    },
+    {
+      "order": 3,
+      "slot_class": "terminal_attribute",
+      "token": "alias",
+      "token_kind": "canonical",
+      "parameters": [],
+      "source_dictionary": "attribute_dictionary",
+      "candidate_status": "resolved"
+    },
+    {
+      "order": 4,
+      "slot_class": "formatter",
+      "token": "numeric_1dp",
+      "token_kind": "canonical",
+      "parameters": [],
+      "source_dictionary": "formatter_dictionary",
+      "candidate_status": "resolved"
+    }
+  ],
+  "terminal": {
+    "slot_class": "terminal_attribute",
+    "token": "alias"
+  },
+  "refusal": null,
+  "deferred_boundaries": [
+    "runtime apply behavior",
+    "planner execution",
+    "runtime bridge behavior"
+  ]
+}

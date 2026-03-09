@@ -1,4 +1,4 @@
-# WP-18 Validation Result Model (Target-01 Scaffolding)
+# WP-18 Validation Result Model (Target-03 Semantic Layer)
 
 Reference contract:
 - `docs/onair/plan-validation-contract.md`
@@ -6,11 +6,11 @@ Reference contract:
 This document captures the Target-01 output model emitted by:
 - `tests/wp-18/validator/validator_runner.py`
 
-Target-02 scope:
+Target-03 scope:
 - schema compatibility checks
-- structural rule evaluation only
+- structural rule evaluation
+- semantic rule evaluation
 - deterministic output ordering
-- no semantic rule implementation yet
 
 ## Output Shape
 
@@ -22,7 +22,7 @@ validation_result:
   normalized_plan_hash: string
   rule_evaluations:
     - rule_id: string
-      category: STRUCTURAL
+      category: STRUCTURAL | SEMANTIC
       outcome: PASS | REFUSE | WARN
       detail: string
 ```
@@ -34,6 +34,13 @@ Notes:
   - `STRUCT_ILLEGAL_SLOT_COMBINATION`
   - `STRUCT_NO_NON_FORMATTER_AFTER_TERMINAL`
   - `STRUCT_FORMATTER_COUNT_MAX_ONE`
-- `status` is driven by schema + structural failures.
+- Semantic rule IDs are emitted after structural rules in stable declared order:
+  - `SEM_REQUIRED_DEPENDENCIES_PRESENT`
+  - `SEM_FORMATTER_TERMINAL_ADJACENT_AND_TYPE_COMPATIBLE`
+  - `SEM_ENTITY_FAMILY_OPERATOR_TERMINAL_COMPATIBLE`
+  - `SEM_AMBIGUOUS_OR_INCOMPATIBLE_COMBINATION_REFUSED`
+- `status` is driven by schema + structural + semantic failures.
+- If schema compatibility fails, both structural and semantic evaluations are emitted as deterministic `WARN`.
+- If structural rules fail, semantic evaluations are emitted as deterministic `WARN`.
 - `normalized_plan_hash` is a deterministic placeholder hash for replay stability.
-- Future WP-18 targets may add semantic/boundary determinism policy checks without changing runtime behavior.
+- Determinism and boundary rule layers remain deferred for later WP-18 targets.

@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 """
-WP-18 Target-02 validator runner.
+WP-18 Target-03 validator runner.
 
 This runner performs:
 - captured-plan JSON loading
 - schema compatibility checks against docs/onair/plan-capture.schema.json
-- structural rule evaluation (only)
+- structural rule evaluation
+- semantic rule evaluation
 - deterministic validation_result emission
 
-This runner intentionally does not implement semantic rules.
+This runner is validation-only, deterministic, read-only, and runtime-independent.
 """
 
 from __future__ import annotations
@@ -20,7 +21,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
-VALIDATOR_CONTRACT = "wp18.validator_runner.structural.v1"
+VALIDATOR_CONTRACT = "wp18.validator_runner.semantic.v1"
 HASH_PLACEHOLDER_CONTRACT = "wp18.normalized_plan_hash.placeholder.v1"
 
 SCHEMA_RULE_ID = "SCHEMA_COMPATIBILITY"
@@ -39,7 +40,94 @@ STRUCTURAL_RULE_ORDER = [
     RULE_FORMATTER_COUNT_MAX_ONE,
 ]
 
+RULE_REQUIRED_DEPENDENCIES_PRESENT = "SEM_REQUIRED_DEPENDENCIES_PRESENT"
+RULE_FORMATTER_TERMINAL_ADJACENT_AND_TYPE_COMPATIBLE = (
+    "SEM_FORMATTER_TERMINAL_ADJACENT_AND_TYPE_COMPATIBLE"
+)
+RULE_ENTITY_FAMILY_OPERATOR_TERMINAL_COMPATIBLE = "SEM_ENTITY_FAMILY_OPERATOR_TERMINAL_COMPATIBLE"
+RULE_AMBIGUOUS_OR_INCOMPATIBLE_COMBINATION_REFUSED = (
+    "SEM_AMBIGUOUS_OR_INCOMPATIBLE_COMBINATION_REFUSED"
+)
+
+SEMANTIC_RULE_ORDER = [
+    RULE_REQUIRED_DEPENDENCIES_PRESENT,
+    RULE_FORMATTER_TERMINAL_ADJACENT_AND_TYPE_COMPATIBLE,
+    RULE_ENTITY_FAMILY_OPERATOR_TERMINAL_COMPATIBLE,
+    RULE_AMBIGUOUS_OR_INCOMPATIBLE_COMBINATION_REFUSED,
+]
+
 TERMINAL_SLOT_CLASSES = {"terminal_measure", "terminal_attribute"}
+
+DEPENDENCY_REQUIREMENTS: dict[str, tuple[str, ...]] = {
+    "entity": ("family", "operator"),
+    "scope": ("entity",),
+    "filter": ("entity", "scope", "filter"),
+    "terminal_measure": ("entity", "scope", "filter"),
+    "terminal_attribute": ("entity", "scope", "filter"),
+    "formatter": ("terminal_measure", "terminal_attribute"),
+}
+
+KNOWN_FAMILY_BASELINES = {"info", "stats"}
+KNOWN_OPERATOR_BASES = {
+    "calendar",
+    "conditional",
+    "custom",
+    "game_high",
+    "games_with",
+    "leader",
+    "math",
+    "previous",
+    "rank",
+    "streak",
+}
+
+DATE_ONLY_FORMATTERS = {
+    "day_long",
+    "day_short",
+    "flex_long",
+    "flex_short",
+    "long_noyear",
+    "long_year",
+    "short_noyear",
+    "short_year",
+}
+
+NUMERIC_FORMATTERS = {
+    "*n",
+    "+n",
+    "-n",
+    "/n",
+    "ordinal",
+}
+
+TEXT_FORMATTERS = {
+    "file_path",
+    "lowercase",
+    "smallcaps",
+    "title",
+    "uppercase",
+}
+
+DATE_LIKE_ATTRIBUTE_EXACT = {
+    "birthdate",
+    "day_of_week",
+    "month",
+    "pro_debut",
+    "rookie_year",
+    "season",
+    "year",
+}
+
+DATE_LIKE_ATTRIBUTE_HINTS = (
+    "date",
+    "day",
+    "month",
+    "season",
+    "year",
+)
+
+SCHEMA_SKIP_DETAIL = "Skipped because schema compatibility failed."
+STRUCTURAL_SKIP_DETAIL = "Skipped because structural rules failed."
 
 
 def find_repo_root(start: Path) -> Path:
@@ -68,10 +156,15 @@ def make_issue(
     }
 
 
-def make_rule_evaluation(rule_id: str, outcome: str, detail: str) -> dict[str, str]:
+def make_rule_evaluation(
+    rule_id: str,
+    outcome: str,
+    detail: str,
+    category: str = "STRUCTURAL",
+) -> dict[str, str]:
     return {
         "rule_id": rule_id,
-        "category": "STRUCTURAL",
+        "category": category,
         "outcome": outcome,
         "detail": detail,
     }
@@ -83,9 +176,7 @@ def build_normalized_plan_hash(payload: Any, raw_text: str) -> str:
     else:
         canonical_payload = canonical_json(payload)
 
-    digest_input = (
-        HASH_PLACEHOLDER_CONTRACT + "\n" + canonical_payload
-    ).encode("utf-8")
+    digest_input = (HASH_PLACEHOLDER_CONTRACT + "\n" + canonical_payload).encode("utf-8")
     return hashlib.sha256(digest_input).hexdigest()
 
 
@@ -179,7 +270,6 @@ def collect_artifact_paths(input_path: Path) -> list[Path]:
 
     raise FileNotFoundError(f"Input path not found: {input_path}")
 
-
 def rel_path(path: Path, repo_root: Path) -> str:
     try:
         return path.resolve().relative_to(repo_root.resolve()).as_posix()
@@ -196,24 +286,167 @@ def get_slots(payload: Any) -> list[dict[str, Any]]:
     return [slot for slot in raw_slots if isinstance(slot, dict)]
 
 
+def slot_order(slot: dict[str, Any]) -> int | None:
+    order = slot.get("order")
+    return order if isinstance(order, int) else None
+
+
+def slot_class(slot: dict[str, Any]) -> str:
+    return str(slot.get("slot_class", "")).strip()
+
+
+def slot_token(slot: dict[str, Any]) -> str:
+    return str(slot.get("token", "")).strip()
+
+
+def ordered_slots(slots: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    return sorted(
+        slots,
+        key=lambda item: (
+            slot_order(item) if slot_order(item) is not None else 10**9,
+            slot_class(item),
+            slot_token(item),
+        ),
+    )
+
+
 def terminal_orders(slots: list[dict[str, Any]]) -> list[int]:
     orders: list[int] = []
     for slot in slots:
-        slot_class = slot.get("slot_class")
-        order = slot.get("order")
-        if slot_class in TERMINAL_SLOT_CLASSES and isinstance(order, int):
-            orders.append(order)
+        this_class = slot_class(slot)
+        this_order = slot_order(slot)
+        if this_class in TERMINAL_SLOT_CLASSES and this_order is not None:
+            orders.append(this_order)
     return sorted(orders)
 
 
-def skipped_structural_evaluations() -> list[dict[str, str]]:
+def first_slot_of_class(slots: list[dict[str, Any]], class_name: str) -> dict[str, Any] | None:
+    matches = [slot for slot in slots if slot_class(slot) == class_name]
+    if not matches:
+        return None
+    return ordered_slots(matches)[0]
+
+
+def first_terminal_slot(slots: list[dict[str, Any]]) -> dict[str, Any] | None:
+    terminals = [slot for slot in slots if slot_class(slot) in TERMINAL_SLOT_CLASSES]
+    if not terminals:
+        return None
+    return ordered_slots(terminals)[0]
+
+
+def token_base(token: str) -> str:
+    normalized = str(token).strip().lower()
+    if normalized.startswith("|"):
+        normalized = normalized[1:].strip()
+    if "(" in normalized:
+        normalized = normalized.split("(", 1)[0].strip()
+    return normalized
+
+
+def operator_base_from_slot(slot: dict[str, Any] | None) -> str:
+    if slot is None:
+        return ""
+    return token_base(slot_token(slot))
+
+
+def entity_context_from_slot(slot: dict[str, Any] | None) -> str:
+    if slot is None:
+        return ""
+
+    base = token_base(slot_token(slot))
+    team_aliases = {"away", "home", "them", "us"}
+    if base in team_aliases:
+        return "team"
+    return base
+
+
+def formatter_category(token: str) -> str:
+    normalized = token_base(token)
+
+    if normalized in DATE_ONLY_FORMATTERS:
+        return "date"
+
+    if normalized in TEXT_FORMATTERS:
+        return "text"
+
+    if normalized in NUMERIC_FORMATTERS:
+        return "numeric"
+
+    if normalized.startswith("numeric_"):
+        return "numeric"
+
+    if normalized and normalized[0] in {"+", "-", "*", "/"}:
+        return "numeric"
+
+    return "unknown"
+
+
+def is_date_like_attribute(attribute_token: str) -> bool:
+    normalized = token_base(attribute_token)
+    if normalized in DATE_LIKE_ATTRIBUTE_EXACT:
+        return True
+    return any(hint in normalized for hint in DATE_LIKE_ATTRIBUTE_HINTS)
+
+
+def load_attribute_entity_compatibility(repo_root: Path) -> dict[str, set[str]]:
+    path = repo_root / "docs" / "onair" / "attribute-dictionary.md"
+    if not path.exists():
+        return {}
+
+    mapping: dict[str, set[str]] = {}
+    for line in path.read_text(encoding="utf-8").splitlines():
+        stripped = line.strip()
+        if not stripped.startswith("|"):
+            continue
+
+        cells = [cell.strip() for cell in stripped.split("|")[1:-1]]
+        if len(cells) < 4:
+            continue
+
+        attribute_name = cells[0].lower()
+        entity_type = cells[1].lower()
+
+        if (
+            attribute_name in {"", "attribute_name"}
+            or attribute_name.startswith("---")
+            or entity_type.startswith("---")
+        ):
+            continue
+
+        entities = [piece.strip() for piece in entity_type.split("/") if piece.strip()]
+        if not entities:
+            continue
+
+        if attribute_name not in mapping:
+            mapping[attribute_name] = set()
+
+        for entity in entities:
+            mapping[attribute_name].add(entity)
+
+    return mapping
+
+
+def skipped_structural_evaluations(detail: str = SCHEMA_SKIP_DETAIL) -> list[dict[str, str]]:
     return [
         make_rule_evaluation(
             rule_id=rule_id,
             outcome="WARN",
-            detail="Skipped because schema compatibility failed.",
+            detail=detail,
+            category="STRUCTURAL",
         )
         for rule_id in STRUCTURAL_RULE_ORDER
+    ]
+
+
+def skipped_semantic_evaluations(detail: str) -> list[dict[str, str]]:
+    return [
+        make_rule_evaluation(
+            rule_id=rule_id,
+            outcome="WARN",
+            detail=detail,
+            category="SEMANTIC",
+        )
+        for rule_id in SEMANTIC_RULE_ORDER
     ]
 
 
@@ -295,7 +528,7 @@ def evaluate_structural_rules(payload: Any) -> tuple[list[dict[str, str]], list[
         )
 
     # 3) Illegal slot combinations.
-    slot_classes = [str(slot.get("slot_class")) for slot in slots]
+    slot_classes = [slot_class(slot) for slot in slots]
     class_set = set(slot_classes)
     illegal_reasons: list[str] = []
     if "family" in class_set and "operator" in class_set:
@@ -334,10 +567,10 @@ def evaluate_structural_rules(payload: Any) -> tuple[list[dict[str, str]], list[
         first_terminal = slot_terminal_orders[0]
         offending_slots: list[tuple[int, str]] = []
         for slot in slots:
-            order = slot.get("order")
-            slot_class = str(slot.get("slot_class"))
-            if isinstance(order, int) and order > first_terminal and slot_class != "formatter":
-                offending_slots.append((order, slot_class))
+            this_order = slot_order(slot)
+            this_class = slot_class(slot)
+            if this_order is not None and this_order > first_terminal and this_class != "formatter":
+                offending_slots.append((this_order, this_class))
 
         offending_slots.sort(key=lambda item: (item[0], item[1]))
         if offending_slots:
@@ -377,9 +610,9 @@ def evaluate_structural_rules(payload: Any) -> tuple[list[dict[str, str]], list[
     # 5) Formatter count at most one.
     formatter_orders = sorted(
         [
-            slot.get("order")
+            slot_order(slot)
             for slot in slots
-            if slot.get("slot_class") == "formatter" and isinstance(slot.get("order"), int)
+            if slot_class(slot) == "formatter" and slot_order(slot) is not None
         ]
     )
     if len(formatter_orders) <= 1:
@@ -410,9 +643,453 @@ def evaluate_structural_rules(payload: Any) -> tuple[list[dict[str, str]], list[
 
     return (evaluations, errors)
 
+def evaluate_sem_required_dependencies_present(
+    slots: list[dict[str, Any]],
+) -> tuple[dict[str, str], list[dict[str, Any]]]:
+    seen: set[str] = set()
+    violations: list[tuple[int | None, str, tuple[str, ...]]] = []
+
+    for slot in ordered_slots(slots):
+        this_class = slot_class(slot)
+        required = DEPENDENCY_REQUIREMENTS.get(this_class)
+        if required is not None:
+            if not any(requirement in seen for requirement in required):
+                violations.append((slot_order(slot), this_class, required))
+        seen.add(this_class)
+
+    if violations:
+        violations.sort(
+            key=lambda item: (
+                item[0] if item[0] is not None else 10**9,
+                item[1],
+                ",".join(item[2]),
+            )
+        )
+        first_order, first_class, first_required = violations[0]
+        required_text = ", ".join(first_required)
+        detail = (
+            f"Missing required dependency for slot_class='{first_class}' at order={first_order}; "
+            f"required_any_of=[{required_text}]."
+        )
+        evaluation = make_rule_evaluation(
+            RULE_REQUIRED_DEPENDENCIES_PRESENT,
+            "REFUSE",
+            detail,
+            category="SEMANTIC",
+        )
+        errors = [
+            make_issue(
+                "SEM_MISSING_REQUIRED_DEPENDENCY",
+                detail,
+                rule_id=RULE_REQUIRED_DEPENDENCIES_PRESENT,
+                slot_order=first_order,
+            )
+        ]
+        return (evaluation, errors)
+
+    evaluation = make_rule_evaluation(
+        RULE_REQUIRED_DEPENDENCIES_PRESENT,
+        "PASS",
+        "All dependent slot classes have required predecessors.",
+        category="SEMANTIC",
+    )
+    return (evaluation, [])
+
+
+def evaluate_sem_formatter_terminal_adjacent_and_type_compatible(
+    slots: list[dict[str, Any]],
+) -> tuple[dict[str, str], list[dict[str, Any]]]:
+    formatter = first_slot_of_class(slots, "formatter")
+    terminal = first_terminal_slot(slots)
+
+    if formatter is None:
+        evaluation = make_rule_evaluation(
+            RULE_FORMATTER_TERMINAL_ADJACENT_AND_TYPE_COMPATIBLE,
+            "PASS",
+            "No formatter slot present.",
+            category="SEMANTIC",
+        )
+        return (evaluation, [])
+
+    formatter_order = slot_order(formatter)
+    formatter_token = slot_token(formatter)
+
+    if terminal is None:
+        detail = "Formatter present but no terminal slot available for adjacency/type checks."
+        evaluation = make_rule_evaluation(
+            RULE_FORMATTER_TERMINAL_ADJACENT_AND_TYPE_COMPATIBLE,
+            "REFUSE",
+            detail,
+            category="SEMANTIC",
+        )
+        errors = [
+            make_issue(
+                "SEM_FORMATTER_NOT_TERMINAL_ADJACENT",
+                detail,
+                rule_id=RULE_FORMATTER_TERMINAL_ADJACENT_AND_TYPE_COMPATIBLE,
+                slot_order=formatter_order,
+            )
+        ]
+        return (evaluation, errors)
+
+    terminal_order = slot_order(terminal)
+    terminal_class = slot_class(terminal)
+    terminal_token = slot_token(terminal)
+
+    if formatter_order is None or terminal_order is None or formatter_order != terminal_order + 1:
+        detail = (
+            f"Formatter at order={formatter_order} is not terminal-adjacent; "
+            f"terminal_order={terminal_order}."
+        )
+        evaluation = make_rule_evaluation(
+            RULE_FORMATTER_TERMINAL_ADJACENT_AND_TYPE_COMPATIBLE,
+            "REFUSE",
+            detail,
+            category="SEMANTIC",
+        )
+        errors = [
+            make_issue(
+                "SEM_FORMATTER_NOT_TERMINAL_ADJACENT",
+                detail,
+                rule_id=RULE_FORMATTER_TERMINAL_ADJACENT_AND_TYPE_COMPATIBLE,
+                slot_order=formatter_order,
+            )
+        ]
+        return (evaluation, errors)
+
+    formatter_kind = formatter_category(formatter_token)
+    formatter_base = token_base(formatter_token)
+
+    incompatible_reason = ""
+    if terminal_class == "terminal_measure" and formatter_kind == "date":
+        incompatible_reason = (
+            f"Formatter '{formatter_base}' is date-only and incompatible with terminal_measure '{token_base(terminal_token)}'."
+        )
+    elif terminal_class == "terminal_attribute":
+        if formatter_kind == "numeric":
+            incompatible_reason = (
+                f"Formatter '{formatter_base}' is numeric and incompatible with terminal_attribute '{token_base(terminal_token)}'."
+            )
+        elif formatter_kind == "date":
+            terminal_attribute = token_base(terminal_token)
+            if formatter_base in {"day_long", "day_short"}:
+                if terminal_attribute != "day_of_week":
+                    incompatible_reason = (
+                        f"Formatter '{formatter_base}' requires terminal_attribute 'day_of_week'; actual='{terminal_attribute}'."
+                    )
+            elif not is_date_like_attribute(terminal_attribute):
+                incompatible_reason = (
+                    f"Formatter '{formatter_base}' requires date-like terminal_attribute; actual='{terminal_attribute}'."
+                )
+
+    if incompatible_reason:
+        evaluation = make_rule_evaluation(
+            RULE_FORMATTER_TERMINAL_ADJACENT_AND_TYPE_COMPATIBLE,
+            "REFUSE",
+            incompatible_reason,
+            category="SEMANTIC",
+        )
+        errors = [
+            make_issue(
+                "SEM_FORMATTER_TYPE_INCOMPATIBLE",
+                incompatible_reason,
+                rule_id=RULE_FORMATTER_TERMINAL_ADJACENT_AND_TYPE_COMPATIBLE,
+                slot_order=formatter_order,
+            )
+        ]
+        return (evaluation, errors)
+
+    detail = (
+        f"Formatter is terminal-adjacent and type-compatible: formatter='{formatter_base}', "
+        f"terminal_slot_class='{terminal_class}'."
+    )
+    if formatter_kind == "unknown":
+        detail = (
+            f"Formatter is terminal-adjacent; formatter token '{formatter_base}' has unknown type and is deferred "
+            "to ambiguity rule."
+        )
+
+    evaluation = make_rule_evaluation(
+        RULE_FORMATTER_TERMINAL_ADJACENT_AND_TYPE_COMPATIBLE,
+        "PASS",
+        detail,
+        category="SEMANTIC",
+    )
+    return (evaluation, [])
+
+
+def evaluate_sem_entity_family_operator_terminal_compatible(
+    slots: list[dict[str, Any]],
+    attribute_entity_compatibility: dict[str, set[str]],
+) -> tuple[dict[str, str], list[dict[str, Any]]]:
+    family = first_slot_of_class(slots, "family")
+    operator = first_slot_of_class(slots, "operator")
+    entity = first_slot_of_class(slots, "entity")
+    terminal = first_terminal_slot(slots)
+
+    issues: list[dict[str, Any]] = []
+
+    if terminal is not None:
+        terminal_cls = slot_class(terminal)
+        terminal_order = slot_order(terminal)
+        terminal_base = token_base(slot_token(terminal))
+
+        family_base = token_base(slot_token(family)) if family is not None else ""
+        if family_base == "stats" and terminal_cls != "terminal_measure":
+            issues.append(
+                make_issue(
+                    "SEM_FAMILY_OPERATOR_CONTEXT_INCOMPATIBLE",
+                    "Family 'stats' requires terminal_measure.",
+                    rule_id=RULE_ENTITY_FAMILY_OPERATOR_TERMINAL_COMPATIBLE,
+                    slot_order=terminal_order,
+                )
+            )
+        if family_base == "info" and terminal_cls != "terminal_attribute":
+            issues.append(
+                make_issue(
+                    "SEM_FAMILY_OPERATOR_CONTEXT_INCOMPATIBLE",
+                    "Family 'info' requires terminal_attribute.",
+                    rule_id=RULE_ENTITY_FAMILY_OPERATOR_TERMINAL_COMPATIBLE,
+                    slot_order=terminal_order,
+                )
+            )
+
+        operator_base = operator_base_from_slot(operator)
+        if operator_base == "rank" and terminal_cls != "terminal_measure":
+            issues.append(
+                make_issue(
+                    "SEM_FAMILY_OPERATOR_CONTEXT_INCOMPATIBLE",
+                    "Operator 'rank' requires terminal_measure context.",
+                    rule_id=RULE_ENTITY_FAMILY_OPERATOR_TERMINAL_COMPATIBLE,
+                    slot_order=terminal_order,
+                )
+            )
+
+        if operator_base == "previous":
+            has_filter_before_terminal = False
+            for slot in slots:
+                if (
+                    slot_class(slot) == "filter"
+                    and slot_order(slot) is not None
+                    and terminal_order is not None
+                    and slot_order(slot) < terminal_order
+                ):
+                    has_filter_before_terminal = True
+                    break
+
+            if not has_filter_before_terminal:
+                issues.append(
+                    make_issue(
+                        "SEM_FAMILY_OPERATOR_CONTEXT_INCOMPATIBLE",
+                        "Operator 'previous' requires filter context before terminal output.",
+                        rule_id=RULE_ENTITY_FAMILY_OPERATOR_TERMINAL_COMPATIBLE,
+                        slot_order=terminal_order,
+                    )
+                )
+
+        entity_context = entity_context_from_slot(entity)
+        if entity_context:
+            if terminal_cls == "terminal_measure" and entity_context == "time":
+                issues.append(
+                    make_issue(
+                        "SEM_ENTITY_TERMINAL_INCOMPATIBLE",
+                        "Entity 'time' is incompatible with terminal_measure; use info/attribute context.",
+                        rule_id=RULE_ENTITY_FAMILY_OPERATOR_TERMINAL_COMPATIBLE,
+                        slot_order=terminal_order,
+                    )
+                )
+            elif terminal_cls == "terminal_attribute":
+                allowed_entities = attribute_entity_compatibility.get(terminal_base)
+                if allowed_entities and entity_context not in allowed_entities:
+                    allowed_text = ", ".join(sorted(allowed_entities))
+                    issues.append(
+                        make_issue(
+                            "SEM_ENTITY_TERMINAL_INCOMPATIBLE",
+                            (
+                                f"Entity '{entity_context}' is incompatible with terminal_attribute "
+                                f"'{terminal_base}'. allowed=[{allowed_text}]."
+                            ),
+                            rule_id=RULE_ENTITY_FAMILY_OPERATOR_TERMINAL_COMPATIBLE,
+                            slot_order=terminal_order,
+                        )
+                    )
+
+    if issues:
+        issues.sort(
+            key=lambda item: (
+                str(item.get("code", "")),
+                str(item.get("message", "")),
+                str(item.get("slot_order", "")),
+            )
+        )
+        first = issues[0]
+        evaluation = make_rule_evaluation(
+            RULE_ENTITY_FAMILY_OPERATOR_TERMINAL_COMPATIBLE,
+            "REFUSE",
+            str(first["message"]),
+            category="SEMANTIC",
+        )
+        return (evaluation, [first])
+
+    evaluation = make_rule_evaluation(
+        RULE_ENTITY_FAMILY_OPERATOR_TERMINAL_COMPATIBLE,
+        "PASS",
+        "Entity/family/operator context is compatible with terminal kind.",
+        category="SEMANTIC",
+    )
+    return (evaluation, [])
+
+def evaluate_sem_ambiguous_or_incompatible_combination_refused(
+    payload: Any,
+    slots: list[dict[str, Any]],
+    attribute_entity_compatibility: dict[str, set[str]],
+) -> tuple[dict[str, str], list[dict[str, Any]]]:
+    reasons: list[tuple[int | None, str]] = []
+
+    family_slots = [slot for slot in slots if slot_class(slot) == "family"]
+    operator_slots = [slot for slot in slots if slot_class(slot) == "operator"]
+    entity_slots = [slot for slot in slots if slot_class(slot) == "entity"]
+    formatter_slot = first_slot_of_class(slots, "formatter")
+    terminal_slot = first_terminal_slot(slots)
+
+    if len(family_slots) > 1:
+        reason_slot = ordered_slots(family_slots)[1]
+        reasons.append((slot_order(reason_slot), "Multiple family slots create ambiguous semantic context."))
+
+    if len(operator_slots) > 1:
+        reason_slot = ordered_slots(operator_slots)[1]
+        reasons.append((slot_order(reason_slot), "Multiple operator slots create ambiguous semantic context."))
+
+    if len(entity_slots) > 1:
+        reason_slot = ordered_slots(entity_slots)[1]
+        reasons.append((slot_order(reason_slot), "Multiple entity slots create ambiguous semantic context."))
+
+    family = first_slot_of_class(slots, "family")
+    operator = first_slot_of_class(slots, "operator")
+
+    family_base = token_base(slot_token(family)) if family is not None else ""
+    if family_base and family_base not in KNOWN_FAMILY_BASELINES and operator is None:
+        reasons.append(
+            (
+                slot_order(family),
+                f"Family '{family_base}' has no declared baseline semantic policy in this validator.",
+            )
+        )
+
+    operator_base = operator_base_from_slot(operator)
+    if operator_base and operator_base not in KNOWN_OPERATOR_BASES:
+        reasons.append(
+            (
+                slot_order(operator),
+                f"Operator '{operator_base}' has no declared semantic policy in this validator.",
+            )
+        )
+
+    if formatter_slot is not None and formatter_category(slot_token(formatter_slot)) == "unknown":
+        formatter_base = token_base(slot_token(formatter_slot))
+        reasons.append(
+            (
+                slot_order(formatter_slot),
+                f"Formatter '{formatter_base}' has unknown semantic type compatibility.",
+            )
+        )
+
+    entity = first_slot_of_class(slots, "entity")
+    if terminal_slot is not None and entity is not None and slot_class(terminal_slot) == "terminal_attribute":
+        attribute_base = token_base(slot_token(terminal_slot))
+        if attribute_base not in attribute_entity_compatibility:
+            reasons.append(
+                (
+                    slot_order(terminal_slot),
+                    f"Terminal attribute '{attribute_base}' has no entity-compatibility mapping evidence.",
+                )
+            )
+
+    terminal_definition = payload.get("terminal") if isinstance(payload, dict) else None
+    if isinstance(terminal_definition, dict) and terminal_slot is not None:
+        definition_slot_class = str(terminal_definition.get("slot_class", "")).strip()
+        definition_token = token_base(str(terminal_definition.get("token", "")))
+        slot_slot_class = slot_class(terminal_slot)
+        slot_token_base = token_base(slot_token(terminal_slot))
+        if definition_slot_class != slot_slot_class or definition_token != slot_token_base:
+            reasons.append(
+                (
+                    slot_order(terminal_slot),
+                    (
+                        "Terminal definition does not match resolved terminal slot "
+                        f"(definition={definition_slot_class}:{definition_token}, "
+                        f"slot={slot_slot_class}:{slot_token_base})."
+                    ),
+                )
+            )
+
+    if reasons:
+        reasons.sort(key=lambda item: (item[0] if item[0] is not None else 10**9, item[1]))
+        refusal_order, refusal_message = reasons[0]
+        evaluation = make_rule_evaluation(
+            RULE_AMBIGUOUS_OR_INCOMPATIBLE_COMBINATION_REFUSED,
+            "REFUSE",
+            refusal_message,
+            category="SEMANTIC",
+        )
+        errors = [
+            make_issue(
+                "SEM_AMBIGUOUS_SEMANTIC_COMBINATION",
+                refusal_message,
+                rule_id=RULE_AMBIGUOUS_OR_INCOMPATIBLE_COMBINATION_REFUSED,
+                slot_order=refusal_order,
+            )
+        ]
+        return (evaluation, errors)
+
+    evaluation = make_rule_evaluation(
+        RULE_AMBIGUOUS_OR_INCOMPATIBLE_COMBINATION_REFUSED,
+        "PASS",
+        "No ambiguous semantic combinations detected.",
+        category="SEMANTIC",
+    )
+    return (evaluation, [])
+
+
+def evaluate_semantic_rules(
+    payload: Any,
+    attribute_entity_compatibility: dict[str, set[str]],
+) -> tuple[list[dict[str, str]], list[dict[str, Any]]]:
+    slots = get_slots(payload)
+
+    evaluations: list[dict[str, str]] = []
+    errors: list[dict[str, Any]] = []
+
+    dependency_eval, dependency_errors = evaluate_sem_required_dependencies_present(slots)
+    evaluations.append(dependency_eval)
+    errors.extend(dependency_errors)
+
+    formatter_eval, formatter_errors = evaluate_sem_formatter_terminal_adjacent_and_type_compatible(slots)
+    evaluations.append(formatter_eval)
+    errors.extend(formatter_errors)
+
+    compatibility_eval, compatibility_errors = evaluate_sem_entity_family_operator_terminal_compatible(
+        slots,
+        attribute_entity_compatibility,
+    )
+    evaluations.append(compatibility_eval)
+    errors.extend(compatibility_errors)
+
+    ambiguity_eval, ambiguity_errors = evaluate_sem_ambiguous_or_incompatible_combination_refused(
+        payload,
+        slots,
+        attribute_entity_compatibility,
+    )
+    evaluations.append(ambiguity_eval)
+    errors.extend(ambiguity_errors)
+
+    return (evaluations, errors)
+
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="WP-18 validator runner (structural rules only).")
+    parser = argparse.ArgumentParser(
+        description="WP-18 validator runner (schema + structural + semantic rules)."
+    )
     parser.add_argument(
         "--input",
         required=True,
@@ -432,7 +1109,10 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
 
 
 def process_artifact(
-    artifact_path: Path, schema: dict[str, Any], repo_root: Path
+    artifact_path: Path,
+    schema: dict[str, Any],
+    repo_root: Path,
+    attribute_entity_compatibility: dict[str, set[str]],
 ) -> dict[str, Any]:
     raw_text = artifact_path.read_text(encoding="utf-8")
     payload: Any | None = None
@@ -462,11 +1142,23 @@ def process_artifact(
         errors.extend(schema_issues)
 
     if errors:
-        rule_evaluations = skipped_structural_evaluations()
+        structural_evals = skipped_structural_evaluations(SCHEMA_SKIP_DETAIL)
+        semantic_evals = skipped_semantic_evaluations(SCHEMA_SKIP_DETAIL)
+        rule_evaluations = structural_evals + semantic_evals
     else:
         structural_evals, structural_errors = evaluate_structural_rules(payload)
-        rule_evaluations = structural_evals
         errors.extend(structural_errors)
+
+        if structural_errors:
+            semantic_evals = skipped_semantic_evaluations(STRUCTURAL_SKIP_DETAIL)
+        else:
+            semantic_evals, semantic_errors = evaluate_semantic_rules(
+                payload,
+                attribute_entity_compatibility,
+            )
+            errors.extend(semantic_errors)
+
+        rule_evaluations = structural_evals + semantic_evals
 
     errors.sort(
         key=lambda item: (
@@ -516,9 +1208,13 @@ def main(argv: list[str]) -> int:
         raise FileNotFoundError(f"Schema file not found: {schema_path}")
 
     schema = json.loads(schema_path.read_text(encoding="utf-8"))
+    attribute_entity_compatibility = load_attribute_entity_compatibility(repo_root)
     artifact_paths = collect_artifact_paths(input_path)
 
-    results = [process_artifact(path, schema, repo_root) for path in artifact_paths]
+    results = [
+        process_artifact(path, schema, repo_root, attribute_entity_compatibility)
+        for path in artifact_paths
+    ]
     results.sort(key=lambda item: item["input_artifact"].lower())
 
     output_payload = {
@@ -542,4 +1238,3 @@ def main(argv: list[str]) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main(sys.argv[1:]))
-
