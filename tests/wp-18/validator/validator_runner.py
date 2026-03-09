@@ -7,6 +7,7 @@ This runner performs:
 - schema compatibility checks against docs/onair/plan-capture.schema.json
 - structural rule evaluation
 - semantic rule evaluation
+- determinism rule evaluation
 - deterministic validation_result emission
 
 This runner is validation-only, deterministic, read-only, and runtime-independent.
@@ -21,8 +22,9 @@ import sys
 from pathlib import Path
 from typing import Any
 
-VALIDATOR_CONTRACT = "wp18.validator_runner.semantic.v1"
+VALIDATOR_CONTRACT = "wp18.validator_runner.determinism.v1"
 HASH_PLACEHOLDER_CONTRACT = "wp18.normalized_plan_hash.placeholder.v1"
+REPLAY_IDENTITY_CONTRACT = "wp18.replay_identity.v1"
 
 SCHEMA_RULE_ID = "SCHEMA_COMPATIBILITY"
 
@@ -55,6 +57,22 @@ SEMANTIC_RULE_ORDER = [
     RULE_ENTITY_FAMILY_OPERATOR_TERMINAL_COMPATIBLE,
     RULE_AMBIGUOUS_OR_INCOMPATIBLE_COMBINATION_REFUSED,
 ]
+
+RULE_DET_RULE_EVALUATION_ORDER_STABLE = "DET_RULE_EVALUATION_ORDER_STABLE"
+RULE_DET_ERROR_WARNING_ORDER_STABLE = "DET_ERROR_WARNING_ORDER_STABLE"
+RULE_DET_OUTPUT_NORMALIZATION_STABLE = "DET_OUTPUT_NORMALIZATION_STABLE"
+RULE_DET_AMBIGUOUS_INTERPRETATION_REFUSED = "DET_AMBIGUOUS_INTERPRETATION_REFUSED"
+RULE_DET_REPLAY_IDENTITY_STABLE = "DET_REPLAY_IDENTITY_STABLE"
+
+DETERMINISM_RULE_ORDER = [
+    RULE_DET_RULE_EVALUATION_ORDER_STABLE,
+    RULE_DET_ERROR_WARNING_ORDER_STABLE,
+    RULE_DET_OUTPUT_NORMALIZATION_STABLE,
+    RULE_DET_AMBIGUOUS_INTERPRETATION_REFUSED,
+    RULE_DET_REPLAY_IDENTITY_STABLE,
+]
+
+PRE_DETERMINISM_RULE_ORDER = STRUCTURAL_RULE_ORDER + SEMANTIC_RULE_ORDER
 
 TERMINAL_SLOT_CLASSES = {"terminal_measure", "terminal_attribute"}
 
@@ -170,6 +188,19 @@ def make_rule_evaluation(
     }
 
 
+def issue_sort_key(item: dict[str, Any]) -> tuple[str, str, str, str]:
+    return (
+        str(item.get("code", "")),
+        str(item.get("rule_id", "")),
+        str(item.get("message", "")),
+        str(item.get("slot_order", "")),
+    )
+
+
+def sort_issues(issues: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    return sorted(issues, key=issue_sort_key)
+
+
 def build_normalized_plan_hash(payload: Any, raw_text: str) -> str:
     if payload is None:
         canonical_payload = raw_text
@@ -177,6 +208,17 @@ def build_normalized_plan_hash(payload: Any, raw_text: str) -> str:
         canonical_payload = canonical_json(payload)
 
     digest_input = (HASH_PLACEHOLDER_CONTRACT + "\n" + canonical_payload).encode("utf-8")
+    return hashlib.sha256(digest_input).hexdigest()
+
+
+def make_replay_identity(input_artifact: str, normalized_plan_hash: str) -> str:
+    digest_input = (
+        REPLAY_IDENTITY_CONTRACT
+        + "\n"
+        + input_artifact.lower()
+        + "\n"
+        + normalized_plan_hash
+    ).encode("utf-8")
     return hashlib.sha256(digest_input).hexdigest()
 
 
@@ -447,6 +489,18 @@ def skipped_semantic_evaluations(detail: str) -> list[dict[str, str]]:
             category="SEMANTIC",
         )
         for rule_id in SEMANTIC_RULE_ORDER
+    ]
+
+
+def skipped_determinism_evaluations(detail: str) -> list[dict[str, str]]:
+    return [
+        make_rule_evaluation(
+            rule_id=rule_id,
+            outcome="WARN",
+            detail=detail,
+            category="DETERMINISM",
+        )
+        for rule_id in DETERMINISM_RULE_ORDER
     ]
 
 
@@ -1086,9 +1140,221 @@ def evaluate_semantic_rules(
     return (evaluations, errors)
 
 
+def evaluate_determinism_rules(
+    input_artifact: str,
+    payload: Any,
+    raw_text: str,
+    normalized_plan_hash: str,
+    errors: list[dict[str, Any]],
+    warnings: list[dict[str, Any]],
+    rule_evaluations_before_determinism: list[dict[str, str]],
+) -> tuple[list[dict[str, str]], list[dict[str, Any]], list[dict[str, Any]]]:
+    evaluations: list[dict[str, str]] = []
+    det_errors: list[dict[str, Any]] = []
+    det_warnings: list[dict[str, Any]] = []
+
+    # 1) Deterministic rule evaluation ordering check.
+    expected_rule_order = PRE_DETERMINISM_RULE_ORDER
+    actual_rule_order = [str(row.get("rule_id", "")) for row in rule_evaluations_before_determinism]
+    if actual_rule_order == expected_rule_order:
+        evaluations.append(
+            make_rule_evaluation(
+                rule_id=RULE_DET_RULE_EVALUATION_ORDER_STABLE,
+                outcome="PASS",
+                detail="Rule evaluation order is stable for schema/structural/semantic phases.",
+                category="DETERMINISM",
+            )
+        )
+    else:
+        detail = (
+            "Rule evaluation order is unstable. "
+            f"expected={expected_rule_order} actual={actual_rule_order}."
+        )
+        evaluations.append(
+            make_rule_evaluation(
+                rule_id=RULE_DET_RULE_EVALUATION_ORDER_STABLE,
+                outcome="REFUSE",
+                detail=detail,
+                category="DETERMINISM",
+            )
+        )
+        det_errors.append(
+            make_issue(
+                code="DET_RULE_ORDER_UNSTABLE",
+                message=detail,
+                rule_id=RULE_DET_RULE_EVALUATION_ORDER_STABLE,
+                slot_order=None,
+            )
+        )
+
+    # 2) Deterministic error/warning ordering check.
+    order_issues: list[str] = []
+    if errors != sort_issues(errors):
+        detail = "Error ordering is not deterministic."
+        det_errors.append(
+            make_issue(
+                code="DET_ERROR_ORDER_UNSTABLE",
+                message=detail,
+                rule_id=RULE_DET_ERROR_WARNING_ORDER_STABLE,
+                slot_order=None,
+            )
+        )
+        order_issues.append(detail)
+    if warnings != sort_issues(warnings):
+        detail = "Warning ordering is not deterministic."
+        det_errors.append(
+            make_issue(
+                code="DET_WARNING_ORDER_UNSTABLE",
+                message=detail,
+                rule_id=RULE_DET_ERROR_WARNING_ORDER_STABLE,
+                slot_order=None,
+            )
+        )
+        order_issues.append(detail)
+
+    if order_issues:
+        evaluations.append(
+            make_rule_evaluation(
+                rule_id=RULE_DET_ERROR_WARNING_ORDER_STABLE,
+                outcome="REFUSE",
+                detail="; ".join(order_issues),
+                category="DETERMINISM",
+            )
+        )
+    else:
+        evaluations.append(
+            make_rule_evaluation(
+                rule_id=RULE_DET_ERROR_WARNING_ORDER_STABLE,
+                outcome="PASS",
+                detail="Error and warning ordering is stable.",
+                category="DETERMINISM",
+            )
+        )
+
+    # 3) Stable output normalization check.
+    recomputed_hash = build_normalized_plan_hash(payload, raw_text)
+    if recomputed_hash == normalized_plan_hash:
+        evaluations.append(
+            make_rule_evaluation(
+                rule_id=RULE_DET_OUTPUT_NORMALIZATION_STABLE,
+                outcome="PASS",
+                detail="normalized_plan_hash is stable under canonical normalization.",
+                category="DETERMINISM",
+            )
+        )
+    else:
+        detail = (
+            "normalized_plan_hash is unstable under canonical normalization. "
+            f"expected={normalized_plan_hash} actual={recomputed_hash}."
+        )
+        evaluations.append(
+            make_rule_evaluation(
+                rule_id=RULE_DET_OUTPUT_NORMALIZATION_STABLE,
+                outcome="REFUSE",
+                detail=detail,
+                category="DETERMINISM",
+            )
+        )
+        det_errors.append(
+            make_issue(
+                code="DET_OUTPUT_NORMALIZATION_UNSTABLE",
+                message=detail,
+                rule_id=RULE_DET_OUTPUT_NORMALIZATION_STABLE,
+                slot_order=None,
+            )
+        )
+
+    # 4) Ambiguous interpretation fail-closed check.
+    ambiguity_errors = [
+        issue for issue in errors if str(issue.get("code", "")) == "SEM_AMBIGUOUS_SEMANTIC_COMBINATION"
+    ]
+    semantic_ambiguity_eval = next(
+        (
+            row
+            for row in rule_evaluations_before_determinism
+            if str(row.get("rule_id", "")) == RULE_AMBIGUOUS_OR_INCOMPATIBLE_COMBINATION_REFUSED
+        ),
+        None,
+    )
+
+    if ambiguity_errors:
+        if semantic_ambiguity_eval is not None and str(semantic_ambiguity_eval.get("outcome", "")) == "REFUSE":
+            evaluations.append(
+                make_rule_evaluation(
+                    rule_id=RULE_DET_AMBIGUOUS_INTERPRETATION_REFUSED,
+                    outcome="PASS",
+                    detail="Ambiguous interpretation was refused by semantic layer.",
+                    category="DETERMINISM",
+                )
+            )
+        else:
+            detail = "Ambiguous semantic combination was not fail-closed by semantic layer."
+            evaluations.append(
+                make_rule_evaluation(
+                    rule_id=RULE_DET_AMBIGUOUS_INTERPRETATION_REFUSED,
+                    outcome="REFUSE",
+                    detail=detail,
+                    category="DETERMINISM",
+                )
+            )
+            det_errors.append(
+                make_issue(
+                    code="DET_AMBIGUOUS_INTERPRETATION_REFUSED",
+                    message=detail,
+                    rule_id=RULE_DET_AMBIGUOUS_INTERPRETATION_REFUSED,
+                    slot_order=None,
+                )
+            )
+    else:
+        evaluations.append(
+            make_rule_evaluation(
+                rule_id=RULE_DET_AMBIGUOUS_INTERPRETATION_REFUSED,
+                outcome="PASS",
+                detail="No ambiguous semantic interpretation detected in this artifact.",
+                category="DETERMINISM",
+            )
+        )
+
+    # 5) Deterministic replay identity representation check.
+    replay_identity = make_replay_identity(input_artifact, normalized_plan_hash)
+    replay_identity_recomputed = make_replay_identity(input_artifact, normalized_plan_hash)
+    if replay_identity == replay_identity_recomputed:
+        evaluations.append(
+            make_rule_evaluation(
+                rule_id=RULE_DET_REPLAY_IDENTITY_STABLE,
+                outcome="PASS",
+                detail=f"replay_identity={replay_identity}",
+                category="DETERMINISM",
+            )
+        )
+    else:
+        detail = (
+            "Replay identity computation is unstable. "
+            f"expected={replay_identity} actual={replay_identity_recomputed}."
+        )
+        evaluations.append(
+            make_rule_evaluation(
+                rule_id=RULE_DET_REPLAY_IDENTITY_STABLE,
+                outcome="REFUSE",
+                detail=detail,
+                category="DETERMINISM",
+            )
+        )
+        det_errors.append(
+            make_issue(
+                code="DET_REPLAY_IDENTITY_UNSTABLE",
+                message=detail,
+                rule_id=RULE_DET_REPLAY_IDENTITY_STABLE,
+                slot_order=None,
+            )
+        )
+
+    return (evaluations, det_errors, det_warnings)
+
+
 def parse_args(argv: list[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="WP-18 validator runner (schema + structural + semantic rules)."
+        description="WP-18 validator runner (schema + structural + semantic + determinism rules)."
     )
     parser.add_argument(
         "--input",
@@ -1114,6 +1380,7 @@ def process_artifact(
     repo_root: Path,
     attribute_entity_compatibility: dict[str, set[str]],
 ) -> dict[str, Any]:
+    input_artifact = rel_path(artifact_path, repo_root)
     raw_text = artifact_path.read_text(encoding="utf-8")
     payload: Any | None = None
     errors: list[dict[str, Any]] = []
@@ -1141,52 +1408,58 @@ def process_artifact(
             schema_issues = validate_schema_fallback(payload, schema)
         errors.extend(schema_issues)
 
+    normalized_plan_hash = build_normalized_plan_hash(payload, raw_text)
+
     if errors:
         structural_evals = skipped_structural_evaluations(SCHEMA_SKIP_DETAIL)
         semantic_evals = skipped_semantic_evaluations(SCHEMA_SKIP_DETAIL)
-        rule_evaluations = structural_evals + semantic_evals
+        determinism_evals = skipped_determinism_evaluations(SCHEMA_SKIP_DETAIL)
+        rule_evaluations = structural_evals + semantic_evals + determinism_evals
     else:
         structural_evals, structural_errors = evaluate_structural_rules(payload)
         errors.extend(structural_errors)
 
         if structural_errors:
             semantic_evals = skipped_semantic_evaluations(STRUCTURAL_SKIP_DETAIL)
+            determinism_evals = skipped_determinism_evaluations(STRUCTURAL_SKIP_DETAIL)
+            rule_evaluations = structural_evals + semantic_evals + determinism_evals
         else:
             semantic_evals, semantic_errors = evaluate_semantic_rules(
                 payload,
                 attribute_entity_compatibility,
             )
             errors.extend(semantic_errors)
+            pre_determinism_rule_evals = structural_evals + semantic_evals
 
-        rule_evaluations = structural_evals + semantic_evals
+            # Determinism assertions evaluate only after schema + structural + semantic phases.
+            errors = sort_issues(errors)
+            warnings = sort_issues(warnings)
+            determinism_evals, determinism_errors, determinism_warnings = evaluate_determinism_rules(
+                input_artifact=input_artifact,
+                payload=payload,
+                raw_text=raw_text,
+                normalized_plan_hash=normalized_plan_hash,
+                errors=errors,
+                warnings=warnings,
+                rule_evaluations_before_determinism=pre_determinism_rule_evals,
+            )
+            errors.extend(determinism_errors)
+            warnings.extend(determinism_warnings)
+            rule_evaluations = pre_determinism_rule_evals + determinism_evals
 
-    errors.sort(
-        key=lambda item: (
-            str(item.get("code", "")),
-            str(item.get("rule_id", "")),
-            str(item.get("message", "")),
-            str(item.get("slot_order", "")),
-        )
-    )
-    warnings.sort(
-        key=lambda item: (
-            str(item.get("code", "")),
-            str(item.get("rule_id", "")),
-            str(item.get("message", "")),
-            str(item.get("slot_order", "")),
-        )
-    )
+    errors = sort_issues(errors)
+    warnings = sort_issues(warnings)
 
     validation_result = {
         "status": "PASS" if not errors else "REFUSE",
         "errors": errors,
         "warnings": warnings,
-        "normalized_plan_hash": build_normalized_plan_hash(payload, raw_text),
+        "normalized_plan_hash": normalized_plan_hash,
         "rule_evaluations": rule_evaluations,
     }
 
     return {
-        "input_artifact": rel_path(artifact_path, repo_root),
+        "input_artifact": input_artifact,
         "validation_result": validation_result,
     }
 
