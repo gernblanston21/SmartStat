@@ -1,0 +1,141 @@
+{
+  "projection_contract": "wp19.viewer_projection.v1",
+  "projection_kind": "read_only_view_model",
+  "input_artifact": "tests/wp-18/fixtures/bad/bad_semantic_formatter_not_terminal_adjacent.json",
+  "input_identity": {
+    "artifact_path": "tests/wp-18/fixtures/bad/bad_semantic_formatter_not_terminal_adjacent.json",
+    "input_fingerprint_sha256": "E5E5E5E5E5E5E5E5E5E5E5E5E5E5E5E5E5E5E5E5E5E5E5E5E5E5E5E5E5E5E5E5"
+  },
+  "status_summary": {
+    "status": "REFUSE",
+    "error_count": 2,
+    "warning_count": 0
+  },
+  "issues_summary": {
+    "errors": [
+      {
+        "code": "SEM_FORMATTER_NOT_TERMINAL_ADJACENT",
+        "message": "Formatter at order=3 is not terminal-adjacent; terminal_order=4.",
+        "rule_id": "SEM_FORMATTER_TERMINAL_ADJACENT_AND_TYPE_COMPATIBLE",
+        "slot_order": 3
+      },
+      {
+        "code": "SEM_MISSING_REQUIRED_DEPENDENCY",
+        "message": "Missing required dependency for slot_class='formatter' at order=3; required_any_of=[terminal_measure, terminal_attribute].",
+        "rule_id": "SEM_REQUIRED_DEPENDENCIES_PRESENT",
+        "slot_order": 3
+      }
+    ],
+    "warnings": []
+  },
+  "rule_evaluation_summary": {
+    "phase_order": [
+      "STRUCTURAL",
+      "SEMANTIC",
+      "DETERMINISM",
+      "BOUNDARY"
+    ],
+    "ordered_rules": [
+      {
+        "category": "STRUCTURAL",
+        "rule_id": "STRUCT_SLOT_ORDER_CONTIGUOUS_ASC",
+        "outcome": "PASS"
+      },
+      {
+        "category": "STRUCTURAL",
+        "rule_id": "STRUCT_CAPTURED_PLAN_TERMINAL_REQUIRED",
+        "outcome": "PASS"
+      },
+      {
+        "category": "STRUCTURAL",
+        "rule_id": "STRUCT_ILLEGAL_SLOT_COMBINATION",
+        "outcome": "PASS"
+      },
+      {
+        "category": "STRUCTURAL",
+        "rule_id": "STRUCT_NO_NON_FORMATTER_AFTER_TERMINAL",
+        "outcome": "PASS"
+      },
+      {
+        "category": "STRUCTURAL",
+        "rule_id": "STRUCT_FORMATTER_COUNT_MAX_ONE",
+        "outcome": "PASS"
+      },
+      {
+        "category": "SEMANTIC",
+        "rule_id": "SEM_REQUIRED_DEPENDENCIES_PRESENT",
+        "outcome": "REFUSE"
+      },
+      {
+        "category": "SEMANTIC",
+        "rule_id": "SEM_FORMATTER_TERMINAL_ADJACENT_AND_TYPE_COMPATIBLE",
+        "outcome": "REFUSE"
+      },
+      {
+        "category": "SEMANTIC",
+        "rule_id": "SEM_ENTITY_FAMILY_OPERATOR_TERMINAL_COMPATIBLE",
+        "outcome": "PASS"
+      },
+      {
+        "category": "SEMANTIC",
+        "rule_id": "SEM_AMBIGUOUS_OR_INCOMPATIBLE_COMBINATION_REFUSED",
+        "outcome": "PASS"
+      },
+      {
+        "category": "DETERMINISM",
+        "rule_id": "DET_RULE_EVALUATION_ORDER_STABLE",
+        "outcome": "PASS"
+      },
+      {
+        "category": "DETERMINISM",
+        "rule_id": "DET_ERROR_WARNING_ORDER_STABLE",
+        "outcome": "PASS"
+      },
+      {
+        "category": "DETERMINISM",
+        "rule_id": "DET_OUTPUT_NORMALIZATION_STABLE",
+        "outcome": "PASS"
+      },
+      {
+        "category": "DETERMINISM",
+        "rule_id": "DET_AMBIGUOUS_INTERPRETATION_REFUSED",
+        "outcome": "PASS"
+      },
+      {
+        "category": "DETERMINISM",
+        "rule_id": "DET_REPLAY_IDENTITY_STABLE",
+        "outcome": "PASS"
+      },
+      {
+        "category": "BOUNDARY",
+        "rule_id": "BOUND_VALIDATION_RUNTIME_INDEPENDENT",
+        "outcome": "PASS"
+      },
+      {
+        "category": "BOUNDARY",
+        "rule_id": "BOUND_NO_TRIO_OR_ENGINE_APPLY_CALLS",
+        "outcome": "PASS"
+      },
+      {
+        "category": "BOUNDARY",
+        "rule_id": "BOUND_CAPTURED_PLAN_READ_ONLY",
+        "outcome": "PASS"
+      },
+      {
+        "category": "BOUNDARY",
+        "rule_id": "BOUND_NO_RUNTIME_SIDE_EFFECT_INFERENCE",
+        "outcome": "PASS"
+      }
+    ]
+  },
+  "deterministic_identity_summary": {
+    "normalized_plan_hash": "8aa863b8314294214a3daca6d46f55125634865900938fc56c5a541d7578857c",
+    "replay_identity": "01a6bf646327f1c47539f91b6c99c93ad99fbc68fe1d8df02f56238b4a4c52ea",
+    "validator_run_identity": "60b1ca2f9c7dc199d931d3c2aad6bbc1b07178fa7cb1dfd3ceb733b0d8727f52"
+  },
+  "semantic_interpretation_summary": {
+    "effective_scope": "career",
+    "evidence_source": "operator_grounded_default",
+    "scope_resolution": "implicit_default"
+  }
+}

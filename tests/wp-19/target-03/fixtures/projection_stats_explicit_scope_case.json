@@ -1,0 +1,128 @@
+{
+  "projection_contract": "wp19.viewer_projection.v1",
+  "projection_kind": "read_only_view_model",
+  "input_artifact": "tests/wp-18/artifacts/wp18_validator_runs/target06/canonical_scope_examples/stats_player_season_month_april_hits.json",
+  "input_identity": {
+    "artifact_path": "tests/wp-18/artifacts/wp18_validator_runs/target06/canonical_scope_examples/stats_player_season_month_april_hits.json",
+    "input_fingerprint_sha256": "F7BF60B4171C43C18032905FE1B8FADA4304D08EB260A0E278CB36E885C5D93F"
+  },
+  "status_summary": {
+    "status": "PASS",
+    "error_count": 0,
+    "warning_count": 0
+  },
+  "issues_summary": {
+    "errors": [],
+    "warnings": []
+  },
+  "rule_evaluation_summary": {
+    "phase_order": [
+      "STRUCTURAL",
+      "SEMANTIC",
+      "DETERMINISM",
+      "BOUNDARY"
+    ],
+    "ordered_rules": [
+      {
+        "category": "STRUCTURAL",
+        "rule_id": "STRUCT_SLOT_ORDER_CONTIGUOUS_ASC",
+        "outcome": "PASS"
+      },
+      {
+        "category": "STRUCTURAL",
+        "rule_id": "STRUCT_CAPTURED_PLAN_TERMINAL_REQUIRED",
+        "outcome": "PASS"
+      },
+      {
+        "category": "STRUCTURAL",
+        "rule_id": "STRUCT_ILLEGAL_SLOT_COMBINATION",
+        "outcome": "PASS"
+      },
+      {
+        "category": "STRUCTURAL",
+        "rule_id": "STRUCT_NO_NON_FORMATTER_AFTER_TERMINAL",
+        "outcome": "PASS"
+      },
+      {
+        "category": "STRUCTURAL",
+        "rule_id": "STRUCT_FORMATTER_COUNT_MAX_ONE",
+        "outcome": "PASS"
+      },
+      {
+        "category": "SEMANTIC",
+        "rule_id": "SEM_REQUIRED_DEPENDENCIES_PRESENT",
+        "outcome": "PASS"
+      },
+      {
+        "category": "SEMANTIC",
+        "rule_id": "SEM_FORMATTER_TERMINAL_ADJACENT_AND_TYPE_COMPATIBLE",
+        "outcome": "PASS"
+      },
+      {
+        "category": "SEMANTIC",
+        "rule_id": "SEM_ENTITY_FAMILY_OPERATOR_TERMINAL_COMPATIBLE",
+        "outcome": "PASS"
+      },
+      {
+        "category": "SEMANTIC",
+        "rule_id": "SEM_AMBIGUOUS_OR_INCOMPATIBLE_COMBINATION_REFUSED",
+        "outcome": "PASS"
+      },
+      {
+        "category": "DETERMINISM",
+        "rule_id": "DET_RULE_EVALUATION_ORDER_STABLE",
+        "outcome": "PASS"
+      },
+      {
+        "category": "DETERMINISM",
+        "rule_id": "DET_ERROR_WARNING_ORDER_STABLE",
+        "outcome": "PASS"
+      },
+      {
+        "category": "DETERMINISM",
+        "rule_id": "DET_OUTPUT_NORMALIZATION_STABLE",
+        "outcome": "PASS"
+      },
+      {
+        "category": "DETERMINISM",
+        "rule_id": "DET_AMBIGUOUS_INTERPRETATION_REFUSED",
+        "outcome": "PASS"
+      },
+      {
+        "category": "DETERMINISM",
+        "rule_id": "DET_REPLAY_IDENTITY_STABLE",
+        "outcome": "PASS"
+      },
+      {
+        "category": "BOUNDARY",
+        "rule_id": "BOUND_VALIDATION_RUNTIME_INDEPENDENT",
+        "outcome": "PASS"
+      },
+      {
+        "category": "BOUNDARY",
+        "rule_id": "BOUND_NO_TRIO_OR_ENGINE_APPLY_CALLS",
+        "outcome": "PASS"
+      },
+      {
+        "category": "BOUNDARY",
+        "rule_id": "BOUND_CAPTURED_PLAN_READ_ONLY",
+        "outcome": "PASS"
+      },
+      {
+        "category": "BOUNDARY",
+        "rule_id": "BOUND_NO_RUNTIME_SIDE_EFFECT_INFERENCE",
+        "outcome": "PASS"
+      }
+    ]
+  },
+  "deterministic_identity_summary": {
+    "normalized_plan_hash": "a4a35551fbe688c244ed87c554a702322e6d66fb627b6bbab4199cd10322a70f",
+    "replay_identity": "09dc6ab1193f019d3ecb477d02735c3da67e9e42dc1efeac6bd773bee121f1e4",
+    "validator_run_identity": "97809c8bb3416ad7b970ffe77c1a1dd65ea8c03341076d74eee9d7b6b032f228"
+  },
+  "semantic_interpretation_summary": {
+    "effective_scope": "season",
+    "evidence_source": "artifact_explicit",
+    "scope_resolution": "explicit"
+  }
+}
