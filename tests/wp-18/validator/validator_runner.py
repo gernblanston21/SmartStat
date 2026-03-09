@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 """
-WP-18 Target-01 validator scaffolding runner.
+WP-18 Target-02 validator runner.
 
-This runner intentionally performs only:
+This runner performs:
 - captured-plan JSON loading
 - schema compatibility checks against docs/onair/plan-capture.schema.json
-- deterministic validation_result stub emission
+- structural rule evaluation (only)
+- deterministic validation_result emission
 
-It intentionally does not perform WP-18 validation rule evaluation yet.
+This runner intentionally does not implement semantic rules.
 """
 
 from __future__ import annotations
@@ -19,9 +20,26 @@ import sys
 from pathlib import Path
 from typing import Any
 
-VALIDATOR_CONTRACT = "wp18.validator_runner.stub.v1"
+VALIDATOR_CONTRACT = "wp18.validator_runner.structural.v1"
 HASH_PLACEHOLDER_CONTRACT = "wp18.normalized_plan_hash.placeholder.v1"
+
 SCHEMA_RULE_ID = "SCHEMA_COMPATIBILITY"
+
+RULE_SLOT_ORDER_CONTIGUOUS_ASC = "STRUCT_SLOT_ORDER_CONTIGUOUS_ASC"
+RULE_CAPTURED_PLAN_TERMINAL_REQUIRED = "STRUCT_CAPTURED_PLAN_TERMINAL_REQUIRED"
+RULE_ILLEGAL_SLOT_COMBINATION = "STRUCT_ILLEGAL_SLOT_COMBINATION"
+RULE_NO_NON_FORMATTER_AFTER_TERMINAL = "STRUCT_NO_NON_FORMATTER_AFTER_TERMINAL"
+RULE_FORMATTER_COUNT_MAX_ONE = "STRUCT_FORMATTER_COUNT_MAX_ONE"
+
+STRUCTURAL_RULE_ORDER = [
+    RULE_SLOT_ORDER_CONTIGUOUS_ASC,
+    RULE_CAPTURED_PLAN_TERMINAL_REQUIRED,
+    RULE_ILLEGAL_SLOT_COMBINATION,
+    RULE_NO_NON_FORMATTER_AFTER_TERMINAL,
+    RULE_FORMATTER_COUNT_MAX_ONE,
+]
+
+TERMINAL_SLOT_CLASSES = {"terminal_measure", "terminal_attribute"}
 
 
 def find_repo_root(start: Path) -> Path:
@@ -36,12 +54,26 @@ def canonical_json(value: Any) -> str:
     return json.dumps(value, ensure_ascii=True, separators=(",", ":"), sort_keys=True)
 
 
-def make_issue(code: str, message: str) -> dict[str, Any]:
+def make_issue(
+    code: str,
+    message: str,
+    rule_id: str = SCHEMA_RULE_ID,
+    slot_order: int | None = None,
+) -> dict[str, Any]:
     return {
         "code": code,
         "message": message,
-        "rule_id": SCHEMA_RULE_ID,
-        "slot_order": None,
+        "rule_id": rule_id,
+        "slot_order": slot_order,
+    }
+
+
+def make_rule_evaluation(rule_id: str, outcome: str, detail: str) -> dict[str, str]:
+    return {
+        "rule_id": rule_id,
+        "category": "STRUCTURAL",
+        "outcome": outcome,
+        "detail": detail,
     }
 
 
@@ -155,6 +187,250 @@ def rel_path(path: Path, repo_root: Path) -> str:
         return path.resolve().as_posix()
 
 
+def get_slots(payload: Any) -> list[dict[str, Any]]:
+    if not isinstance(payload, dict):
+        return []
+    raw_slots = payload.get("slot_sequence")
+    if not isinstance(raw_slots, list):
+        return []
+    return [slot for slot in raw_slots if isinstance(slot, dict)]
+
+
+def terminal_orders(slots: list[dict[str, Any]]) -> list[int]:
+    orders: list[int] = []
+    for slot in slots:
+        slot_class = slot.get("slot_class")
+        order = slot.get("order")
+        if slot_class in TERMINAL_SLOT_CLASSES and isinstance(order, int):
+            orders.append(order)
+    return sorted(orders)
+
+
+def skipped_structural_evaluations() -> list[dict[str, str]]:
+    return [
+        make_rule_evaluation(
+            rule_id=rule_id,
+            outcome="WARN",
+            detail="Skipped because schema compatibility failed.",
+        )
+        for rule_id in STRUCTURAL_RULE_ORDER
+    ]
+
+
+def evaluate_structural_rules(payload: Any) -> tuple[list[dict[str, str]], list[dict[str, Any]]]:
+    evaluations: list[dict[str, str]] = []
+    errors: list[dict[str, Any]] = []
+
+    if not isinstance(payload, dict):
+        return (skipped_structural_evaluations(), errors)
+
+    slots = get_slots(payload)
+    slot_orders = [slot.get("order") for slot in slots if isinstance(slot.get("order"), int)]
+    artifact_type = payload.get("artifact_type")
+    terminal_definition = payload.get("terminal")
+
+    # 1) Slot ordering contiguous and ascending, no gaps.
+    expected_orders = list(range(1, len(slot_orders) + 1))
+    if slot_orders == expected_orders:
+        evaluations.append(
+            make_rule_evaluation(
+                RULE_SLOT_ORDER_CONTIGUOUS_ASC,
+                "PASS",
+                f"slot_sequence.order values are contiguous and ascending: {slot_orders}.",
+            )
+        )
+    else:
+        evaluations.append(
+            make_rule_evaluation(
+                RULE_SLOT_ORDER_CONTIGUOUS_ASC,
+                "REFUSE",
+                f"slot_sequence.order values are not contiguous ascending. expected={expected_orders} actual={slot_orders}.",
+            )
+        )
+        errors.append(
+            make_issue(
+                "STRUCT_SLOT_ORDER_NON_CONTIGUOUS",
+                "slot_sequence.order must be contiguous and ascending starting at 1.",
+                rule_id=RULE_SLOT_ORDER_CONTIGUOUS_ASC,
+                slot_order=None,
+            )
+        )
+
+    # 2) captured_plan artifacts must include terminal definition.
+    slot_terminal_orders = terminal_orders(slots)
+    has_terminal_definition = isinstance(terminal_definition, dict)
+    has_terminal_slot = len(slot_terminal_orders) >= 1
+    if artifact_type == "captured_plan":
+        if has_terminal_definition and has_terminal_slot:
+            evaluations.append(
+                make_rule_evaluation(
+                    RULE_CAPTURED_PLAN_TERMINAL_REQUIRED,
+                    "PASS",
+                    "captured_plan has terminal definition and terminal slot.",
+                )
+            )
+        else:
+            evaluations.append(
+                make_rule_evaluation(
+                    RULE_CAPTURED_PLAN_TERMINAL_REQUIRED,
+                    "REFUSE",
+                    "captured_plan requires both terminal definition and terminal slot.",
+                )
+            )
+            errors.append(
+                make_issue(
+                    "STRUCT_MISSING_TERMINAL_DEFINITION",
+                    "captured_plan must include a terminal definition and terminal slot.",
+                    rule_id=RULE_CAPTURED_PLAN_TERMINAL_REQUIRED,
+                    slot_order=None,
+                )
+            )
+    else:
+        evaluations.append(
+            make_rule_evaluation(
+                RULE_CAPTURED_PLAN_TERMINAL_REQUIRED,
+                "PASS",
+                f"Rule applies to captured_plan only; artifact_type='{artifact_type}'.",
+            )
+        )
+
+    # 3) Illegal slot combinations.
+    slot_classes = [str(slot.get("slot_class")) for slot in slots]
+    class_set = set(slot_classes)
+    illegal_reasons: list[str] = []
+    if "family" in class_set and "operator" in class_set:
+        illegal_reasons.append("family and operator cannot both be present")
+    if "terminal_measure" in class_set and "terminal_attribute" in class_set:
+        illegal_reasons.append("terminal_measure and terminal_attribute cannot both be present")
+
+    if illegal_reasons:
+        detail = "; ".join(sorted(illegal_reasons))
+        evaluations.append(
+            make_rule_evaluation(
+                RULE_ILLEGAL_SLOT_COMBINATION,
+                "REFUSE",
+                f"Illegal slot combination detected: {detail}.",
+            )
+        )
+        errors.append(
+            make_issue(
+                "STRUCT_ILLEGAL_SLOT_COMBINATION",
+                f"Illegal slot combination detected: {detail}.",
+                rule_id=RULE_ILLEGAL_SLOT_COMBINATION,
+                slot_order=None,
+            )
+        )
+    else:
+        evaluations.append(
+            make_rule_evaluation(
+                RULE_ILLEGAL_SLOT_COMBINATION,
+                "PASS",
+                "No illegal slot combinations detected.",
+            )
+        )
+
+    # 4) No non-formatter slots after terminal slot.
+    if slot_terminal_orders:
+        first_terminal = slot_terminal_orders[0]
+        offending_slots: list[tuple[int, str]] = []
+        for slot in slots:
+            order = slot.get("order")
+            slot_class = str(slot.get("slot_class"))
+            if isinstance(order, int) and order > first_terminal and slot_class != "formatter":
+                offending_slots.append((order, slot_class))
+
+        offending_slots.sort(key=lambda item: (item[0], item[1]))
+        if offending_slots:
+            first_offender_order, first_offender_class = offending_slots[0]
+            evaluations.append(
+                make_rule_evaluation(
+                    RULE_NO_NON_FORMATTER_AFTER_TERMINAL,
+                    "REFUSE",
+                    f"Non-formatter slot after terminal: order={first_offender_order}, slot_class={first_offender_class}.",
+                )
+            )
+            errors.append(
+                make_issue(
+                    "STRUCT_NON_FORMATTER_AFTER_TERMINAL",
+                    "Non-formatter slot appears after terminal slot.",
+                    rule_id=RULE_NO_NON_FORMATTER_AFTER_TERMINAL,
+                    slot_order=first_offender_order,
+                )
+            )
+        else:
+            evaluations.append(
+                make_rule_evaluation(
+                    RULE_NO_NON_FORMATTER_AFTER_TERMINAL,
+                    "PASS",
+                    "No non-formatter slots appear after terminal slot.",
+                )
+            )
+    else:
+        evaluations.append(
+            make_rule_evaluation(
+                RULE_NO_NON_FORMATTER_AFTER_TERMINAL,
+                "WARN",
+                "Skipped because no terminal slot is available.",
+            )
+        )
+
+    # 5) Formatter count at most one.
+    formatter_orders = sorted(
+        [
+            slot.get("order")
+            for slot in slots
+            if slot.get("slot_class") == "formatter" and isinstance(slot.get("order"), int)
+        ]
+    )
+    if len(formatter_orders) <= 1:
+        evaluations.append(
+            make_rule_evaluation(
+                RULE_FORMATTER_COUNT_MAX_ONE,
+                "PASS",
+                f"Formatter count is within limit: {len(formatter_orders)}.",
+            )
+        )
+    else:
+        second_formatter_order = formatter_orders[1]
+        evaluations.append(
+            make_rule_evaluation(
+                RULE_FORMATTER_COUNT_MAX_ONE,
+                "REFUSE",
+                f"Formatter count exceeds limit: {len(formatter_orders)}.",
+            )
+        )
+        errors.append(
+            make_issue(
+                "STRUCT_MULTIPLE_FORMATTERS",
+                "At most one formatter slot is allowed.",
+                rule_id=RULE_FORMATTER_COUNT_MAX_ONE,
+                slot_order=second_formatter_order,
+            )
+        )
+
+    return (evaluations, errors)
+
+
+def parse_args(argv: list[str]) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="WP-18 validator runner (structural rules only).")
+    parser.add_argument(
+        "--input",
+        required=True,
+        help="Input captured-plan JSON file or directory containing JSON files.",
+    )
+    parser.add_argument(
+        "--schema",
+        default="",
+        help="Optional schema path. Defaults to docs/onair/plan-capture.schema.json.",
+    )
+    parser.add_argument(
+        "--output",
+        default="",
+        help="Optional output JSON file path. If omitted, output is printed to stdout.",
+    )
+    return parser.parse_args(argv)
+
+
 def process_artifact(
     artifact_path: Path, schema: dict[str, Any], repo_root: Path
 ) -> dict[str, Any]:
@@ -183,44 +459,44 @@ def process_artifact(
                 )
             )
             schema_issues = validate_schema_fallback(payload, schema)
-
         errors.extend(schema_issues)
 
-    errors.sort(key=lambda item: (item["code"], item["message"]))
-    warnings.sort(key=lambda item: (item["code"], item["message"]))
+    if errors:
+        rule_evaluations = skipped_structural_evaluations()
+    else:
+        structural_evals, structural_errors = evaluate_structural_rules(payload)
+        rule_evaluations = structural_evals
+        errors.extend(structural_errors)
+
+    errors.sort(
+        key=lambda item: (
+            str(item.get("code", "")),
+            str(item.get("rule_id", "")),
+            str(item.get("message", "")),
+            str(item.get("slot_order", "")),
+        )
+    )
+    warnings.sort(
+        key=lambda item: (
+            str(item.get("code", "")),
+            str(item.get("rule_id", "")),
+            str(item.get("message", "")),
+            str(item.get("slot_order", "")),
+        )
+    )
 
     validation_result = {
         "status": "PASS" if not errors else "REFUSE",
         "errors": errors,
         "warnings": warnings,
         "normalized_plan_hash": build_normalized_plan_hash(payload, raw_text),
-        "rule_evaluations": [],
+        "rule_evaluations": rule_evaluations,
     }
 
     return {
         "input_artifact": rel_path(artifact_path, repo_root),
         "validation_result": validation_result,
     }
-
-
-def parse_args(argv: list[str]) -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="WP-18 validator scaffolding runner.")
-    parser.add_argument(
-        "--input",
-        required=True,
-        help="Input captured-plan JSON file or directory containing JSON files.",
-    )
-    parser.add_argument(
-        "--schema",
-        default="",
-        help="Optional schema path. Defaults to docs/onair/plan-capture.schema.json.",
-    )
-    parser.add_argument(
-        "--output",
-        default="",
-        help="Optional output JSON file path. If omitted, output is printed to stdout.",
-    )
-    return parser.parse_args(argv)
 
 
 def main(argv: list[str]) -> int:
@@ -260,9 +536,7 @@ def main(argv: list[str]) -> int:
     else:
         sys.stdout.write(output_text)
 
-    all_pass = all(
-        row["validation_result"]["status"] == "PASS" for row in results
-    )
+    all_pass = all(row["validation_result"]["status"] == "PASS" for row in results)
     return 0 if all_pass else 2
 
 
