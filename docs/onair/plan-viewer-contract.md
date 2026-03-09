@@ -72,6 +72,55 @@ Projection rules:
 3. Projection remains read-only and non-mutating.
 4. Projection must not introduce runtime/apply/bridge fields.
 
+## Target-04 Projection Summary Contract Hardening (Read-Only)
+
+WP-19 Target-04 hardens the Target-03 projection summary contract by making
+summary key shapes and ordering explicit and deterministic.
+
+Top-level projection key order:
+
+1. `projection_contract`
+2. `projection_kind`
+3. `input_artifact`
+4. `input_identity`
+5. `status_summary`
+6. `issues_summary`
+7. `rule_evaluation_summary`
+8. `deterministic_identity_summary`
+9. `semantic_interpretation_summary`
+
+Nested summary key order:
+
+1. `input_identity`:
+   - `artifact_path`
+   - `input_fingerprint_sha256`
+2. `status_summary`:
+   - `status`
+   - `error_count`
+   - `warning_count`
+3. `issues_summary`:
+   - `errors`
+   - `warnings`
+4. `rule_evaluation_summary`:
+   - `phase_order`
+   - `ordered_rules`
+5. `deterministic_identity_summary`:
+   - `normalized_plan_hash`
+   - `replay_identity`
+   - `validator_run_identity`
+6. `semantic_interpretation_summary`:
+   - `scope_resolution`
+   - `effective_scope`
+   - `evidence_source`
+
+Hardening guarantees:
+
+1. Projection summary keys are exact and stable.
+2. Projection ordering is deterministic for identical input.
+3. Projection preserves WP-18 ordered `rule_evaluations` without re-ordering.
+4. Projection remains read-only and non-mutating for source artifacts.
+5. Projection remains free of runtime/apply/bridge fields.
+
 ## Forbidden Behaviors
 
 WP-19 must not:

@@ -3,6 +3,32 @@
 All notable changes to the SmartStat Core Engine are documented in this file.
 Runtime versioning follows script identifiers (`SmartStat_v*.vbs`), while `VERSION.txt` remains VIZOR UI display metadata.
 
+## [feature/semantic-layer] - 2026-03-09 (WP-19 Target-04 Projection Summary Contract Hardening)
+### Summary
+- Hardened WP-19 projection summary contract shape with explicit top-level and nested key-order assertions.
+- Strengthened viewer projection harness checks for deterministic projection serialization, summary section consistency, and read-only non-mutation boundaries.
+- Added Target-04 docs/tests scaffold for projection summary contract evidence.
+
+### Added
+- `tests/wp-19/target-04/README.md`
+- `tests/wp-19/target-04/artifacts/.gitkeep`
+- `tests/wp-19/target-04/artifacts/viewer_projection_contract_test_output.txt`
+- `tests/wp-19/target-04/artifacts/read_only_intake_contract_test_output.txt`
+
+### Changed
+- `docs/onair/plan-viewer-contract.md`
+- `tests/wp-19/harness/viewer_projection_contract_test.py`
+- `tests/wp-19/target-03/fixtures/projection_pass_case.json`
+- `tests/wp-19/target-03/fixtures/projection_refuse_case.json`
+- `tests/wp-19/target-03/fixtures/projection_stats_implicit_default_scope_case.json`
+- `tests/wp-19/target-03/fixtures/projection_stats_explicit_scope_case.json`
+- `tests/wp-19/README.md`
+- `tests/wp-19/harness/README.md`
+
+### Validation
+- Ran `python tests/wp-19/harness/viewer_projection_contract_test.py`.
+- Ran `python tests/wp-19/harness/read_only_intake_contract_test.py`.
+
 ## [feature/semantic-layer] - 2026-03-09 (WP-19 Target-03 Viewer Projection Contract Fixtures)
 ### Summary
 - Added WP-19 Target-03 read-only viewer projection contract fixtures for PASS, REFUSE, implicit-default scope, and explicit scope cases.
