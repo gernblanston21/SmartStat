@@ -3,6 +3,18 @@
 All notable changes to the SmartStat Core Engine are documented in this file.
 Runtime versioning follows script identifiers (`SmartStat_v*.vbs`), while `VERSION.txt` remains VIZOR UI display metadata.
 
+## [feature/semantic-layer] - 2026-03-09 (WP-19 Kickoff Planning)
+### Summary
+- Defined WP-19 kickoff gate as a read-only consumer layer over WP-17/WP-18 artifacts (governance/docs only).
+- Specified allowed WP-18 inputs for WP-19 planning: validation_result payloads, rule evaluations, refusal diagnostics, deterministic identities, and semantic interpretation metadata.
+- Specified forbidden WP-19 behavior: no runtime/apply/bridge behavior, no SmartStat engine calls, no artifact mutation.
+- Reaffirmed WP-20 remains deferred and is not implied by WP-19 kickoff planning.
+
+### Changed
+- Updated governance truth in `ROADMAP.md`, `SESSION.md`, and `AGENTS.md` for WP-19 kickoff boundaries and status.
+
+### Validation
+- Governance-only pass: no validator logic changes, no runtime script changes, no production INI changes, no schema changes.
 ## [feature/semantic-layer] - 2026-03-09 (WP-18 Closeout / Acceptance)
 ### Summary
 - Closed WP-18 as a complete validation-layer package (docs/tests/tooling only).

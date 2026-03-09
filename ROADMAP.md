@@ -7,11 +7,14 @@
 - Current semantic posture: Phase 9 candidate-resolution scaffold is present in tools/semantic-source-view/.
 - WP-17 now defines a versioned, deterministic plan-capture contract layer (docs/tests/tooling only).
 - WP-18 is CLOSED as a validation-layer package (docs/tests/tooling only; runtime-independent).
+- WP-19 kickoff gate is now defined for a read-only Plan Viewer consumer layer over WP-17/WP-18 artifacts; implementation is not started.
+- WP-20 remains deferred and is not implied by WP-19 kickoff planning.
 ## Lane Re-Baseline (2026-03-08)
 - Single active lane: `feature/semantic-layer` for semantic architecture/tooling only (docs/tests/read-only tooling).
 - Frozen runtime/core baseline: `v4.0.0_beta` and `v4.0.0_RC1` (no implicit runtime execution lane is active).
 - WP-18 lane state: CLOSED (2026-03-09) with acceptance evidence under `tests/wp-18/artifacts/wp18_validator_runs/`.
-- Deferred lane items: WP-19 and WP-20 remain defined but not started.
+- WP-19 lane state: kickoff planning complete (2026-03-09), implementation not started.
+- WP-20 lane state: DEFERRED (not started; explicit kickoff + approval required).
 - Branch boundary: runtime bridge/execution work requires explicit approval and should run on a separate dedicated branch when started.
 - WP-15 through WP-17 closeout does not imply runtime bridge/apply integration.
 
@@ -361,12 +364,37 @@ WP-19 consumption boundary (allowed):
 - Consume rule evaluations, refusal diagnostics, deterministic identities, and semantic interpretation metadata.
 - Must not imply runtime apply behavior or runtime bridge activation.
 ## WP-19 (v4.2.0): Plan Viewer
-Status: DEFERRED (not started; explicit kickoff required).
+Status: KICKOFF PLANNED (2026-03-09 governance gate defined; implementation not started).
 
 ### Scope
 - Extend read-only inspection UX to include deterministic plan-view semantics.
 - Provide explainable plan browsing/debugging without apply/runtime integration.
 - Keep viewer contracts versioned and compatible with semantic + validation outputs.
+
+### Kickoff Gate (Read-Only Consumer Layer)
+WP-19 may consume the following immutable inputs:
+- WP-17 captured-plan artifacts.
+- WP-18 `validation_result` payloads.
+- WP-18 `rule_evaluations`.
+- WP-18 refusal diagnostics (`errors`, `warnings`, refusal codes/messages).
+- WP-18 deterministic identities (`input_identity`, `normalized_plan_hash`, `replay_identity`, `validator_run_identity`).
+- WP-18 `semantic_interpretation` metadata.
+
+### Forbidden Behaviors (Must Not)
+WP-19 must not:
+- Execute runtime behavior.
+- Trigger apply behavior.
+- Introduce bridge behavior.
+- Call SmartStat engine/apply surfaces.
+- Mutate captured-plan artifacts.
+- Mutate validation artifacts.
+
+### Minimal Viewer Contract Surfaces (Pre-Implementation)
+- Artifact intake surface: accepts WP-17/WP-18 artifacts as read-only inputs.
+- Validation summary surface: exposes `status`, deterministic `errors`, and deterministic `warnings`.
+- Rule evaluation surface: exposes stable phase/category/rule ordering from `rule_evaluations`.
+- Deterministic identity surface: exposes artifact identity and replay-normalization identities for traceability.
+- Semantic interpretation surface: exposes `semantic_interpretation` exactly as validation metadata (no runtime inference).
 
 ### Definition of Done
 - Read-only plan viewer contract documented.
@@ -394,6 +422,7 @@ Strategic sequencing note:
 - Runtime bridging is intentionally deferred until inspection/explainability/capture/validation are stable.
 - Runtime bridge/execution sequencing is out-of-lane for current `feature/semantic-layer` work until separately approved and kicked off.
 - WP-18 closeout does not activate WP-20 and does not imply runtime bridge behavior.
+- WP-19 kickoff planning does not activate WP-20 and does not imply runtime bridge behavior.
 
 ---
 # Long-Term (v4.2+ / v5.0)

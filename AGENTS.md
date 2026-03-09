@@ -134,9 +134,11 @@ Fail closed by default.
 
 - Frozen runtime/core baselines: `v4.0.0_beta` and `v4.0.0_RC1`.
 - Single active development lane: `feature/semantic-layer` (semantic architecture/tooling only).
-- WP-18 kickoff gate is complete; WP-18 is eligible to start but implementation is not started.
-- WP-18 scope is validation-layer-only and must remain runtime-independent.
-- WP-19 and WP-20 remain deferred until explicit kickoff.
+- WP-18 is CLOSED as a validation-layer-only package and must remain runtime-independent.
+- WP-19 kickoff gate is defined: Plan Viewer is a read-only consumer layer over WP-17/WP-18 artifacts; implementation is not started.
+- WP-19 allowed consumption: `validation_result`, `rule_evaluations`, refusal diagnostics, deterministic identities, and `semantic_interpretation` metadata.
+- WP-19 forbidden behavior: no runtime/apply/bridge behavior, no SmartStat engine calls, no artifact mutation.
+- WP-20 remains deferred and is not implied by WP-19 kickoff planning.
 - Runtime bridge/execution work requires explicit approval and may require a separate dedicated branch.
 - `v4_Dev` remains historical RC lineage baseline, not the active semantic feature lane.
 

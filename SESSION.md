@@ -15,7 +15,8 @@ All new work proceeds from the post-RC baseline.
 - Active lane only: `feature/semantic-layer` semantic architecture/tooling work (docs/tests/read-only tooling).
 - Frozen baseline: SmartStat runtime/core behavior anchored to `v4.0.0_beta` and `v4.0.0_RC1` lineage.
 - WP-18 lane state: CLOSED (2026-03-09) with acceptance evidence in tests/wp-18/artifacts/wp18_validator_runs/target06/.
-- Deferred by default: WP-19 and WP-20 remain not started until explicit kickoff.
+- WP-19 kickoff planning is complete (2026-03-09); implementation remains not started and read-only boundaries are defined.
+- WP-20 remains deferred by default until explicit kickoff + approval.
 - Branch boundary: runtime bridge/execution proposals require explicit approval and may require a separate branch to avoid lane contamination.
 - No implicit runtime integration: WP-15 through WP-17 artifacts do not imply runtime bridge/apply behavior.
 
@@ -34,7 +35,7 @@ Active WP:
 - WP-16 CLOSED (Phase 8 + Phase 9 read-only explainability/candidate-resolution scaffolds accepted as read-only tooling).
 - WP-17 CLOSED (plan-capture contract layer implemented as docs/tests/tooling-only package under tests/wp-17 + docs/onair contract/schema).
 - WP-18 CLOSED (validation-layer package accepted; structural/semantic/determinism/boundary + hardened result model + interpretation metadata).
-- WP-19 DEFERRED (not started; explicit kickoff required).
+- WP-19 KICKOFF PLANNED (governance gate defined; read-only consumer contract set; implementation not started).
 - WP-20 DEFERRED (not started; explicit kickoff required + explicit approval).
 No opportunistic refactors.
 No scope creep.
@@ -138,7 +139,7 @@ v4.1.0 stabilization work packages (historical complete):
 - WP-16 - Resolution Explainability
 - WP-17 - Plan Capture Contract Layer
 - WP-18 - Plan Validation CLOSED (accepted 2026-03-09; validation-only, runtime-independent)
-- WP-19 - Plan Viewer (deferred; explicit kickoff required)
+- WP-19 - Plan Viewer KICKOFF PLANNED (read-only consumer gate defined; implementation not started)
 - WP-20 - Runtime Bridge (deferred; explicit kickoff + approval required; no runtime coupling until WP-15 through WP-19 are stable)
 - Strategic target: `Stat Query -> Deterministic Execution Plan`
 - Sequence rationale: Semantic Source View now exists, so semantic inspection/explainability leads the plan-engine track.
@@ -167,8 +168,10 @@ v4.1.0 stabilization work packages (historical complete):
 - WP-17 evidence: tests/wp-17/contract-validators/artifacts/wp17_contract_20260308/.
 - WP-18 CLOSED on 2026-03-09: validator scaffolding + structural/semantic/determinism/boundary layers + hardened result model + interpretation metadata accepted (docs/tests/tooling only).
 - WP-18 evidence: tests/wp-18/artifacts/wp18_validator_runs/target06/.
-- WP-19 (Plan Viewer) and WP-20 (Runtime Bridge) remain deferred roadmap items and are not active until explicitly kicked off.
-- WP-20 remains deferred and is not implied by WP-18 closeout.
+- WP-19 kickoff planning is complete: read-only consumer inputs/boundaries are now defined; implementation has not started.
+- WP-19 may consume WP-18 validation outputs (validation_result, rule evaluations, refusal diagnostics, deterministic identities, semantic interpretation metadata) as read-only artifacts only.
+- WP-19 must not imply runtime execution/apply/bridge behavior and must not mutate artifacts.
+- WP-20 remains deferred and is not implied by WP-18 closeout or WP-19 kickoff planning.
 OnAir dump handling:
 - The current `onair_dump/` dataset is reserved for semantic-layer work.
 - Canonical repo location: `.tools/onair_dump/`
