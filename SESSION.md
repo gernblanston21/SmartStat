@@ -16,7 +16,7 @@ All new work proceeds from the post-RC baseline.
 - Frozen baseline: SmartStat runtime/core behavior anchored to `v4.0.0_beta` and `v4.0.0_RC1` lineage.
 - WP-18 lane state: CLOSED (2026-03-09) with acceptance evidence in tests/wp-18/artifacts/wp18_validator_runs/target06/.
 - WP-19 is CLOSED (2026-03-09); read-only viewer-contract package accepted with harness evidence under tests/wp-19/.
-- WP-20 remains deferred by default until explicit kickoff + approval.
+- WP-20 kickoff gate is defined (2026-03-10 governance-only); implementation is not started and requires explicit approval.
 - Branch boundary: runtime bridge/execution proposals require explicit approval and may require a separate branch to avoid lane contamination.
 - No implicit runtime integration: WP-15 through WP-17 artifacts do not imply runtime bridge/apply behavior.
 
@@ -36,7 +36,7 @@ Active WP:
 - WP-17 CLOSED (plan-capture contract layer implemented as docs/tests/tooling-only package under tests/wp-17 + docs/onair contract/schema).
 - WP-18 CLOSED (validation-layer package accepted; structural/semantic/determinism/boundary + hardened result model + interpretation metadata).
 - WP-19 CLOSED (read-only viewer-contract package accepted; no UI/runtime behavior introduced).
-- WP-20 DEFERRED (not started; explicit kickoff required + explicit approval).
+- WP-20 KICKOFF GATE DEFINED (not started; governance-only; explicit implementation approval required).
 No opportunistic refactors.
 No scope creep.
 Each WP must be:
@@ -140,7 +140,7 @@ v4.1.0 stabilization work packages (historical complete):
 - WP-17 - Plan Capture Contract Layer
 - WP-18 - Plan Validation CLOSED (accepted 2026-03-09; validation-only, runtime-independent)
 - WP-19 - Plan Viewer CLOSED (accepted 2026-03-09; read-only contract/harness package only)
-- WP-20 - Runtime Bridge (deferred; explicit kickoff + approval required; no runtime coupling until WP-15 through WP-19 are stable)
+- WP-20 - Runtime Bridge KICKOFF GATE DEFINED (2026-03-10 governance-only; not started; no runtime coupling until explicit implementation approval)
 - Strategic target: `Stat Query -> Deterministic Execution Plan`
 - Sequence rationale: Semantic Source View now exists, so semantic inspection/explainability leads the plan-engine track.
 - Active branch for this sequence: `feature/semantic-layer`
@@ -174,7 +174,11 @@ v4.1.0 stabilization work packages (historical complete):
 - Future implementation lane may consume WP-19 projection and adapter contracts as read-only inputs for viewer implementation handoff only.
 - Future implementation lane must preserve deterministic ordering and must not introduce runtime/apply/bridge behavior without separate WP-20 kickoff/approval.
 
-- WP-20 remains deferred and is not implied by WP-18 closeout or WP-19 closeout.
+- WP-20 kickoff gate is defined and WP-20 remains NOT STARTED (governance-only).
+- WP-20 allowed upstream inputs are limited to WP-17 artifacts, WP-18 validation outputs, and WP-19 projection/adapter contract surfaces.
+- WP-20 pre-implementation forbidden behavior remains absolute: no runtime/apply/bridge code, no Trio integration, no SmartStat engine/apply calls, no artifact mutation.
+- WP-20 implementation requires explicit approval, dedicated branch isolation, and an approved runtime-bridge evidence plan before code changes begin.
+- WP-20 is not implied by WP-18 closeout or WP-19 closeout.
 OnAir dump handling:
 - The current `onair_dump/` dataset is reserved for semantic-layer work.
 - Canonical repo location: `.tools/onair_dump/`

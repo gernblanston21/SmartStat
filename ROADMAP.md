@@ -8,13 +8,13 @@
 - WP-17 now defines a versioned, deterministic plan-capture contract layer (docs/tests/tooling only).
 - WP-18 is CLOSED as a validation-layer package (docs/tests/tooling only; runtime-independent).
 - WP-19 is CLOSED as a read-only viewer-contract package over WP-17/WP-18 artifacts (docs/tests/tooling only; no UI/runtime behavior).
-- WP-20 remains deferred and is not implied by WP-19 closeout.
+- WP-20 kickoff gate is defined as a separate runtime-bridge lane; implementation is NOT STARTED and is not implied by WP-19 closeout.
 ## Lane Re-Baseline (2026-03-08)
 - Single active lane: `feature/semantic-layer` for semantic architecture/tooling only (docs/tests/read-only tooling).
 - Frozen runtime/core baseline: `v4.0.0_beta` and `v4.0.0_RC1` (no implicit runtime execution lane is active).
 - WP-18 lane state: CLOSED (2026-03-09) with acceptance evidence under `tests/wp-18/artifacts/wp18_validator_runs/`.
 - WP-19 lane state: CLOSED (2026-03-09) with acceptance evidence under `tests/wp-19/`.
-- WP-20 lane state: DEFERRED (not started; explicit kickoff + approval required).
+- WP-20 lane state: KICKOFF GATE DEFINED (2026-03-10; implementation not started; explicit approval required).
 - Branch boundary: runtime bridge/execution work requires explicit approval and should run on a separate dedicated branch when started.
 - WP-15 through WP-17 closeout does not imply runtime bridge/apply integration.
 
@@ -428,12 +428,40 @@ WP-19 must not:
 
 
 ## WP-20 (v4.2.0+): Runtime Bridge
-Status: DEFERRED (not started; explicit kickoff required + explicit approval).
+Status: KICKOFF GATE DEFINED (2026-03-10 governance-only; implementation NOT STARTED).
 
 ### Scope
 - Introduce controlled bridge points from validated plan artifacts toward runtime integration.
 - Defer runtime bridge implementation until semantic inspection, explainability, plan capture, and plan validation are stable.
 - Preserve fail-closed and deterministic discipline while defining bridge constraints.
+
+### Kickoff Gate (Governance Only)
+- WP-20 is explicitly separate from WP-17/WP-18/WP-19 read-only architecture packages.
+- WP-20 kickoff is planning-only in this pass and does not authorize implementation.
+- Gate checklist reference: docs/onair/wp20_kickoff_checklist.md
+
+### Allowed Upstream Inputs (Read-Only)
+- WP-17 captured-plan artifacts and contract/schema evidence.
+- WP-18 validation outputs: validation_result, rule_evaluations, refusal diagnostics, deterministic identities, and semantic_interpretation metadata.
+- WP-19 projection/consumption/adapter contract surfaces and harness evidence.
+
+### Forbidden Pre-Implementation Behaviors
+- No runtime bridge code paths.
+- No apply behavior implementation.
+- No Trio integration.
+- No SmartStat engine/apply calls.
+- No mutation of captured/validated/projected/adapter artifacts.
+- No runtime side-effect inference beyond read-only artifacts.
+
+### Required Approval Conditions Before Implementation
+- Explicit WP-20 implementation approval recorded in governance docs.
+- Dedicated branch/lane confirmed for runtime bridge risk isolation.
+- Pre-implementation regression/evidence plan approved (determinism, fail-closed behavior, rollback plan).
+- Runtime bridge risk-class review approved before any code mutation.
+
+### Branch / Lane Rule
+- Runtime bridge/execution implementation must run on a separate dedicated lane from the current read-only semantic lane.
+- feature/semantic-layer remains governance/docs/tests/tooling for kickoff gating until explicit implementation approval is granted.
 
 ### Definition of Done
 - Runtime bridge contract documented with explicit guardrails.
@@ -442,13 +470,12 @@ Status: DEFERRED (not started; explicit kickoff required + explicit approval).
 - No unvalidated runtime coupling introduced.
 
 Strategic sequencing note:
-- Strategic target remains `Stat Query -> Deterministic Execution Plan`.
+- Strategic target remains Stat Query -> Deterministic Execution Plan.
 - Semantic viewer capability now exists and changes optimal milestone order.
 - Runtime bridging is intentionally deferred until inspection/explainability/capture/validation are stable.
-- Runtime bridge/execution sequencing is out-of-lane for current `feature/semantic-layer` work until separately approved and kicked off.
+- Runtime bridge/execution sequencing is out-of-lane for current feature/semantic-layer work until separately approved and kicked off.
 - WP-18 closeout does not activate WP-20 and does not imply runtime bridge behavior.
 - WP-19 closeout does not activate WP-20 and does not imply runtime bridge behavior.
-
 ---
 # Long-Term (v4.2+ / v5.0)
 

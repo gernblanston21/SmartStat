@@ -3,6 +3,26 @@
 All notable changes to the SmartStat Core Engine are documented in this file.
 Runtime versioning follows script identifiers (`SmartStat_v*.vbs`), while `VERSION.txt` remains VIZOR UI display metadata.
 
+## [feature/semantic-layer] - 2026-03-10 (WP-20 Kickoff Planning Gate)
+### Summary
+- Defined the WP-20 kickoff gate as governance-only and explicitly separate from WP-17/WP-18/WP-19 read-only architecture work.
+- Documented allowed upstream read-only inputs, forbidden pre-implementation behaviors, and explicit approval conditions required before any WP-20 implementation can begin.
+- Reaffirmed that WP-19 closeout does not activate WP-20 implementation.
+
+### Added
+- `docs/onair/wp20_kickoff_checklist.md`
+
+### Changed
+- `ROADMAP.md`
+- `SESSION.md`
+- `AGENTS.md`
+- `CHANGELOG.md`
+
+### Validation
+- Governance-only pass: no runtime bridge/apply/viewer implementation changes.
+- Protected files remained unchanged (`SmartStat_v4.0.0_beta.vbs`, production INIs, capture schema, validation contract).
+
+
 ## [feature/semantic-layer] - 2026-03-09 (WP-19 Closeout / Acceptance)
 ### Summary
 - Closed WP-19 as a complete read-only viewer-contract package over WP-17/WP-18 artifacts.
