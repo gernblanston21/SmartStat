@@ -1,6 +1,6 @@
 # WP-20 (Runtime Bridge) - Approval Evidence Scaffolding
 
-Status: Target-04 pre-implementation sign-off gate defined (docs/tests only).
+Status: Target-05 implementation-authorization decision gate defined (docs/tests only).
 Implementation state: NOT STARTED.
 
 This directory is reserved for WP-20 approval evidence and future runtime-bridge
@@ -50,3 +50,13 @@ lane evidence artifacts.
 - Target-04 scaffold:
   - `tests/wp-20/target-04/README.md`
   - `tests/wp-20/target-04/artifacts/.gitkeep`
+
+## Target-05
+
+- Implementation authorization record template:
+  - `docs/onair/wp20_implementation_authorization_record.md`
+- Implementation branch approval record template:
+  - `docs/onair/wp20_branch_approval_record.md`
+- Target-05 scaffold:
+  - `tests/wp-20/target-05/README.md`
+  - `tests/wp-20/target-05/artifacts/.gitkeep`

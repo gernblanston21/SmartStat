@@ -2,6 +2,28 @@
 
 All notable changes to the SmartStat Core Engine are documented in this file.
 Runtime versioning follows script identifiers (`SmartStat_v*.vbs`), while `VERSION.txt` remains VIZOR UI display metadata.
+## [feature/semantic-layer] - 2026-03-10 (WP-20 Target-05 Implementation-Authorization Decision Gate)
+### Summary
+- Defined the final WP-20 implementation-authorization decision gate artifacts without starting runtime-bridge implementation.
+- Added a formal implementation-authorization record template and formal implementation branch-approval record template with required decision inputs, outcomes, and ownership/revocation expectations.
+- Reaffirmed this pass is governance/docs/tests only and WP-20 implementation remains NOT STARTED.
+
+### Added
+- `docs/onair/wp20_implementation_authorization_record.md`
+- `docs/onair/wp20_branch_approval_record.md`
+- `tests/wp-20/target-05/README.md`
+- `tests/wp-20/target-05/artifacts/.gitkeep`
+
+### Changed
+- `ROADMAP.md`
+- `SESSION.md`
+- `AGENTS.md`
+- `tests/wp-20/README.md`
+- `CHANGELOG.md`
+
+### Validation
+- Governance/docs/tests pass only.
+- Protected files remained unchanged (`SmartStat_v4.0.0_beta.vbs`, production INIs, capture schema, validation contract).
 ## [feature/semantic-layer] - 2026-03-10 (WP-20 Target-04 Pre-Implementation Sign-Off Gate)
 ### Summary
 - Defined the formal WP-20 pre-implementation sign-off gate for transitioning from rehearsal-ready to implementation-ready without starting runtime-bridge code.
