@@ -137,7 +137,7 @@ Fail closed by default.
 - WP-18 is CLOSED as a validation-layer-only package and must remain runtime-independent.
 - WP-19 is CLOSED as a read-only viewer-contract package over WP-17/WP-18 artifacts.
 - WP-19 contract surfaces may be consumed read-only only: projection contract, projection summary/consumption surfaces, and projection-to-view-model adapter contract.
-- WP-20 kickoff gate, Target-01 approval package, Target-02 charter/plan gate, Target-03 rehearsal gate, Target-04 sign-off gate, Target-05 implementation-authorization decision gate, Target-06 authorization-packet fill/verification gate, and Target-07 draft/verification-dry-run template gate are defined (governance/docs/tests only) and WP-20 remains NOT STARTED.
+- WP-20 kickoff gate, Target-01 approval package, Target-02 charter/plan gate, Target-03 rehearsal gate, Target-04 sign-off gate, Target-05 implementation-authorization decision gate, Target-06 authorization-packet fill/verification gate, Target-07 draft/verification-dry-run template gate, and Target-08 sample-fill/dry-run-structure gate are defined (governance/docs/tests only) and WP-20 remains NOT STARTED.
 - WP-20 allowed upstream inputs are limited to: WP-17 captured-plan artifacts, WP-18 validation outputs (`validation_result`, `rule_evaluations`, refusal diagnostics, deterministic identities, `semantic_interpretation`), and WP-19 projection/adapter contract surfaces.
 - WP-20 forbidden pre-implementation behavior: no runtime bridge code, no apply behavior, no Trio integration, no SmartStat engine/apply calls, no viewer implementation, and no artifact mutation.
 - WP-20 implementation requires explicit approval, dedicated branch/lane separation, and an approved runtime-bridge regression/evidence plan before code changes begin.
@@ -154,6 +154,8 @@ Fail closed by default.
 - WP-20 packet completeness checklist reference: `docs/onair/wp20_packet_completeness_checklist.md`.
 - WP-20 authorization packet draft template reference: `docs/onair/wp20_authorization_packet_draft_template.md`.
 - WP-20 packet verification dry-run template reference: `docs/onair/wp20_packet_verification_dry_run_template.md`.
+- WP-20 authorization packet sample reference: `docs/onair/wp20_authorization_packet_sample.md`.
+- WP-20 packet verification dry-run sample reference: `docs/onair/wp20_packet_verification_dry_run_sample.md`.
 - WP-20 approval evidence template reference: `tests/wp-20/target-01/approval_evidence_template.md`.
 - Runtime bridge/execution work is a distinct risk class and may require a separate dedicated branch.
 - `v4_Dev` remains historical RC lineage baseline, not the active semantic feature lane.

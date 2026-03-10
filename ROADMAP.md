@@ -8,13 +8,13 @@
 - WP-17 now defines a versioned, deterministic plan-capture contract layer (docs/tests/tooling only).
 - WP-18 is CLOSED as a validation-layer package (docs/tests/tooling only; runtime-independent).
 - WP-19 is CLOSED as a read-only viewer-contract package over WP-17/WP-18 artifacts (docs/tests/tooling only; no UI/runtime behavior).
-- WP-20 Target-07 authorization-packet draft + dry-run template gate is defined as a separate runtime-bridge lane governance package; implementation is NOT STARTED and is not implied by WP-19 closeout.
+- WP-20 Target-08 sample-fill + dry-run sample structure gate is defined as a separate runtime-bridge lane governance package; implementation is NOT STARTED and is not implied by WP-19 closeout.
 ## Lane Re-Baseline (2026-03-08)
 - Single active lane: `feature/semantic-layer` for semantic architecture/tooling only (docs/tests/read-only tooling).
 - Frozen runtime/core baseline: `v4.0.0_beta` and `v4.0.0_RC1` (no implicit runtime execution lane is active).
 - WP-18 lane state: CLOSED (2026-03-09) with acceptance evidence under `tests/wp-18/artifacts/wp18_validator_runs/`.
 - WP-19 lane state: CLOSED (2026-03-09) with acceptance evidence under `tests/wp-19/`.
-- WP-20 lane state: TARGET-07 AUTHORIZATION-PACKET DRAFT + DRY-RUN TEMPLATE GATE DEFINED (2026-03-10; implementation not started; explicit approval required).
+- WP-20 lane state: TARGET-08 SAMPLE-FILL + DRY-RUN SAMPLE STRUCTURE GATE DEFINED (2026-03-10; implementation not started; explicit approval required).
 - Branch boundary: runtime bridge/execution work requires explicit approval and should run on a separate dedicated branch when started.
 - WP-15 through WP-17 closeout does not imply runtime bridge/apply integration.
 
@@ -428,7 +428,7 @@ WP-19 must not:
 
 
 ## WP-20 (v4.2.0+): Runtime Bridge
-Status: TARGET-07 AUTHORIZATION-PACKET DRAFT + DRY-RUN TEMPLATE GATE DEFINED (2026-03-10 governance/docs/tests only; implementation NOT STARTED).
+Status: TARGET-08 SAMPLE-FILL + DRY-RUN SAMPLE STRUCTURE GATE DEFINED (2026-03-10 governance/docs/tests only; implementation NOT STARTED).
 
 ### Scope
 - Introduce controlled bridge points from validated plan artifacts toward runtime integration.
@@ -457,6 +457,9 @@ Status: TARGET-07 AUTHORIZATION-PACKET DRAFT + DRY-RUN TEMPLATE GATE DEFINED (20
 - Target-07 authorization packet draft template reference: docs/onair/wp20_authorization_packet_draft_template.md
 - Target-07 packet verification dry-run template reference: docs/onair/wp20_packet_verification_dry_run_template.md
 - Target-07 scaffold reference: tests/wp-20/target-07/README.md
+- Target-08 authorization packet sample reference: docs/onair/wp20_authorization_packet_sample.md
+- Target-08 packet verification dry-run sample reference: docs/onair/wp20_packet_verification_dry_run_sample.md
+- Target-08 scaffold reference: tests/wp-20/target-08/README.md
 
 ### Allowed Upstream Inputs (Read-Only)
 - WP-17 captured-plan artifacts and contract/schema evidence.
@@ -477,7 +480,7 @@ Status: TARGET-07 AUTHORIZATION-PACKET DRAFT + DRY-RUN TEMPLATE GATE DEFINED (20
 - Pre-implementation regression/evidence plan approved (determinism, fail-closed behavior, rollback plan).
 - Runtime bridge risk-class review approved before any code mutation.
 
-### Target-01 through Target-07 Governance Outcomes
+### Target-01 through Target-08 Governance Outcomes
 - Approval prerequisites are defined before any WP-20 code changes.
 - Required evidence categories are defined for a future implementation lane.
 - Rollback criteria and abort/fail-closed triggers are defined.
@@ -500,6 +503,8 @@ Status: TARGET-07 AUTHORIZATION-PACKET DRAFT + DRY-RUN TEMPLATE GATE DEFINED (20
 - Formal authorization packet draft template is defined for future packet-instance population.
 - Formal packet verification dry-run template is defined with required review sections and outcomes: dry_run_pass, dry_run_hold, and dry_run_fail.
 - Dry-run success is explicitly non-authorizing; separate implementation authorization remains required.
+- Sample-filled authorization packet instance and sample dry-run report structures are defined as non-authorizing examples only.
+- Hypothetical dry-run evidence-pack layout references are defined for structural guidance only.
 - This pass does not start runtime bridge implementation.
 ### Branch / Lane Rule
 - Runtime bridge/execution implementation must run on a separate dedicated lane from the current read-only semantic lane.
