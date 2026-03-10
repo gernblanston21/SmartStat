@@ -2,6 +2,28 @@
 
 All notable changes to the SmartStat Core Engine are documented in this file.
 Runtime versioning follows script identifiers (`SmartStat_v*.vbs`), while `VERSION.txt` remains VIZOR UI display metadata.
+## [feature/semantic-layer] - 2026-03-10 (WP-20 Target-11 Tracking-and-Reporting Mechanics Scaffold)
+### Summary
+- Added governance scaffolding for tracking and reporting future authorization-input collection and readiness progress over time.
+- Added a formal authorization-input tracking ledger template and a formal readiness status report template.
+- Reaffirmed this pass is non-authorizing, executes no real input collection, and WP-20 remains NOT STARTED.
+
+### Added
+- `docs/onair/wp20_authorization_input_tracking_ledger.md`
+- `docs/onair/wp20_readiness_status_report_template.md`
+- `tests/wp-20/target-11/README.md`
+- `tests/wp-20/target-11/artifacts/.gitkeep`
+
+### Changed
+- `ROADMAP.md`
+- `SESSION.md`
+- `AGENTS.md`
+- `tests/wp-20/README.md`
+- `CHANGELOG.md`
+
+### Validation
+- Governance/docs/tests pass only.
+- Protected files remained unchanged (`SmartStat_v4.0.0_beta.vbs`, production INIs, capture schema, validation contract).
 ## [feature/semantic-layer] - 2026-03-10 (WP-20 Target-10 Packet-Population Readiness Planning Scaffold)
 ### Summary
 - Added governance scaffolding that defines how real authorization-input collection would be executed and tracked, without collecting real inputs yet.

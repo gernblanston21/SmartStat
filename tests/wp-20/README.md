@@ -1,6 +1,6 @@
 # WP-20 (Runtime Bridge) - Approval Evidence Scaffolding
 
-Status: Target-10 packet-population readiness planning scaffold gate defined (docs/tests only).
+Status: Target-11 tracking-and-reporting mechanics scaffold gate defined (docs/tests only).
 Implementation state: NOT STARTED.
 
 This directory is reserved for WP-20 approval evidence and future runtime-bridge
@@ -119,3 +119,13 @@ lane evidence artifacts.
 - Target-10 scaffold:
   - `tests/wp-20/target-10/README.md`
   - `tests/wp-20/target-10/artifacts/.gitkeep`
+
+## Target-11
+
+- Authorization-input tracking ledger:
+  - `docs/onair/wp20_authorization_input_tracking_ledger.md`
+- Readiness status report template:
+  - `docs/onair/wp20_readiness_status_report_template.md`
+- Target-11 scaffold:
+  - `tests/wp-20/target-11/README.md`
+  - `tests/wp-20/target-11/artifacts/.gitkeep`
