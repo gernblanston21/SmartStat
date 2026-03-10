@@ -1,6 +1,6 @@
 # WP-20 (Runtime Bridge) - Approval Evidence Scaffolding
 
-Status: Target-16 version-line evidence review procedure/signoff-template gate defined (docs/tests only).
+Status: Target-17 governance closeout criteria/stop-or-advance decision-template gate defined (docs/tests only).
 Implementation state: NOT STARTED.
 
 This directory is reserved for WP-20 approval evidence and future runtime-bridge
@@ -179,3 +179,13 @@ lane evidence artifacts.
 - Target-16 scaffold:
   - `tests/wp-20/target-16/README.md`
   - `tests/wp-20/target-16/artifacts/.gitkeep`
+
+## Target-17
+
+- Governance closeout criteria:
+  - `docs/onair/wp20_governance_closeout_criteria.md`
+- Stop-or-advance decision template:
+  - `docs/onair/wp20_stop_or_advance_decision_template.md`
+- Target-17 scaffold:
+  - `tests/wp-20/target-17/README.md`
+  - `tests/wp-20/target-17/artifacts/.gitkeep`

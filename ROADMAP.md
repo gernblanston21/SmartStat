@@ -8,13 +8,13 @@
 - WP-17 now defines a versioned, deterministic plan-capture contract layer (docs/tests/tooling only).
 - WP-18 is CLOSED as a validation-layer package (docs/tests/tooling only; runtime-independent).
 - WP-19 is CLOSED as a read-only viewer-contract package over WP-17/WP-18 artifacts (docs/tests/tooling only; no UI/runtime behavior).
-- WP-20 Target-16 version-line evidence review procedure/signoff-template gate is defined as a separate runtime-bridge lane governance package; implementation is NOT STARTED and is not implied by WP-19 closeout.
+- WP-20 Target-17 governance closeout criteria/stop-or-advance decision-template gate is defined as a separate runtime-bridge lane governance package; implementation is NOT STARTED and is not implied by WP-19 closeout.
 ## Lane Re-Baseline (2026-03-08)
 - Single active lane: `feature/semantic-layer` for semantic architecture/tooling only (docs/tests/read-only tooling).
 - Frozen runtime/core baseline: `v4.0.0_beta` and `v4.0.0_RC1` (no implicit runtime execution lane is active).
 - WP-18 lane state: CLOSED (2026-03-09) with acceptance evidence under `tests/wp-18/artifacts/wp18_validator_runs/`.
 - WP-19 lane state: CLOSED (2026-03-09) with acceptance evidence under `tests/wp-19/`.
-- WP-20 lane state: TARGET-16 VERSION-LINE EVIDENCE REVIEW PROCEDURE/SIGNOFF-TEMPLATE GATE DEFINED (2026-03-10; implementation not started; explicit approval required).
+- WP-20 lane state: TARGET-17 GOVERNANCE CLOSEOUT CRITERIA/STOP-OR-ADVANCE DECISION-TEMPLATE GATE DEFINED (2026-03-10; implementation not started; explicit approval required).
 - Branch boundary: runtime bridge/execution work requires explicit approval and should run on a separate dedicated branch when started.
 - WP-15 through WP-17 closeout does not imply runtime bridge/apply integration.
 
@@ -428,7 +428,7 @@ WP-19 must not:
 
 
 ## WP-20 (v4.2.0+): Runtime Bridge
-Status: TARGET-16 VERSION-LINE EVIDENCE REVIEW PROCEDURE/SIGNOFF-TEMPLATE GATE DEFINED (2026-03-10 governance/docs/tests only; implementation NOT STARTED).
+Status: TARGET-17 GOVERNANCE CLOSEOUT CRITERIA/STOP-OR-ADVANCE DECISION-TEMPLATE GATE DEFINED (2026-03-10 governance/docs/tests only; implementation NOT STARTED).
 
 ### Scope
 - Introduce controlled bridge points from validated plan artifacts toward runtime integration.
@@ -485,6 +485,9 @@ Status: TARGET-16 VERSION-LINE EVIDENCE REVIEW PROCEDURE/SIGNOFF-TEMPLATE GATE D
 - Target-16 runtime version-line evidence review procedure reference: docs/onair/wp20_runtime_version_line_evidence_review_procedure.md
 - Target-16 runtime version-line evidence signoff template reference: docs/onair/wp20_runtime_version_line_evidence_signoff_template.md
 - Target-16 scaffold reference: tests/wp-20/target-16/README.md
+- Target-17 governance closeout criteria reference: docs/onair/wp20_governance_closeout_criteria.md
+- Target-17 stop-or-advance decision template reference: docs/onair/wp20_stop_or_advance_decision_template.md
+- Target-17 scaffold reference: tests/wp-20/target-17/README.md
 
 ### Allowed Upstream Inputs (Read-Only)
 - WP-17 captured-plan artifacts and contract/schema evidence.
@@ -508,8 +511,9 @@ Status: TARGET-16 VERSION-LINE EVIDENCE REVIEW PROCEDURE/SIGNOFF-TEMPLATE GATE D
 - Runtime version-line decision record is completed and linked to Target-05 authorization artifacts plus Target-13 runtime lane-entry controls before runtime code changes begin.
 - Runtime version-line decision evidence checklist/schema completeness is verified before runtime code changes begin.
 - Runtime version-line evidence review is completed and signoff status is signoff_complete before runtime code changes begin.
+- Governance closeout stop-or-advance decision is recorded; an advance outcome is non-authorizing and separate explicit implementation authorization remains required before runtime code changes begin.
 
-### Target-01 through Target-16 Governance Outcomes
+### Target-01 through Target-17 Governance Outcomes
 - Approval prerequisites are defined before any WP-20 code changes.
 - Required evidence categories are defined for a future implementation lane.
 - Rollback criteria and abort/fail-closed triggers are defined.
@@ -553,13 +557,15 @@ Status: TARGET-16 VERSION-LINE EVIDENCE REVIEW PROCEDURE/SIGNOFF-TEMPLATE GATE D
 - Formal runtime version-line evidence schema is defined with required artifact shape, selected-version constraints, frozen-baseline confirmation, and fail-closed invalid/missing/ambiguous handling.
 - Formal runtime version-line evidence review procedure is defined with required linkage checks, frozen-baseline checks, review outcomes, and fail-closed handling.
 - Formal runtime version-line evidence signoff template is defined with required identity/signer/outcome/linkage fields and fail-closed unsigned/incomplete/conflicting handling.
+- Formal governance closeout criteria are defined with required evidence categories and fail-closed missing/incomplete/conflicting handling.
+- Formal stop-or-advance decision template is defined with only two allowed outcomes and explicit non-authorizing advance-path handling.
 - This pass does not start runtime bridge implementation.
 ### Branch / Lane Rule
 - Runtime bridge/execution implementation must run on a separate dedicated lane from the current read-only semantic lane.
 - feature/semantic-layer remains governance/docs/tests/tooling for kickoff gating until explicit implementation approval is granted.
 
 ### Closeout-Planning Alignment (Non-Authorizing)
-- WP-20 remains NOT STARTED after Target-16 version-line evidence review procedure/signoff template definition.
+- WP-20 remains NOT STARTED after Target-17 governance closeout criteria/stop-or-advance decision template definition.
 - Governance package completion does not equal implementation authorization.
 - Implementation authorization still requires explicit recorded decision input + approval records.
 - Runtime implementation remains blocked until explicit authorization, explicit recorded version-line decision, evidence completeness, evidence review/signoff, and runtime lane-entry conditions are all satisfied.
