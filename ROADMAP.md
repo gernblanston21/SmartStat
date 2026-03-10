@@ -7,13 +7,13 @@
 - Current semantic posture: Phase 9 candidate-resolution scaffold is present in tools/semantic-source-view/.
 - WP-17 now defines a versioned, deterministic plan-capture contract layer (docs/tests/tooling only).
 - WP-18 is CLOSED as a validation-layer package (docs/tests/tooling only; runtime-independent).
-- WP-19 kickoff gate is now defined for a read-only Plan Viewer consumer layer over WP-17/WP-18 artifacts; implementation is not started.
-- WP-20 remains deferred and is not implied by WP-19 kickoff planning.
+- WP-19 is CLOSED as a read-only viewer-contract package over WP-17/WP-18 artifacts (docs/tests/tooling only; no UI/runtime behavior).
+- WP-20 remains deferred and is not implied by WP-19 closeout.
 ## Lane Re-Baseline (2026-03-08)
 - Single active lane: `feature/semantic-layer` for semantic architecture/tooling only (docs/tests/read-only tooling).
 - Frozen runtime/core baseline: `v4.0.0_beta` and `v4.0.0_RC1` (no implicit runtime execution lane is active).
 - WP-18 lane state: CLOSED (2026-03-09) with acceptance evidence under `tests/wp-18/artifacts/wp18_validator_runs/`.
-- WP-19 lane state: kickoff planning complete (2026-03-09), implementation not started.
+- WP-19 lane state: CLOSED (2026-03-09) with acceptance evidence under `tests/wp-19/`.
 - WP-20 lane state: DEFERRED (not started; explicit kickoff + approval required).
 - Branch boundary: runtime bridge/execution work requires explicit approval and should run on a separate dedicated branch when started.
 - WP-15 through WP-17 closeout does not imply runtime bridge/apply integration.
@@ -364,7 +364,7 @@ WP-19 consumption boundary (allowed):
 - Consume rule evaluations, refusal diagnostics, deterministic identities, and semantic interpretation metadata.
 - Must not imply runtime apply behavior or runtime bridge activation.
 ## WP-19 (v4.2.0): Plan Viewer
-Status: KICKOFF PLANNED (2026-03-09 governance gate defined; implementation not started).
+Status: CLOSED (accepted 2026-03-09; read-only viewer-contract package only).
 
 ### Scope
 - Extend read-only inspection UX to include deterministic plan-view semantics.
@@ -398,9 +398,34 @@ WP-19 must not:
 
 ### Definition of Done
 - Read-only plan viewer contract documented.
-- Deterministic plan browsing path implemented for local developer inspection.
+- Read-only projection and adapter contracts documented and validated with deterministic harness evidence.
 - Compatibility rules documented across semantic/explainability/plan contracts.
 - No runtime apply behavior changes introduced.
+
+### Accepted WP-19 Package Surface (Docs/Tests/Tooling Only)
+- Contract doc: `docs/onair/plan-viewer-contract.md`
+- Harness suite:
+  - `tests/wp-19/harness/read_only_intake_contract_test.py`
+  - `tests/wp-19/harness/viewer_projection_contract_test.py`
+  - `tests/wp-19/harness/projection_consumption_contract_test.py`
+  - `tests/wp-19/harness/projection_to_view_model_adapter_contract_test.py`
+- Target evidence/readme tree:
+  - `tests/wp-19/target-01/` through `tests/wp-19/target-06/`
+- Acceptance note:
+  - `tests/wp-19/ACCEPTANCE.md`
+
+### Future Implementation Lane May Consume (Read-Only)
+- WP-19 projection contract surfaces:
+  - `projection_contract`, `projection_kind`, `input_artifact`, `input_identity`,
+    `status_summary`, `issues_summary`, `rule_evaluation_summary`,
+    `deterministic_identity_summary`, `semantic_interpretation_summary`
+- WP-19 adapter contract surfaces:
+  - adapter identity fields plus `view_model` sections:
+    `status_view`, `issues_view`, `rules_view`, `semantic_view`, `trace_view`
+- Deterministic ordering guarantees established by WP-19 harnesses.
+- Explicitly not included:
+  - runtime execution, apply behavior, bridge behavior, mutation, or runtime inference.
+
 
 ## WP-20 (v4.2.0+): Runtime Bridge
 Status: DEFERRED (not started; explicit kickoff required + explicit approval).
@@ -422,7 +447,7 @@ Strategic sequencing note:
 - Runtime bridging is intentionally deferred until inspection/explainability/capture/validation are stable.
 - Runtime bridge/execution sequencing is out-of-lane for current `feature/semantic-layer` work until separately approved and kicked off.
 - WP-18 closeout does not activate WP-20 and does not imply runtime bridge behavior.
-- WP-19 kickoff planning does not activate WP-20 and does not imply runtime bridge behavior.
+- WP-19 closeout does not activate WP-20 and does not imply runtime bridge behavior.
 
 ---
 # Long-Term (v4.2+ / v5.0)
