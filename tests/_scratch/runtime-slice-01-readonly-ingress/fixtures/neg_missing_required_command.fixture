@@ -1,0 +1,5 @@
+# Negative fixture: missing required allowed read command (page:getpagetemplate omitted)
+page:getpagename=1000
+page:get_tabfield_names=H0110
+page:get_property H0110=29
+tabfield:get_custom_property H0110=PTS_OUTPUT

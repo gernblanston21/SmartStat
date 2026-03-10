@@ -1,0 +1,4 @@
+# Negative fixture: duplicate tabfield name causes ambiguity
+page:getpagename=1000
+page:getpagetemplate=SPORTS_LOWER_THIRD
+page:get_tabfield_names=H0110 H0110 B0200

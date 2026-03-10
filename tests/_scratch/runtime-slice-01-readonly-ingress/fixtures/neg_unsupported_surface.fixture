@@ -1,0 +1,5 @@
+# Negative fixture: unsupported runtime surface in fixture
+page:getpagename=1000
+page:getpagetemplate=SPORTS_LOWER_THIRD
+page:get_tabfield_names=H0110
+page:set_property H0110=FORBIDDEN

@@ -1,0 +1,23 @@
+{
+  "status": "fail_closed",
+  "version": "4.1.0",
+  "runtime_line": "SmartStat_v4.1.0.vbs",
+  "slice_name": "WP20_RUNTIME_SLICE_01_READONLY_INGRESS",
+  "slice_gate_expected": "WP20_RUNTIME_SLICE_01_READONLY_INGRESS",
+  "slice_gate_received": "WP20_RUNTIME_SLICE_01_READONLY_INGRESS",
+  "provider_mode": "fixture",
+  "normalization_rule": "TABFIELD_NAME_TEXT_BINARY_ASC",
+  "supported_read_surfaces": [
+    "page:get_tabfield_names",
+    "page:get_property",
+    "tabfield:get_custom_property",
+    "page:getpagename",
+    "page:getpagetemplate"
+  ],
+  "page_name": "",
+  "page_template": "",
+  "error_code": "REQUIRED_INPUT_MISSING",
+  "error_detail": "required command returned empty value: PAGE:GETPAGETEMPLATE",
+  "tabfields": [
+  ]
+}

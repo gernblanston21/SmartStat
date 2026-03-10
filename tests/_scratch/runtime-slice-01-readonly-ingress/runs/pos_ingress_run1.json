@@ -1,0 +1,27 @@
+{
+  "status": "success",
+  "version": "4.1.0",
+  "runtime_line": "SmartStat_v4.1.0.vbs",
+  "slice_name": "WP20_RUNTIME_SLICE_01_READONLY_INGRESS",
+  "slice_gate_expected": "WP20_RUNTIME_SLICE_01_READONLY_INGRESS",
+  "slice_gate_received": "WP20_RUNTIME_SLICE_01_READONLY_INGRESS",
+  "provider_mode": "fixture",
+  "normalization_rule": "TABFIELD_NAME_TEXT_BINARY_ASC",
+  "supported_read_surfaces": [
+    "page:get_tabfield_names",
+    "page:get_property",
+    "tabfield:get_custom_property",
+    "page:getpagename",
+    "page:getpagetemplate"
+  ],
+  "page_name": "1000",
+  "page_template": "SPORTS_LOWER_THIRD",
+  "error_code": "",
+  "error_detail": "",
+  "tabfields": [
+    {"name": "B0200", "page_property": "NBA", "custom_property": "LEAGUE_KEY"},
+    {"name": "C0001", "page_property": "2", "custom_property": "ROWS_VISIBLE"},
+    {"name": "H0100", "page_property": "NIKOLA JOKIC", "custom_property": "PLAYER_NAME"},
+    {"name": "H0110", "page_property": "29", "custom_property": "PTS_OUTPUT"}
+  ]
+}

@@ -1,0 +1,4 @@
+# Negative fixture: required tabfield list is missing (empty)
+page:getpagename=1000
+page:getpagetemplate=SPORTS_LOWER_THIRD
+page:get_tabfield_names=
