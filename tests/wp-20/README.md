@@ -1,6 +1,6 @@
 # WP-20 (Runtime Bridge) - Approval Evidence Scaffolding
 
-Status: Target-02 governance gate defined (lane charter + regression/evidence plan; docs/tests only).
+Status: Target-03 pre-implementation rehearsal gate defined (docs/tests only).
 Implementation state: NOT STARTED.
 
 This directory is reserved for WP-20 approval evidence and future runtime-bridge
@@ -32,3 +32,11 @@ lane evidence artifacts.
 - Target-02 scaffold:
   - `tests/wp-20/target-02/README.md`
   - `tests/wp-20/target-02/artifacts/.gitkeep`
+
+## Target-03
+
+- Rehearsal protocol:
+  - `docs/onair/wp20_rehearsal_protocol.md`
+- Target-03 scaffold:
+  - `tests/wp-20/target-03/README.md`
+  - `tests/wp-20/target-03/artifacts/.gitkeep`
