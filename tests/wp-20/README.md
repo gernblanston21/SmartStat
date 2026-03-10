@@ -1,6 +1,6 @@
 # WP-20 (Runtime Bridge) - Approval Evidence Scaffolding
 
-Status: Target-14 version-line decision-record template gate defined (docs/tests only).
+Status: Target-15 version-line decision evidence checklist/schema gate defined (docs/tests only).
 Implementation state: NOT STARTED.
 
 This directory is reserved for WP-20 approval evidence and future runtime-bridge
@@ -159,3 +159,13 @@ lane evidence artifacts.
 - Target-14 scaffold:
   - `tests/wp-20/target-14/README.md`
   - `tests/wp-20/target-14/artifacts/.gitkeep`
+
+## Target-15
+
+- Runtime version-line evidence checklist:
+  - `docs/onair/wp20_runtime_version_line_evidence_checklist.md`
+- Runtime version-line evidence schema:
+  - `docs/onair/wp20_runtime_version_line_evidence_schema.md`
+- Target-15 scaffold:
+  - `tests/wp-20/target-15/README.md`
+  - `tests/wp-20/target-15/artifacts/.gitkeep`

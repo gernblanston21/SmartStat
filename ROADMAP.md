@@ -8,13 +8,13 @@
 - WP-17 now defines a versioned, deterministic plan-capture contract layer (docs/tests/tooling only).
 - WP-18 is CLOSED as a validation-layer package (docs/tests/tooling only; runtime-independent).
 - WP-19 is CLOSED as a read-only viewer-contract package over WP-17/WP-18 artifacts (docs/tests/tooling only; no UI/runtime behavior).
-- WP-20 Target-14 version-line decision-record template gate is defined as a separate runtime-bridge lane governance package; implementation is NOT STARTED and is not implied by WP-19 closeout.
+- WP-20 Target-15 version-line decision evidence checklist/schema gate is defined as a separate runtime-bridge lane governance package; implementation is NOT STARTED and is not implied by WP-19 closeout.
 ## Lane Re-Baseline (2026-03-08)
 - Single active lane: `feature/semantic-layer` for semantic architecture/tooling only (docs/tests/read-only tooling).
 - Frozen runtime/core baseline: `v4.0.0_beta` and `v4.0.0_RC1` (no implicit runtime execution lane is active).
 - WP-18 lane state: CLOSED (2026-03-09) with acceptance evidence under `tests/wp-18/artifacts/wp18_validator_runs/`.
 - WP-19 lane state: CLOSED (2026-03-09) with acceptance evidence under `tests/wp-19/`.
-- WP-20 lane state: TARGET-14 VERSION-LINE DECISION-RECORD TEMPLATE GATE DEFINED (2026-03-10; implementation not started; explicit approval required).
+- WP-20 lane state: TARGET-15 VERSION-LINE DECISION EVIDENCE CHECKLIST/SCHEMA GATE DEFINED (2026-03-10; implementation not started; explicit approval required).
 - Branch boundary: runtime bridge/execution work requires explicit approval and should run on a separate dedicated branch when started.
 - WP-15 through WP-17 closeout does not imply runtime bridge/apply integration.
 
@@ -428,7 +428,7 @@ WP-19 must not:
 
 
 ## WP-20 (v4.2.0+): Runtime Bridge
-Status: TARGET-14 VERSION-LINE DECISION-RECORD TEMPLATE GATE DEFINED (2026-03-10 governance/docs/tests only; implementation NOT STARTED).
+Status: TARGET-15 VERSION-LINE DECISION EVIDENCE CHECKLIST/SCHEMA GATE DEFINED (2026-03-10 governance/docs/tests only; implementation NOT STARTED).
 
 ### Scope
 - Introduce controlled bridge points from validated plan artifacts toward runtime integration.
@@ -479,6 +479,9 @@ Status: TARGET-14 VERSION-LINE DECISION-RECORD TEMPLATE GATE DEFINED (2026-03-10
 - Target-14 runtime version-line decision record template reference: docs/onair/wp20_runtime_version_line_decision_record_template.md
 - Target-14 runtime version-line decision guidance reference: docs/onair/wp20_runtime_version_line_decision_guidance.md
 - Target-14 scaffold reference: tests/wp-20/target-14/README.md
+- Target-15 runtime version-line evidence checklist reference: docs/onair/wp20_runtime_version_line_evidence_checklist.md
+- Target-15 runtime version-line evidence schema reference: docs/onair/wp20_runtime_version_line_evidence_schema.md
+- Target-15 scaffold reference: tests/wp-20/target-15/README.md
 
 ### Allowed Upstream Inputs (Read-Only)
 - WP-17 captured-plan artifacts and contract/schema evidence.
@@ -500,8 +503,9 @@ Status: TARGET-14 VERSION-LINE DECISION-RECORD TEMPLATE GATE DEFINED (2026-03-10
 - Runtime bridge risk-class review approved before any code mutation.
 - Runtime version line is explicitly selected before runtime code changes (default SmartStat_v4.1.0.vbs; allowed alternate SmartStat_v4.2.0.vbs) and SmartStat_v4.0.0_beta.vbs remains frozen for regression/rollback/governance comparison.
 - Runtime version-line decision record is completed and linked to Target-05 authorization artifacts plus Target-13 runtime lane-entry controls before runtime code changes begin.
+- Runtime version-line decision evidence checklist/schema completeness is verified before runtime code changes begin.
 
-### Target-01 through Target-14 Governance Outcomes
+### Target-01 through Target-15 Governance Outcomes
 - Approval prerequisites are defined before any WP-20 code changes.
 - Required evidence categories are defined for a future implementation lane.
 - Rollback criteria and abort/fail-closed triggers are defined.
@@ -541,16 +545,18 @@ Status: TARGET-14 VERSION-LINE DECISION-RECORD TEMPLATE GATE DEFINED (2026-03-10
 - Formal runtime implementation lane entry checklist is defined with mandatory version-line decision gate and fail-closed undecided/ambiguous handling.
 - Formal runtime version-line decision record template is defined with exactly-one-selection and fail-closed blank/multiple/conflicting/ambiguous handling.
 - Formal runtime version-line decision guidance is defined and tied to Target-05 authorization linkage and Target-13 lane-entry controls.
+- Formal runtime version-line evidence checklist is defined for decision review, exactly-one-selection verification, required linkage verification, and frozen-baseline preservation evidence checks.
+- Formal runtime version-line evidence schema is defined with required artifact shape, selected-version constraints, frozen-baseline confirmation, and fail-closed invalid/missing/ambiguous handling.
 - This pass does not start runtime bridge implementation.
 ### Branch / Lane Rule
 - Runtime bridge/execution implementation must run on a separate dedicated lane from the current read-only semantic lane.
 - feature/semantic-layer remains governance/docs/tests/tooling for kickoff gating until explicit implementation approval is granted.
 
 ### Closeout-Planning Alignment (Non-Authorizing)
-- WP-20 remains NOT STARTED after Target-14 version-line decision-record template definition.
+- WP-20 remains NOT STARTED after Target-15 version-line decision evidence checklist/schema definition.
 - Governance package completion does not equal implementation authorization.
 - Implementation authorization still requires explicit recorded decision input + approval records.
-- Runtime implementation remains blocked until explicit authorization, explicit recorded version-line decision, and runtime lane-entry conditions are all satisfied.
+- Runtime implementation remains blocked until explicit authorization, explicit recorded version-line decision, evidence completeness, and runtime lane-entry conditions are all satisfied.
 - Runtime bridge remains a distinct risk-class lane with mandatory branch separation.
 - Protected surfaces remain protected until separately authorized implementation work.
 - Explicit future choices:
