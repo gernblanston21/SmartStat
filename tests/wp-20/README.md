@@ -1,6 +1,6 @@
 # WP-20 (Runtime Bridge) - Approval Evidence Scaffolding
 
-Status: Target-01 approval-evidence package defined (governance/docs/tests only).
+Status: Target-02 governance gate defined (lane charter + regression/evidence plan; docs/tests only).
 Implementation state: NOT STARTED.
 
 This directory is reserved for WP-20 approval evidence and future runtime-bridge
@@ -22,3 +22,13 @@ lane evidence artifacts.
   - `docs/onair/wp20_kickoff_checklist.md`
 - Evidence template scaffold:
   - `tests/wp-20/target-01/approval_evidence_template.md`
+
+## Target-02
+
+- Runtime-bridge lane charter:
+  - `docs/onair/wp20_lane_charter.md`
+- Regression/evidence execution plan:
+  - `docs/onair/wp20_regression_evidence_plan.md`
+- Target-02 scaffold:
+  - `tests/wp-20/target-02/README.md`
+  - `tests/wp-20/target-02/artifacts/.gitkeep`
