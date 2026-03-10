@@ -1,6 +1,6 @@
 # WP-20 (Runtime Bridge) - Approval Evidence Scaffolding
 
-Status: Target-08 sample-fill + dry-run sample structure gate defined (docs/tests only).
+Status: Governance package complete through Target-08; closeout-planning aligned (docs/tests only).
 Implementation state: NOT STARTED.
 
 This directory is reserved for WP-20 approval evidence and future runtime-bridge
@@ -90,3 +90,11 @@ lane evidence artifacts.
 - Target-08 scaffold:
   - `tests/wp-20/target-08/README.md`
   - `tests/wp-20/target-08/artifacts/.gitkeep`
+
+## Closeout Planning Alignment
+
+- Acceptance-planning note:
+  - `tests/wp-20/ACCEPTANCE_PLANNING.md`
+- Governance package completion through Target-08 is non-authorizing.
+- Implementation still requires explicit recorded authorization.
+- Branch/lane separation remains mandatory for any future runtime-bridge lane.

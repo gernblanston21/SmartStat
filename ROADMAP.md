@@ -8,13 +8,13 @@
 - WP-17 now defines a versioned, deterministic plan-capture contract layer (docs/tests/tooling only).
 - WP-18 is CLOSED as a validation-layer package (docs/tests/tooling only; runtime-independent).
 - WP-19 is CLOSED as a read-only viewer-contract package over WP-17/WP-18 artifacts (docs/tests/tooling only; no UI/runtime behavior).
-- WP-20 Target-08 sample-fill + dry-run sample structure gate is defined as a separate runtime-bridge lane governance package; implementation is NOT STARTED and is not implied by WP-19 closeout.
+- WP-20 governance package is complete through Target-08 as a separate runtime-bridge lane governance package; implementation is NOT STARTED and is not implied by WP-19 closeout.
 ## Lane Re-Baseline (2026-03-08)
 - Single active lane: `feature/semantic-layer` for semantic architecture/tooling only (docs/tests/read-only tooling).
 - Frozen runtime/core baseline: `v4.0.0_beta` and `v4.0.0_RC1` (no implicit runtime execution lane is active).
 - WP-18 lane state: CLOSED (2026-03-09) with acceptance evidence under `tests/wp-18/artifacts/wp18_validator_runs/`.
 - WP-19 lane state: CLOSED (2026-03-09) with acceptance evidence under `tests/wp-19/`.
-- WP-20 lane state: TARGET-08 SAMPLE-FILL + DRY-RUN SAMPLE STRUCTURE GATE DEFINED (2026-03-10; implementation not started; explicit approval required).
+- WP-20 lane state: GOVERNANCE PACKAGE COMPLETE THROUGH TARGET-08 (2026-03-10; implementation not started; explicit approval required).
 - Branch boundary: runtime bridge/execution work requires explicit approval and should run on a separate dedicated branch when started.
 - WP-15 through WP-17 closeout does not imply runtime bridge/apply integration.
 
@@ -428,16 +428,16 @@ WP-19 must not:
 
 
 ## WP-20 (v4.2.0+): Runtime Bridge
-Status: TARGET-08 SAMPLE-FILL + DRY-RUN SAMPLE STRUCTURE GATE DEFINED (2026-03-10 governance/docs/tests only; implementation NOT STARTED).
+Status: GOVERNANCE PACKAGE COMPLETE THROUGH TARGET-08 (2026-03-10 governance/docs/tests only; implementation NOT STARTED).
 
 ### Scope
 - Introduce controlled bridge points from validated plan artifacts toward runtime integration.
 - Defer runtime bridge implementation until semantic inspection, explainability, plan capture, and plan validation are stable.
 - Preserve fail-closed and deterministic discipline while defining bridge constraints.
 
-### Kickoff Gate (Governance Only)
+### Governance Package (Non-Authorizing)
 - WP-20 is explicitly separate from WP-17/WP-18/WP-19 read-only architecture packages.
-- WP-20 kickoff is planning-only in this pass and does not authorize implementation.
+- WP-20 governance package is planning/docs/tests only in this pass and does not authorize implementation.
 - Gate checklist reference: docs/onair/wp20_kickoff_checklist.md
 - Approval requirements reference: docs/onair/wp20_approval_requirements.md
 - Target-01 evidence template reference: tests/wp-20/target-01/approval_evidence_template.md
@@ -460,6 +460,7 @@ Status: TARGET-08 SAMPLE-FILL + DRY-RUN SAMPLE STRUCTURE GATE DEFINED (2026-03-1
 - Target-08 authorization packet sample reference: docs/onair/wp20_authorization_packet_sample.md
 - Target-08 packet verification dry-run sample reference: docs/onair/wp20_packet_verification_dry_run_sample.md
 - Target-08 scaffold reference: tests/wp-20/target-08/README.md
+- Closeout-planning note reference: tests/wp-20/ACCEPTANCE_PLANNING.md
 
 ### Allowed Upstream Inputs (Read-Only)
 - WP-17 captured-plan artifacts and contract/schema evidence.
@@ -509,6 +510,17 @@ Status: TARGET-08 SAMPLE-FILL + DRY-RUN SAMPLE STRUCTURE GATE DEFINED (2026-03-1
 ### Branch / Lane Rule
 - Runtime bridge/execution implementation must run on a separate dedicated lane from the current read-only semantic lane.
 - feature/semantic-layer remains governance/docs/tests/tooling for kickoff gating until explicit implementation approval is granted.
+
+### Closeout-Planning Alignment (Non-Authorizing)
+- WP-20 remains NOT STARTED after governance package completion through Target-08.
+- Governance package completion does not equal implementation authorization.
+- Implementation authorization still requires explicit recorded decision input + approval records.
+- Runtime bridge remains a distinct risk-class lane with mandatory branch separation.
+- Protected surfaces remain protected until separately authorized implementation work.
+- Explicit future choices:
+  1. Stop at governance completion.
+  2. Collect real authorization inputs.
+  3. Explicitly authorize a separate implementation lane.
 
 ### Definition of Done
 - Runtime bridge contract documented with explicit guardrails.

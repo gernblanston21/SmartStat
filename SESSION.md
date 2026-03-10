@@ -16,7 +16,7 @@ All new work proceeds from the post-RC baseline.
 - Frozen baseline: SmartStat runtime/core behavior anchored to `v4.0.0_beta` and `v4.0.0_RC1` lineage.
 - WP-18 lane state: CLOSED (2026-03-09) with acceptance evidence in tests/wp-18/artifacts/wp18_validator_runs/target06/.
 - WP-19 is CLOSED (2026-03-09); read-only viewer-contract package accepted with harness evidence under tests/wp-19/.
-- WP-20 Target-08 sample-fill + dry-run sample structure gate is defined (2026-03-10 governance/docs/tests only); implementation remains not started.
+- WP-20 governance package is complete through Target-08 (2026-03-10 governance/docs/tests only); implementation remains not started.
 - Branch boundary: runtime bridge/execution proposals require explicit approval and may require a separate branch to avoid lane contamination.
 - No implicit runtime integration: WP-15 through WP-17 artifacts do not imply runtime bridge/apply behavior.
 
@@ -36,7 +36,7 @@ Active WP:
 - WP-17 CLOSED (plan-capture contract layer implemented as docs/tests/tooling-only package under tests/wp-17 + docs/onair contract/schema).
 - WP-18 CLOSED (validation-layer package accepted; structural/semantic/determinism/boundary + hardened result model + interpretation metadata).
 - WP-19 CLOSED (read-only viewer-contract package accepted; no UI/runtime behavior introduced).
-- WP-20 TARGET-08 SAMPLE-FILL + DRY-RUN SAMPLE STRUCTURE GATE DEFINED (not started; governance/docs/tests only; explicit implementation approval required).
+- WP-20 GOVERNANCE PACKAGE COMPLETE THROUGH TARGET-08 (not started; governance/docs/tests only; explicit implementation approval required).
 No opportunistic refactors.
 No scope creep.
 Each WP must be:
@@ -140,7 +140,7 @@ v4.1.0 stabilization work packages (historical complete):
 - WP-17 - Plan Capture Contract Layer
 - WP-18 - Plan Validation CLOSED (accepted 2026-03-09; validation-only, runtime-independent)
 - WP-19 - Plan Viewer CLOSED (accepted 2026-03-09; read-only contract/harness package only)
-- WP-20 - Runtime Bridge TARGET-08 SAMPLE-FILL + DRY-RUN SAMPLE STRUCTURE GATE DEFINED (2026-03-10 governance/docs/tests only; not started; no runtime coupling until explicit implementation approval)
+- WP-20 - Runtime Bridge GOVERNANCE PACKAGE COMPLETE THROUGH TARGET-08 (2026-03-10 governance/docs/tests only; not started; no runtime coupling until explicit implementation approval)
 - Strategic target: `Stat Query -> Deterministic Execution Plan`
 - Sequence rationale: Semantic Source View now exists, so semantic inspection/explainability leads the plan-engine track.
 - Active branch for this sequence: `feature/semantic-layer`
@@ -174,10 +174,16 @@ v4.1.0 stabilization work packages (historical complete):
 - Future implementation lane may consume WP-19 projection and adapter contracts as read-only inputs for viewer implementation handoff only.
 - Future implementation lane must preserve deterministic ordering and must not introduce runtime/apply/bridge behavior without separate WP-20 kickoff/approval.
 
-- WP-20 kickoff gate + Target-01 approval package + Target-02 charter/plan gate + Target-03 rehearsal gate + Target-04 sign-off gate + Target-05 implementation-authorization decision gate + Target-06 authorization-packet fill/verification gate + Target-07 draft/verification-dry-run template gate + Target-08 sample-fill/dry-run-structure gate are defined and WP-20 remains NOT STARTED.
+- WP-20 kickoff gate + Target-01 approval package + Target-02 charter/plan gate + Target-03 rehearsal gate + Target-04 sign-off gate + Target-05 implementation-authorization decision gate + Target-06 authorization-packet fill/verification gate + Target-07 draft/verification-dry-run template gate + Target-08 sample-fill/dry-run-structure gate are defined; governance package is complete through Target-08 and WP-20 remains NOT STARTED.
 - WP-20 allowed upstream inputs are limited to WP-17 artifacts, WP-18 validation outputs, and WP-19 projection/adapter contract surfaces.
 - WP-20 pre-implementation forbidden behavior remains absolute: no runtime/apply/bridge code, no Trio integration, no SmartStat engine/apply calls, no artifact mutation.
 - WP-20 implementation requires explicit approval, dedicated branch isolation, and an approved runtime-bridge evidence plan before code changes begin.
+- WP-20 governance package completion does not equal implementation authorization; explicit recorded implementation authorization is still required.
+- WP-20 closeout-planning note reference: tests/wp-20/ACCEPTANCE_PLANNING.md
+- WP-20 future choices:
+  1. Stop at governance completion.
+  2. Collect real authorization inputs.
+  3. Explicitly authorize a separate implementation lane.
 - WP-20 approval/charter/plan/rehearsal references:
   - docs/onair/wp20_approval_requirements.md
   - docs/onair/wp20_lane_charter.md

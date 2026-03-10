@@ -2,6 +2,25 @@
 
 All notable changes to the SmartStat Core Engine are documented in this file.
 Runtime versioning follows script identifiers (`SmartStat_v*.vbs`), while `VERSION.txt` remains VIZOR UI display metadata.
+## [feature/semantic-layer] - 2026-03-10 (WP-20 Closeout Planning / Acceptance Alignment)
+### Summary
+- Consolidated WP-20 governance truth as a closeout-planning package while keeping implementation NOT STARTED.
+- Added a concise WP-20 acceptance-planning note under tests to define governance completion vs implementation authorization boundaries.
+- Reaffirmed branch/lane separation, protected surfaces, and explicit non-implied activation.
+
+### Added
+- `tests/wp-20/ACCEPTANCE_PLANNING.md`
+
+### Changed
+- `ROADMAP.md`
+- `SESSION.md`
+- `AGENTS.md`
+- `tests/wp-20/README.md`
+- `CHANGELOG.md`
+
+### Validation
+- Governance/docs/tests pass only.
+- Protected files remained unchanged (`SmartStat_v4.0.0_beta.vbs`, production INIs, capture schema, validation contract).
 ## [feature/semantic-layer] - 2026-03-10 (WP-20 Target-08 Packet Instance Sample-Fill + Dry-Run Sample Evidence Structure)
 ### Summary
 - Added sample-only scaffolding for a filled authorization packet instance and a packet-verification dry-run report.
