@@ -1,6 +1,6 @@
 # WP-20 (Runtime Bridge) - Approval Evidence Scaffolding
 
-Status: Target-09 authorization-input collection scaffold gate defined (docs/tests only).
+Status: Target-10 packet-population readiness planning scaffold gate defined (docs/tests only).
 Implementation state: NOT STARTED.
 
 This directory is reserved for WP-20 approval evidence and future runtime-bridge
@@ -95,7 +95,8 @@ lane evidence artifacts.
 
 - Acceptance-planning note:
   - `tests/wp-20/ACCEPTANCE_PLANNING.md`
-- Governance package completion and Target-09 input collection are non-authorizing.
+- Governance package completion, Target-09 input collection scaffolding, and Target-10 readiness planning are non-authorizing.
+- This pass does not execute real authorization-input collection.
 - Implementation still requires explicit recorded authorization.
 - Branch/lane separation remains mandatory for any future runtime-bridge lane.
 
@@ -108,3 +109,13 @@ lane evidence artifacts.
 - Target-09 scaffold:
   - `tests/wp-20/target-09/README.md`
   - `tests/wp-20/target-09/artifacts/.gitkeep`
+
+## Target-10
+
+- Packet-population readiness plan:
+  - `docs/onair/wp20_packet_population_readiness_plan.md`
+- Authorization-input owner assignment template:
+  - `docs/onair/wp20_authorization_input_owner_assignment_template.md`
+- Target-10 scaffold:
+  - `tests/wp-20/target-10/README.md`
+  - `tests/wp-20/target-10/artifacts/.gitkeep`
