@@ -2,7 +2,7 @@
 
 Status date: `2026-03-10`  
 WP-20 implementation state: `NOT STARTED`  
-Governance package state: `COMPLETE THROUGH TARGET-08`
+Governance package state: `COMPLETE THROUGH TARGET-12`
 
 ## Purpose
 
@@ -11,7 +11,7 @@ authorizing implementation and without starting runtime-bridge work.
 
 ## Governance Package Complete Means
 
-1. Target-01 through Target-08 governance/docs/tests gates are defined.
+1. Target-01 through Target-12 governance/docs/tests gates are defined.
 2. Approval, charter, rehearsal, sign-off, authorization, and packet templates
    are present.
 3. Sample packet and sample dry-run structures are present as non-authorizing

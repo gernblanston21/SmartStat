@@ -1,6 +1,6 @@
 # WP-20 (Runtime Bridge) - Approval Evidence Scaffolding
 
-Status: Target-11 tracking-and-reporting mechanics scaffold gate defined (docs/tests only).
+Status: Target-12 governance-only cadence/operating-rhythm definition gate defined (docs/tests only).
 Implementation state: NOT STARTED.
 
 This directory is reserved for WP-20 approval evidence and future runtime-bridge
@@ -129,3 +129,13 @@ lane evidence artifacts.
 - Target-11 scaffold:
   - `tests/wp-20/target-11/README.md`
   - `tests/wp-20/target-11/artifacts/.gitkeep`
+
+## Target-12
+
+- Tracking/reporting operating rhythm:
+  - `docs/onair/wp20_tracking_reporting_operating_rhythm.md`
+- Readiness review meeting template:
+  - `docs/onair/wp20_readiness_review_meeting_template.md`
+- Target-12 scaffold:
+  - `tests/wp-20/target-12/README.md`
+  - `tests/wp-20/target-12/artifacts/.gitkeep`
