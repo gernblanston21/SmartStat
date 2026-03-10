@@ -10,12 +10,14 @@ Gate result date: `2026-03-10T19:10:34Z`
 
 1. `tests/wp-20/target-05/artifacts/runtime_slice1_branch_approval_record.md`
 2. `tests/wp-20/target-05/artifacts/runtime_slice1_implementation_authorization_record.md`
-3. `tests/wp-20/target-13/artifacts/runtime_slice1_lane_entry_checklist.md`
-4. `tests/wp-20/target-14/artifacts/runtime_slice1_version_line_decision_record.md`
-5. `tests/wp-20/target-15/artifacts/runtime_slice1_version_line_evidence_checklist.md`
-6. `tests/wp-20/target-15/artifacts/runtime_slice1_version_line_evidence.json`
-7. `tests/wp-20/target-16/artifacts/runtime_slice1_version_line_evidence_review.md`
-8. `tests/wp-20/target-16/artifacts/runtime_slice1_version_line_signoff.md`
+3. `tests/wp-20/target-03/artifacts/runtime_slice1_rehearsal_20260310_hold/rehearsal_manifest.md`
+4. `tests/wp-20/target-03/artifacts/runtime_slice1_rehearsal_20260310_hold/rehearsal_index.md`
+5. `tests/wp-20/target-13/artifacts/runtime_slice1_lane_entry_checklist.md`
+6. `tests/wp-20/target-14/artifacts/runtime_slice1_version_line_decision_record.md`
+7. `tests/wp-20/target-15/artifacts/runtime_slice1_version_line_evidence_checklist.md`
+8. `tests/wp-20/target-15/artifacts/runtime_slice1_version_line_evidence.json`
+9. `tests/wp-20/target-16/artifacts/runtime_slice1_version_line_evidence_review.md`
+10. `tests/wp-20/target-16/artifacts/runtime_slice1_version_line_signoff.md`
 
 ## Gate Condition Matrix
 
@@ -35,9 +37,11 @@ Gate result date: `2026-03-10T19:10:34Z`
   - Result: `PASS`
 8. No INI/schema/contract edit authorization implied.
   - Result: `PASS`
-9. Target-05 implementation authorization approved.
+9. Required Target-05 decision-input references present (including rehearsal manifest/index).
+  - Result: `PASS`
+10. Target-05 implementation authorization approved.
   - Result: `HOLD`
-10. Target-13 implementation authorization checkpoint approved.
+11. Target-13 implementation authorization checkpoint approved.
   - Result: `HOLD`
 
 ## Gate Outcome
@@ -46,13 +50,14 @@ Gate result date: `2026-03-10T19:10:34Z`
 - `authorization_ready_for_code_writing`: `false`
 - `runtime_start_authorized`: `false`
 - `blocking_reasons`:
-  - `Target-05 implementation authorization record final disposition is hold`
-  - `Target-13 lane-entry checkpoint 5 is hold`
+  - `Target-05 implementation authorization decision_outcome is hold`
+  - `Target-05 implementation authorization final_disposition is hold`
+  - `Target-13 lane-entry checkpoint 5 remains hold because implementation authorization is not approved`
 
 ## Required Follow-Up
 
-1. Record explicit approved implementation authorization decision with complete sign-off chain.
-2. Close lane-entry checkpoint 5 with traceable approved authorization outcome.
+1. Obtain explicit approved implementation authorization decision with complete sign-off chain from required authorization ownership.
+2. Close lane-entry checkpoint 5 with traceable approved authorization outcome linked to Target-05.
 3. Re-run gate evaluation and update this record only after blockers are closed.
 
 ## Boundary Integrity Assertion

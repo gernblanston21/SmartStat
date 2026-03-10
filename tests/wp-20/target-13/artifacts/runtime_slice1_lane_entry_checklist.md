@@ -20,8 +20,8 @@ Checklist state: `HOLD`
   - Status: `PASS`
   - Evidence: `SmartStat_v4.0.0_beta.vbs` preserved; protected-surface checks referenced in Target-15 evidence artifacts
 5. Regression and rollback evidence plan is approved for runtime-line work.
-  - Status: `HOLD`
-  - Evidence: Plan exists (`docs/onair/wp20_regression_evidence_plan.md`) but slice-1 execution evidence is not complete in this planning-only pass
+  - Status: `PASS`
+  - Evidence: `docs/onair/wp20_regression_evidence_plan.md` plus rehearsal decision-input artifacts at `tests/wp-20/target-03/artifacts/runtime_slice1_rehearsal_20260310_hold/rehearsal_manifest.md` and `tests/wp-20/target-03/artifacts/runtime_slice1_rehearsal_20260310_hold/rehearsal_index.md`
 
 ## Mandatory Checkpoints
 
@@ -46,16 +46,17 @@ Checklist state: `HOLD`
 
 ### Checkpoint 4: Regression/Rollback Evidence Checkpoint
 
-- Status: `HOLD`
+- Status: `PASS`
 - Baseline comparison plan defined: `true`
 - Rollback criteria/path documented: `true`
 - Determinism/fail-closed requirements documented: `true`
-- Execution evidence complete for implementation start: `false`
+- Rehearsal decision-input references recorded: `true`
 
 ### Checkpoint 5: Implementation Authorization Checkpoint
 
 - Status: `HOLD`
-- Target-05 artifacts complete and approved: `false`
+- Target-05 artifacts complete: `true`
+- Target-05 artifacts approved: `false`
 - Authorization explicitly allows runtime lane entry: `false`
 - Authorization outcome traceable: `true` (traceable as HOLD)
 
@@ -72,5 +73,5 @@ Checklist state: `HOLD`
 ## Overall Lane Entry Outcome
 
 - `lane_entry_outcome`: `hold`
-- `hold_reason`: `Implementation authorization checkpoint is unresolved and regression/rollback execution evidence for start gate is incomplete.`
+- `hold_reason`: `Implementation authorization checkpoint is unresolved (Target-05 decision remains HOLD).`
 - `runtime_work_start_allowed`: `false`

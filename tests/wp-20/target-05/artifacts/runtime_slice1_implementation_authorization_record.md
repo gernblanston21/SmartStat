@@ -15,7 +15,7 @@ Authorization posture: `HOLD`
 
 ### 2. Decision Input Inventory
 
-- `input_refs_complete`: `false`
+- `input_refs_complete`: `true`
 - `input_refs`:
   - `docs/onair/wp20_approval_requirements.md`
   - `docs/onair/wp20_lane_charter.md`
@@ -23,6 +23,8 @@ Authorization posture: `HOLD`
   - `docs/onair/wp20_rehearsal_protocol.md`
   - `docs/onair/wp20_rehearsal_manifest_template.md`
   - `docs/onair/wp20_gate_review_checklist.md`
+  - `tests/wp-20/target-03/artifacts/runtime_slice1_rehearsal_20260310_hold/rehearsal_manifest.md`
+  - `tests/wp-20/target-03/artifacts/runtime_slice1_rehearsal_20260310_hold/rehearsal_index.md`
   - `tests/wp-20/target-05/artifacts/runtime_slice1_branch_approval_record.md`
   - `tests/wp-20/target-13/artifacts/runtime_slice1_lane_entry_checklist.md`
   - `tests/wp-20/target-14/artifacts/runtime_slice1_version_line_decision_record.md`
@@ -30,15 +32,15 @@ Authorization posture: `HOLD`
   - `tests/wp-20/target-15/artifacts/runtime_slice1_version_line_evidence.json`
   - `tests/wp-20/target-16/artifacts/runtime_slice1_version_line_evidence_review.md`
   - `tests/wp-20/target-16/artifacts/runtime_slice1_version_line_signoff.md`
-- `missing_inputs`: `Approved implementation-start sign-off is not recorded; rehearsal artifact pair (rehearsal_manifest.md, rehearsal_index.md) is not provided in this planning-only pass.`
-- `input_review_notes`: `Inputs are sufficient for planning packet population and consistency checks; not sufficient for truthful implementation-start authorization.`
+- `missing_inputs`: `none`
+- `input_review_notes`: `Required decision-input references are now present, including rehearsal manifest/index artifacts. Authorization remains HOLD because explicit implementation-start approval is not recorded.`
 
 ### 3. Authorization Decision
 
 - `decision_outcome`: `hold`
 - `decision_rationale`: `Runtime remains HOLD by explicit instruction; planning packet completion does not satisfy implementation-start authorization.`
-- `blocking_conditions`: `Final authorization sign-off absent; lane-entry authorization checkpoint unresolved; rehearsal evidence package for start gate not recorded in this pass.`
-- `required_follow_up`: `Record explicit approved authorization decision with complete sign-off chain before any code-writing pass.`
+- `blocking_conditions`: `Final authorization sign-off remains HOLD; Target-13 implementation authorization checkpoint remains HOLD; implementation-start approval authority has not issued an authorized decision.`
+- `required_follow_up`: `Obtain explicit approved implementation authorization decision and close Target-13 checkpoint 5 before any code-writing pass.`
 
 ### 4. Approved Scope Guardrails
 
