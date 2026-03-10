@@ -16,7 +16,7 @@ All new work proceeds from the post-RC baseline.
 - Frozen baseline: SmartStat runtime/core behavior anchored to `v4.0.0_beta` and `v4.0.0_RC1` lineage.
 - WP-18 lane state: CLOSED (2026-03-09) with acceptance evidence in tests/wp-18/artifacts/wp18_validator_runs/target06/.
 - WP-19 is CLOSED (2026-03-09); read-only viewer-contract package accepted with harness evidence under tests/wp-19/.
-- WP-20 Target-19 governance evidence index/final non-authorizing closure-note gate is defined (2026-03-10 governance/docs/tests only); implementation remains not started.
+- WP-20 governance package is CLOSED / ACCEPTED (2026-03-10 governance/docs/tests only); runtime implementation remains not started.
 - Branch boundary: runtime bridge/execution proposals require explicit approval and may require a separate branch to avoid lane contamination.
 - No implicit runtime integration: WP-15 through WP-17 artifacts do not imply runtime bridge/apply behavior.
 
@@ -36,7 +36,7 @@ Active WP:
 - WP-17 CLOSED (plan-capture contract layer implemented as docs/tests/tooling-only package under tests/wp-17 + docs/onair contract/schema).
 - WP-18 CLOSED (validation-layer package accepted; structural/semantic/determinism/boundary + hardened result model + interpretation metadata).
 - WP-19 CLOSED (read-only viewer-contract package accepted; no UI/runtime behavior introduced).
-- WP-20 TARGET-19 GOVERNANCE EVIDENCE INDEX/FINAL NON-AUTHORIZING CLOSURE-NOTE GATE DEFINED (not started; governance/docs/tests only; explicit implementation approval required).
+- WP-20 GOVERNANCE PACKAGE CLOSED / ACCEPTED (governance/docs/tests only; runtime implementation not started; explicit implementation approval still required).
 No opportunistic refactors.
 No scope creep.
 Each WP must be:
@@ -140,7 +140,7 @@ v4.1.0 stabilization work packages (historical complete):
 - WP-17 - Plan Capture Contract Layer
 - WP-18 - Plan Validation CLOSED (accepted 2026-03-09; validation-only, runtime-independent)
 - WP-19 - Plan Viewer CLOSED (accepted 2026-03-09; read-only contract/harness package only)
-- WP-20 - Runtime Bridge TARGET-19 GOVERNANCE EVIDENCE INDEX/FINAL NON-AUTHORIZING CLOSURE-NOTE GATE DEFINED (2026-03-10 governance/docs/tests only; not started; no runtime coupling until explicit implementation approval)
+- WP-20 - Runtime Bridge GOVERNANCE PACKAGE CLOSED / ACCEPTED (2026-03-10 governance/docs/tests only; implementation not started; no runtime coupling until explicit implementation approval)
 - Strategic target: `Stat Query -> Deterministic Execution Plan`
 - Sequence rationale: Semantic Source View now exists, so semantic inspection/explainability leads the plan-engine track.
 - Active branch for this sequence: `feature/semantic-layer`
@@ -174,7 +174,7 @@ v4.1.0 stabilization work packages (historical complete):
 - Future implementation lane may consume WP-19 projection and adapter contracts as read-only inputs for viewer implementation handoff only.
 - Future implementation lane must preserve deterministic ordering and must not introduce runtime/apply/bridge behavior without separate WP-20 kickoff/approval.
 
-- WP-20 kickoff gate + Target-01 approval package + Target-02 charter/plan gate + Target-03 rehearsal gate + Target-04 sign-off gate + Target-05 implementation-authorization decision gate + Target-06 authorization-packet fill/verification gate + Target-07 draft/verification-dry-run template gate + Target-08 sample-fill/dry-run-structure gate + Target-09 authorization-input collection scaffold gate + Target-10 packet-population readiness planning scaffold gate + Target-11 tracking-and-reporting mechanics scaffold gate + Target-12 governance-only cadence/operating-rhythm definition gate + Target-13 runtime version-line fork governance-rule gate + Target-14 version-line decision-record template gate + Target-15 version-line decision evidence checklist/schema gate + Target-16 version-line evidence review procedure/signoff template gate + Target-17 governance closeout criteria/stop-or-advance decision template gate + Target-18 governance package closeout summary/acceptance-record template gate + Target-19 governance evidence index/final non-authorizing closure note gate are defined and WP-20 remains NOT STARTED.
+- WP-20 kickoff gate + Target-01 approval package + Target-02 charter/plan gate + Target-03 rehearsal gate + Target-04 sign-off gate + Target-05 implementation-authorization decision gate + Target-06 authorization-packet fill/verification gate + Target-07 draft/verification-dry-run template gate + Target-08 sample-fill/dry-run-structure gate + Target-09 authorization-input collection scaffold gate + Target-10 packet-population readiness planning scaffold gate + Target-11 tracking-and-reporting mechanics scaffold gate + Target-12 governance-only cadence/operating-rhythm definition gate + Target-13 runtime version-line fork governance-rule gate + Target-14 version-line decision-record template gate + Target-15 version-line decision evidence checklist/schema gate + Target-16 version-line evidence review procedure/signoff template gate + Target-17 governance closeout criteria/stop-or-advance decision template gate + Target-18 governance package closeout summary/acceptance-record template gate + Target-19 governance evidence index/final non-authorizing closure note gate are defined; WP-20 governance package is CLOSED / ACCEPTED (governance/docs/tests only) and runtime implementation remains NOT STARTED.
 - WP-20 allowed upstream inputs are limited to WP-17 artifacts, WP-18 validation outputs, and WP-19 projection/adapter contract surfaces.
 - WP-20 pre-implementation forbidden behavior remains absolute: no runtime/apply/bridge code, no Trio integration, no SmartStat engine/apply calls, no artifact mutation.
 - WP-20 implementation requires explicit approval, dedicated branch isolation, and an approved runtime-bridge evidence plan before code changes begin.
@@ -202,6 +202,8 @@ v4.1.0 stabilization work packages (historical complete):
 - WP-20 governance acceptance record template reference: docs/onair/wp20_governance_acceptance_record_template.md
 - WP-20 governance evidence index reference: docs/onair/wp20_governance_evidence_index.md
 - WP-20 final non-authorizing closure note reference: docs/onair/wp20_final_non_authorizing_closure_note.md
+- WP-20 governance closeout acceptance note reference: docs/onair/wp20_governance_closeout_acceptance_note.md
+- WP-20 post-closeout runtime boundary note reference: docs/onair/wp20_post_closeout_runtime_boundary_note.md
 - WP-20 frozen baseline reminder: SmartStat_v4.0.0_beta.vbs remains protected and must not be modified by WP-20 runtime implementation targets.
 - WP-20 runtime implementation remains blocked until explicit authorization, explicit version-line decision, evidence completeness, evidence review/signoff, and runtime lane-entry conditions are all satisfied.
 - WP-20 future choices:

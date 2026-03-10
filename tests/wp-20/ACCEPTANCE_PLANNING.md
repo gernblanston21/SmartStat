@@ -3,6 +3,7 @@
 Status date: `2026-03-10`  
 WP-20 implementation state: `NOT STARTED`  
 Governance package state: `COMPLETE THROUGH TARGET-19`
+Governance package acceptance state: `CLOSED / ACCEPTED (GOVERNANCE-ONLY)`
 
 ## Purpose
 
@@ -35,6 +36,9 @@ authorizing implementation and without starting runtime-bridge work.
     runtime implementation.
 11. Governance evidence index and final non-authorizing closure note are
     defined, and governance closure language remains non-authorizing for runtime
+    implementation.
+12. Governance closeout acceptance note and post-closeout runtime boundary note
+    are defined, and governance acceptance remains non-authorizing for runtime
     implementation.
 
 ## Governance Package Complete Does Not Mean

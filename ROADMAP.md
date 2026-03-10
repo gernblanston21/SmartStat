@@ -8,13 +8,13 @@
 - WP-17 now defines a versioned, deterministic plan-capture contract layer (docs/tests/tooling only).
 - WP-18 is CLOSED as a validation-layer package (docs/tests/tooling only; runtime-independent).
 - WP-19 is CLOSED as a read-only viewer-contract package over WP-17/WP-18 artifacts (docs/tests/tooling only; no UI/runtime behavior).
-- WP-20 Target-19 governance evidence index/final non-authorizing closure-note gate is defined as a separate runtime-bridge lane governance package; implementation is NOT STARTED and is not implied by WP-19 closeout.
+- WP-20 governance package is CLOSED / ACCEPTED as a governance/docs/tests-only runtime-bridge lane package; runtime implementation is NOT STARTED and is not implied by WP-19 closeout.
 ## Lane Re-Baseline (2026-03-08)
 - Single active lane: `feature/semantic-layer` for semantic architecture/tooling only (docs/tests/read-only tooling).
 - Frozen runtime/core baseline: `v4.0.0_beta` and `v4.0.0_RC1` (no implicit runtime execution lane is active).
 - WP-18 lane state: CLOSED (2026-03-09) with acceptance evidence under `tests/wp-18/artifacts/wp18_validator_runs/`.
 - WP-19 lane state: CLOSED (2026-03-09) with acceptance evidence under `tests/wp-19/`.
-- WP-20 lane state: TARGET-19 GOVERNANCE EVIDENCE INDEX/FINAL NON-AUTHORIZING CLOSURE-NOTE GATE DEFINED (2026-03-10; implementation not started; explicit approval required).
+- WP-20 lane state: GOVERNANCE PACKAGE CLOSED / ACCEPTED (2026-03-10 governance/docs/tests only; runtime implementation not started; explicit approval still required).
 - Branch boundary: runtime bridge/execution work requires explicit approval and should run on a separate dedicated branch when started.
 - WP-15 through WP-17 closeout does not imply runtime bridge/apply integration.
 
@@ -428,14 +428,14 @@ WP-19 must not:
 
 
 ## WP-20 (v4.2.0+): Runtime Bridge
-Status: TARGET-19 GOVERNANCE EVIDENCE INDEX/FINAL NON-AUTHORIZING CLOSURE-NOTE GATE DEFINED (2026-03-10 governance/docs/tests only; implementation NOT STARTED).
+Status: GOVERNANCE PACKAGE CLOSED / ACCEPTED (2026-03-10 governance/docs/tests only; implementation NOT STARTED).
 
 ### Scope
 - Introduce controlled bridge points from validated plan artifacts toward runtime integration.
 - Defer runtime bridge implementation until semantic inspection, explainability, plan capture, and plan validation are stable.
 - Preserve fail-closed and deterministic discipline while defining bridge constraints.
 
-### Governance Package (Non-Authorizing)
+### Governance Package (Closed/Accepted, Non-Authorizing)
 - WP-20 is explicitly separate from WP-17/WP-18/WP-19 read-only architecture packages.
 - WP-20 governance package is planning/docs/tests only in this pass and does not authorize implementation.
 - Gate checklist reference: docs/onair/wp20_kickoff_checklist.md
@@ -494,7 +494,9 @@ Status: TARGET-19 GOVERNANCE EVIDENCE INDEX/FINAL NON-AUTHORIZING CLOSURE-NOTE G
 - Target-19 governance evidence index reference: docs/onair/wp20_governance_evidence_index.md
 - Target-19 final non-authorizing closure note reference: docs/onair/wp20_final_non_authorizing_closure_note.md
 - Target-19 scaffold reference: tests/wp-20/target-19/README.md
-
+- Governance closeout acceptance note reference: docs/onair/wp20_governance_closeout_acceptance_note.md
+- Post-closeout runtime boundary note reference: docs/onair/wp20_post_closeout_runtime_boundary_note.md
+- Closeout scaffold reference: tests/wp-20/closeout/README.md
 ### Allowed Upstream Inputs (Read-Only)
 - WP-17 captured-plan artifacts and contract/schema evidence.
 - WP-18 validation outputs: validation_result, rule_evaluations, refusal diagnostics, deterministic identities, and semantic_interpretation metadata.
@@ -569,13 +571,15 @@ Status: TARGET-19 GOVERNANCE EVIDENCE INDEX/FINAL NON-AUTHORIZING CLOSURE-NOTE G
 - Formal governance acceptance record template is defined with required completeness/frozen-baseline/non-authorizing acknowledgement fields and fail-closed handling.
 - Formal governance evidence index is defined with categorized artifact traceability and explicit non-authorizing indexing boundary.
 - Formal final non-authorizing closure note is defined with explicit runtime-not-started closure language and fail-closed ambiguity handling.
+- Formal governance closeout acceptance note is defined with explicit governance-only acceptance language and fail-closed overstated-language handling.
+- Formal post-closeout runtime boundary note is defined with explicit runtime-permission separation and fail-closed ambiguous-boundary handling.
 - This pass does not start runtime bridge implementation.
 ### Branch / Lane Rule
 - Runtime bridge/execution implementation must run on a separate dedicated lane from the current read-only semantic lane.
 - feature/semantic-layer remains governance/docs/tests/tooling for kickoff gating until explicit implementation approval is granted.
 
 ### Closeout-Planning Alignment (Non-Authorizing)
-- WP-20 remains NOT STARTED after Target-19 governance evidence index/final non-authorizing closure note definition.
+- WP-20 governance package is CLOSED / ACCEPTED as governance/docs/tests packaging, while runtime implementation remains NOT STARTED.
 - Governance package completion does not equal implementation authorization.
 - Implementation authorization still requires explicit recorded decision input + approval records.
 - Runtime implementation remains blocked until explicit authorization, explicit recorded version-line decision, evidence completeness, evidence review/signoff, and runtime lane-entry conditions are all satisfied.
