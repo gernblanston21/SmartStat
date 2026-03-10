@@ -1,0 +1,23 @@
+# Runtime slice-1 read-only ingress fixture
+# Allowed surfaces only:
+# - page:get_tabfield_names
+# - page:get_property
+# - tabfield:get_custom_property
+# - page:getpagename
+# - page:getpagetemplate
+
+page:getpagename=1000
+page:getpagetemplate=SPORTS_LOWER_THIRD
+page:get_tabfield_names=H0110 B0200 H0100 C0001
+
+page:get_property B0200=NBA
+tabfield:get_custom_property B0200=LEAGUE_KEY
+
+page:get_property C0001=2
+tabfield:get_custom_property C0001=ROWS_VISIBLE
+
+page:get_property H0100=NIKOLA JOKIC
+tabfield:get_custom_property H0100=PLAYER_NAME
+
+page:get_property H0110=29
+tabfield:get_custom_property H0110=PTS_OUTPUT

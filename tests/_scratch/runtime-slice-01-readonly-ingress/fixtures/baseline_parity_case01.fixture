@@ -1,0 +1,33 @@
+# Baseline parity fixture for mock Trio runner (gate OFF comparisons)
+trio:get_global_variable league=MLB
+page:getpagetemplate=L3_TEAMPLYRSTAT
+page:getpagename=1000
+page:getpagedescription=PARITY_CASE_01
+page:get_tabfield_names=A B0200 H0100 H0200 H0300 H0400 H0500 H0600 H0101 H0201 H0301 H0401 H0501 H0601
+sock:socket_is_connected=0
+
+page:get_property A=
+tabfield:get_custom_property A=
+page:get_property B0200=
+tabfield:get_custom_property B0200=
+
+page:get_property H0100=HITS
+page:get_property H0200=RUNS
+page:get_property H0300=RBI
+page:get_property H0400=HR
+page:get_property H0500=AVG
+page:get_property H0600=OPS
+
+page:get_property H0101=
+page:get_property H0201=
+page:get_property H0301=
+page:get_property H0401=
+page:get_property H0501=
+page:get_property H0601=
+
+tabfield:get_custom_property H0101=
+tabfield:get_custom_property H0201=
+tabfield:get_custom_property H0301=
+tabfield:get_custom_property H0401=
+tabfield:get_custom_property H0501=
+tabfield:get_custom_property H0601=

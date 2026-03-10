@@ -1,0 +1,23 @@
+{
+  "status": "fail_closed",
+  "version": "4.1.0",
+  "runtime_line": "SmartStat_v4.1.0.vbs",
+  "slice_name": "WP20_RUNTIME_SLICE_01_READONLY_INGRESS",
+  "slice_gate_expected": "WP20_RUNTIME_SLICE_01_READONLY_INGRESS",
+  "slice_gate_received": "BAD_GATE",
+  "provider_mode": "uninitialized",
+  "normalization_rule": "TABFIELD_NAME_TEXT_BINARY_ASC",
+  "supported_read_surfaces": [
+    "page:get_tabfield_names",
+    "page:get_property",
+    "tabfield:get_custom_property",
+    "page:getpagename",
+    "page:getpagetemplate"
+  ],
+  "page_name": "",
+  "page_template": "",
+  "error_code": "GATE_CLOSED",
+  "error_detail": "slice_gate mismatch or missing; expected WP20_RUNTIME_SLICE_01_READONLY_INGRESS",
+  "tabfields": [
+  ]
+}
