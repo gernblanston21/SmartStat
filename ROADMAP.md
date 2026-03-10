@@ -8,13 +8,13 @@
 - WP-17 now defines a versioned, deterministic plan-capture contract layer (docs/tests/tooling only).
 - WP-18 is CLOSED as a validation-layer package (docs/tests/tooling only; runtime-independent).
 - WP-19 is CLOSED as a read-only viewer-contract package over WP-17/WP-18 artifacts (docs/tests/tooling only; no UI/runtime behavior).
-- WP-20 governance package is complete through Target-08 as a separate runtime-bridge lane governance package; implementation is NOT STARTED and is not implied by WP-19 closeout.
+- WP-20 Target-09 authorization-input collection scaffold gate is defined as a separate runtime-bridge lane governance package; implementation is NOT STARTED and is not implied by WP-19 closeout.
 ## Lane Re-Baseline (2026-03-08)
 - Single active lane: `feature/semantic-layer` for semantic architecture/tooling only (docs/tests/read-only tooling).
 - Frozen runtime/core baseline: `v4.0.0_beta` and `v4.0.0_RC1` (no implicit runtime execution lane is active).
 - WP-18 lane state: CLOSED (2026-03-09) with acceptance evidence under `tests/wp-18/artifacts/wp18_validator_runs/`.
 - WP-19 lane state: CLOSED (2026-03-09) with acceptance evidence under `tests/wp-19/`.
-- WP-20 lane state: GOVERNANCE PACKAGE COMPLETE THROUGH TARGET-08 (2026-03-10; implementation not started; explicit approval required).
+- WP-20 lane state: TARGET-09 AUTHORIZATION-INPUT COLLECTION SCAFFOLD GATE DEFINED (2026-03-10; implementation not started; explicit approval required).
 - Branch boundary: runtime bridge/execution work requires explicit approval and should run on a separate dedicated branch when started.
 - WP-15 through WP-17 closeout does not imply runtime bridge/apply integration.
 
@@ -428,7 +428,7 @@ WP-19 must not:
 
 
 ## WP-20 (v4.2.0+): Runtime Bridge
-Status: GOVERNANCE PACKAGE COMPLETE THROUGH TARGET-08 (2026-03-10 governance/docs/tests only; implementation NOT STARTED).
+Status: TARGET-09 AUTHORIZATION-INPUT COLLECTION SCAFFOLD GATE DEFINED (2026-03-10 governance/docs/tests only; implementation NOT STARTED).
 
 ### Scope
 - Introduce controlled bridge points from validated plan artifacts toward runtime integration.
@@ -461,6 +461,9 @@ Status: GOVERNANCE PACKAGE COMPLETE THROUGH TARGET-08 (2026-03-10 governance/doc
 - Target-08 packet verification dry-run sample reference: docs/onair/wp20_packet_verification_dry_run_sample.md
 - Target-08 scaffold reference: tests/wp-20/target-08/README.md
 - Closeout-planning note reference: tests/wp-20/ACCEPTANCE_PLANNING.md
+- Target-09 authorization-input collection template reference: docs/onair/wp20_authorization_input_collection_template.md
+- Target-09 authorization-input evidence register reference: docs/onair/wp20_authorization_input_evidence_register.md
+- Target-09 scaffold reference: tests/wp-20/target-09/README.md
 
 ### Allowed Upstream Inputs (Read-Only)
 - WP-17 captured-plan artifacts and contract/schema evidence.
@@ -481,7 +484,7 @@ Status: GOVERNANCE PACKAGE COMPLETE THROUGH TARGET-08 (2026-03-10 governance/doc
 - Pre-implementation regression/evidence plan approved (determinism, fail-closed behavior, rollback plan).
 - Runtime bridge risk-class review approved before any code mutation.
 
-### Target-01 through Target-08 Governance Outcomes
+### Target-01 through Target-09 Governance Outcomes
 - Approval prerequisites are defined before any WP-20 code changes.
 - Required evidence categories are defined for a future implementation lane.
 - Rollback criteria and abort/fail-closed triggers are defined.
@@ -506,13 +509,16 @@ Status: GOVERNANCE PACKAGE COMPLETE THROUGH TARGET-08 (2026-03-10 governance/doc
 - Dry-run success is explicitly non-authorizing; separate implementation authorization remains required.
 - Sample-filled authorization packet instance and sample dry-run report structures are defined as non-authorizing examples only.
 - Hypothetical dry-run evidence-pack layout references are defined for structural guidance only.
+- Formal authorization-input collection template is defined for future real input intake.
+- Formal authorization-input evidence register is defined with fail-closed missing/unverified evidence handling.
+- Authorization-input collection remains non-authorizing and does not start implementation.
 - This pass does not start runtime bridge implementation.
 ### Branch / Lane Rule
 - Runtime bridge/execution implementation must run on a separate dedicated lane from the current read-only semantic lane.
 - feature/semantic-layer remains governance/docs/tests/tooling for kickoff gating until explicit implementation approval is granted.
 
 ### Closeout-Planning Alignment (Non-Authorizing)
-- WP-20 remains NOT STARTED after governance package completion through Target-08.
+- WP-20 remains NOT STARTED after Target-09 authorization-input collection scaffold definition.
 - Governance package completion does not equal implementation authorization.
 - Implementation authorization still requires explicit recorded decision input + approval records.
 - Runtime bridge remains a distinct risk-class lane with mandatory branch separation.

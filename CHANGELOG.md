@@ -2,6 +2,28 @@
 
 All notable changes to the SmartStat Core Engine are documented in this file.
 Runtime versioning follows script identifiers (`SmartStat_v*.vbs`), while `VERSION.txt` remains VIZOR UI display metadata.
+## [feature/semantic-layer] - 2026-03-10 (WP-20 Target-09 Authorization-Input Collection Scaffold)
+### Summary
+- Added formal governance scaffolding for collecting real WP-20 authorization inputs without authorizing implementation.
+- Added a formal authorization-input collection template and a formal authorization-input evidence register template with fail-closed handling for missing/unverified items.
+- Reaffirmed this pass is non-authorizing and WP-20 remains NOT STARTED.
+
+### Added
+- `docs/onair/wp20_authorization_input_collection_template.md`
+- `docs/onair/wp20_authorization_input_evidence_register.md`
+- `tests/wp-20/target-09/README.md`
+- `tests/wp-20/target-09/artifacts/.gitkeep`
+
+### Changed
+- `ROADMAP.md`
+- `SESSION.md`
+- `AGENTS.md`
+- `tests/wp-20/README.md`
+- `CHANGELOG.md`
+
+### Validation
+- Governance/docs/tests pass only.
+- Protected files remained unchanged (`SmartStat_v4.0.0_beta.vbs`, production INIs, capture schema, validation contract).
 ## [feature/semantic-layer] - 2026-03-10 (WP-20 Closeout Planning / Acceptance Alignment)
 ### Summary
 - Consolidated WP-20 governance truth as a closeout-planning package while keeping implementation NOT STARTED.
