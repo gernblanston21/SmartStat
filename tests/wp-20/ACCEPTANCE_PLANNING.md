@@ -4,6 +4,7 @@ Status date: `2026-03-10`
 WP-20 implementation state: `NOT STARTED`  
 Governance package state: `COMPLETE THROUGH TARGET-19`
 Governance package acceptance state: `CLOSED / ACCEPTED (GOVERNANCE-ONLY)`
+Governance package freeze state: `FINAL FREEZE APPLIED (GOVERNANCE-ONLY)`
 
 ## Purpose
 
@@ -40,6 +41,8 @@ authorizing implementation and without starting runtime-bridge work.
 12. Governance closeout acceptance note and post-closeout runtime boundary note
     are defined, and governance acceptance remains non-authorizing for runtime
     implementation.
+13. Governance final freeze note and no-further-governance-changes rule are
+    defined, and governance packaging remains frozen/non-authorizing by default.
 
 ## Governance Package Complete Does Not Mean
 

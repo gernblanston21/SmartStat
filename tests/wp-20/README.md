@@ -1,6 +1,6 @@
 # WP-20 (Runtime Bridge) - Approval Evidence Scaffolding
 
-Status: Governance package CLOSED / ACCEPTED (governance/docs/tests only).
+Status: Governance package CLOSED / ACCEPTED / FROZEN (governance/docs/tests only).
 Implementation state: NOT STARTED.
 
 This directory is reserved for WP-20 approval evidence and future runtime-bridge
@@ -219,3 +219,13 @@ lane evidence artifacts.
 - Closeout scaffold:
   - `tests/wp-20/closeout/README.md`
   - `tests/wp-20/closeout/artifacts/.gitkeep`
+
+## Freeze Alignment
+
+- Governance final freeze note:
+  - `docs/onair/wp20_governance_final_freeze_note.md`
+- No-further-governance-changes rule:
+  - `docs/onair/wp20_no_further_governance_changes_rule.md`
+- Freeze scaffold:
+  - `tests/wp-20/freeze/README.md`
+  - `tests/wp-20/freeze/artifacts/.gitkeep`
