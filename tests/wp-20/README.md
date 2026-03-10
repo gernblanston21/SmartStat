@@ -1,6 +1,6 @@
 # WP-20 (Runtime Bridge) - Approval Evidence Scaffolding
 
-Status: Target-12 governance-only cadence/operating-rhythm definition gate defined (docs/tests only).
+Status: Target-13 runtime version-line fork governance-rule gate defined (docs/tests only).
 Implementation state: NOT STARTED.
 
 This directory is reserved for WP-20 approval evidence and future runtime-bridge
@@ -139,3 +139,13 @@ lane evidence artifacts.
 - Target-12 scaffold:
   - `tests/wp-20/target-12/README.md`
   - `tests/wp-20/target-12/artifacts/.gitkeep`
+
+## Target-13
+
+- Runtime version-line fork governance rule:
+  - `docs/onair/wp20_runtime_version_line_rule.md`
+- Runtime implementation lane entry checklist:
+  - `docs/onair/wp20_runtime_implementation_lane_entry_checklist.md`
+- Target-13 scaffold:
+  - `tests/wp-20/target-13/README.md`
+  - `tests/wp-20/target-13/artifacts/.gitkeep`

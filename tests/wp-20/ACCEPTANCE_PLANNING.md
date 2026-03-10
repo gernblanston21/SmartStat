@@ -2,7 +2,7 @@
 
 Status date: `2026-03-10`  
 WP-20 implementation state: `NOT STARTED`  
-Governance package state: `COMPLETE THROUGH TARGET-12`
+Governance package state: `COMPLETE THROUGH TARGET-13`
 
 ## Purpose
 
@@ -11,12 +11,14 @@ authorizing implementation and without starting runtime-bridge work.
 
 ## Governance Package Complete Means
 
-1. Target-01 through Target-12 governance/docs/tests gates are defined.
+1. Target-01 through Target-13 governance/docs/tests gates are defined.
 2. Approval, charter, rehearsal, sign-off, authorization, and packet templates
    are present.
 3. Sample packet and sample dry-run structures are present as non-authorizing
    examples only.
 4. Branch/lane separation and fail-closed constraints are explicitly documented.
+5. Runtime version-line fork governance rule is defined and preserves
+   `SmartStat_v4.0.0_beta.vbs` as a frozen protected baseline.
 
 ## Governance Package Complete Does Not Mean
 
