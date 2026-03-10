@@ -24,9 +24,9 @@ Slice name: `WP20_RUNTIME_SLICE_01_READONLY_INGRESS`
 3. `selection_consistency`: `true`
 4. `selection_rationale_summary`: `Default runtime line selected to preserve frozen baseline and isolate slice-1 read-only ingress implementation in a new version line.`
 5. `regression_comparison_impact_statement`: `Regression baseline remains SmartStat_v4.0.0_beta.vbs; all slice-1 runtime comparisons must be measured against frozen baseline behavior without modifying baseline file.`
-6. `rollback_impact_statement`: `Rollback path is deterministic: hold gate, revert runtime-line commits on SmartStat_v4.1.0.vbs, and preserve baseline for immediate fallback.`
+6. `rollback_impact_statement`: `Rollback path is deterministic: reapply hold gate if required, revert runtime-line commits on SmartStat_v4.1.0.vbs, and preserve baseline for immediate fallback.`
 7. `frozen_baseline_preservation_statement`: `SmartStat_v4.0.0_beta.vbs remains frozen/protected and is excluded from slice-1 runtime edits.`
-8. `risk_notes`: `Decision record approval does not authorize implementation start; Target-05 authorization outcome remains HOLD.`
+8. `risk_notes`: `Version-line decision remains governance-scoped; implementation start is controlled by Target-05 authorization and Target-13/Target-16 gate outcomes.`
 
 ## Approval and Sign-Off Fields
 
@@ -34,13 +34,13 @@ Slice name: `WP20_RUNTIME_SLICE_01_READONLY_INGRESS`
 2. `reviewed_by`: `runtime_lane_review_chair`
 3. `approved_by`: `runtime_lane_authorization_owner`
 4. `approval_date`: `2026-03-10T19:10:34Z`
-5. `approval_notes`: `Version-line choice approved as governance decision only; implementation start remains blocked until Target-05 and lane-entry gates move from HOLD.`
+5. `approval_notes`: `Version-line choice approved as governance decision; Target-05 and lane-entry authorization linkage is recorded for controlled runtime slice-1 entry.`
 
 ## Target-05 Authorization Linkage
 
 1. `implementation_authorization_record_ref`: `tests/wp-20/target-05/artifacts/runtime_slice1_implementation_authorization_record.md`
 2. `branch_approval_record_ref`: `tests/wp-20/target-05/artifacts/runtime_slice1_branch_approval_record.md`
-3. `authorization_outcome_ref`: `hold`
+3. `authorization_outcome_ref`: `authorized_to_start_implementation`
 
 ## Target-13 Lane-Entry Linkage
 

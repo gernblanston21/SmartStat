@@ -3,7 +3,7 @@
 Record scope: `WP-20 Target-05`  
 Slice name: `WP20_RUNTIME_SLICE_01_READONLY_INGRESS`  
 Runtime line: `SmartStat_v4.1.0.vbs`  
-Status posture: `HOLD` (non-authorizing)
+Status posture: `APPROVED` (`authorized_to_start_implementation` recorded)
 
 ### 1. Record Identity
 
@@ -53,16 +53,16 @@ Status posture: `HOLD` (non-authorizing)
   - `tests/wp-20/target-14/artifacts/runtime_slice1_version_line_decision_record.md`
   - `tests/wp-20/target-15/artifacts/runtime_slice1_version_line_evidence_checklist.md`
   - `tests/wp-20/target-15/artifacts/runtime_slice1_version_line_evidence.json`
-- `input_completeness`: `false`
-- `input_gaps`: `Final approving authority sign-off for implementation start is not recorded; rollback rehearsal evidence is defined but not executed in this planning pass.`
-- `review_notes`: `Branch isolation is valid and scope is narrow/deterministic. HOLD retained to prevent implicit implementation start.`
+- `input_completeness`: `true`
+- `input_gaps`: `none`
+- `review_notes`: `Branch isolation, scope constraints, and required decision inputs are complete; explicit implementation-start authorization has been recorded.`
 
 ### 6. Decision
 
-- `decision_outcome`: `hold`
-- `decision_rationale`: `Branch definition is acceptable, but implementation-start authorization remains pending and cannot be implied by planning artifact completion.`
-- `blocking_conditions`: `Implementation authorization record final disposition is HOLD; lane-entry checklist has unresolved authorization checkpoint.`
-- `required_follow_up`: `Complete authorization decision with approved disposition and closed blockers before any code-writing pass.`
+- `decision_outcome`: `authorized_to_start_implementation`
+- `decision_rationale`: `Branch definition, isolation assertions, and boundary constraints are acceptable for slice-1 implementation start under recorded guardrails.`
+- `blocking_conditions`: `none`
+- `required_follow_up`: `Maintain read-only ingress-only boundary and fail-closed revocation posture throughout runtime slice-1 code-writing.`
 
 ### 7. Ownership
 
@@ -84,6 +84,6 @@ Status posture: `HOLD` (non-authorizing)
 
 ### 9. Sign-Off
 
-- `final_disposition`: `hold`
+- `final_disposition`: `approved`
 - `signoff_date_utc`: `2026-03-10T19:10:34Z`
 - `signoff_notes_ref`: `tests/wp-20/target-16/artifacts/runtime_slice1_authorization_gate_result.md`

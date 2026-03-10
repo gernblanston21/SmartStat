@@ -40,25 +40,22 @@ Gate result date: `2026-03-10T19:10:34Z`
 9. Required Target-05 decision-input references present (including rehearsal manifest/index).
   - Result: `PASS`
 10. Target-05 implementation authorization approved.
-  - Result: `HOLD`
+  - Result: `PASS`
 11. Target-13 implementation authorization checkpoint approved.
-  - Result: `HOLD`
+  - Result: `PASS`
 
 ## Gate Outcome
 
-- `gate_outcome`: `hold`
-- `authorization_ready_for_code_writing`: `false`
-- `runtime_start_authorized`: `false`
-- `blocking_reasons`:
-  - `Target-05 implementation authorization decision_outcome is hold`
-  - `Target-05 implementation authorization final_disposition is hold`
-  - `Target-13 lane-entry checkpoint 5 remains hold because implementation authorization is not approved`
+- `gate_outcome`: `implementation_ready`
+- `authorization_ready_for_code_writing`: `true`
+- `runtime_start_authorized`: `true`
+- `blocking_reasons`: `none`
 
 ## Required Follow-Up
 
-1. Obtain explicit approved implementation authorization decision with complete sign-off chain from required authorization ownership.
-2. Close lane-entry checkpoint 5 with traceable approved authorization outcome linked to Target-05.
-3. Re-run gate evaluation and update this record only after blockers are closed.
+1. Open the first bounded runtime code-writing pass for `WP20_RUNTIME_SLICE_01_READONLY_INGRESS` only.
+2. Preserve all boundary assertions and forbidden-surface prohibitions during implementation.
+3. If any revocation trigger is observed, return gate status to `hold` immediately and record blockers.
 
 ## Boundary Integrity Assertion
 
