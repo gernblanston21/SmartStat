@@ -1,6 +1,6 @@
 # WP-20 (Runtime Bridge) - Approval Evidence Scaffolding
 
-Status: Target-18 governance package closeout summary/acceptance-record template gate defined (docs/tests only).
+Status: Target-19 governance evidence index/final non-authorizing closure-note gate defined (docs/tests only).
 Implementation state: NOT STARTED.
 
 This directory is reserved for WP-20 approval evidence and future runtime-bridge
@@ -199,3 +199,13 @@ lane evidence artifacts.
 - Target-18 scaffold:
   - `tests/wp-20/target-18/README.md`
   - `tests/wp-20/target-18/artifacts/.gitkeep`
+
+## Target-19
+
+- Governance evidence index:
+  - `docs/onair/wp20_governance_evidence_index.md`
+- Final non-authorizing closure note:
+  - `docs/onair/wp20_final_non_authorizing_closure_note.md`
+- Target-19 scaffold:
+  - `tests/wp-20/target-19/README.md`
+  - `tests/wp-20/target-19/artifacts/.gitkeep`
