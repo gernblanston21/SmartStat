@@ -3,6 +3,30 @@
 All notable changes to the SmartStat Core Engine are documented in this file.
 Runtime versioning follows script identifiers (`SmartStat_v*.vbs`), while `VERSION.txt` remains VIZOR UI display metadata.
 
+## [feature/semantic-layer] - 2026-03-10 (WP-20 Target-01 Approval-Evidence)
+### Summary
+- Defined the WP-20 Target-01 approval-evidence package required before any runtime-bridge implementation pass may begin.
+- Documented approval prerequisites, required evidence categories, rollback criteria, abort criteria, and minimum prototype acceptance gates.
+- Reaffirmed this pass is governance/docs/tests only and does not start WP-20 implementation.
+
+### Added
+- `docs/onair/wp20_approval_requirements.md`
+- `tests/wp-20/README.md`
+- `tests/wp-20/target-01/README.md`
+- `tests/wp-20/target-01/approval_evidence_template.md`
+- `tests/wp-20/target-01/artifacts/.gitkeep`
+
+### Changed
+- `ROADMAP.md`
+- `SESSION.md`
+- `AGENTS.md`
+- `CHANGELOG.md`
+
+### Validation
+- Governance/docs/tests pass only.
+- Protected files remained unchanged (`SmartStat_v4.0.0_beta.vbs`, production INIs, capture schema, validation contract).
+
+
 ## [feature/semantic-layer] - 2026-03-10 (WP-20 Kickoff Planning Gate)
 ### Summary
 - Defined the WP-20 kickoff gate as governance-only and explicitly separate from WP-17/WP-18/WP-19 read-only architecture work.
