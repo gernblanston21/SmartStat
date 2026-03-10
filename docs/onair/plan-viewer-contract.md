@@ -1,6 +1,6 @@
 # WP-19 Plan Viewer Contract (Read-Only Consumer Layer)
 
-Status: `Target-01 scaffold` (2026-03-09)  
+Status: `Target-06 adapter-contract defined` (2026-03-09)  
 Scope: docs/tests/tooling only. No viewer UI implementation in this pass.
 
 ## Purpose
@@ -203,6 +203,99 @@ WP-19 projection consumption does not perform:
 3. Bridge behavior.
 4. Artifact mutation.
 5. Runtime inference beyond validation artifacts.
+
+## Target-06 Read-Only Projection-to-View-Model Adapter Contract
+
+WP-19 Target-06 defines a strict read-only adapter contract that maps the
+consolidated WP-19 projection surface into a future viewer-facing view-model
+surface without implementing viewer UI behavior.
+
+### Contract Layers (Separation of Concerns)
+
+1. Projection contract fields:
+   - stable upstream WP-19 projection payload fields.
+2. Adapter mapping rules:
+   - deterministic field mappings from projection fields into view-model
+     sections.
+3. Future view-model surfaces:
+   - read-only viewer-consumable sections derived by adapter mapping only.
+
+### Adapter Contract Identity
+
+1. Adapter contract id: `wp19.projection_to_view_model_adapter.v1`
+2. Source projection contract id: `wp19.viewer_projection.v1`
+3. Adapter is read-only and deterministic for identical projection input.
+
+### Adapter Output Shape (Read-Only)
+
+Top-level adapter output key order:
+
+1. `adapter_contract`
+2. `source_projection_contract`
+3. `source_projection_kind`
+4. `view_model`
+
+`view_model` key order:
+
+1. `status_view`
+2. `issues_view`
+3. `rules_view`
+4. `semantic_view`
+5. `trace_view`
+
+### Strict Adapter Mapping Rules
+
+Status mappings:
+
+1. `status_summary.status` -> `view_model.status_view.status`
+2. `status_summary.error_count` -> `view_model.status_view.error_count`
+3. `status_summary.warning_count` -> `view_model.status_view.warning_count`
+
+Issues mappings:
+
+1. `issues_summary.errors` -> `view_model.issues_view.errors`
+2. `issues_summary.warnings` -> `view_model.issues_view.warnings`
+
+Rules mappings:
+
+1. `rule_evaluation_summary.phase_order` -> `view_model.rules_view.phase_order`
+2. `rule_evaluation_summary.ordered_rules` -> `view_model.rules_view.ordered_rules`
+
+Semantic mappings:
+
+1. `semantic_interpretation_summary.scope_resolution` ->
+   `view_model.semantic_view.scope_resolution`
+2. `semantic_interpretation_summary.effective_scope` ->
+   `view_model.semantic_view.effective_scope`
+3. `semantic_interpretation_summary.evidence_source` ->
+   `view_model.semantic_view.evidence_source`
+
+Trace mappings:
+
+1. `projection_contract` -> `view_model.trace_view.projection_contract`
+2. `projection_kind` -> `view_model.trace_view.projection_kind`
+3. `input_artifact` -> `view_model.trace_view.input_artifact`
+4. `input_identity` -> `view_model.trace_view.input_identity`
+5. `deterministic_identity_summary` ->
+   `view_model.trace_view.deterministic_identity_summary`
+
+### Deterministic Guarantees
+
+1. Mapping rules are fixed and explicit.
+2. Adapter output key order is stable.
+3. Adapter output for identical projection input is byte-stable JSON.
+4. Adapter preserves projection ordering surfaces (`phase_order`, `ordered_rules`).
+
+### Adapter Non-Goals
+
+The adapter must not perform:
+
+1. Runtime execution.
+2. Apply behavior.
+3. Bridge behavior.
+4. Artifact mutation.
+5. Runtime inference beyond projection/validation artifacts.
+6. Viewer UI logic or rendering behavior.
 
 ## Forbidden Behaviors
 

@@ -3,6 +3,29 @@
 All notable changes to the SmartStat Core Engine are documented in this file.
 Runtime versioning follows script identifiers (`SmartStat_v*.vbs`), while `VERSION.txt` remains VIZOR UI display metadata.
 
+## [feature/semantic-layer] - 2026-03-09 (WP-19 Target-06 Read-Only Projection-to-View-Model Adapter Contract)
+### Summary
+- Defined a strict read-only projection-to-view-model adapter contract surface for future WP-19 viewer implementation handoff.
+- Added deterministic mapping rules that separate projection fields, adapter rules, and future view-model sections.
+- Added adapter contract harness assertions for stable shape, deterministic mapping, and read-only non-goal boundaries.
+
+### Added
+- `tests/wp-19/harness/projection_to_view_model_adapter_contract_test.py`
+- `tests/wp-19/target-06/README.md`
+- `tests/wp-19/target-06/artifacts/.gitkeep`
+- `tests/wp-19/target-06/artifacts/projection_to_view_model_adapter_contract_test_output.txt`
+
+### Changed
+- `docs/onair/plan-viewer-contract.md`
+- `tests/wp-19/README.md`
+- `tests/wp-19/harness/README.md`
+
+### Validation
+- Ran `python tests/wp-19/harness/read_only_intake_contract_test.py`.
+- Ran `python tests/wp-19/harness/viewer_projection_contract_test.py`.
+- Ran `python tests/wp-19/harness/projection_consumption_contract_test.py`.
+- Ran `python tests/wp-19/harness/projection_to_view_model_adapter_contract_test.py`.
+
 ## [feature/semantic-layer] - 2026-03-09 (WP-19 Target-05 Projection Consumption Contract Consolidation)
 ### Summary
 - Consolidated WP-19 projection consumption contract expectations into a clear read-only implementation handoff surface.

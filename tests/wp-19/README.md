@@ -25,6 +25,8 @@ Target-01 scope in this directory is scaffolding only:
   Projection summary contract hardening notes and artifacts for exact key-shape assertions.
 - `tests/wp-19/target-05/`  
   Projection consumption contract consolidation notes and handoff artifacts.
+- `tests/wp-19/target-06/`  
+  Projection-to-view-model adapter contract notes and adapter evidence artifacts.
 
 ## Planned Harness Focus (Future Targets)
 
@@ -32,3 +34,4 @@ Target-01 scope in this directory is scaffolding only:
 2. Contract-shape checks for viewer-consumable summary surfaces.
 3. Deterministic ordering checks for rule-evaluation presentation.
 4. Boundary checks proving no runtime/apply/bridge behavior.
+5. Strict projection-to-view-model adapter mapping checks.
