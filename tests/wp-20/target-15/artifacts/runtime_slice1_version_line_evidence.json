@@ -1,0 +1,48 @@
+{
+  "identity": {
+    "evidence_record_id": "wp20_target15_runtime_slice1_version_line_evidence_20260310",
+    "wp_target": "WP-20 Target-15",
+    "record_date": "2026-03-10T19:10:34Z",
+    "record_owner": "runtime_lane_evidence_owner",
+    "source_bundle_ref": "tests/wp-20/target-15/artifacts/runtime_slice1_version_line_evidence_checklist.md"
+  },
+  "selection": {
+    "selected_version_line": "SmartStat_v4.1.0.vbs",
+    "selection_count": 1,
+    "selection_consistency": true
+  },
+  "linkages": {
+    "target_05": {
+      "implementation_authorization_record_ref": "tests/wp-20/target-05/artifacts/runtime_slice1_implementation_authorization_record.md",
+      "branch_approval_record_ref": "tests/wp-20/target-05/artifacts/runtime_slice1_branch_approval_record.md",
+      "authorization_outcome_ref": "hold"
+    },
+    "target_13": {
+      "runtime_lane_entry_checklist_ref": "tests/wp-20/target-13/artifacts/runtime_slice1_lane_entry_checklist.md",
+      "version_line_decision_checkpoint_ref": "tests/wp-20/target-13/artifacts/runtime_slice1_lane_entry_checklist.md#checkpoint-1-version-line-decision-checkpoint",
+      "protected_file_checkpoint_ref": "tests/wp-20/target-13/artifacts/runtime_slice1_lane_entry_checklist.md#checkpoint-3-protected-file-checkpoint"
+    },
+    "target_14": {
+      "version_line_decision_record_ref": "tests/wp-20/target-14/artifacts/runtime_slice1_version_line_decision_record.md"
+    }
+  },
+  "approval_verification": {
+    "prepared_by": "runtime_lane_evidence_owner",
+    "reviewed_by": "runtime_lane_review_owner",
+    "verified_by": "runtime_lane_verification_owner",
+    "verification_date": "2026-03-10T19:10:34Z",
+    "verification_outcome": "hold",
+    "verification_notes": "Version-line decision evidence is complete and internally consistent, but implementation authorization remains HOLD by recorded decision."
+  },
+  "baseline_confirmation": {
+    "frozen_baseline_file": "SmartStat_v4.0.0_beta.vbs",
+    "no_runtime_edit_confirmed": true,
+    "comparison_readiness_confirmed": true
+  },
+  "completeness": {
+    "required_items_total": 24,
+    "required_items_complete": 22,
+    "missing_items_count": 2,
+    "overall_status": "hold"
+  }
+}
