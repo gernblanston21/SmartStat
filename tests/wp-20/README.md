@@ -1,6 +1,6 @@
 # WP-20 (Runtime Bridge) - Approval Evidence Scaffolding
 
-Status: Target-05 implementation-authorization decision gate defined (docs/tests only).
+Status: Target-06 authorization-packet fill/verification gate defined (docs/tests only).
 Implementation state: NOT STARTED.
 
 This directory is reserved for WP-20 approval evidence and future runtime-bridge
@@ -60,3 +60,13 @@ lane evidence artifacts.
 - Target-05 scaffold:
   - `tests/wp-20/target-05/README.md`
   - `tests/wp-20/target-05/artifacts/.gitkeep`
+
+## Target-06
+
+- Authorization packet index template:
+  - `docs/onair/wp20_authorization_packet_index_template.md`
+- Packet completeness checklist:
+  - `docs/onair/wp20_packet_completeness_checklist.md`
+- Target-06 scaffold:
+  - `tests/wp-20/target-06/README.md`
+  - `tests/wp-20/target-06/artifacts/.gitkeep`

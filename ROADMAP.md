@@ -8,13 +8,13 @@
 - WP-17 now defines a versioned, deterministic plan-capture contract layer (docs/tests/tooling only).
 - WP-18 is CLOSED as a validation-layer package (docs/tests/tooling only; runtime-independent).
 - WP-19 is CLOSED as a read-only viewer-contract package over WP-17/WP-18 artifacts (docs/tests/tooling only; no UI/runtime behavior).
-- WP-20 Target-05 implementation-authorization decision gate is defined as a separate runtime-bridge lane governance package; implementation is NOT STARTED and is not implied by WP-19 closeout.
+- WP-20 Target-06 authorization-packet fill/verification gate is defined as a separate runtime-bridge lane governance package; implementation is NOT STARTED and is not implied by WP-19 closeout.
 ## Lane Re-Baseline (2026-03-08)
 - Single active lane: `feature/semantic-layer` for semantic architecture/tooling only (docs/tests/read-only tooling).
 - Frozen runtime/core baseline: `v4.0.0_beta` and `v4.0.0_RC1` (no implicit runtime execution lane is active).
 - WP-18 lane state: CLOSED (2026-03-09) with acceptance evidence under `tests/wp-18/artifacts/wp18_validator_runs/`.
 - WP-19 lane state: CLOSED (2026-03-09) with acceptance evidence under `tests/wp-19/`.
-- WP-20 lane state: TARGET-05 IMPLEMENTATION-AUTHORIZATION DECISION GATE DEFINED (2026-03-10; implementation not started; explicit approval required).
+- WP-20 lane state: TARGET-06 AUTHORIZATION-PACKET FILL/VERIFICATION GATE DEFINED (2026-03-10; implementation not started; explicit approval required).
 - Branch boundary: runtime bridge/execution work requires explicit approval and should run on a separate dedicated branch when started.
 - WP-15 through WP-17 closeout does not imply runtime bridge/apply integration.
 
@@ -428,7 +428,7 @@ WP-19 must not:
 
 
 ## WP-20 (v4.2.0+): Runtime Bridge
-Status: TARGET-05 IMPLEMENTATION-AUTHORIZATION DECISION GATE DEFINED (2026-03-10 governance/docs/tests only; implementation NOT STARTED).
+Status: TARGET-06 AUTHORIZATION-PACKET FILL/VERIFICATION GATE DEFINED (2026-03-10 governance/docs/tests only; implementation NOT STARTED).
 
 ### Scope
 - Introduce controlled bridge points from validated plan artifacts toward runtime integration.
@@ -451,6 +451,9 @@ Status: TARGET-05 IMPLEMENTATION-AUTHORIZATION DECISION GATE DEFINED (2026-03-10
 - Target-05 implementation-authorization record reference: docs/onair/wp20_implementation_authorization_record.md
 - Target-05 branch-approval record reference: docs/onair/wp20_branch_approval_record.md
 - Target-05 scaffold reference: tests/wp-20/target-05/README.md
+- Target-06 authorization packet index template reference: docs/onair/wp20_authorization_packet_index_template.md
+- Target-06 packet completeness checklist reference: docs/onair/wp20_packet_completeness_checklist.md
+- Target-06 scaffold reference: tests/wp-20/target-06/README.md
 
 ### Allowed Upstream Inputs (Read-Only)
 - WP-17 captured-plan artifacts and contract/schema evidence.
@@ -471,7 +474,7 @@ Status: TARGET-05 IMPLEMENTATION-AUTHORIZATION DECISION GATE DEFINED (2026-03-10
 - Pre-implementation regression/evidence plan approved (determinism, fail-closed behavior, rollback plan).
 - Runtime bridge risk-class review approved before any code mutation.
 
-### Target-01 through Target-05 Governance Outcomes
+### Target-01 through Target-06 Governance Outcomes
 - Approval prerequisites are defined before any WP-20 code changes.
 - Required evidence categories are defined for a future implementation lane.
 - Rollback criteria and abort/fail-closed triggers are defined.
@@ -488,6 +491,9 @@ Status: TARGET-05 IMPLEMENTATION-AUTHORIZATION DECISION GATE DEFINED (2026-03-10
 - Formal implementation branch-approval record template is defined with branch isolation and ownership fields.
 - Authorization and revocation ownership expectations are explicitly defined.
 - Gate outcomes are defined: authorized_to_start_implementation, hold, and denied.
+- Formal authorization packet index template is defined to bind required pre-implementation inputs.
+- Formal packet completeness checklist is defined with verification outcomes: packet_complete, packet_incomplete, and packet_invalid.
+- Packet verification is explicitly defined as non-authorizing; separate authorization decision still governs implementation start.
 - This pass does not start runtime bridge implementation.
 ### Branch / Lane Rule
 - Runtime bridge/execution implementation must run on a separate dedicated lane from the current read-only semantic lane.

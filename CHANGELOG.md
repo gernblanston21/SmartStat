@@ -2,6 +2,28 @@
 
 All notable changes to the SmartStat Core Engine are documented in this file.
 Runtime versioning follows script identifiers (`SmartStat_v*.vbs`), while `VERSION.txt` remains VIZOR UI display metadata.
+## [feature/semantic-layer] - 2026-03-10 (WP-20 Target-06 Authorization Packet Fill/Verification Gate)
+### Summary
+- Defined the WP-20 pre-implementation authorization packet scaffolding and verification structure without authorizing implementation.
+- Added a formal authorization packet index template and packet completeness checklist, including required packet contents map and verification outcomes.
+- Reaffirmed packet verification does not authorize code implementation; separate authorization decision remains required.
+
+### Added
+- `docs/onair/wp20_authorization_packet_index_template.md`
+- `docs/onair/wp20_packet_completeness_checklist.md`
+- `tests/wp-20/target-06/README.md`
+- `tests/wp-20/target-06/artifacts/.gitkeep`
+
+### Changed
+- `ROADMAP.md`
+- `SESSION.md`
+- `AGENTS.md`
+- `tests/wp-20/README.md`
+- `CHANGELOG.md`
+
+### Validation
+- Governance/docs/tests pass only.
+- Protected files remained unchanged (`SmartStat_v4.0.0_beta.vbs`, production INIs, capture schema, validation contract).
 ## [feature/semantic-layer] - 2026-03-10 (WP-20 Target-05 Implementation-Authorization Decision Gate)
 ### Summary
 - Defined the final WP-20 implementation-authorization decision gate artifacts without starting runtime-bridge implementation.
