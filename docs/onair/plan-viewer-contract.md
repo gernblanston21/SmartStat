@@ -1,6 +1,6 @@
 # WP-19 Plan Viewer Contract (Read-Only Consumer Layer)
 
-Status: `Target-06 adapter-contract defined` (2026-03-09)  
+Status: `WP-19 CLOSED` (accepted 2026-03-09; docs/tests/tooling-only package)  
 Scope: docs/tests/tooling only. No viewer UI implementation in this pass.
 
 ## Purpose
@@ -319,3 +319,11 @@ WP-19 must not:
 - Upstream capture contract: `docs/onair/plan-capture-contract.md`
 - Upstream validation contract: `docs/onair/plan-validation-contract.md`
 - WP-18 validator result model reference: `tests/wp-18/validator/validation_result_model.md`
+
+## WP-19 Closeout Handoff
+
+Future implementation lanes may consume the projection and adapter contract
+surfaces defined in this document as read-only inputs only.
+
+WP-19 closeout does not authorize runtime/apply/bridge behavior and does not
+activate WP-20.

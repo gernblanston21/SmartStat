@@ -1,6 +1,7 @@
 # WP-19 (Plan Viewer) - Contract Scaffolding
 
 WP-19 is a read-only consumer layer over WP-17/WP-18 artifacts.
+Status: CLOSED (accepted 2026-03-09; docs/tests/tooling-only package).
 
 Target-01 scope in this directory is scaffolding only:
 
@@ -35,3 +36,8 @@ Target-01 scope in this directory is scaffolding only:
 3. Deterministic ordering checks for rule-evaluation presentation.
 4. Boundary checks proving no runtime/apply/bridge behavior.
 5. Strict projection-to-view-model adapter mapping checks.
+
+## Acceptance Evidence
+
+- Acceptance note: `tests/wp-19/ACCEPTANCE.md`
+- Target evidence tree: `tests/wp-19/target-01/` through `tests/wp-19/target-06/`
