@@ -2,6 +2,28 @@
 
 All notable changes to the SmartStat Core Engine are documented in this file.
 Runtime versioning follows script identifiers (`SmartStat_v*.vbs`), while `VERSION.txt` remains VIZOR UI display metadata.
+## [feature/semantic-layer] - 2026-03-10 (WP-20 Target-07 Authorization Packet Draft + Verification Dry-Run Template Gate)
+### Summary
+- Defined governance scaffolding for a draft authorization-packet instance template and packet-verification dry-run report template.
+- Defined exact dry-run review sections for contents presence, cross-reference consistency, boundary integrity, and decision-readiness integrity.
+- Defined dry-run outcomes (`dry_run_pass`, `dry_run_hold`, `dry_run_fail`) and reaffirmed dry-run success does not authorize implementation.
+
+### Added
+- `docs/onair/wp20_authorization_packet_draft_template.md`
+- `docs/onair/wp20_packet_verification_dry_run_template.md`
+- `tests/wp-20/target-07/README.md`
+- `tests/wp-20/target-07/artifacts/.gitkeep`
+
+### Changed
+- `ROADMAP.md`
+- `SESSION.md`
+- `AGENTS.md`
+- `tests/wp-20/README.md`
+- `CHANGELOG.md`
+
+### Validation
+- Governance/docs/tests pass only.
+- Protected files remained unchanged (`SmartStat_v4.0.0_beta.vbs`, production INIs, capture schema, validation contract).
 ## [feature/semantic-layer] - 2026-03-10 (WP-20 Target-06 Authorization Packet Fill/Verification Gate)
 ### Summary
 - Defined the WP-20 pre-implementation authorization packet scaffolding and verification structure without authorizing implementation.

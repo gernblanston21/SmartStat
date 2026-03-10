@@ -1,6 +1,6 @@
 # WP-20 (Runtime Bridge) - Approval Evidence Scaffolding
 
-Status: Target-06 authorization-packet fill/verification gate defined (docs/tests only).
+Status: Target-07 authorization-packet draft + dry-run template gate defined (docs/tests only).
 Implementation state: NOT STARTED.
 
 This directory is reserved for WP-20 approval evidence and future runtime-bridge
@@ -70,3 +70,13 @@ lane evidence artifacts.
 - Target-06 scaffold:
   - `tests/wp-20/target-06/README.md`
   - `tests/wp-20/target-06/artifacts/.gitkeep`
+
+## Target-07
+
+- Authorization packet draft template:
+  - `docs/onair/wp20_authorization_packet_draft_template.md`
+- Packet verification dry-run template:
+  - `docs/onair/wp20_packet_verification_dry_run_template.md`
+- Target-07 scaffold:
+  - `tests/wp-20/target-07/README.md`
+  - `tests/wp-20/target-07/artifacts/.gitkeep`
