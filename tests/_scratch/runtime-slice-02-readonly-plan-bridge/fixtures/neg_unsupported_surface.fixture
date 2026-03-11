@@ -1,0 +1,6 @@
+# Unsupported surface should fail closed in fixture loader.
+
+page:getpagename=2004
+page:getpagetemplate=SPORTS_SCOREBUG
+page:get_tabfield_names=B0200
+page:set_property B0200=SHOULD_FAIL

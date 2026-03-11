@@ -500,6 +500,12 @@ Sub Main()
     Exit Sub
   End If
 
+  If Slice2PlanBridge_ShouldRun() Then
+    Call Diag_Init("SLICE2_PLAN_BRIDGE")
+    Call Slice2PlanBridge_RunAndExit("E:\EDRIVE\UNIVERSAL\SmartStat\DiagLogs\SmartStat_LearnDebug.txt", startTime)
+    Exit Sub
+  End If
+
   Dim x_tmplForDiag: x_tmplForDiag = TrioCmd("page:getpagetemplate")
   Call Diag_Init(x_tmplForDiag)
 
@@ -5804,6 +5810,304 @@ Function Slice1Ingress_GetNamedArg(ByVal argName, ByVal defaultValue)
 End Function
 ' ================================
 ' END WP20_RUNTIME_SLICE_01_READONLY_INGRESS
+' ================================
+
+' ================================
+' BEGIN WP20_RUNTIME_SLICE_02_READONLY_PLAN_BRIDGE
+' ================================
+Const SLICE2_PLAN_BRIDGE_NAME = "WP20_RUNTIME_SLICE_02_READONLY_PLAN_BRIDGE"
+Const SLICE2_PLAN_BRIDGE_NORM_RULE = "TABFIELD_NAME_TEXT_BINARY_ASC"
+Const SLICE2_PLAN_BRIDGE_PREVIEW_KIND = "readonly_plan_bridge_preview_skeleton_v1"
+Const SLICE2_PLAN_BRIDGE_DEFAULT_EVIDENCE = "E:\EDRIVE\UNIVERSAL\SmartStat\tests\_scratch\runtime-slice-02-readonly-plan-bridge\runs\slice2_readonly_plan_bridge_outcome.json"
+Const SLICE2_PLAN_BRIDGE_DEFAULT_DIAG = "E:\EDRIVE\UNIVERSAL\SmartStat\tests\_scratch\runtime-slice-02-readonly-plan-bridge\runs\slice2_readonly_plan_bridge_diag.log"
+
+Function Slice2PlanBridge_ShouldRun()
+  Dim gateArg
+  gateArg = UCase(Trim(CStr(Slice1Ingress_GetNamedArg("slice_gate", ""))))
+  Slice2PlanBridge_ShouldRun = (gateArg = UCase(SLICE2_PLAN_BRIDGE_NAME))
+End Function
+
+Sub Slice2PlanBridge_RunAndExit(ByVal logFilePath, ByVal runStartTime)
+  Dim outcome, shouldPass
+  Dim errNumBoundary, errDescBoundary
+
+  Set outcome = CreateObject("Scripting.Dictionary")
+  outcome.Add "tabfield_records", CreateObject("Scripting.Dictionary")
+  outcome("status") = "fail_closed"
+  outcome("version") = SMARTSTAT_VERSION
+  outcome("runtime_line") = SMARTSTAT_RUNTIME_LINE
+  outcome("slice_name") = SLICE2_PLAN_BRIDGE_NAME
+  outcome("slice_gate_expected") = SLICE2_PLAN_BRIDGE_NAME
+  outcome("slice_gate_received") = CStr(Slice1Ingress_GetNamedArg("slice_gate", ""))
+  outcome("provider_mode") = "uninitialized"
+  outcome("normalization_rule") = SLICE2_PLAN_BRIDGE_NORM_RULE
+  outcome("preview_kind") = SLICE2_PLAN_BRIDGE_PREVIEW_KIND
+  outcome("page_name") = ""
+  outcome("page_template") = ""
+  outcome("error_code") = ""
+  outcome("error_detail") = ""
+
+  Call Diag_WriteLine("SLICE2_TRACE entered_shouldrun")
+  Call Diag_WriteLine("SLICE2_TRACE shouldrun_result=True")
+  Call Diag_WriteLine("SLICE2_TRACE entered_runandexit")
+  Call Diag_WriteLine("SLICE2_TRACE before_execute")
+
+  On Error Resume Next
+  shouldPass = Slice2PlanBridge_Execute(outcome)
+  errNumBoundary = Err.Number
+  errDescBoundary = CStr(Err.Description)
+  Call Diag_WriteLine("SLICE2_TRACE err_boundary=after_execute err_number=" & CStr(errNumBoundary) & " err_description=" & CStr(errDescBoundary))
+  If CLng(errNumBoundary) <> 0 Then
+    Call Slice2PlanBridge_FailClosed(outcome, "UNHANDLED_EXECUTE_ERROR", "execute raised error " & CStr(errNumBoundary) & ": " & errDescBoundary)
+    Call Diag_WriteLine("SLICE2_TRACE unhandled_error stage=execute err_number=" & CStr(errNumBoundary) & " err_description=" & CStr(errDescBoundary))
+  End If
+  Err.Clear
+  On Error GoTo 0
+
+  Call Diag_WriteLine("SLICE2_TRACE after_execute status=" & CStr(outcome("status")) & " error_code=" & CStr(outcome("error_code")))
+  Call Diag_WriteLine("SLICE2_TRACE before_emit")
+
+  On Error Resume Next
+  Call Slice2PlanBridge_EmitEvidence(outcome)
+  errNumBoundary = Err.Number
+  errDescBoundary = CStr(Err.Description)
+  Call Diag_WriteLine("SLICE2_TRACE err_boundary=after_emit err_number=" & CStr(errNumBoundary) & " err_description=" & CStr(errDescBoundary))
+  If CLng(errNumBoundary) <> 0 Then
+    Call Slice2PlanBridge_FailClosed(outcome, "UNHANDLED_EMIT_ERROR", "emit raised error " & CStr(errNumBoundary) & ": " & errDescBoundary)
+    Call Diag_WriteLine("SLICE2_TRACE unhandled_error stage=emit err_number=" & CStr(errNumBoundary) & " err_description=" & CStr(errDescBoundary))
+  End If
+  Err.Clear
+  On Error GoTo 0
+
+  Call Diag_WriteLine("SLICE2_TRACE after_emit status=" & CStr(outcome("status")) & " error_code=" & CStr(outcome("error_code")))
+  Call Diag_WriteLine("SLICE2_PLAN_BRIDGE status=" & CStr(outcome("status")) & " error_code=" & CStr(outcome("error_code")))
+
+  Call Diag_Done()
+  Call FinalizeAndRefresh(logFilePath, runStartTime)
+  WScript.Echo "SMARTSTAT_SLICE2_STATUS=" & CStr(outcome("status"))
+  WScript.Echo "SMARTSTAT_SLICE2_ERROR_CODE=" & CStr(outcome("error_code"))
+End Sub
+
+Function Slice2PlanBridge_Execute(ByRef outcome)
+  Dim fixturePath, errDetail
+  Dim providerFixture
+  Dim pageName, pageTemplate, tabfieldRaw
+  Dim tabNames, i, tabName, pageValue, customValue
+  Dim records
+  Dim errCode, errText
+
+  Slice2PlanBridge_Execute = False
+  Set providerFixture = Nothing
+  fixturePath = Trim(CStr(Slice1Ingress_GetNamedArg("runtime_fixture", "")))
+
+  If Len(fixturePath) > 0 Then
+    errDetail = ""
+    Set providerFixture = Slice1Ingress_LoadFixture(fixturePath, errDetail)
+    If providerFixture Is Nothing Then
+      Call Slice2PlanBridge_FailClosed(outcome, "FIXTURE_LOAD_FAILED", errDetail)
+      Exit Function
+    End If
+    outcome("provider_mode") = "fixture"
+  Else
+    outcome("provider_mode") = "trio_live"
+  End If
+
+  errCode = ""
+  errText = ""
+  If Not Slice1Ingress_ReadRequired("page:getpagename", providerFixture, pageName, errCode, errText) Then
+    Call Slice2PlanBridge_FailClosed(outcome, errCode, errText)
+    Exit Function
+  End If
+  If Not Slice1Ingress_ReadRequired("page:getpagetemplate", providerFixture, pageTemplate, errCode, errText) Then
+    Call Slice2PlanBridge_FailClosed(outcome, errCode, errText)
+    Exit Function
+  End If
+  If Not Slice1Ingress_ReadRequired("page:get_tabfield_names", providerFixture, tabfieldRaw, errCode, errText) Then
+    Call Slice2PlanBridge_FailClosed(outcome, errCode, errText)
+    Exit Function
+  End If
+
+  tabNames = Slice1Ingress_ParseAndSortTabs(tabfieldRaw, errCode, errText)
+  If IsEmpty(tabNames) Then
+    Call Slice2PlanBridge_FailClosed(outcome, errCode, errText)
+    Exit Function
+  End If
+
+  Set records = outcome("tabfield_records")
+  For i = LBound(tabNames) To UBound(tabNames)
+    tabName = CStr(tabNames(i))
+
+    If Not Slice1Ingress_ReadCommand("page:get_property " & tabName, providerFixture, pageValue, errCode, errText) Then
+      Call Slice2PlanBridge_FailClosed(outcome, errCode, errText)
+      Exit Function
+    End If
+    If Not Slice1Ingress_ReadCommand("tabfield:get_custom_property " & tabName, providerFixture, customValue, errCode, errText) Then
+      Call Slice2PlanBridge_FailClosed(outcome, errCode, errText)
+      Exit Function
+    End If
+
+    records(tabName) = CStr(pageValue) & vbTab & CStr(customValue)
+  Next
+
+  outcome("page_name") = CStr(pageName)
+  outcome("page_template") = CStr(pageTemplate)
+  outcome("status") = "success"
+  Slice2PlanBridge_Execute = True
+End Function
+
+Sub Slice2PlanBridge_FailClosed(ByRef outcome, ByVal errCode, ByVal errText)
+  outcome("status") = "fail_closed"
+  outcome("error_code") = CStr(errCode)
+  outcome("error_detail") = CStr(errText)
+End Sub
+
+Sub Slice2PlanBridge_EmitEvidence(ByRef outcome)
+  Dim evidenceOut, diagOut, jsonText, diagText
+  Dim evidenceParentPath, diagParentPath
+  Dim evidenceParentExistsBefore, evidenceParentCreateAttempted, evidenceParentExistsAfter
+  Dim diagParentExistsBefore, diagParentCreateAttempted, diagParentExistsAfter
+  Dim evidenceParentErrNum, evidenceParentErrDesc
+  Dim diagParentErrNum, diagParentErrDesc
+  Dim evidenceWriteOk, diagWriteOk
+  Dim evidenceWriteErrNum, evidenceWriteErrDesc
+  Dim diagWriteErrNum, diagWriteErrDesc
+
+  evidenceOut = CStr(Slice1Ingress_GetNamedArg("evidence_out", SLICE2_PLAN_BRIDGE_DEFAULT_EVIDENCE))
+  diagOut = CStr(Slice1Ingress_GetNamedArg("diag_out", SLICE2_PLAN_BRIDGE_DEFAULT_DIAG))
+
+  Call Slice1Ingress_EnsureParentFolderDebug(evidenceOut, evidenceParentPath, evidenceParentExistsBefore, evidenceParentCreateAttempted, evidenceParentExistsAfter, evidenceParentErrNum, evidenceParentErrDesc)
+  Call Slice1Ingress_EnsureParentFolderDebug(diagOut, diagParentPath, diagParentExistsBefore, diagParentCreateAttempted, diagParentExistsAfter, diagParentErrNum, diagParentErrDesc)
+
+  jsonText = Slice2PlanBridge_BuildOutcomeJson(outcome)
+  evidenceWriteOk = Slice1Ingress_WriteTextSafe(evidenceOut, jsonText, evidenceWriteErrNum, evidenceWriteErrDesc)
+  If Not evidenceWriteOk Then
+    If UCase(CStr(outcome("status"))) = "SUCCESS" Then
+      Call Slice2PlanBridge_FailClosed(outcome, "EVIDENCE_WRITE_FAILED", "failed to write evidence file path=" & CStr(evidenceOut) & " err_number=" & CStr(evidenceWriteErrNum) & " err_description=" & CStr(evidenceWriteErrDesc))
+    End If
+  End If
+
+  diagText = "status=" & CStr(outcome("status")) & vbCrLf & _
+             "error_code=" & CStr(outcome("error_code")) & vbCrLf & _
+             "error_detail=" & CStr(outcome("error_detail")) & vbCrLf & _
+             "slice_name=" & CStr(outcome("slice_name")) & vbCrLf & _
+             "runtime_line=" & CStr(outcome("runtime_line")) & vbCrLf & _
+             "provider_mode=" & CStr(outcome("provider_mode")) & vbCrLf & _
+             "normalization_rule=" & CStr(outcome("normalization_rule")) & vbCrLf & _
+             "preview_kind=" & CStr(outcome("preview_kind")) & vbCrLf & _
+             "resolved_evidence_out=" & CStr(evidenceOut) & vbCrLf & _
+             "resolved_diag_out=" & CStr(diagOut) & vbCrLf & _
+             "evidence_parent_exists_before=" & CStr(evidenceParentExistsBefore) & vbCrLf & _
+             "evidence_parent_create_attempted=" & CStr(evidenceParentCreateAttempted) & vbCrLf & _
+             "evidence_parent_exists_after=" & CStr(evidenceParentExistsAfter) & vbCrLf & _
+             "diag_parent_exists_before=" & CStr(diagParentExistsBefore) & vbCrLf & _
+             "diag_parent_create_attempted=" & CStr(diagParentCreateAttempted) & vbCrLf & _
+             "diag_parent_exists_after=" & CStr(diagParentExistsAfter) & vbCrLf & _
+             "evidence_json_write=" & Slice1Ingress_StatusText(evidenceWriteOk) & vbCrLf & _
+             "evidence_json_write_err_number=" & CStr(evidenceWriteErrNum) & vbCrLf & _
+             "evidence_json_write_err_description=" & CStr(evidenceWriteErrDesc) & vbCrLf
+
+  diagWriteOk = Slice1Ingress_WriteTextSafe(diagOut, diagText, diagWriteErrNum, diagWriteErrDesc)
+  If Not diagWriteOk Then
+    If UCase(CStr(outcome("status"))) = "SUCCESS" Then
+      Call Slice2PlanBridge_FailClosed(outcome, "DIAG_WRITE_FAILED", "failed to write diag file path=" & CStr(diagOut) & " err_number=" & CStr(diagWriteErrNum) & " err_description=" & CStr(diagWriteErrDesc))
+    End If
+  End If
+
+  Call Diag_WriteLine("SLICE2_EMIT_SUMMARY evidence_json_write=" & Slice1Ingress_StatusText(evidenceWriteOk) & " diag_file_write=" & Slice1Ingress_StatusText(diagWriteOk))
+End Sub
+
+Function Slice2PlanBridge_BuildOutcomeJson(ByRef outcome)
+  Dim lines, previewJson
+
+  lines = ""
+  lines = lines & "{" & vbCrLf
+  lines = lines & "  ""status"": """ & Slice1Ingress_JsonEscape(CStr(outcome("status"))) & """," & vbCrLf
+  lines = lines & "  ""version"": """ & Slice1Ingress_JsonEscape(CStr(outcome("version"))) & """," & vbCrLf
+  lines = lines & "  ""runtime_line"": """ & Slice1Ingress_JsonEscape(CStr(outcome("runtime_line"))) & """," & vbCrLf
+  lines = lines & "  ""slice_name"": """ & Slice1Ingress_JsonEscape(CStr(outcome("slice_name"))) & """," & vbCrLf
+  lines = lines & "  ""slice_gate_expected"": """ & Slice1Ingress_JsonEscape(CStr(outcome("slice_gate_expected"))) & """," & vbCrLf
+  lines = lines & "  ""slice_gate_received"": """ & Slice1Ingress_JsonEscape(CStr(outcome("slice_gate_received"))) & """," & vbCrLf
+  lines = lines & "  ""provider_mode"": """ & Slice1Ingress_JsonEscape(CStr(outcome("provider_mode"))) & """," & vbCrLf
+  lines = lines & "  ""normalization_rule"": """ & Slice1Ingress_JsonEscape(CStr(outcome("normalization_rule"))) & """," & vbCrLf
+  lines = lines & "  ""preview_kind"": """ & Slice1Ingress_JsonEscape(CStr(outcome("preview_kind"))) & """," & vbCrLf
+  lines = lines & "  ""supported_read_surfaces"": [" & vbCrLf
+  lines = lines & "    ""page:get_tabfield_names""," & vbCrLf
+  lines = lines & "    ""page:get_property""," & vbCrLf
+  lines = lines & "    ""tabfield:get_custom_property""," & vbCrLf
+  lines = lines & "    ""page:getpagename""," & vbCrLf
+  lines = lines & "    ""page:getpagetemplate""" & vbCrLf
+  lines = lines & "  ]," & vbCrLf
+  lines = lines & "  ""page_name"": """ & Slice1Ingress_JsonEscape(CStr(outcome("page_name"))) & """," & vbCrLf
+  lines = lines & "  ""page_template"": """ & Slice1Ingress_JsonEscape(CStr(outcome("page_template"))) & """," & vbCrLf
+  lines = lines & "  ""error_code"": """ & Slice1Ingress_JsonEscape(CStr(outcome("error_code"))) & """," & vbCrLf
+  lines = lines & "  ""error_detail"": """ & Slice1Ingress_JsonEscape(CStr(outcome("error_detail"))) & """," & vbCrLf
+  previewJson = Slice2PlanBridge_BuildPreviewPayloadJson(outcome("tabfield_records"), CStr(outcome("preview_kind")))
+  lines = lines & "  ""preview_payload"": " & previewJson & vbCrLf
+  lines = lines & "}" & vbCrLf
+  Slice2PlanBridge_BuildOutcomeJson = lines
+End Function
+
+Function Slice2PlanBridge_BuildPreviewPayloadJson(ByVal tabfieldRecords, ByVal previewKind)
+  Dim keys, i, payload
+
+  keys = tabfieldRecords.Keys
+  If tabfieldRecords.Count > 0 Then keys = Slice1Ingress_SortTextBinary(keys)
+
+  payload = ""
+  payload = payload & "{" & vbCrLf
+  payload = payload & "    ""payload_kind"": """ & Slice1Ingress_JsonEscape(CStr(previewKind)) & """," & vbCrLf
+  payload = payload & "    ""bridge_mode"": ""read_only_preview""," & vbCrLf
+  payload = payload & "    ""mutation_authorized"": false," & vbCrLf
+  payload = payload & "    ""tabfield_count"": " & CStr(tabfieldRecords.Count) & "," & vbCrLf
+  payload = payload & "    ""tabfield_order"": " & Slice2PlanBridge_BuildTabfieldOrderJson(keys, tabfieldRecords.Count) & "," & vbCrLf
+  payload = payload & "    ""field_preview"": " & Slice2PlanBridge_BuildFieldPreviewJson(tabfieldRecords) & vbCrLf
+  payload = payload & "  }"
+
+  Slice2PlanBridge_BuildPreviewPayloadJson = payload
+End Function
+
+Function Slice2PlanBridge_BuildTabfieldOrderJson(ByVal orderedKeys, ByVal keyCount)
+  Dim i, outTxt
+  outTxt = "[" & vbCrLf
+  For i = 0 To keyCount - 1
+    outTxt = outTxt & "      """ & Slice1Ingress_JsonEscape(CStr(orderedKeys(i))) & """"
+    If i < keyCount - 1 Then outTxt = outTxt & ","
+    outTxt = outTxt & vbCrLf
+  Next
+  outTxt = outTxt & "    ]"
+  Slice2PlanBridge_BuildTabfieldOrderJson = outTxt
+End Function
+
+Function Slice2PlanBridge_BuildFieldPreviewJson(ByVal tabfieldRecords)
+  Dim keys, i, k, pair, pageVal, customVal, pos
+  Dim outTxt
+
+  outTxt = "[" & vbCrLf
+  keys = tabfieldRecords.Keys
+  If tabfieldRecords.Count > 0 Then keys = Slice1Ingress_SortTextBinary(keys)
+
+  For i = 0 To tabfieldRecords.Count - 1
+    k = CStr(keys(i))
+    pair = CStr(tabfieldRecords(k))
+    pos = InStr(pair, vbTab)
+    If pos > 0 Then
+      pageVal = Left(pair, pos - 1)
+      customVal = Mid(pair, pos + 1)
+    Else
+      pageVal = pair
+      customVal = ""
+    End If
+
+    outTxt = outTxt & "      {""name"": """ & Slice1Ingress_JsonEscape(k) & """, ""page_property"": """ & Slice1Ingress_JsonEscape(pageVal) & """, ""custom_property"": """ & Slice1Ingress_JsonEscape(customVal) & """}"
+    If i < tabfieldRecords.Count - 1 Then outTxt = outTxt & ","
+    outTxt = outTxt & vbCrLf
+  Next
+
+  outTxt = outTxt & "    ]"
+  Slice2PlanBridge_BuildFieldPreviewJson = outTxt
+End Function
+' ================================
+' END WP20_RUNTIME_SLICE_02_READONLY_PLAN_BRIDGE
 ' ================================
 
 ' ---------------- Socket refresh ----------------

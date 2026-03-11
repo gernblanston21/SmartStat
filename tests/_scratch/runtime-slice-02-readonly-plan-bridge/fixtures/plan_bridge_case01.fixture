@@ -1,0 +1,15 @@
+# Slice-02 positive fixture: read-only plan-bridge scaffold
+# Allowed read surfaces only.
+
+page:getpagename=2001
+page:getpagetemplate=SPORTS_SCOREBUG
+page:get_tabfield_names=B0200 H0100 H0110
+
+page:get_property B0200=NBA
+tabfield:get_custom_property B0200=LEAGUE_KEY
+
+page:get_property H0100=NIKOLA JOKIC
+tabfield:get_custom_property H0100=PLAYER_NAME
+
+page:get_property H0110=29
+tabfield:get_custom_property H0110=PTS_OUTPUT

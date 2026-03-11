@@ -1,0 +1,8 @@
+# Ambiguous tabfield list after normalization
+
+page:getpagename=2003
+page:getpagetemplate=SPORTS_SCOREBUG
+page:get_tabfield_names=B0200 B0200
+
+page:get_property B0200=NBA
+tabfield:get_custom_property B0200=LEAGUE_KEY
