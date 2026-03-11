@@ -12,3 +12,10 @@ Determinism check (positive fixture):
 - pos_plan_bridge_run1.json SHA256 = AF124012ED2DA1C62CD5822C9E39FD295FD01BD925B6735FCEA1901AB836C0B7
 - pos_plan_bridge_run2.json SHA256 = AF124012ED2DA1C62CD5822C9E39FD295FD01BD925B6735FCEA1901AB836C0B7
 - hash_match = True
+
+Gate-OFF parity check (mock-trio normalized):
+- method: mock_trio_runner.vbs baseline/successor comparison with identity-only exclusions
+- normalized exclusions: TARGET_SCRIPT, SCRIPT_HEADER, SCRIPT_VERSION_CONST
+- baseline normalized SHA256 = C4B28D73DB4357E1BC023AA73924E6A48670DF17F92036B6CD195CA5BB8B6ADA
+- successor normalized SHA256 = C4B28D73DB4357E1BC023AA73924E6A48670DF17F92036B6CD195CA5BB8B6ADA
+- hash_match = True
