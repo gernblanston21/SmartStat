@@ -605,6 +605,16 @@ Status: GOVERNANCE PACKAGE CLOSED / ACCEPTED (2026-03-10 governance/docs/tests o
 - No Trio mutation behavior.
 - No socket mutation behavior.
 - Required validation: gate-OFF parity, gate-ON determinism, contract-negative fail-closed checks, mutation boundary audit, and carry-forward validation of existing slice-02 scaffold positives and negatives.
+- Next authorized step after the frozen current scope of WP20_RUNTIME_SLICE_02A_READONLY_PLAN_BRIDGE_CONTRACT_HARDENING: WP20_RUNTIME_SLICE_02B_READONLY_PLAN_BRIDGE_PROJECTION_INTAKE.
+- Objective: intake exactly one upstream WP-19 projection artifact into the existing read-only plan-bridge path.
+- Lane remains read-only.
+- Joined preview output remains deterministic.
+- Joined preview output must keep `mutation_authorized=false`.
+- Fail closed if the projection artifact is missing, malformed, unsupported, or not runtime-eligible.
+- No apply behavior.
+- No Trio mutation behavior.
+- No socket mutation behavior.
+- Required validation: gate-OFF parity, deterministic repeat-run hash equality, carry-forward validation of existing slice-02A positives and negatives, projection-negative fail-closed checks, mutation boundary audit, and boundary check confirming no new Trio/socket/apply surfaces were introduced.
 
 ### Definition of Done
 - Runtime bridge contract documented with explicit guardrails.
