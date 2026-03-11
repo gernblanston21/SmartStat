@@ -1,21 +1,21 @@
 ﻿# Runtime Slice-1 Live Validation Summary
 
-Generated: 2026-03-11T12:04:32
+Generated: 2026-03-11T12:18:15
 Evidence root: tests/_scratch/runtime-slice-01-readonly-ingress/live_evidence
 
 ## Status
 
-- Overall: FAIL
-- Gate-OFF parity: FAIL
+- Overall: PASS
+- Gate-OFF parity: PASS
 - Gate-ON determinism: PASS
 
 ## Gate-OFF Parity
 
 - Baseline file: tests\_scratch\runtime-slice-01-readonly-ingress\live_evidence\gateoff_baseline\live_gateoff_baseline_snapshot.txt
 - Successor file: tests\_scratch\runtime-slice-01-readonly-ingress\live_evidence\gateoff_successor\live_gateoff_successor_snapshot.txt
-- Baseline normalized SHA256: 7F2B7603FBE0D006012ADC00EF29945EF3DFA363B56BEF6B19409A67F5EEFE4E
-- Successor normalized SHA256: D5C692ADF1CAF1E8331E7CAFD9D17CF466D38B20585E1D4240429C6133D15242
-- Hash match: False
+- Baseline normalized SHA256: 1329152A077A888CF61482142A2306F282072EFF589078C3FB6425D8B49A256A
+- Successor normalized SHA256: 1329152A077A888CF61482142A2306F282072EFF589078C3FB6425D8B49A256A
+- Hash match: True
 
 ## Gate-ON Determinism
 

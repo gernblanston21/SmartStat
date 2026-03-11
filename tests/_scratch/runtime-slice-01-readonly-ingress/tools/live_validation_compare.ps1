@@ -21,7 +21,10 @@ function Get-Sha256Text {
 
 function Normalize-SnapshotText {
     param([string]$Path)
-    $lines = Get-Content -LiteralPath $Path
+    # Explicit non-semantic capture labels to ignore for gate-off parity:
+    # - CAPTURE_MODE is environment/capture labeling only, not runtime state.
+    $lines = Get-Content -LiteralPath $Path |
+        Where-Object { $_ -notmatch '^\s*CAPTURE_MODE=' }
     $normalized = $lines |
         ForEach-Object { $_.Trim().ToUpperInvariant() } |
         Sort-Object
