@@ -5094,14 +5094,29 @@ Const SLICE1_INGRESS_DEFAULT_DIAG = "E:\EDRIVE\UNIVERSAL\SmartStat\tests\_scratc
 Const SLICE1_LIVE_TEST_FORCE_ON = False
 
 Function Slice1Ingress_ShouldRun()
-  Dim gateArg, namedGateMatch
+  Dim gateArg, namedGateMatch, shouldRunValue
+  Dim errNumBoundary, errDescBoundary
+  Call Diag_WriteLine("SLICE1_TRACE entered_shouldrun")
+  On Error Resume Next
   gateArg = UCase(Trim(CStr(Slice1Ingress_GetNamedArg("slice_gate", ""))))
+  errNumBoundary = Err.Number
+  errDescBoundary = CStr(Err.Description)
+  Call Diag_WriteLine("SLICE1_TRACE err_boundary=shouldrun_after_getnamedarg err_number=" & CStr(errNumBoundary) & " err_description=" & CStr(errDescBoundary))
+  Err.Clear
   namedGateMatch = (gateArg = UCase(SLICE1_INGRESS_NAME))
-  Slice1Ingress_ShouldRun = (namedGateMatch Or CBool(SLICE1_LIVE_TEST_FORCE_ON))
+  shouldRunValue = (namedGateMatch Or CBool(SLICE1_LIVE_TEST_FORCE_ON))
+  Slice1Ingress_ShouldRun = shouldRunValue
+  errNumBoundary = Err.Number
+  errDescBoundary = CStr(Err.Description)
+  Call Diag_WriteLine("SLICE1_TRACE err_boundary=shouldrun_after_eval err_number=" & CStr(errNumBoundary) & " err_description=" & CStr(errDescBoundary))
+  Call Diag_WriteLine("SLICE1_TRACE shouldrun_result=" & CStr(shouldRunValue))
+  Err.Clear
+  On Error GoTo 0
 End Function
 
 Sub Slice1Ingress_RunAndExit(ByVal logFilePath, ByVal runStartTime)
-  Dim outcome, shouldPass
+  Dim outcome, shouldPass, emitCompleted
+  Dim errNumBoundary, errDescBoundary
   Set outcome = CreateObject("Scripting.Dictionary")
   outcome.Add "tabfield_records", CreateObject("Scripting.Dictionary")
   outcome("status") = "fail_closed"
@@ -5116,18 +5131,74 @@ Sub Slice1Ingress_RunAndExit(ByVal logFilePath, ByVal runStartTime)
   outcome("page_template") = ""
   outcome("error_code") = ""
   outcome("error_detail") = ""
+  emitCompleted = False
 
+  Call Diag_WriteLine("SLICE1_TRACE entered_shouldrun")
+  Call Diag_WriteLine("SLICE1_TRACE shouldrun_result=True")
+  Call Diag_WriteLine("SLICE1_TRACE entered_runandexit")
+  Call Diag_WriteLine("SLICE1_TRACE before_execute")
+
+  On Error Resume Next
   shouldPass = Slice1Ingress_Execute(outcome)
+  errNumBoundary = Err.Number
+  errDescBoundary = CStr(Err.Description)
+  Call Diag_WriteLine("SLICE1_TRACE err_boundary=after_execute err_number=" & CStr(errNumBoundary) & " err_description=" & CStr(errDescBoundary))
+  If CLng(errNumBoundary) <> 0 Then
+    Call Diag_WriteLine("SLICE1_TRACE unhandled_error_before_emit stage=after_execute err_number=" & CStr(errNumBoundary) & " err_description=" & CStr(errDescBoundary))
+    Err.Clear
+    On Error GoTo 0
+    Err.Raise errNumBoundary, "Slice1Ingress_RunAndExit", errDescBoundary
+  End If
+  Err.Clear
+  On Error GoTo 0
+  Call Diag_WriteLine("SLICE1_TRACE after_execute status=" & CStr(outcome("status")) & " error_code=" & CStr(outcome("error_code")))
+
+  Call Diag_WriteLine("SLICE1_TRACE before_emit")
+  On Error Resume Next
   Call Slice1Ingress_EmitEvidence(outcome)
+  errNumBoundary = Err.Number
+  errDescBoundary = CStr(Err.Description)
+  Call Diag_WriteLine("SLICE1_TRACE err_boundary=after_emit err_number=" & CStr(errNumBoundary) & " err_description=" & CStr(errDescBoundary))
+  If CLng(errNumBoundary) <> 0 Then
+    Call Diag_WriteLine("SLICE1_TRACE unhandled_error_before_emit stage=after_emit err_number=" & CStr(errNumBoundary) & " err_description=" & CStr(errDescBoundary))
+    Err.Clear
+    On Error GoTo 0
+    Err.Raise errNumBoundary, "Slice1Ingress_RunAndExit", errDescBoundary
+  End If
+  Err.Clear
+  On Error GoTo 0
+  emitCompleted = True
+  Call Diag_WriteLine("SLICE1_TRACE after_emit status=" & CStr(outcome("status")) & " error_code=" & CStr(outcome("error_code")))
 
   Call Diag_WriteLine("SLICE1_INGRESS status=" & CStr(outcome("status")) & " error_code=" & CStr(outcome("error_code")))
-  Call Diag_Done()
-  Call FinalizeAndRefresh(logFilePath, runStartTime)
+  Call Diag_WriteLine("SLICE1_TRACE before_finalize")
 
+  On Error Resume Next
+  Call Diag_Done()
+  errNumBoundary = Err.Number
+  errDescBoundary = CStr(Err.Description)
+  Call Diag_WriteLine("SLICE1_TRACE err_boundary=after_diag_done err_number=" & CStr(errNumBoundary) & " err_description=" & CStr(errDescBoundary))
+  Err.Clear
+  On Error GoTo 0
+
+  On Error Resume Next
+  Call FinalizeAndRefresh(logFilePath, runStartTime)
+  errNumBoundary = Err.Number
+  errDescBoundary = CStr(Err.Description)
+  Call Diag_WriteLine("SLICE1_TRACE err_boundary=after_finalize err_number=" & CStr(errNumBoundary) & " err_description=" & CStr(errDescBoundary))
+  Err.Clear
+  On Error GoTo 0
+
+  Call Diag_WriteLine("SLICE1_TRACE before_wscript_echo")
   On Error Resume Next
   WScript.Echo "SMARTSTAT_SLICE1_STATUS=" & CStr(outcome("status"))
   WScript.Echo "SMARTSTAT_SLICE1_ERROR_CODE=" & CStr(outcome("error_code"))
+  errNumBoundary = Err.Number
+  errDescBoundary = CStr(Err.Description)
+  Call Diag_WriteLine("SLICE1_TRACE err_boundary=after_wscript_echo err_number=" & CStr(errNumBoundary) & " err_description=" & CStr(errDescBoundary))
+  Err.Clear
   On Error GoTo 0
+  Call Diag_WriteLine("SLICE1_TRACE normal_exit")
 End Sub
 
 Function Slice1Ingress_Execute(ByRef outcome)
