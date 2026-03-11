@@ -31,6 +31,7 @@ Out of scope:
 - `tests/_scratch/runtime-slice-01-readonly-ingress/tools/live_validation_compare.ps1`
 
 ## Result Summary
+- Status-format note: `live_validation_summary.md` uses human-readable lines (`Overall: PASS`, `Gate-OFF parity: PASS`, `Gate-ON determinism: PASS`) rather than machine-style `key=value` fields.
 - Gate-OFF parity result: PASS
 - Gate-ON determinism result: PASS
 - Missing required evidence inputs: None
