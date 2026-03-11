@@ -590,6 +590,15 @@ Status: GOVERNANCE PACKAGE CLOSED / ACCEPTED (2026-03-10 governance/docs/tests o
   2. Collect real authorization inputs.
   3. Explicitly authorize a separate implementation lane.
 
+### Runtime Lane Sequencing (Post Slice-01)
+- Next planned runtime lane after WP20_RUNTIME_SLICE_01_READONLY_INGRESS: WP20_RUNTIME_SLICE_02_READONLY_PLAN_BRIDGE.
+- Objective: produce a deterministic read-only plan-bridge output/preview payload.
+- Lane remains read-only.
+- No apply behavior.
+- No Trio mutation behavior.
+- No socket mutation behavior.
+- Required validation: gate-OFF parity, gate-ON determinism, fail-closed negatives, boundary audit, and slice-1 carry-forward sanity check.
+
 ### Definition of Done
 - Runtime bridge contract documented with explicit guardrails.
 - Bridge activation criteria tied to WP-15 through WP-19 stability evidence.
