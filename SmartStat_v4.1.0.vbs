@@ -5224,9 +5224,11 @@ Function Slice1Ingress_Execute(ByRef outcome)
   Else
     outcome("provider_mode") = "trio_live"
   End If
+  Call Diag_WriteLine("SLICE1_TRACE provider_mode_selected=" & CStr(outcome("provider_mode")))
 
   errCode = ""
   errText = ""
+  Call Diag_WriteLine("SLICE1_TRACE first_read_command_attempted=page:getpagename")
   If Not Slice1Ingress_ReadRequired("page:getpagename", providerFixture, pageName, errCode, errText) Then
     Call Slice1Ingress_FailClosed(outcome, errCode, errText)
     Exit Function
@@ -5298,14 +5300,16 @@ Function Slice1Ingress_ReadCommand(ByVal commandText, ByVal providerFixture, ByR
   End If
 
   If IsObject(providerFixture) Then
-    If providerFixture.Exists(normCmd) Then
-      valueOut = CStr(providerFixture(normCmd))
-      Slice1Ingress_ReadCommand = True
+    If Not (providerFixture Is Nothing) Then
+      If providerFixture.Exists(normCmd) Then
+        valueOut = CStr(providerFixture(normCmd))
+        Slice1Ingress_ReadCommand = True
+        Exit Function
+      End If
+      errCode = "FIXTURE_COMMAND_MISSING"
+      errText = "fixture command missing: " & normCmd
       Exit Function
     End If
-    errCode = "FIXTURE_COMMAND_MISSING"
-    errText = "fixture command missing: " & normCmd
-    Exit Function
   End If
 
   On Error Resume Next
