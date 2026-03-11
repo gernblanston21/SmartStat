@@ -5818,6 +5818,7 @@ End Function
 Const SLICE2_PLAN_BRIDGE_NAME = "WP20_RUNTIME_SLICE_02_READONLY_PLAN_BRIDGE"
 Const SLICE2_PLAN_BRIDGE_NORM_RULE = "TABFIELD_NAME_TEXT_BINARY_ASC"
 Const SLICE2_PLAN_BRIDGE_PREVIEW_KIND = "readonly_plan_bridge_preview_skeleton_v1"
+Const SLICE2_PLAN_BRIDGE_CONTRACT_ERROR = "SLICE2_CONTRACT_REQUIREMENT_FAILED"
 Const SLICE2_PLAN_BRIDGE_DEFAULT_EVIDENCE = "E:\EDRIVE\UNIVERSAL\SmartStat\tests\_scratch\runtime-slice-02-readonly-plan-bridge\runs\slice2_readonly_plan_bridge_outcome.json"
 Const SLICE2_PLAN_BRIDGE_DEFAULT_DIAG = "E:\EDRIVE\UNIVERSAL\SmartStat\tests\_scratch\runtime-slice-02-readonly-plan-bridge\runs\slice2_readonly_plan_bridge_diag.log"
 
@@ -5932,6 +5933,10 @@ Function Slice2PlanBridge_Execute(ByRef outcome)
     Call Slice2PlanBridge_FailClosed(outcome, errCode, errText)
     Exit Function
   End If
+  If Not Slice2PlanBridge_ValidateContractInputs(pageName, pageTemplate, tabNames, errText) Then
+    Call Slice2PlanBridge_FailClosed(outcome, SLICE2_PLAN_BRIDGE_CONTRACT_ERROR, errText)
+    Exit Function
+  End If
 
   Set records = outcome("tabfield_records")
   For i = LBound(tabNames) To UBound(tabNames)
@@ -5953,6 +5958,82 @@ Function Slice2PlanBridge_Execute(ByRef outcome)
   outcome("page_template") = CStr(pageTemplate)
   outcome("status") = "success"
   Slice2PlanBridge_Execute = True
+End Function
+
+Function Slice2PlanBridge_ValidateContractInputs(ByVal pageName, ByVal pageTemplate, ByVal tabNames, ByRef errText)
+  Dim pn, pt
+  Dim i, lb, ub
+  Dim prevToken, token
+
+  Slice2PlanBridge_ValidateContractInputs = False
+  errText = ""
+
+  pn = CStr(pageName)
+  pt = CStr(pageTemplate)
+
+  If Len(Trim(pn)) = 0 Then
+    errText = "contract requirement failed: page_name empty"
+    Exit Function
+  End If
+  If Len(Trim(pt)) = 0 Then
+    errText = "contract requirement failed: page_template empty"
+    Exit Function
+  End If
+
+  If pn <> Trim(pn) Then
+    errText = "contract requirement failed: page_name not canonical_trimmed"
+    Exit Function
+  End If
+  If pt <> Trim(pt) Then
+    errText = "contract requirement failed: page_template not canonical_trimmed"
+    Exit Function
+  End If
+
+  If Not IsArray(tabNames) Then
+    errText = "contract requirement failed: tabfield_set_missing"
+    Exit Function
+  End If
+
+  On Error Resume Next
+  lb = LBound(tabNames)
+  If Err.Number <> 0 Then
+    errText = "contract requirement failed: tabfield_set_missing"
+    Err.Clear
+    On Error GoTo 0
+    Exit Function
+  End If
+  ub = UBound(tabNames)
+  If Err.Number <> 0 Then
+    errText = "contract requirement failed: tabfield_set_missing"
+    Err.Clear
+    On Error GoTo 0
+    Exit Function
+  End If
+  Err.Clear
+  On Error GoTo 0
+
+  If ub < lb Then
+    errText = "contract requirement failed: tabfield_set_empty"
+    Exit Function
+  End If
+
+  prevToken = ""
+  For i = lb To ub
+    token = CStr(tabNames(i))
+    If Len(Trim(token)) = 0 Then
+      errText = "contract requirement failed: tabfield_set_contains_empty"
+      Exit Function
+    End If
+    If i > lb Then
+      If StrComp(token, prevToken, vbBinaryCompare) <= 0 Then
+        errText = "contract requirement failed: tabfield_set_not_strict_binary_asc"
+        Exit Function
+      End If
+    End If
+    prevToken = token
+  Next
+
+  Slice2PlanBridge_ValidateContractInputs = True
 End Function
 
 Sub Slice2PlanBridge_FailClosed(ByRef outcome, ByVal errCode, ByVal errText)

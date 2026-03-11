@@ -1,0 +1,32 @@
+{
+  "status": "fail_closed",
+  "version": "4.1.0",
+  "runtime_line": "SmartStat_v4.1.0.vbs",
+  "slice_name": "WP20_RUNTIME_SLICE_02_READONLY_PLAN_BRIDGE",
+  "slice_gate_expected": "WP20_RUNTIME_SLICE_02_READONLY_PLAN_BRIDGE",
+  "slice_gate_received": "WP20_RUNTIME_SLICE_02_READONLY_PLAN_BRIDGE",
+  "provider_mode": "fixture",
+  "normalization_rule": "TABFIELD_NAME_TEXT_BINARY_ASC",
+  "preview_kind": "readonly_plan_bridge_preview_skeleton_v1",
+  "supported_read_surfaces": [
+    "page:get_tabfield_names",
+    "page:get_property",
+    "tabfield:get_custom_property",
+    "page:getpagename",
+    "page:getpagetemplate"
+  ],
+  "page_name": "",
+  "page_template": "",
+  "error_code": "SLICE2_CONTRACT_REQUIREMENT_FAILED",
+  "error_detail": "contract requirement failed: page_name not canonical_trimmed",
+  "preview_payload": {
+    "payload_kind": "readonly_plan_bridge_preview_skeleton_v1",
+    "bridge_mode": "read_only_preview",
+    "mutation_authorized": false,
+    "tabfield_count": 0,
+    "tabfield_order": [
+    ],
+    "field_preview": [
+    ]
+  }
+}

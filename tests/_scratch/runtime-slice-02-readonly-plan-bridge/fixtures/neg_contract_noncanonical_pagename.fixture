@@ -1,0 +1,9 @@
+# Contract-hardening negative: non-canonical page name (leading/trailing whitespace)
+# Should fail with SLICE2_CONTRACT_REQUIREMENT_FAILED
+
+page:getpagename= 2005 
+page:getpagetemplate=SPORTS_SCOREBUG
+page:get_tabfield_names=B0200
+
+page:get_property B0200=NBA
+tabfield:get_custom_property B0200=LEAGUE_KEY

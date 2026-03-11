@@ -6,6 +6,7 @@
 | neg_missing_tabfield_list.fixture | status=fail_closed; error_code=FIXTURE_COMMAND_MISSING | status=fail_closed; error_code=FIXTURE_COMMAND_MISSING | PASS |
 | neg_duplicate_tabfields.fixture | status=fail_closed; error_code=AMBIGUOUS_TABFIELD_LIST | status=fail_closed; error_code=AMBIGUOUS_TABFIELD_LIST | PASS |
 | neg_unsupported_surface.fixture | status=fail_closed; error_code=FIXTURE_LOAD_FAILED | status=fail_closed; error_code=FIXTURE_LOAD_FAILED | PASS |
+| neg_contract_noncanonical_pagename.fixture | status=fail_closed; error_code=SLICE2_CONTRACT_REQUIREMENT_FAILED | status=fail_closed; error_code=SLICE2_CONTRACT_REQUIREMENT_FAILED | PASS |
 | mutation_boundary_report.txt | TOTAL_MUTATION_CALLS=0 | TOTAL_MUTATION_CALLS=0 | PASS |
 
 Determinism check (positive fixture):
@@ -15,7 +16,7 @@ Determinism check (positive fixture):
 
 Gate-OFF parity check (mock-trio normalized):
 - method: mock_trio_runner.vbs baseline/successor comparison with identity-only exclusions
-- normalized exclusions: TARGET_SCRIPT, SCRIPT_HEADER, SCRIPT_VERSION_CONST
-- baseline normalized SHA256 = C4B28D73DB4357E1BC023AA73924E6A48670DF17F92036B6CD195CA5BB8B6ADA
-- successor normalized SHA256 = C4B28D73DB4357E1BC023AA73924E6A48670DF17F92036B6CD195CA5BB8B6ADA
+- normalized exclusions: TARGET_SCRIPT, SCRIPT_HEADER, SCRIPT_VERSION_CONST, SMARTSTAT_OPERATORDIAG_<volatile_timestamp>
+- baseline normalized SHA256 = 80386630636AB0B96C392D5609DE7A5353A532CAF53FA3EEA359FC6D06FE1790
+- successor normalized SHA256 = 80386630636AB0B96C392D5609DE7A5353A532CAF53FA3EEA359FC6D06FE1790
 - hash_match = True
