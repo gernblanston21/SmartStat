@@ -5087,13 +5087,17 @@ End Sub
 ' ================================
 Const SLICE1_INGRESS_NAME = "WP20_RUNTIME_SLICE_01_READONLY_INGRESS"
 Const SLICE1_INGRESS_NORM_RULE = "TABFIELD_NAME_TEXT_BINARY_ASC"
-Const SLICE1_INGRESS_DEFAULT_EVIDENCE = "tests\_scratch\runtime-slice-01-readonly-ingress\runs\slice1_readonly_ingress_outcome.json"
-Const SLICE1_INGRESS_DEFAULT_DIAG = "tests\_scratch\runtime-slice-01-readonly-ingress\runs\slice1_readonly_ingress_diag.log"
+Const SLICE1_INGRESS_DEFAULT_EVIDENCE = "E:\EDRIVE\UNIVERSAL\SmartStat\tests\_scratch\runtime-slice-01-readonly-ingress\runs\slice1_readonly_ingress_outcome.json"
+Const SLICE1_INGRESS_DEFAULT_DIAG = "E:\EDRIVE\UNIVERSAL\SmartStat\tests\_scratch\runtime-slice-01-readonly-ingress\runs\slice1_readonly_ingress_diag.log"
+' TEMPORARY: operator-validation bridge for slice-1 live Trio runs.
+' Keep default OFF; remove after Trio invocation supports named args reliably.
+Const SLICE1_LIVE_TEST_FORCE_ON = False
 
 Function Slice1Ingress_ShouldRun()
-  Dim gateArg
+  Dim gateArg, namedGateMatch
   gateArg = UCase(Trim(CStr(Slice1Ingress_GetNamedArg("slice_gate", ""))))
-  Slice1Ingress_ShouldRun = (gateArg = UCase(SLICE1_INGRESS_NAME))
+  namedGateMatch = (gateArg = UCase(SLICE1_INGRESS_NAME))
+  Slice1Ingress_ShouldRun = (namedGateMatch Or CBool(SLICE1_LIVE_TEST_FORCE_ON))
 End Function
 
 Sub Slice1Ingress_RunAndExit(ByVal logFilePath, ByVal runStartTime)
@@ -5406,14 +5410,51 @@ End Sub
 
 Sub Slice1Ingress_EmitEvidence(ByRef outcome)
   Dim evidenceOut, diagOut, jsonText, diagText
+  Dim evidenceParentPath, diagParentPath
+  Dim evidenceParentExistsBefore, evidenceParentCreateAttempted, evidenceParentExistsAfter
+  Dim diagParentExistsBefore, diagParentCreateAttempted, diagParentExistsAfter
+  Dim evidenceParentErrNum, evidenceParentErrDesc
+  Dim diagParentErrNum, diagParentErrDesc
+  Dim evidenceWriteOk, diagWriteOk
+  Dim evidenceWriteErrNum, evidenceWriteErrDesc
+  Dim diagWriteErrNum, diagWriteErrDesc
+  Dim emitSummaryLine
+
   evidenceOut = CStr(Slice1Ingress_GetNamedArg("evidence_out", SLICE1_INGRESS_DEFAULT_EVIDENCE))
   diagOut = CStr(Slice1Ingress_GetNamedArg("diag_out", SLICE1_INGRESS_DEFAULT_DIAG))
 
-  Call Slice1Ingress_EnsureParentFolder(evidenceOut)
-  Call Slice1Ingress_EnsureParentFolder(diagOut)
+  Call Diag_WriteLine("SLICE1_EMIT resolved_evidence_out=" & CStr(evidenceOut))
+  Call Diag_WriteLine("SLICE1_EMIT resolved_diag_out=" & CStr(diagOut))
+
+  Call Slice1Ingress_EnsureParentFolderDebug(evidenceOut, evidenceParentPath, evidenceParentExistsBefore, evidenceParentCreateAttempted, evidenceParentExistsAfter, evidenceParentErrNum, evidenceParentErrDesc)
+  Call Diag_WriteLine("SLICE1_EMIT evidence_parent_path=" & CStr(evidenceParentPath) & _
+                      " exists_before=" & CStr(evidenceParentExistsBefore) & _
+                      " create_attempted=" & CStr(evidenceParentCreateAttempted) & _
+                      " exists_after=" & CStr(evidenceParentExistsAfter))
+  If CLng(evidenceParentErrNum) <> 0 Then
+    Call Diag_WriteLine("SLICE1_EMIT evidence_parent_error err_number=" & CStr(evidenceParentErrNum) & " err_description=" & CStr(evidenceParentErrDesc))
+  End If
+
+  Call Slice1Ingress_EnsureParentFolderDebug(diagOut, diagParentPath, diagParentExistsBefore, diagParentCreateAttempted, diagParentExistsAfter, diagParentErrNum, diagParentErrDesc)
+  Call Diag_WriteLine("SLICE1_EMIT diag_parent_path=" & CStr(diagParentPath) & _
+                      " exists_before=" & CStr(diagParentExistsBefore) & _
+                      " create_attempted=" & CStr(diagParentCreateAttempted) & _
+                      " exists_after=" & CStr(diagParentExistsAfter))
+  If CLng(diagParentErrNum) <> 0 Then
+    Call Diag_WriteLine("SLICE1_EMIT diag_parent_error err_number=" & CStr(diagParentErrNum) & " err_description=" & CStr(diagParentErrDesc))
+  End If
 
   jsonText = Slice1Ingress_BuildOutcomeJson(outcome)
-  Call Slice1Ingress_WriteText(evidenceOut, jsonText)
+  evidenceWriteOk = Slice1Ingress_WriteTextSafe(evidenceOut, jsonText, evidenceWriteErrNum, evidenceWriteErrDesc)
+  Call Diag_WriteLine("SLICE1_EMIT evidence_write path=" & CStr(evidenceOut) & _
+                      " result=" & Slice1Ingress_StatusText(evidenceWriteOk) & _
+                      " err_number=" & CStr(evidenceWriteErrNum) & _
+                      " err_description=" & CStr(evidenceWriteErrDesc))
+  If Not evidenceWriteOk Then
+    If UCase(CStr(outcome("status"))) = "SUCCESS" Then
+      Call Slice1Ingress_FailClosed(outcome, "EVIDENCE_WRITE_FAILED", "failed to write evidence file path=" & CStr(evidenceOut) & " err_number=" & CStr(evidenceWriteErrNum) & " err_description=" & CStr(evidenceWriteErrDesc))
+    End If
+  End If
 
   diagText = "status=" & CStr(outcome("status")) & vbCrLf & _
              "error_code=" & CStr(outcome("error_code")) & vbCrLf & _
@@ -5421,9 +5462,44 @@ Sub Slice1Ingress_EmitEvidence(ByRef outcome)
              "slice_name=" & CStr(outcome("slice_name")) & vbCrLf & _
              "runtime_line=" & CStr(outcome("runtime_line")) & vbCrLf & _
              "normalization_rule=" & CStr(outcome("normalization_rule")) & vbCrLf & _
-             "provider_mode=" & CStr(outcome("provider_mode")) & vbCrLf
-  Call Slice1Ingress_WriteText(diagOut, diagText)
+             "provider_mode=" & CStr(outcome("provider_mode")) & vbCrLf & _
+             "resolved_evidence_out=" & CStr(evidenceOut) & vbCrLf & _
+             "resolved_diag_out=" & CStr(diagOut) & vbCrLf & _
+             "evidence_parent_exists_before=" & CStr(evidenceParentExistsBefore) & vbCrLf & _
+             "evidence_parent_create_attempted=" & CStr(evidenceParentCreateAttempted) & vbCrLf & _
+             "evidence_parent_exists_after=" & CStr(evidenceParentExistsAfter) & vbCrLf & _
+             "diag_parent_exists_before=" & CStr(diagParentExistsBefore) & vbCrLf & _
+             "diag_parent_create_attempted=" & CStr(diagParentCreateAttempted) & vbCrLf & _
+             "diag_parent_exists_after=" & CStr(diagParentExistsAfter) & vbCrLf & _
+             "evidence_json_write=" & Slice1Ingress_StatusText(evidenceWriteOk) & vbCrLf & _
+             "evidence_json_write_err_number=" & CStr(evidenceWriteErrNum) & vbCrLf & _
+             "evidence_json_write_err_description=" & CStr(evidenceWriteErrDesc) & vbCrLf & _
+             "diag_file_write=SUCCESS" & vbCrLf & _
+             "emit_summary evidence_json_write=" & Slice1Ingress_StatusText(evidenceWriteOk) & " diag_file_write=SUCCESS" & vbCrLf
+
+  diagWriteOk = Slice1Ingress_WriteTextSafe(diagOut, diagText, diagWriteErrNum, diagWriteErrDesc)
+  Call Diag_WriteLine("SLICE1_EMIT diag_write path=" & CStr(diagOut) & _
+                      " result=" & Slice1Ingress_StatusText(diagWriteOk) & _
+                      " err_number=" & CStr(diagWriteErrNum) & _
+                      " err_description=" & CStr(diagWriteErrDesc))
+  If Not diagWriteOk Then
+    If UCase(CStr(outcome("status"))) = "SUCCESS" Then
+      Call Slice1Ingress_FailClosed(outcome, "DIAG_WRITE_FAILED", "failed to write diag file path=" & CStr(diagOut) & " err_number=" & CStr(diagWriteErrNum) & " err_description=" & CStr(diagWriteErrDesc))
+    End If
+  End If
+
+  emitSummaryLine = "SLICE1_EMIT_SUMMARY evidence_json_write=" & Slice1Ingress_StatusText(evidenceWriteOk) & _
+                    " diag_file_write=" & Slice1Ingress_StatusText(diagWriteOk)
+  Call Diag_WriteLine(emitSummaryLine)
 End Sub
+
+Function Slice1Ingress_StatusText(ByVal okValue)
+  If CBool(okValue) Then
+    Slice1Ingress_StatusText = "SUCCESS"
+  Else
+    Slice1Ingress_StatusText = "FAIL"
+  End If
+End Function
 
 Function Slice1Ingress_BuildOutcomeJson(ByRef outcome)
   Dim lines, tabJson
@@ -5495,22 +5571,135 @@ Function Slice1Ingress_JsonEscape(ByVal txt)
 End Function
 
 Sub Slice1Ingress_WriteText(ByVal pathTxt, ByVal bodyTxt)
-  Dim fso, ts
-  Set fso = CreateObject("Scripting.FileSystemObject")
-  Set ts = fso.CreateTextFile(pathTxt, True, False)
-  ts.Write bodyTxt
-  ts.Close
+  Dim errNum, errDesc
+  Call Slice1Ingress_WriteTextSafe(pathTxt, bodyTxt, errNum, errDesc)
 End Sub
 
-Sub Slice1Ingress_EnsureParentFolder(ByVal filePath)
-  Dim fso, parentPath
+Function Slice1Ingress_WriteTextSafe(ByVal pathTxt, ByVal bodyTxt, ByRef errNumOut, ByRef errDescOut)
+  Dim fso, ts
+  Slice1Ingress_WriteTextSafe = False
+  errNumOut = 0
+  errDescOut = ""
+
   Set fso = CreateObject("Scripting.FileSystemObject")
-  parentPath = fso.GetParentFolderName(filePath)
-  If Len(parentPath) = 0 Then Exit Sub
-  Call Slice1Ingress_EnsureFolderRecursive(parentPath)
+  Set ts = Nothing
+
+  On Error Resume Next
+  Set ts = fso.CreateTextFile(pathTxt, True, False)
+  If Err.Number <> 0 Then
+    errNumOut = Err.Number
+    errDescOut = CStr(Err.Description)
+    Err.Clear
+    On Error GoTo 0
+    Exit Function
+  End If
+
+  ts.Write bodyTxt
+  If Err.Number <> 0 Then
+    errNumOut = Err.Number
+    errDescOut = CStr(Err.Description)
+    Err.Clear
+    If Not ts Is Nothing Then ts.Close
+    On Error GoTo 0
+    Exit Function
+  End If
+
+  ts.Close
+  If Err.Number <> 0 Then
+    errNumOut = Err.Number
+    errDescOut = CStr(Err.Description)
+    Err.Clear
+    On Error GoTo 0
+    Exit Function
+  End If
+  On Error GoTo 0
+
+  Slice1Ingress_WriteTextSafe = True
+End Function
+
+Sub Slice1Ingress_EnsureParentFolder(ByVal filePath)
+  Dim parentPath, existsBefore, createAttempted, existsAfter, errNum, errDesc
+  Call Slice1Ingress_EnsureParentFolderDebug(filePath, parentPath, existsBefore, createAttempted, existsAfter, errNum, errDesc)
 End Sub
 
 Sub Slice1Ingress_EnsureFolderRecursive(ByVal folderPath)
+  Dim createAttempted, errNum, errDesc
+  Call Slice1Ingress_CreateFolderRecursiveDebug(folderPath, createAttempted, errNum, errDesc)
+End Sub
+
+Sub Slice1Ingress_EnsureParentFolderDebug(ByVal filePath, ByRef parentPathOut, ByRef existsBeforeOut, ByRef createAttemptedOut, ByRef existsAfterOut, ByRef errNumOut, ByRef errDescOut)
+  Dim fso
+  Dim okCreate
+
+  parentPathOut = ""
+  existsBeforeOut = False
+  createAttemptedOut = False
+  existsAfterOut = False
+  errNumOut = 0
+  errDescOut = ""
+
+  Set fso = CreateObject("Scripting.FileSystemObject")
+  parentPathOut = fso.GetParentFolderName(CStr(filePath))
+
+  If Len(parentPathOut) = 0 Then
+    existsBeforeOut = True
+    existsAfterOut = True
+    Exit Sub
+  End If
+
+  existsBeforeOut = fso.FolderExists(parentPathOut)
+  If existsBeforeOut Then
+    existsAfterOut = True
+    Exit Sub
+  End If
+
+  okCreate = Slice1Ingress_CreateFolderRecursiveDebug(parentPathOut, createAttemptedOut, errNumOut, errDescOut)
+  existsAfterOut = fso.FolderExists(parentPathOut)
+  If (Not okCreate) And (CLng(errNumOut) = 0) And (Not existsAfterOut) Then
+    errNumOut = -1
+    errDescOut = "parent folder create failed without explicit error"
+  End If
+End Sub
+
+Function Slice1Ingress_CreateFolderRecursiveDebug(ByVal folderPath, ByRef createAttemptedOut, ByRef errNumOut, ByRef errDescOut)
+  Dim fso, parentPath
+  Slice1Ingress_CreateFolderRecursiveDebug = True
+
+  Set fso = CreateObject("Scripting.FileSystemObject")
+  If Len(CStr(folderPath)) = 0 Then Exit Function
+  If fso.FolderExists(folderPath) Then Exit Function
+
+  parentPath = fso.GetParentFolderName(folderPath)
+  If Len(parentPath) > 0 Then
+    If Not fso.FolderExists(parentPath) Then
+      If Not Slice1Ingress_CreateFolderRecursiveDebug(parentPath, createAttemptedOut, errNumOut, errDescOut) Then
+        Slice1Ingress_CreateFolderRecursiveDebug = False
+        Exit Function
+      End If
+    End If
+  End If
+
+  createAttemptedOut = True
+  On Error Resume Next
+  fso.CreateFolder folderPath
+  errNumOut = Err.Number
+  errDescOut = CStr(Err.Description)
+  Err.Clear
+  On Error GoTo 0
+
+  If CLng(errNumOut) <> 0 Then
+    Slice1Ingress_CreateFolderRecursiveDebug = False
+    Exit Function
+  End If
+  If Not fso.FolderExists(folderPath) Then
+    errNumOut = -1
+    errDescOut = "folder missing after CreateFolder attempt"
+    Slice1Ingress_CreateFolderRecursiveDebug = False
+    Exit Function
+  End If
+End Function
+
+Sub Slice1Ingress_EnsureFolderRecursiveLegacy(ByVal folderPath)
   Dim fso, parentPath
   Set fso = CreateObject("Scripting.FileSystemObject")
   If fso.FolderExists(folderPath) Then Exit Sub
