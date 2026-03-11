@@ -1,0 +1,19 @@
+{
+  "projection_contract": "wp19.viewer_projection.v9",
+  "projection_kind": "read_only_view_model",
+  "input_artifact": "tests/wp-18/fixtures/good/good_schema_compatible_capture.json",
+  "input_identity": {
+    "artifact_path": "tests/wp-18/fixtures/good/good_schema_compatible_capture.json",
+    "input_fingerprint_sha256": "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"
+  },
+  "status_summary": {
+    "status": "PASS",
+    "error_count": 0,
+    "warning_count": 0
+  },
+  "deterministic_identity_summary": {
+    "normalized_plan_hash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    "replay_identity": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+    "validator_run_identity": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+  }
+}

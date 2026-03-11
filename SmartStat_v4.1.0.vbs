@@ -5818,7 +5818,14 @@ End Function
 Const SLICE2_PLAN_BRIDGE_NAME = "WP20_RUNTIME_SLICE_02_READONLY_PLAN_BRIDGE"
 Const SLICE2_PLAN_BRIDGE_NORM_RULE = "TABFIELD_NAME_TEXT_BINARY_ASC"
 Const SLICE2_PLAN_BRIDGE_PREVIEW_KIND = "readonly_plan_bridge_preview_skeleton_v1"
+Const SLICE2_PLAN_BRIDGE_PROJECTION_PREVIEW_KIND = "readonly_plan_bridge_preview_projection_intake_v1"
 Const SLICE2_PLAN_BRIDGE_CONTRACT_ERROR = "SLICE2_CONTRACT_REQUIREMENT_FAILED"
+Const SLICE2_PLAN_BRIDGE_PROJECTION_CONTRACT = "wp19.viewer_projection.v1"
+Const SLICE2_PLAN_BRIDGE_PROJECTION_KIND = "read_only_view_model"
+Const SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MISSING = "SLICE2_PROJECTION_ARTIFACT_MISSING"
+Const SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED = "SLICE2_PROJECTION_ARTIFACT_MALFORMED"
+Const SLICE2_PLAN_BRIDGE_PROJECTION_ERR_UNSUPPORTED = "SLICE2_PROJECTION_CONTRACT_UNSUPPORTED"
+Const SLICE2_PLAN_BRIDGE_PROJECTION_ERR_NOT_ELIGIBLE = "SLICE2_PROJECTION_NOT_RUNTIME_ELIGIBLE"
 Const SLICE2_PLAN_BRIDGE_DEFAULT_EVIDENCE = "E:\EDRIVE\UNIVERSAL\SmartStat\tests\_scratch\runtime-slice-02-readonly-plan-bridge\runs\slice2_readonly_plan_bridge_outcome.json"
 Const SLICE2_PLAN_BRIDGE_DEFAULT_DIAG = "E:\EDRIVE\UNIVERSAL\SmartStat\tests\_scratch\runtime-slice-02-readonly-plan-bridge\runs\slice2_readonly_plan_bridge_diag.log"
 
@@ -5890,7 +5897,7 @@ Sub Slice2PlanBridge_RunAndExit(ByVal logFilePath, ByVal runStartTime)
 End Sub
 
 Function Slice2PlanBridge_Execute(ByRef outcome)
-  Dim fixturePath, errDetail
+  Dim fixturePath, projectionPath, errDetail
   Dim providerFixture
   Dim pageName, pageTemplate, tabfieldRaw
   Dim tabNames, i, tabName, pageValue, customValue
@@ -5900,6 +5907,7 @@ Function Slice2PlanBridge_Execute(ByRef outcome)
   Slice2PlanBridge_Execute = False
   Set providerFixture = Nothing
   fixturePath = Trim(CStr(Slice1Ingress_GetNamedArg("runtime_fixture", "")))
+  projectionPath = Trim(CStr(Slice1Ingress_GetNamedArg("projection_artifact", "")))
 
   If Len(fixturePath) > 0 Then
     errDetail = ""
@@ -5956,6 +5964,12 @@ Function Slice2PlanBridge_Execute(ByRef outcome)
 
   outcome("page_name") = CStr(pageName)
   outcome("page_template") = CStr(pageTemplate)
+  If Len(projectionPath) > 0 Then
+    If Not Slice2PlanBridge_LoadProjectionIntake(projectionPath, outcome, errCode, errText) Then
+      Call Slice2PlanBridge_FailClosed(outcome, errCode, errText)
+      Exit Function
+    End If
+  End If
   outcome("status") = "success"
   Slice2PlanBridge_Execute = True
 End Function
@@ -6034,6 +6048,271 @@ Function Slice2PlanBridge_ValidateContractInputs(ByVal pageName, ByVal pageTempl
   Next
 
   Slice2PlanBridge_ValidateContractInputs = True
+End Function
+
+Function Slice2PlanBridge_LoadProjectionIntake(ByVal projectionPath, ByRef outcome, ByRef errCode, ByRef errText)
+  Dim jsonText
+  Dim projectionContract, projectionKind, projectionStatus
+  Dim inputArtifact, artifactPath, inputFingerprint
+  Dim normalizedPlanHash, replayIdentity, validatorRunIdentity
+  Dim errorCount, warningCount
+
+  Slice2PlanBridge_LoadProjectionIntake = False
+  errCode = ""
+  errText = ""
+
+  If Not Slice2PlanBridge_ReadProjectionArtifactText(projectionPath, jsonText, errCode, errText) Then Exit Function
+
+  If Not Slice2PlanBridge_JsonReadString(jsonText, "projection_contract", projectionContract) Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: projection_contract missing"
+    Exit Function
+  End If
+  If Not Slice2PlanBridge_JsonReadString(jsonText, "projection_kind", projectionKind) Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: projection_kind missing"
+    Exit Function
+  End If
+  If Not Slice2PlanBridge_JsonReadString(jsonText, "input_artifact", inputArtifact) Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: input_artifact missing"
+    Exit Function
+  End If
+  If Not Slice2PlanBridge_JsonReadString(jsonText, "artifact_path", artifactPath) Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: input_identity.artifact_path missing"
+    Exit Function
+  End If
+  If Not Slice2PlanBridge_JsonReadString(jsonText, "input_fingerprint_sha256", inputFingerprint) Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: input_identity.input_fingerprint_sha256 missing"
+    Exit Function
+  End If
+  If Not Slice2PlanBridge_JsonReadString(jsonText, "status", projectionStatus) Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: status_summary.status missing"
+    Exit Function
+  End If
+  If Not Slice2PlanBridge_JsonReadLong(jsonText, "error_count", errorCount) Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: status_summary.error_count missing"
+    Exit Function
+  End If
+  If Not Slice2PlanBridge_JsonReadLong(jsonText, "warning_count", warningCount) Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: status_summary.warning_count missing"
+    Exit Function
+  End If
+  If Not Slice2PlanBridge_JsonReadString(jsonText, "normalized_plan_hash", normalizedPlanHash) Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: deterministic_identity_summary.normalized_plan_hash missing"
+    Exit Function
+  End If
+  If Not Slice2PlanBridge_JsonReadString(jsonText, "replay_identity", replayIdentity) Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: deterministic_identity_summary.replay_identity missing"
+    Exit Function
+  End If
+  If Not Slice2PlanBridge_JsonReadString(jsonText, "validator_run_identity", validatorRunIdentity) Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: deterministic_identity_summary.validator_run_identity missing"
+    Exit Function
+  End If
+
+  If projectionContract <> SLICE2_PLAN_BRIDGE_PROJECTION_CONTRACT Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_UNSUPPORTED
+    errText = "projection artifact unsupported: projection_contract=" & projectionContract
+    Exit Function
+  End If
+  If projectionKind <> SLICE2_PLAN_BRIDGE_PROJECTION_KIND Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_UNSUPPORTED
+    errText = "projection artifact unsupported: projection_kind=" & projectionKind
+    Exit Function
+  End If
+
+  If Len(Trim(inputArtifact)) = 0 Or Len(Trim(artifactPath)) = 0 Or Len(Trim(inputFingerprint)) = 0 Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: required input identity values empty"
+    Exit Function
+  End If
+  If Len(Trim(normalizedPlanHash)) = 0 Or Len(Trim(replayIdentity)) = 0 Or Len(Trim(validatorRunIdentity)) = 0 Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: deterministic identity values empty"
+    Exit Function
+  End If
+  If CLng(errorCount) < 0 Or CLng(warningCount) < 0 Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: status counts invalid"
+    Exit Function
+  End If
+
+  If UCase(Trim(CStr(projectionStatus))) <> "PASS" Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_NOT_ELIGIBLE
+    errText = "projection artifact not runtime eligible: status=" & CStr(projectionStatus)
+    Exit Function
+  End If
+  If CLng(errorCount) <> 0 Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_NOT_ELIGIBLE
+    errText = "projection artifact not runtime eligible: error_count=" & CStr(errorCount)
+    Exit Function
+  End If
+
+  outcome("preview_kind") = SLICE2_PLAN_BRIDGE_PROJECTION_PREVIEW_KIND
+  outcome("projection_contract") = CStr(projectionContract)
+  outcome("projection_kind") = CStr(projectionKind)
+  outcome("projection_input_artifact") = CStr(inputArtifact)
+  outcome("projection_artifact_path") = CStr(artifactPath)
+  outcome("projection_input_fingerprint_sha256") = CStr(inputFingerprint)
+  outcome("projection_status") = CStr(projectionStatus)
+  outcome("projection_error_count") = CLng(errorCount)
+  outcome("projection_warning_count") = CLng(warningCount)
+  outcome("projection_normalized_plan_hash") = CStr(normalizedPlanHash)
+  outcome("projection_replay_identity") = CStr(replayIdentity)
+  outcome("projection_validator_run_identity") = CStr(validatorRunIdentity)
+
+  Slice2PlanBridge_LoadProjectionIntake = True
+End Function
+
+Function Slice2PlanBridge_ReadProjectionArtifactText(ByVal projectionPath, ByRef bodyOut, ByRef errCode, ByRef errText)
+  Dim fso, ts
+  Dim trimmedPath
+  Dim errNumRead, errDescRead
+
+  Slice2PlanBridge_ReadProjectionArtifactText = False
+  bodyOut = ""
+  errCode = ""
+  errText = ""
+  trimmedPath = Trim(CStr(projectionPath))
+
+  If Len(trimmedPath) = 0 Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MISSING
+    errText = "projection artifact missing: projection_artifact arg empty"
+    Exit Function
+  End If
+
+  Set fso = CreateObject("Scripting.FileSystemObject")
+  If Not fso.FileExists(trimmedPath) Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MISSING
+    errText = "projection artifact missing: " & trimmedPath
+    Exit Function
+  End If
+
+  errNumRead = 0
+  errDescRead = ""
+  On Error Resume Next
+  Set ts = fso.OpenTextFile(trimmedPath, 1, False)
+  bodyOut = CStr(ts.ReadAll)
+  If Not ts Is Nothing Then ts.Close
+  errNumRead = Err.Number
+  errDescRead = CStr(Err.Description)
+  Err.Clear
+  On Error GoTo 0
+
+  If CLng(errNumRead) <> 0 Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: read failed err_number=" & CStr(errNumRead) & " err_description=" & errDescRead
+    Exit Function
+  End If
+  If Len(Trim(CStr(bodyOut))) = 0 Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: file empty"
+    Exit Function
+  End If
+
+  Slice2PlanBridge_ReadProjectionArtifactText = True
+End Function
+
+Function Slice2PlanBridge_JsonReadString(ByVal jsonText, ByVal keyName, ByRef valueOut)
+  Dim valuePos, i, ch, outTxt
+
+  Slice2PlanBridge_JsonReadString = False
+  valueOut = ""
+
+  If Not Slice2PlanBridge_JsonFindValueStart(jsonText, keyName, valuePos) Then Exit Function
+  If Mid(jsonText, valuePos, 1) <> """" Then Exit Function
+
+  i = valuePos + 1
+  outTxt = ""
+  Do While i <= Len(jsonText)
+    ch = Mid(jsonText, i, 1)
+    If ch = "\" Then
+      i = i + 1
+      If i > Len(jsonText) Then Exit Function
+      outTxt = outTxt & Mid(jsonText, i, 1)
+    ElseIf ch = """" Then
+      valueOut = outTxt
+      Slice2PlanBridge_JsonReadString = True
+      Exit Function
+    Else
+      outTxt = outTxt & ch
+    End If
+    i = i + 1
+  Loop
+End Function
+
+Function Slice2PlanBridge_JsonReadLong(ByVal jsonText, ByVal keyName, ByRef valueOut)
+  Dim valuePos, i, ch, numTxt, errNumParse
+
+  Slice2PlanBridge_JsonReadLong = False
+  valueOut = 0
+
+  If Not Slice2PlanBridge_JsonFindValueStart(jsonText, keyName, valuePos) Then Exit Function
+
+  numTxt = ""
+  i = valuePos
+  If Mid(jsonText, i, 1) = "-" Then
+    numTxt = "-"
+    i = i + 1
+  End If
+
+  Do While i <= Len(jsonText)
+    ch = Mid(jsonText, i, 1)
+    If ch < "0" Or ch > "9" Then Exit Do
+    numTxt = numTxt & ch
+    i = i + 1
+  Loop
+
+  If numTxt = "" Or numTxt = "-" Then Exit Function
+
+  On Error Resume Next
+  valueOut = CLng(numTxt)
+  errNumParse = Err.Number
+  Err.Clear
+  On Error GoTo 0
+  If CLng(errNumParse) <> 0 Then Exit Function
+
+  Slice2PlanBridge_JsonReadLong = True
+End Function
+
+Function Slice2PlanBridge_JsonFindValueStart(ByVal jsonText, ByVal keyName, ByRef valuePos)
+  Dim token, keyPos, colonPos, ch
+
+  Slice2PlanBridge_JsonFindValueStart = False
+  valuePos = 0
+  token = """" & CStr(keyName) & """"
+  keyPos = InStr(1, jsonText, token, vbBinaryCompare)
+  If keyPos <= 0 Then Exit Function
+
+  colonPos = InStr(keyPos + Len(token), jsonText, ":", vbBinaryCompare)
+  If colonPos <= 0 Then Exit Function
+
+  valuePos = colonPos + 1
+  Do While valuePos <= Len(jsonText)
+    ch = Mid(jsonText, valuePos, 1)
+    If ch <> " " And ch <> vbTab And ch <> vbCr And ch <> vbLf Then Exit Do
+    valuePos = valuePos + 1
+  Loop
+
+  If valuePos > Len(jsonText) Then
+    valuePos = 0
+    Exit Function
+  End If
+
+  Slice2PlanBridge_JsonFindValueStart = True
+End Function
+
+Function Slice2PlanBridge_HasProjectionIntake(ByRef outcome)
+  Slice2PlanBridge_HasProjectionIntake = outcome.Exists("projection_contract")
 End Function
 
 Sub Slice2PlanBridge_FailClosed(ByRef outcome, ByVal errCode, ByVal errText)
@@ -6122,14 +6401,14 @@ Function Slice2PlanBridge_BuildOutcomeJson(ByRef outcome)
   lines = lines & "  ""page_template"": """ & Slice1Ingress_JsonEscape(CStr(outcome("page_template"))) & """," & vbCrLf
   lines = lines & "  ""error_code"": """ & Slice1Ingress_JsonEscape(CStr(outcome("error_code"))) & """," & vbCrLf
   lines = lines & "  ""error_detail"": """ & Slice1Ingress_JsonEscape(CStr(outcome("error_detail"))) & """," & vbCrLf
-  previewJson = Slice2PlanBridge_BuildPreviewPayloadJson(outcome("tabfield_records"), CStr(outcome("preview_kind")))
+  previewJson = Slice2PlanBridge_BuildPreviewPayloadJson(outcome("tabfield_records"), CStr(outcome("preview_kind")), outcome)
   lines = lines & "  ""preview_payload"": " & previewJson & vbCrLf
   lines = lines & "}" & vbCrLf
   Slice2PlanBridge_BuildOutcomeJson = lines
 End Function
 
-Function Slice2PlanBridge_BuildPreviewPayloadJson(ByVal tabfieldRecords, ByVal previewKind)
-  Dim keys, i, payload
+Function Slice2PlanBridge_BuildPreviewPayloadJson(ByVal tabfieldRecords, ByVal previewKind, ByRef outcome)
+  Dim keys, payload
 
   keys = tabfieldRecords.Keys
   If tabfieldRecords.Count > 0 Then keys = Slice1Ingress_SortTextBinary(keys)
@@ -6141,7 +6420,13 @@ Function Slice2PlanBridge_BuildPreviewPayloadJson(ByVal tabfieldRecords, ByVal p
   payload = payload & "    ""mutation_authorized"": false," & vbCrLf
   payload = payload & "    ""tabfield_count"": " & CStr(tabfieldRecords.Count) & "," & vbCrLf
   payload = payload & "    ""tabfield_order"": " & Slice2PlanBridge_BuildTabfieldOrderJson(keys, tabfieldRecords.Count) & "," & vbCrLf
-  payload = payload & "    ""field_preview"": " & Slice2PlanBridge_BuildFieldPreviewJson(tabfieldRecords) & vbCrLf
+  payload = payload & "    ""field_preview"": " & Slice2PlanBridge_BuildFieldPreviewJson(tabfieldRecords)
+  If Slice2PlanBridge_HasProjectionIntake(outcome) Then
+    payload = payload & "," & vbCrLf
+    payload = payload & "    ""projection_metadata"": " & Slice2PlanBridge_BuildProjectionMetadataJson(outcome) & vbCrLf
+  Else
+    payload = payload & vbCrLf
+  End If
   payload = payload & "  }"
 
   Slice2PlanBridge_BuildPreviewPayloadJson = payload
@@ -6186,6 +6471,33 @@ Function Slice2PlanBridge_BuildFieldPreviewJson(ByVal tabfieldRecords)
 
   outTxt = outTxt & "    ]"
   Slice2PlanBridge_BuildFieldPreviewJson = outTxt
+End Function
+
+Function Slice2PlanBridge_BuildProjectionMetadataJson(ByRef outcome)
+  Dim outTxt
+
+  outTxt = ""
+  outTxt = outTxt & "{" & vbCrLf
+  outTxt = outTxt & "      ""projection_contract"": """ & Slice1Ingress_JsonEscape(CStr(outcome("projection_contract"))) & """," & vbCrLf
+  outTxt = outTxt & "      ""projection_kind"": """ & Slice1Ingress_JsonEscape(CStr(outcome("projection_kind"))) & """," & vbCrLf
+  outTxt = outTxt & "      ""input_artifact"": """ & Slice1Ingress_JsonEscape(CStr(outcome("projection_input_artifact"))) & """," & vbCrLf
+  outTxt = outTxt & "      ""input_identity"": {" & vbCrLf
+  outTxt = outTxt & "        ""artifact_path"": """ & Slice1Ingress_JsonEscape(CStr(outcome("projection_artifact_path"))) & """," & vbCrLf
+  outTxt = outTxt & "        ""input_fingerprint_sha256"": """ & Slice1Ingress_JsonEscape(CStr(outcome("projection_input_fingerprint_sha256"))) & """" & vbCrLf
+  outTxt = outTxt & "      }," & vbCrLf
+  outTxt = outTxt & "      ""status_summary"": {" & vbCrLf
+  outTxt = outTxt & "        ""status"": """ & Slice1Ingress_JsonEscape(CStr(outcome("projection_status"))) & """," & vbCrLf
+  outTxt = outTxt & "        ""error_count"": " & CStr(outcome("projection_error_count")) & "," & vbCrLf
+  outTxt = outTxt & "        ""warning_count"": " & CStr(outcome("projection_warning_count")) & vbCrLf
+  outTxt = outTxt & "      }," & vbCrLf
+  outTxt = outTxt & "      ""deterministic_identity_summary"": {" & vbCrLf
+  outTxt = outTxt & "        ""normalized_plan_hash"": """ & Slice1Ingress_JsonEscape(CStr(outcome("projection_normalized_plan_hash"))) & """," & vbCrLf
+  outTxt = outTxt & "        ""replay_identity"": """ & Slice1Ingress_JsonEscape(CStr(outcome("projection_replay_identity"))) & """," & vbCrLf
+  outTxt = outTxt & "        ""validator_run_identity"": """ & Slice1Ingress_JsonEscape(CStr(outcome("projection_validator_run_identity"))) & """" & vbCrLf
+  outTxt = outTxt & "      }" & vbCrLf
+  outTxt = outTxt & "    }"
+
+  Slice2PlanBridge_BuildProjectionMetadataJson = outTxt
 End Function
 ' ================================
 ' END WP20_RUNTIME_SLICE_02_READONLY_PLAN_BRIDGE
