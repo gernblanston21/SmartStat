@@ -266,3 +266,24 @@ Notes:
 - Validation confirmed gate-OFF parity and gate-ON determinism.
 - Slice does NOT authorize runtime mutation/apply/socket behavior.
 - Future runtime work must occur through new runtime lanes.
+
+Runtime Lane:
+`WP20_RUNTIME_SLICE_02_READONLY_PLAN_BRIDGE` (current scaffold scope)
+
+Status:
+- VALIDATED
+- FROZEN
+
+Evidence Location:
+`tests/_scratch/runtime-slice-02-readonly-plan-bridge/`
+
+Notes:
+- Applies to current scaffold scope only.
+- Gate-OFF parity passed.
+- Gate-ON determinism passed.
+- Fail-closed negatives passed.
+- Mutation boundary preserved.
+- Does NOT authorize apply behavior.
+- Does NOT authorize Trio mutation behavior.
+- Does NOT authorize socket mutation behavior.
+- Future slice-02 expansion requires a new authorized lane step and independent validation.
