@@ -598,6 +598,13 @@ Status: GOVERNANCE PACKAGE CLOSED / ACCEPTED (2026-03-10 governance/docs/tests o
 - No Trio mutation behavior.
 - No socket mutation behavior.
 - Required validation: gate-OFF parity, gate-ON determinism, fail-closed negatives, boundary audit, and slice-1 carry-forward sanity check.
+- Next authorized step after the frozen current scaffold scope of WP20_RUNTIME_SLICE_02_READONLY_PLAN_BRIDGE: WP20_RUNTIME_SLICE_02A_READONLY_PLAN_BRIDGE_CONTRACT_HARDENING.
+- Objective: harden deterministic preview payload contract shape and contract-level fail-closed diagnostics.
+- Lane remains read-only.
+- No apply behavior.
+- No Trio mutation behavior.
+- No socket mutation behavior.
+- Required validation: gate-OFF parity, gate-ON determinism, contract-negative fail-closed checks, mutation boundary audit, and carry-forward validation of existing slice-02 scaffold positives and negatives.
 
 ### Definition of Done
 - Runtime bridge contract documented with explicit guardrails.
