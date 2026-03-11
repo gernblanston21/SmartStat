@@ -287,3 +287,25 @@ Notes:
 - Does NOT authorize Trio mutation behavior.
 - Does NOT authorize socket mutation behavior.
 - Future slice-02 expansion requires a new authorized lane step and independent validation.
+
+Runtime Lane:
+`WP20_RUNTIME_SLICE_02A_READONLY_PLAN_BRIDGE_CONTRACT_HARDENING`
+
+Status:
+- VALIDATED
+- FROZEN
+
+Evidence Location:
+`tests/_scratch/runtime-slice-02-readonly-plan-bridge/`
+
+Notes:
+- Applies to current contract-hardening scope only.
+- Gate-OFF parity passed.
+- Positive carry-forward passed.
+- Prior negative carry-forward passed.
+- Contract-negative passed with `SLICE2_CONTRACT_REQUIREMENT_FAILED`.
+- Mutation boundary preserved.
+- Does NOT authorize apply behavior.
+- Does NOT authorize Trio mutation behavior.
+- Does NOT authorize socket mutation behavior.
+- Future slice-02A expansion requires a new authorized lane step and independent validation.
