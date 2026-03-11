@@ -245,3 +245,24 @@ OnAir dump handling:
   - Changelog update
 
 Release discipline enforced starting 2026-02-28.
+
+---
+
+## Runtime Lane Completion Record
+
+Runtime Lane:
+`WP20_RUNTIME_SLICE_01_READONLY_INGRESS`
+
+Status:
+- VALIDATED
+- FROZEN
+- ARCHIVAL READY
+
+Evidence Location:
+`tests/_scratch/runtime-slice-01-readonly-ingress/`
+
+Notes:
+- Slice limited to read-only ingress behavior.
+- Validation confirmed gate-OFF parity and gate-ON determinism.
+- Slice does NOT authorize runtime mutation/apply/socket behavior.
+- Future runtime work must occur through new runtime lanes.
