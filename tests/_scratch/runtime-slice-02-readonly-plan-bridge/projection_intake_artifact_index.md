@@ -9,8 +9,8 @@
 | `tests/_scratch/runtime-slice-02-readonly-plan-bridge/fixtures/neg_duplicate_tabfields.fixture` | Existing negative fixture | Slice-02A prior fail-closed carry-forward evidence |
 | `tests/_scratch/runtime-slice-02-readonly-plan-bridge/fixtures/neg_unsupported_surface.fixture` | Existing negative fixture | Slice-02A prior fail-closed carry-forward evidence |
 | `tests/_scratch/runtime-slice-02-readonly-plan-bridge/fixtures/neg_contract_noncanonical_pagename.fixture` | Existing contract-hardening negative fixture | Slice-02A prior fail-closed carry-forward evidence |
-| `tests/_scratch/runtime-slice-02-readonly-plan-bridge/fixtures/projection_pass_case.json` | Projection-intake positive fixture | Deterministic joined-preview input |
-| `tests/_scratch/runtime-slice-02-readonly-plan-bridge/fixtures/projection_refuse_case.json` | Projection-intake negative fixture | Runtime-eligibility fail-closed evidence input |
+| `tests/wp-19/target-03/fixtures/projection_pass_case.json` | Projection-intake positive fixture | Deterministic joined-preview input |
+| `tests/wp-19/target-03/fixtures/projection_refuse_case.json` | Projection-intake negative fixture | Runtime-eligibility fail-closed evidence input |
 | `tests/_scratch/runtime-slice-02-readonly-plan-bridge/fixtures/projection_unsupported_contract.json` | Projection-intake negative fixture | Unsupported-contract fail-closed evidence input |
 | `tests/_scratch/runtime-slice-02-readonly-plan-bridge/fixtures/projection_malformed_missing_status.json` | Projection-intake negative fixture | Malformed-artifact fail-closed evidence input |
 | `tests/_scratch/runtime-slice-02-readonly-plan-bridge/runs/pos_plan_bridge_run1.json` | Slice-02A positive run output (run 1) | Carry-forward deterministic source A |

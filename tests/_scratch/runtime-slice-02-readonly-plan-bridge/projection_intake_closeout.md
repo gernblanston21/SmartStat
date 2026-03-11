@@ -27,8 +27,8 @@ Out of scope:
 - `tests/_scratch/runtime-slice-02-readonly-plan-bridge/fixtures/neg_duplicate_tabfields.fixture`
 - `tests/_scratch/runtime-slice-02-readonly-plan-bridge/fixtures/neg_unsupported_surface.fixture`
 - `tests/_scratch/runtime-slice-02-readonly-plan-bridge/fixtures/neg_contract_noncanonical_pagename.fixture`
-- `tests/_scratch/runtime-slice-02-readonly-plan-bridge/fixtures/projection_pass_case.json`
-- `tests/_scratch/runtime-slice-02-readonly-plan-bridge/fixtures/projection_refuse_case.json`
+- `tests/wp-19/target-03/fixtures/projection_pass_case.json`
+- `tests/wp-19/target-03/fixtures/projection_refuse_case.json`
 - `tests/_scratch/runtime-slice-02-readonly-plan-bridge/fixtures/projection_unsupported_contract.json`
 - `tests/_scratch/runtime-slice-02-readonly-plan-bridge/fixtures/projection_malformed_missing_status.json`
 - `tests/_scratch/runtime-slice-02-readonly-plan-bridge/runs/pos_plan_bridge_run1.json`
