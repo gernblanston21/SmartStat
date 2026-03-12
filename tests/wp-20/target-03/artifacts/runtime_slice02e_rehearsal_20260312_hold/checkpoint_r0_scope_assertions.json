@@ -1,0 +1,22 @@
+{
+  "rehearsal_label": "runtime_slice02e_rehearsal_20260312_hold",
+  "slice_name": "WP20_RUNTIME_SLICE_02E_READONLY_PLAN_BRIDGE_RESOLUTION_PREVIEW",
+  "runtime_line": "SmartStat_v4.1.0.vbs",
+  "branch": "feature/wp20-runtime-bridge",
+  "commit_sha": "c6f7f08fe82b652d4d5e19c0e638a0b9502e737d",
+  "implementation_state": "NOT_STARTED",
+  "authorization_state": "hold",
+  "runtime_start_authorized": false,
+  "scope_assertions": {
+    "read_only": true,
+    "deterministic": true,
+    "mutation_authorized_false_required": true,
+    "no_trio_writes": true,
+    "no_sockets": true,
+    "no_apply_behavior": true,
+    "no_ini_schema_contract_edits": true,
+    "no_smartstattrayapp_compatibility_changes": true,
+    "no_rule_evaluation_summary_intake": true,
+    "no_new_upstream_projection_contract_intake": true
+  }
+}
