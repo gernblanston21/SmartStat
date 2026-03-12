@@ -1,9 +1,9 @@
-# Runtime Slice-02E Branch Approval Record (Draft)
+# Runtime Slice-02E Branch Approval Record
 
 Record scope: `WP-20 Target-05`  
 Slice name: `WP20_RUNTIME_SLICE_02E_READONLY_PLAN_BRIDGE_RESOLUTION_PREVIEW`  
 Runtime line: `SmartStat_v4.1.0.vbs`  
-Status posture: `DRAFT / HOLD` (`non-authorizing`)
+Status posture: `APPROVED` (`authorized_to_start_implementation` recorded)
 
 ### 1. Record Identity
 
@@ -15,27 +15,27 @@ Status posture: `DRAFT / HOLD` (`non-authorizing`)
 
 - `candidate_branch_name`: `feature/wp20-runtime-bridge`
 - `base_branch_name`: `feature/semantic-layer`
-- `candidate_branch_head_sha`: `e9caadda0480a664b9744b83ae79ab84de527387`
-- `branch_purpose`: `Draft-only review record for a possible slice-02E read-only resolution-preview step; no implementation-start authorization is granted by this record.`
+- `candidate_branch_head_sha`: `a826d2e74fbda6dedb6a83700240919daef7c2bc`
+- `branch_purpose`: `Runtime-lane implementation branch approval for WP20_RUNTIME_SLICE_02E_READONLY_PLAN_BRIDGE_RESOLUTION_PREVIEW only within the approved read-only resolution-preview boundary.`
 
 ### 3. Branch Isolation Assertions
 
 - `separate_lane_asserted`: `true`
 - `cross_lane_change_policy_ref`: `docs/onair/wp20_runtime_implementation_lane_entry_checklist.md`
 - `runtime_risk_class_acknowledged`: `true`
-- `isolation_notes`: `Runtime lane remains separated from feature/semantic-layer. This record preserves that separation for draft review only and does not authorize new runtime work.`
+- `isolation_notes`: `Runtime lane remains separated from feature/semantic-layer. This record preserves that separation and does not authorize broader runtime work outside the approved slice-02E boundary.`
 
 ### 4. Scope Constraints
 
 - `allowed_surface_refs`:
-  - `Draft boundary: WP20_RUNTIME_SLICE_02E_READONLY_PLAN_BRIDGE_RESOLUTION_PREVIEW`
+  - `Approved boundary: WP20_RUNTIME_SLICE_02E_READONLY_PLAN_BRIDGE_RESOLUTION_PREVIEW`
   - `Existing joined preview path only`
   - `status_summary.status` (already-authorized projection metadata)
   - `semantic_interpretation_summary.scope_resolution` (already-authorized projection metadata)
   - `semantic_interpretation_summary.effective_scope` (already-authorized projection metadata)
   - `semantic_interpretation_summary.evidence_source` (already-authorized projection metadata)
-  - `SmartStat_v4.1.0.vbs` (future runtime line only after separate approval)
-  - `tests/_scratch/runtime-slice-02-readonly-plan-bridge/**` (future evidence/harness artifacts only after separate approval)
+  - `SmartStat_v4.1.0.vbs` (approved runtime version line for slice-02E only)
+  - `tests/_scratch/runtime-slice-02-readonly-plan-bridge/**` (runtime evidence/harness artifacts only within the approved slice-02E boundary)
 - `forbidden_surface_refs`:
   - `No new upstream projection-contract intake`
   - `No rule_evaluation_summary intake`
@@ -66,16 +66,16 @@ Status posture: `DRAFT / HOLD` (`non-authorizing`)
   - `tests/wp-20/target-16/artifacts/runtime_slice02e_version_line_evidence_review.md`
   - `tests/wp-20/target-16/artifacts/runtime_slice02e_version_line_signoff.md`
   - `tests/wp-20/target-16/artifacts/runtime_slice02e_authorization_gate_result.md`
-- `input_completeness`: `false`
-- `input_gaps`: `No approved Target-05 implementation authorization outcome; no approved Target-13 lane-entry readiness; no implementation-ready Target-03 gate review/signoff disposition chain for this slice.`
-- `review_notes`: `Version-line decision, Target-15 evidence, Target-16 review/signoff, and the Target-03 rehearsal manifest/index plus protected-surface integrity evidence are now present. Branch-start authority remains blocked because the current implementation-entry governance chain still records hold outcomes.`
+- `input_completeness`: `true`
+- `input_gaps`: `none`
+- `review_notes`: `Branch isolation, read-only boundary constraints, and the linked slice-02E evidence chain are complete; explicit implementation-start authorization has been recorded within the preserved scope guardrails.`
 
 ### 6. Decision
 
-- `decision_outcome`: `hold`
-- `decision_rationale`: `The branch definition and current evidence chain are traceable, but branch-start approval is not advanced while the implementation-entry governance chain remains on hold.`
-- `blocking_conditions`: `Target-05 implementation authorization remains hold; Target-13 lane-entry checklist remains HOLD / NOT READY; Target-03 reviewer dispositions and gate recommendation remain hold; runtime start remains not authorized in the current authorization-gate result.`
-- `required_follow_up`: `Preserve the current hold outcome, use the refreshed slice-02E authorization-gate result as the current status summary, and reconsider Target-05/Target-13 only after a separate governance pass resolves the remaining hold dispositions.`
+- `decision_outcome`: `authorized_to_start_implementation`
+- `decision_rationale`: `Branch definition, isolation assertions, and boundary constraints are acceptable for slice-02E implementation start under the recorded read-only resolution-preview guardrails.`
+- `blocking_conditions`: `none`
+- `required_follow_up`: `Maintain the slice-02E read-only resolution-preview boundary and fail-closed revocation posture throughout the first bounded code-writing pass.`
 
 ### 7. Ownership
 
@@ -93,11 +93,11 @@ Status posture: `DRAFT / HOLD` (`non-authorizing`)
   - `Any apply/Trio/socket mutation behavior`
   - `Any edit to SmartStat_v4.0.0_beta.vbs`
   - `Any protected INI/schema/contract surface change`
-- `revocation_path_ref`: `draft_only_no_authorization_recorded`
+- `revocation_path_ref`: `tests/wp-20/target-16/artifacts/runtime_slice02e_authorization_gate_result.md`
 - `revocation_notification_path`: `runtime_lane_owner -> runtime_lane_governance_owner -> runtime_lane_escalation_owner`
 
 ### 9. Sign-Off
 
-- `final_disposition`: `hold`
-- `signoff_date_utc`: `2026-03-12T21:36:49Z`
-- `signoff_notes_ref`: `Hold preserved after Target-03 completion and refreshed blocked authorization-gate recording. No implementation authorization or branch-start approval is recorded here.`
+- `final_disposition`: `approved`
+- `signoff_date_utc`: `2026-03-12T23:34:13Z`
+- `signoff_notes_ref`: `tests/wp-20/target-16/artifacts/runtime_slice02e_authorization_gate_result.md`
