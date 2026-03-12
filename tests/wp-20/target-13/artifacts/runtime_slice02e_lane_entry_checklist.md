@@ -21,7 +21,7 @@ Checklist state: `HOLD / NOT READY`
   - Evidence: `SmartStat_v4.0.0_beta.vbs` remains frozen/protected under `docs/onair/wp20_runtime_version_line_rule.md`
 5. Regression and rollback evidence plan is approved for runtime-line work.
   - Status: `HOLD`
-  - Evidence: `docs/onair/wp20_regression_evidence_plan.md` exists, but no slice-02E approval/evidence bundle is approved yet
+  - Evidence: `docs/onair/wp20_regression_evidence_plan.md` exists and slice-02E version-line evidence/signoff is complete, but no implementation-start approval/evidence bundle is approved yet
 
 ## Mandatory Checkpoints
 
@@ -50,7 +50,8 @@ Checklist state: `HOLD / NOT READY`
 - Baseline comparison plan defined: `true`
 - Rollback criteria/path documented: `true`
 - Determinism/fail-closed requirements documented: `true`
-- Slice-02E approval/evidence linkage complete: `false`
+- Slice-02E version-line evidence/signoff linkage complete: `true`
+- Slice-02E implementation-start approval/evidence bundle complete: `false`
 
 ### Checkpoint 5: Implementation Authorization Checkpoint
 
@@ -76,5 +77,5 @@ Checklist state: `HOLD / NOT READY`
 ## Overall Lane Entry Outcome
 
 - `lane_entry_outcome`: `blocked_pending_authorization`
-- `hold_reason`: `Explicit implementation authorization and branch approval remain hold, and slice-02E evidence/signoff linkage is not yet complete.`
+- `hold_reason`: `Explicit implementation authorization and branch approval remain hold, and the broader implementation-start approval/evidence bundle is not yet complete despite completed Target-15/Target-16 linkage.`
 - `runtime_work_start_allowed`: `false`
