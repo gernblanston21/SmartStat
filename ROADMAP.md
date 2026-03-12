@@ -626,6 +626,17 @@ Status: GOVERNANCE PACKAGE CLOSED / ACCEPTED (2026-03-10 governance/docs/tests o
 - No Trio mutation behavior.
 - No socket mutation behavior.
 - Required validation: gate-OFF parity, carry-forward validation of existing slice-02A positives and negatives, carry-forward validation of existing slice-02B positives and negatives, deterministic repeat-run hash equality for semantic-interpretation joined preview, semantic-interpretation negative fail-closed checks, mutation boundary audit, and boundary check confirming no new Trio/socket/apply surfaces were introduced.
+- Next authorized step after the frozen current scope of WP20_RUNTIME_SLICE_02C_READONLY_PLAN_BRIDGE_SEMANTIC_INTERPRETATION_INTAKE: WP20_RUNTIME_SLICE_02D_READONLY_PLAN_BRIDGE_ISSUES_SUMMARY_INTAKE.
+- Objective: intake exactly the `issues_summary` metadata surface from the existing WP-19 projection artifact into the existing read-only plan-bridge path.
+- Intake limited to: `issues_summary.errors` and `issues_summary.warnings`.
+- Lane remains read-only.
+- Joined preview output remains deterministic.
+- Joined preview output must keep `mutation_authorized=false`.
+- Fail closed if required `issues_summary` fields are missing or malformed.
+- No apply behavior.
+- No Trio mutation behavior.
+- No socket mutation behavior.
+- Required validation: gate-OFF parity, carry-forward validation of existing slice-02A positives and negatives, carry-forward validation of existing slice-02B positives and negatives, carry-forward validation of existing slice-02C positives and negatives, deterministic repeat-run hash equality for issues-summary joined preview, issues-summary negative fail-closed checks, mutation boundary audit, and boundary check confirming no new Trio/socket/apply surfaces were introduced.
 
 ### Definition of Done
 - Runtime bridge contract documented with explicit guardrails.
