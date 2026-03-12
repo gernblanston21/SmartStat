@@ -14,6 +14,8 @@
 | plan_bridge_case01.fixture + projection_refuse_case.json | status=fail_closed; error_code=SLICE2_PROJECTION_NOT_RUNTIME_ELIGIBLE | status=fail_closed; error_code=SLICE2_PROJECTION_NOT_RUNTIME_ELIGIBLE | PASS |
 | plan_bridge_case01.fixture + projection_malformed_missing_semantic_scope.json | status=fail_closed; error_code=SLICE2_PROJECTION_ARTIFACT_MALFORMED | status=fail_closed; error_code=SLICE2_PROJECTION_ARTIFACT_MALFORMED | PASS |
 | plan_bridge_case01.fixture + projection_malformed_empty_semantic_evidence_source.json | status=fail_closed; error_code=SLICE2_PROJECTION_ARTIFACT_MALFORMED | status=fail_closed; error_code=SLICE2_PROJECTION_ARTIFACT_MALFORMED | PASS |
+| plan_bridge_case01.fixture + projection_malformed_missing_issues_errors.json | status=fail_closed; error_code=SLICE2_PROJECTION_ARTIFACT_MALFORMED | status=fail_closed; error_code=SLICE2_PROJECTION_ARTIFACT_MALFORMED | PASS |
+| plan_bridge_case01.fixture + projection_malformed_issues_warnings_not_array.json | status=fail_closed; error_code=SLICE2_PROJECTION_ARTIFACT_MALFORMED | status=fail_closed; error_code=SLICE2_PROJECTION_ARTIFACT_MALFORMED | PASS |
 | mutation_boundary_report.txt | TOTAL_MUTATION_CALLS=0 | TOTAL_MUTATION_CALLS=0 | PASS |
 
 Determinism check (positive fixture):
@@ -21,9 +23,9 @@ Determinism check (positive fixture):
 - pos_plan_bridge_run2.json SHA256 = AF124012ED2DA1C62CD5822C9E39FD295FD01BD925B6735FCEA1901AB836C0B7
 - hash_match = True
 
-Determinism check (semantic-interpretation joined preview):
-- pos_projection_intake_run1.json SHA256 = A0050A8CAC7309ACBB744029B89D4C7059F21B4CCC14DB873E0A9440C5F20652
-- pos_projection_intake_run2.json SHA256 = A0050A8CAC7309ACBB744029B89D4C7059F21B4CCC14DB873E0A9440C5F20652
+Determinism check (issues-summary joined preview):
+- pos_projection_intake_run1.json SHA256 = 56D9ACD0865B8A3F397ECDC0FC6B929DF2AB9B4DCEDDBC1B5451EC4DCA1806CA
+- pos_projection_intake_run2.json SHA256 = 56D9ACD0865B8A3F397ECDC0FC6B929DF2AB9B4DCEDDBC1B5451EC4DCA1806CA
 - hash_match = True
 
 Gate-OFF parity check (mock-trio normalized):

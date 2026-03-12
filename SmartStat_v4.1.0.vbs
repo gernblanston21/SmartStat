@@ -6056,6 +6056,8 @@ Function Slice2PlanBridge_LoadProjectionIntake(ByVal projectionPath, ByRef outco
   Dim inputArtifact, artifactPath, inputFingerprint
   Dim normalizedPlanHash, replayIdentity, validatorRunIdentity
   Dim semanticScopeResolution, semanticEffectiveScope, semanticEvidenceSource
+  Dim issuesErrorsJson, issuesWarningsJson
+  Dim issuesErrorsErr, issuesWarningsErr
   Dim errorCount, warningCount
 
   Slice2PlanBridge_LoadProjectionIntake = False
@@ -6187,6 +6189,16 @@ Function Slice2PlanBridge_LoadProjectionIntake(ByVal projectionPath, ByRef outco
     errText = "projection artifact malformed: semantic_interpretation_summary.evidence_source empty"
     Exit Function
   End If
+  If Not Slice2PlanBridge_JsonReadArray(jsonText, "errors", issuesErrorsJson, issuesErrorsErr) Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: issues_summary.errors " & issuesErrorsErr
+    Exit Function
+  End If
+  If Not Slice2PlanBridge_JsonReadArray(jsonText, "warnings", issuesWarningsJson, issuesWarningsErr) Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: issues_summary.warnings " & issuesWarningsErr
+    Exit Function
+  End If
 
   outcome("preview_kind") = SLICE2_PLAN_BRIDGE_PROJECTION_PREVIEW_KIND
   outcome("projection_contract") = CStr(projectionContract)
@@ -6203,6 +6215,8 @@ Function Slice2PlanBridge_LoadProjectionIntake(ByVal projectionPath, ByRef outco
   outcome("projection_semantic_scope_resolution") = CStr(semanticScopeResolution)
   outcome("projection_semantic_effective_scope") = CStr(semanticEffectiveScope)
   outcome("projection_semantic_evidence_source") = CStr(semanticEvidenceSource)
+  outcome("projection_issues_errors_json") = CStr(issuesErrorsJson)
+  outcome("projection_issues_warnings_json") = CStr(issuesWarningsJson)
 
   Slice2PlanBridge_LoadProjectionIntake = True
 End Function
@@ -6316,6 +6330,100 @@ Function Slice2PlanBridge_JsonReadLong(ByVal jsonText, ByVal keyName, ByRef valu
   If CLng(errNumParse) <> 0 Then Exit Function
 
   Slice2PlanBridge_JsonReadLong = True
+End Function
+
+Function Slice2PlanBridge_JsonReadArray(ByVal jsonText, ByVal keyName, ByRef valueOut, ByRef errDetail)
+  Dim valuePos
+
+  Slice2PlanBridge_JsonReadArray = False
+  valueOut = ""
+  errDetail = "missing"
+
+  If Not Slice2PlanBridge_JsonFindValueStart(jsonText, keyName, valuePos) Then Exit Function
+  If Mid(jsonText, valuePos, 1) <> "[" Then
+    errDetail = "malformed"
+    Exit Function
+  End If
+  If Not Slice2PlanBridge_JsonExtractArray(jsonText, valuePos, valueOut) Then
+    errDetail = "malformed"
+    Exit Function
+  End If
+
+  valueOut = Slice2PlanBridge_JsonCompact(valueOut)
+  If Len(valueOut) = 0 Then
+    errDetail = "malformed"
+    Exit Function
+  End If
+
+  Slice2PlanBridge_JsonReadArray = True
+End Function
+
+Function Slice2PlanBridge_JsonExtractArray(ByVal jsonText, ByVal valuePos, ByRef valueOut)
+  Dim i, depth, ch, inString, escapeNext
+
+  Slice2PlanBridge_JsonExtractArray = False
+  valueOut = ""
+  depth = 0
+  inString = False
+  escapeNext = False
+
+  For i = valuePos To Len(jsonText)
+    ch = Mid(jsonText, i, 1)
+    If inString Then
+      If escapeNext Then
+        escapeNext = False
+      ElseIf ch = "\" Then
+        escapeNext = True
+      ElseIf ch = """" Then
+        inString = False
+      End If
+    Else
+      If ch = """" Then
+        inString = True
+      ElseIf ch = "[" Then
+        depth = depth + 1
+      ElseIf ch = "]" Then
+        depth = depth - 1
+        If depth = 0 Then
+          valueOut = Mid(jsonText, valuePos, i - valuePos + 1)
+          Slice2PlanBridge_JsonExtractArray = True
+          Exit Function
+        End If
+        If depth < 0 Then Exit Function
+      End If
+    End If
+  Next
+End Function
+
+Function Slice2PlanBridge_JsonCompact(ByVal jsonText)
+  Dim i, ch, outTxt, inString, escapeNext
+
+  outTxt = ""
+  inString = False
+  escapeNext = False
+
+  For i = 1 To Len(jsonText)
+    ch = Mid(jsonText, i, 1)
+    If inString Then
+      outTxt = outTxt & ch
+      If escapeNext Then
+        escapeNext = False
+      ElseIf ch = "\" Then
+        escapeNext = True
+      ElseIf ch = """" Then
+        inString = False
+      End If
+    Else
+      If ch = """" Then
+        inString = True
+        outTxt = outTxt & ch
+      ElseIf ch <> " " And ch <> vbTab And ch <> vbCr And ch <> vbLf Then
+        outTxt = outTxt & ch
+      End If
+    End If
+  Next
+
+  Slice2PlanBridge_JsonCompact = outTxt
 End Function
 
 Function Slice2PlanBridge_JsonFindValueStart(ByVal jsonText, ByVal keyName, ByRef valuePos)
@@ -6533,6 +6641,10 @@ Function Slice2PlanBridge_BuildProjectionMetadataJson(ByRef outcome)
   outTxt = outTxt & "        ""scope_resolution"": """ & Slice1Ingress_JsonEscape(CStr(outcome("projection_semantic_scope_resolution"))) & """," & vbCrLf
   outTxt = outTxt & "        ""effective_scope"": """ & Slice1Ingress_JsonEscape(CStr(outcome("projection_semantic_effective_scope"))) & """," & vbCrLf
   outTxt = outTxt & "        ""evidence_source"": """ & Slice1Ingress_JsonEscape(CStr(outcome("projection_semantic_evidence_source"))) & """" & vbCrLf
+  outTxt = outTxt & "      }," & vbCrLf
+  outTxt = outTxt & "      ""issues_summary"": {" & vbCrLf
+  outTxt = outTxt & "        ""errors"": " & CStr(outcome("projection_issues_errors_json")) & "," & vbCrLf
+  outTxt = outTxt & "        ""warnings"": " & CStr(outcome("projection_issues_warnings_json")) & vbCrLf
   outTxt = outTxt & "      }" & vbCrLf
   outTxt = outTxt & "    }"
 
