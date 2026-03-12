@@ -23,10 +23,15 @@ Determinism check (positive fixture):
 - pos_plan_bridge_run2.json SHA256 = AF124012ED2DA1C62CD5822C9E39FD295FD01BD925B6735FCEA1901AB836C0B7
 - hash_match = True
 
-Determinism check (issues-summary joined preview):
-- pos_projection_intake_run1.json SHA256 = 56D9ACD0865B8A3F397ECDC0FC6B929DF2AB9B4DCEDDBC1B5451EC4DCA1806CA
-- pos_projection_intake_run2.json SHA256 = 56D9ACD0865B8A3F397ECDC0FC6B929DF2AB9B4DCEDDBC1B5451EC4DCA1806CA
+Determinism check (resolution-preview joined preview):
+- pos_projection_intake_run1.json SHA256 = 2929A3EE93894F2B19E316B5EBE1B355DD6AC12F1F75E20DD12BDA93D7BB4629
+- pos_projection_intake_run2.json SHA256 = 2929A3EE93894F2B19E316B5EBE1B355DD6AC12F1F75E20DD12BDA93D7BB4629
 - hash_match = True
+
+Resolution-preview fail-closed coverage:
+- projection_malformed_missing_status.json -> `SLICE2_PROJECTION_ARTIFACT_MALFORMED`
+- projection_malformed_missing_semantic_scope.json -> `SLICE2_PROJECTION_ARTIFACT_MALFORMED`
+- projection_malformed_empty_semantic_evidence_source.json -> `SLICE2_PROJECTION_ARTIFACT_MALFORMED`
 
 Gate-OFF parity check (mock-trio normalized):
 - method: mock_trio_runner.vbs baseline/successor comparison with identity-only exclusions

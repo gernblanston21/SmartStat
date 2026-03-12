@@ -5969,6 +5969,10 @@ Function Slice2PlanBridge_Execute(ByRef outcome)
       Call Slice2PlanBridge_FailClosed(outcome, errCode, errText)
       Exit Function
     End If
+    If Not Slice2PlanBridge_ValidateResolutionPreviewInputs(outcome, errText) Then
+      Call Slice2PlanBridge_FailClosed(outcome, SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED, errText)
+      Exit Function
+    End If
   End If
   outcome("status") = "success"
   Slice2PlanBridge_Execute = True
@@ -6457,6 +6461,32 @@ Function Slice2PlanBridge_HasProjectionIntake(ByRef outcome)
   Slice2PlanBridge_HasProjectionIntake = outcome.Exists("projection_contract")
 End Function
 
+Function Slice2PlanBridge_ValidateResolutionPreviewInputs(ByRef outcome, ByRef errText)
+  Dim requiredKeys, keyName, keyValue
+
+  Slice2PlanBridge_ValidateResolutionPreviewInputs = False
+  errText = ""
+  requiredKeys = Array( _
+    "projection_status", _
+    "projection_semantic_scope_resolution", _
+    "projection_semantic_effective_scope", _
+    "projection_semantic_evidence_source")
+
+  For Each keyName In requiredKeys
+    If Not outcome.Exists(CStr(keyName)) Then
+      errText = "resolution preview input missing: " & CStr(keyName)
+      Exit Function
+    End If
+    keyValue = CStr(outcome(CStr(keyName)))
+    If Len(Trim(keyValue)) = 0 Then
+      errText = "resolution preview input empty: " & CStr(keyName)
+      Exit Function
+    End If
+  Next
+
+  Slice2PlanBridge_ValidateResolutionPreviewInputs = True
+End Function
+
 Sub Slice2PlanBridge_FailClosed(ByRef outcome, ByVal errCode, ByVal errText)
   outcome("status") = "fail_closed"
   outcome("error_code") = CStr(errCode)
@@ -6565,7 +6595,8 @@ Function Slice2PlanBridge_BuildPreviewPayloadJson(ByVal tabfieldRecords, ByVal p
   payload = payload & "    ""field_preview"": " & Slice2PlanBridge_BuildFieldPreviewJson(tabfieldRecords)
   If Slice2PlanBridge_HasProjectionIntake(outcome) Then
     payload = payload & "," & vbCrLf
-    payload = payload & "    ""projection_metadata"": " & Slice2PlanBridge_BuildProjectionMetadataJson(outcome) & vbCrLf
+    payload = payload & "    ""projection_metadata"": " & Slice2PlanBridge_BuildProjectionMetadataJson(outcome) & "," & vbCrLf
+    payload = payload & "    ""resolution_preview"": " & Slice2PlanBridge_BuildResolutionPreviewJson(outcome) & vbCrLf
   Else
     payload = payload & vbCrLf
   End If
@@ -6649,6 +6680,20 @@ Function Slice2PlanBridge_BuildProjectionMetadataJson(ByRef outcome)
   outTxt = outTxt & "    }"
 
   Slice2PlanBridge_BuildProjectionMetadataJson = outTxt
+End Function
+
+Function Slice2PlanBridge_BuildResolutionPreviewJson(ByRef outcome)
+  Dim outTxt
+
+  outTxt = ""
+  outTxt = outTxt & "{" & vbCrLf
+  outTxt = outTxt & "      ""status"": """ & Slice1Ingress_JsonEscape(CStr(outcome("projection_status"))) & """," & vbCrLf
+  outTxt = outTxt & "      ""scope_resolution"": """ & Slice1Ingress_JsonEscape(CStr(outcome("projection_semantic_scope_resolution"))) & """," & vbCrLf
+  outTxt = outTxt & "      ""effective_scope"": """ & Slice1Ingress_JsonEscape(CStr(outcome("projection_semantic_effective_scope"))) & """," & vbCrLf
+  outTxt = outTxt & "      ""evidence_source"": """ & Slice1Ingress_JsonEscape(CStr(outcome("projection_semantic_evidence_source"))) & """" & vbCrLf
+  outTxt = outTxt & "    }"
+
+  Slice2PlanBridge_BuildResolutionPreviewJson = outTxt
 End Function
 ' ================================
 ' END WP20_RUNTIME_SLICE_02_READONLY_PLAN_BRIDGE

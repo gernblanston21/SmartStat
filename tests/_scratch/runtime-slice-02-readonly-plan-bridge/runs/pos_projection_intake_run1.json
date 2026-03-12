@@ -61,6 +61,12 @@
         "errors": [],
         "warnings": []
       }
+    },
+    "resolution_preview": {
+      "status": "PASS",
+      "scope_resolution": "implicit_default",
+      "effective_scope": "career",
+      "evidence_source": "operator_grounded_default"
     }
   }
 }
