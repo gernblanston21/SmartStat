@@ -15,7 +15,7 @@ Status posture: `DRAFT / HOLD` (`non-authorizing`)
 
 - `candidate_branch_name`: `feature/wp20-runtime-bridge`
 - `base_branch_name`: `feature/semantic-layer`
-- `candidate_branch_head_sha`: `48ccc399fdd1589b8ff85f4517736b8bd3e31d76`
+- `candidate_branch_head_sha`: `e9caadda0480a664b9744b83ae79ab84de527387`
 - `branch_purpose`: `Draft-only review record for a possible slice-02E read-only resolution-preview step; no implementation-start authorization is granted by this record.`
 
 ### 3. Branch Isolation Assertions
@@ -57,6 +57,8 @@ Status posture: `DRAFT / HOLD` (`non-authorizing`)
   - `docs/onair/wp20_implementation_authorization_record.md`
   - `docs/onair/wp20_runtime_version_line_decision_record_template.md`
   - `docs/onair/wp20_runtime_implementation_lane_entry_checklist.md`
+  - `tests/wp-20/target-03/artifacts/runtime_slice02e_rehearsal_20260312_hold/rehearsal_manifest.md`
+  - `tests/wp-20/target-03/artifacts/runtime_slice02e_rehearsal_20260312_hold/rehearsal_index.md`
   - `tests/wp-20/target-13/artifacts/runtime_slice02e_lane_entry_checklist.md`
   - `tests/wp-20/target-14/artifacts/runtime_slice02e_version_line_decision_record.md`
   - `tests/wp-20/target-15/artifacts/runtime_slice02e_version_line_evidence_checklist.md`
@@ -65,15 +67,15 @@ Status posture: `DRAFT / HOLD` (`non-authorizing`)
   - `tests/wp-20/target-16/artifacts/runtime_slice02e_version_line_signoff.md`
   - `tests/wp-20/target-16/artifacts/runtime_slice02e_authorization_gate_result.md`
 - `input_completeness`: `false`
-- `input_gaps`: `No approved Target-05 implementation authorization outcome; no approved Target-13 lane-entry readiness; no approved implementation-start rehearsal/evidence bundle for this slice.`
-- `review_notes`: `Version-line decision, Target-15 evidence, Target-16 review/signoff, and the current authorization-gate-result record are complete, but implementation-start authority remains blocked pending later Target-05 and Target-13 approval advancement.`
+- `input_gaps`: `No approved Target-05 implementation authorization outcome; no approved Target-13 lane-entry readiness; no implementation-ready Target-03 gate review/signoff disposition chain for this slice.`
+- `review_notes`: `Version-line decision, Target-15 evidence, Target-16 review/signoff, and the Target-03 rehearsal manifest/index plus protected-surface integrity evidence are now present. Branch-start authority remains blocked because the current implementation-entry governance chain still records hold outcomes.`
 
 ### 6. Decision
 
 - `decision_outcome`: `hold`
-- `decision_rationale`: `The draft slice-02E boundary is defined for formal review, but no implementation-start approval has been granted.`
-- `blocking_conditions`: `ROADMAP draft entry not yet approved; Target-05 implementation authorization remains hold; Target-13 lane-entry checklist remains HOLD / NOT READY; implementation-start rehearsal/evidence inputs remain incomplete.`
-- `required_follow_up`: `Preserve the current hold outcome, use the recorded slice-02E authorization-gate result as the current status summary, and re-review Target-05/Target-13 after later implementation-start approval inputs are assembled.`
+- `decision_rationale`: `The branch definition and current evidence chain are traceable, but branch-start approval is not advanced while the implementation-entry governance chain remains on hold.`
+- `blocking_conditions`: `Target-05 implementation authorization remains hold; Target-13 lane-entry checklist remains HOLD / NOT READY; Target-03 reviewer dispositions and gate recommendation remain hold; runtime start remains not authorized in the current authorization-gate result.`
+- `required_follow_up`: `Preserve the current hold outcome, use the refreshed slice-02E authorization-gate result as the current status summary, and reconsider Target-05/Target-13 only after a separate governance pass resolves the remaining hold dispositions.`
 
 ### 7. Ownership
 
@@ -97,5 +99,5 @@ Status posture: `DRAFT / HOLD` (`non-authorizing`)
 ### 9. Sign-Off
 
 - `final_disposition`: `hold`
-- `signoff_date_utc`: `2026-03-12T21:08:32Z`
-- `signoff_notes_ref`: `Hold preserved after Target-15/Target-16 completion and blocked authorization-gate recording. No implementation authorization or branch-start approval is recorded here.`
+- `signoff_date_utc`: `2026-03-12T21:36:49Z`
+- `signoff_notes_ref`: `Hold preserved after Target-03 completion and refreshed blocked authorization-gate recording. No implementation authorization or branch-start approval is recorded here.`

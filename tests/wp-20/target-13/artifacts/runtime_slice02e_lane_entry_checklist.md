@@ -20,8 +20,8 @@ Checklist state: `HOLD / NOT READY`
   - Status: `PASS`
   - Evidence: `SmartStat_v4.0.0_beta.vbs` remains frozen/protected under `docs/onair/wp20_runtime_version_line_rule.md`
 5. Regression and rollback evidence plan is approved for runtime-line work.
-  - Status: `HOLD`
-  - Evidence: `docs/onair/wp20_regression_evidence_plan.md` exists and slice-02E version-line evidence/signoff is complete, but no implementation-start approval/evidence bundle is approved yet
+  - Status: `PASS`
+  - Evidence: `docs/onair/wp20_regression_evidence_plan.md` plus `tests/wp-20/target-03/artifacts/runtime_slice02e_rehearsal_20260312_hold/rehearsal_manifest.md` and `tests/wp-20/target-03/artifacts/runtime_slice02e_rehearsal_20260312_hold/rehearsal_index.md`
 
 ## Mandatory Checkpoints
 
@@ -46,12 +46,12 @@ Checklist state: `HOLD / NOT READY`
 
 ### Checkpoint 4: Regression/Rollback Evidence Checkpoint
 
-- Status: `HOLD`
+- Status: `PASS`
 - Baseline comparison plan defined: `true`
 - Rollback criteria/path documented: `true`
 - Determinism/fail-closed requirements documented: `true`
 - Slice-02E version-line evidence/signoff linkage complete: `true`
-- Slice-02E implementation-start approval/evidence bundle complete: `false`
+- Slice-02E rehearsal/protected-surface evidence bundle complete: `true`
 
 ### Checkpoint 5: Implementation Authorization Checkpoint
 
@@ -77,5 +77,5 @@ Checklist state: `HOLD / NOT READY`
 ## Overall Lane Entry Outcome
 
 - `lane_entry_outcome`: `blocked_pending_authorization`
-- `hold_reason`: `Explicit implementation authorization and branch approval remain hold, and the broader implementation-start approval/evidence bundle is not yet complete despite completed Target-15/Target-16 linkage.`
+- `hold_reason`: `Explicit implementation authorization and branch approval remain hold, and the current Target-03 reviewer/gate dispositions do not yet support implementation-ready entry despite completed Target-03/14/15/16 evidence linkage.`
 - `runtime_work_start_allowed`: `false`
