@@ -25,7 +25,7 @@
 | Harness Capture | PRE/POST + grouped diff artifacts | PASS | Capture + Strict modes verified |
 | Ambiguity Gate Drill | Forced fail-closed behavior | PASS | HARNESS_STRICT blocked commit |
 | No-Change Transaction | Idempotent re-run validation | PASS | Deterministic outcome; identical writes |
-| Performance Check | Execution time sanity | PASS | 0.695s – 0.926s |
+| Performance Check | Execution time sanity | PASS | 0.695s â€“ 0.926s |
 | Log Integrity Review | Phase + TX logging review | PASS (minor warnings) | PHASE_ORDER_WARN present |
 
 ------------------------------------------------------------------------
@@ -44,8 +44,8 @@
 - Output targets compiled (inferred=0)
 - Static overrides applied correctly
 - Transaction validated and committed
-- writes=12–13 depending on initial property state (pre-existing syntax vs blank state)
-- Completed in ~0.7–0.9 seconds
+- writes=12â€“13 depending on initial property state (pre-existing syntax vs blank state)
+- Completed in ~0.7â€“0.9 seconds
 
 ## Non-Blocking Observations
 

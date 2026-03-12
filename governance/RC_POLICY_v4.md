@@ -13,9 +13,9 @@ This document defines version boundary rules and qualification criteria for the 
 
 The v4.0.x line is a stability line, not a feature expansion line.
 
-- `v4.0.0_beta` — Structural freeze completed.
-- `v4.0.0_RC1` — Production readiness validation layer.
-- `v4.1.0+` — Feature or architectural evolution.
+- `v4.0.0_beta` â€” Structural freeze completed.
+- `v4.0.0_RC1` â€” Production readiness validation layer.
+- `v4.1.0+` â€” Feature or architectural evolution.
 
 Any change that modifies runtime semantics automatically disqualifies the change from the v4.0.x line and requires version advancement to v4.1.0 or higher.
 
@@ -95,7 +95,7 @@ All of the following must pass before tagging `v4.0.0_RC1`.
 
 ## 4.1 Harness Validation
 
-- Run `HARNESS_STRICT` across 5–10 representative templates.
+- Run `HARNESS_STRICT` across 5â€“10 representative templates.
 - Validate:
   - STRICT blocks commit when `diffCount > 0`.
   - STRICT allows commit when `diffCount = 0`.

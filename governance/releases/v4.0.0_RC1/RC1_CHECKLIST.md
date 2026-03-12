@@ -1,4 +1,4 @@
-# SmartStat v4.0.0_RC1 — Release Checklist
+# SmartStat v4.0.0_RC1 â€” Release Checklist
 
 This checklist must be fully completed before tagging `v4.0.0_RC1`.
 
@@ -52,7 +52,7 @@ If any commit does not fall into one of these categories, it must be version-bum
 
 # 3. Harness Validation
 
-Run `HARNESS_STRICT` across 5–10 representative templates.
+Run `HARNESS_STRICT` across 5â€“10 representative templates.
 
 ## 3.1 Required Coverage
 - [ ] Qualifier-heavy template

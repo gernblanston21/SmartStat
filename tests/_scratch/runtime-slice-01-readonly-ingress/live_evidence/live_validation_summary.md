@@ -1,4 +1,4 @@
-﻿# Runtime Slice-1 Live Validation Summary
+# Runtime Slice-1 Live Validation Summary
 
 Generated: 2026-03-11T12:18:15
 Evidence root: tests/_scratch/runtime-slice-01-readonly-ingress/live_evidence
