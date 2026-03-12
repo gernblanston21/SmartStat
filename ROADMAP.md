@@ -108,46 +108,46 @@ WP-10 must NOT:
 
 ### Implementation Phases
 
-Phase 1 ñ Surface Audit (no code changes)
+Phase 1 ‚Äì Surface Audit (no code changes)
 - Confirm actual presence of each determinism surface class
 - Identify behavioral vs presentation-only cases
 - Document implicit precedence dependencies
 
-Phase 2 ñ Emission Stabilization
+Phase 2 ‚Äì Emission Stabilization
 - Stabilize output_map ordering
 - Stabilize ambiguity dump ordering
 - Stabilize harness artifact serialization
 
-Phase 3 ñ Behavioral Surface Hardening
+Phase 3 ‚Äì Behavioral Surface Hardening
 - Stabilize dictionary iteration used in resolver decisions
 - Stabilize overlay merge ordering explicitly
 - Stabilize candidate evaluation order
 
-### WP-10 Phase 3 ó Behavioral Surface Hardening (Targets)
+### WP-10 Phase 3 ‚Äî Behavioral Surface Hardening (Targets)
 
 Completed:
-- Target #1 ó Commit ordering determinism (ApplyPlan.Keys sorted before non-atomic commit loop).
-- Target #2 ó Resolver tie determinism (two-pass tie detection; ties fail closed).
-- Target #3 ó TRANSFORMS_REGEX determinism (sorted load/apply; strict conflict fail-closed).
-- Target #4 ó AmbiguityContext lifecycle determinism + strict invariants (AMBIGUOUS_CONTEXT_INVALID; stable ambiguity emissions).
-- Target #5 ó TryCanonLookupFlexible: deterministic first-match behavior (normalize-collision handling).
-- Target #6 ó LoadIniSectionDictNormalized / LoadIni: deterministic normalized-key collision handling.
-- Target #7 ó SuggestQualifierMapping / ResolveFilterFragments: deterministic first-hit scanning (containment + fuzzy fallback).
-- Target #8 ó ResolveQualifierSmart candidate pool ordering determinism.
-- Target #9 ó ResolveCategorySmart alias/canonical merge determinism.
-- Target #10 ó Heuristic scanner input normalization
+- Target #1 ‚Äî Commit ordering determinism (ApplyPlan.Keys sorted before non-atomic commit loop).
+- Target #2 ‚Äî Resolver tie determinism (two-pass tie detection; ties fail closed).
+- Target #3 ‚Äî TRANSFORMS_REGEX determinism (sorted load/apply; strict conflict fail-closed).
+- Target #4 ‚Äî AmbiguityContext lifecycle determinism + strict invariants (AMBIGUOUS_CONTEXT_INVALID; stable ambiguity emissions).
+- Target #5 ‚Äî TryCanonLookupFlexible: deterministic first-match behavior (normalize-collision handling).
+- Target #6 ‚Äî LoadIniSectionDictNormalized / LoadIni: deterministic normalized-key collision handling.
+- Target #7 ‚Äî SuggestQualifierMapping / ResolveFilterFragments: deterministic first-hit scanning (containment + fuzzy fallback).
+- Target #8 ‚Äî ResolveQualifierSmart candidate pool ordering determinism.
+- Target #9 ‚Äî ResolveCategorySmart alias/canonical merge determinism.
+- Target #10 ‚Äî Heuristic scanner input normalization
 
-- Target #11 ó Residual normalized lookup surfaces (if discovered) (Completed)
+- Target #11 ‚Äî Residual normalized lookup surfaces (if discovered) (Completed)
 
 Phase-3 complete: All documented HIGH nondeterministic behavioral surfaces stabilized with ordering-only fixes. No ambiguity, scoring, resolver, or logging drift introduced.
 
-Phase 4 ñ Regression Verification
+Phase 4 ‚Äì Regression Verification
 - STRICT harness repeat-run validation
 - Confirm identical resolution outcomes
 - Confirm diffs are ordering-only
 - Document validation artifact record
 
-WP-10 CLOSED ó Determinism surface stabilization and regression verification complete.
+WP-10 CLOSED ‚Äî Determinism surface stabilization and regression verification complete.
 
 ---
 
@@ -169,22 +169,22 @@ This is a minor version bump (v4.1.0) because:
 - Diff behavior changes
 - Determinism guarantees are strengthened
 
-### WP-10 Retrospective ó Determinism Stabilization
+### WP-10 Retrospective ‚Äî Determinism Stabilization
 
-WP-10 hardened SmartStatís resolution engine to guarantee deterministic behavior across runs.
+WP-10 hardened SmartStat‚Äôs resolution engine to guarantee deterministic behavior across runs.
 All previously identified HIGH-risk nondeterministic surfaces (dictionary iteration order, candidate pool construction, alias/canonical merge order, normalize-first lookup helpers, and heuristic scanner ingress) were stabilized without altering resolver math, scoring rules, or ambiguity policy.
 
 The work focused exclusively on deterministic ordering and fail-closed ambiguity preservation so that identical input state and configuration now produce identical outputs every time.
 
 Phase-4 regression verification validated repeat-run determinism in both STRICT and runtime harness modes, with archived evidence under `/tests/wp-10/phase-4/`.
 
-This milestone establishes SmartStatís first fully verified deterministic core and provides a stable foundation for future resolver enhancements and feature work.
+This milestone establishes SmartStat‚Äôs first fully verified deterministic core and provides a stable foundation for future resolver enhancements and feature work.
 
 No patch release permitted for this scope.
 
 ## WP-11 (v4.1.0): Harness regression pack framework
 ### Scope
-- Define a repeatable ìregression packî set of templates / scenarios
+- Define a repeatable ‚Äúregression pack‚Äù set of templates / scenarios
 - Standardize how artifacts are stored and compared
 
 ### Definition of Done
@@ -192,7 +192,7 @@ No patch release permitted for this scope.
 - Artifact locations standardized
 - Clear pass/fail criteria captured
 
-WP-11 CLOSED ó Harness regression pack framework implemented (tests-only).
+WP-11 CLOSED ‚Äî Harness regression pack framework implemented (tests-only).
 Evidence: tests/wp-11/regression-pack/artifacts/compare/wp11_runA__wp11_runB/ (PACK_PASS=True)
 
 ## WP-12 (v4.1.0): Enhanced learn system validation
@@ -205,7 +205,7 @@ Evidence: tests/wp-11/regression-pack/artifacts/compare/wp11_runA__wp11_runB/ (P
 - Bad/partial writes are blocked or quarantined (fail-closed)
 - Validation artifacts recorded
 
-WP-12 CLOSED ó Enhanced learn system validation implemented (tests-only).
+WP-12 CLOSED ‚Äî Enhanced learn system validation implemented (tests-only).
 Evidence: tests/wp-12/learn-validation/artifacts/wp12_runC/ (RUN_PASS=True)
 
 ## WP-13 CLOSED (v4.1.0): Resolver performance optimization
@@ -615,6 +615,17 @@ Status: GOVERNANCE PACKAGE CLOSED / ACCEPTED (2026-03-10 governance/docs/tests o
 - No Trio mutation behavior.
 - No socket mutation behavior.
 - Required validation: gate-OFF parity, deterministic repeat-run hash equality, carry-forward validation of existing slice-02A positives and negatives, projection-negative fail-closed checks, mutation boundary audit, and boundary check confirming no new Trio/socket/apply surfaces were introduced.
+- Next authorized step after the frozen current scope of WP20_RUNTIME_SLICE_02B_READONLY_PLAN_BRIDGE_PROJECTION_INTAKE: WP20_RUNTIME_SLICE_02C_READONLY_PLAN_BRIDGE_SEMANTIC_INTERPRETATION_INTAKE.
+- Objective: intake exactly the `semantic_interpretation_summary` metadata surface from the existing WP-19 projection artifact into the existing read-only plan-bridge path.
+- Intake limited to: `semantic_interpretation_summary.scope_resolution`, `semantic_interpretation_summary.effective_scope`, and `semantic_interpretation_summary.evidence_source`.
+- Lane remains read-only.
+- Joined preview output remains deterministic.
+- Joined preview output must keep `mutation_authorized=false`.
+- Fail closed if required semantic-interpretation fields are missing or empty.
+- No apply behavior.
+- No Trio mutation behavior.
+- No socket mutation behavior.
+- Required validation: gate-OFF parity, carry-forward validation of existing slice-02A positives and negatives, carry-forward validation of existing slice-02B positives and negatives, deterministic repeat-run hash equality for semantic-interpretation joined preview, semantic-interpretation negative fail-closed checks, mutation boundary audit, and boundary check confirming no new Trio/socket/apply surfaces were introduced.
 
 ### Definition of Done
 - Runtime bridge contract documented with explicit guardrails.
