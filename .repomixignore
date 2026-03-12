@@ -1,0 +1,39 @@
+# SmartStat artifacts that create noise
+tests/_scratch/
+**/_scratch/
+**/live_evidence/
+Logs/
+**/*.log
+
+# Build / editor / cache noise
+.vs/
+.vscode/
+bin/
+obj/
+node_modules/
+dist/
+build/
+coverage/
+.cache/
+tmp/
+
+# Binary / packaged outputs
+**/*.zip
+**/*.7z
+**/*.png
+**/*.jpg
+**/*.jpeg
+**/*.gif
+**/*.webp
+**/*.pdf
+**/*.exe
+**/*.dll
+**/*.pdb
+**/*.mp4
+**/*.mov
+
+# Repo pack outputs
+repomix-output.*
+repomix-smartstat-core.*
+repomix-smartstat-review.*
+repomix-smartstat-docs.*

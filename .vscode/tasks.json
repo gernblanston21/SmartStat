@@ -171,6 +171,105 @@
       ],
       "problemMatcher": [],
       "presentation": { "reveal": "always", "panel": "dedicated", "clear": true }
+    },
+    {
+      "label": "Repomix: Build SmartStat Core Pack",
+      "type": "shell",
+      "command": "repomix",
+      "args": [],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated", "clear": true }
+    },
+    {
+      "label": "Repomix: Build SmartStat Rules Pack",
+      "type": "shell",
+      "command": "repomix",
+      "args": [
+        "--include",
+        "AGENTS.md,SESSION.md,ROADMAP.md,CHANGELOG.md,docs/ai/repomix-smartstat-instructions.md,.agents/**/*.md,.agents/**/*.ps1,governance/**/*.md",
+        "-o",
+        "repomix-smartstat-rules.xml"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated", "clear": true }
+    },
+    {
+      "label": "Repomix: Build SmartStat Delta Pack",
+      "type": "shell",
+      "command": "repomix",
+      "args": [
+        "--include-diffs",
+        "--include-logs",
+        "--include-logs-count",
+        "10",
+        "-o",
+        "repomix-smartstat-delta.xml"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated", "clear": true }
+    },
+    {
+      "label": "Repomix: Build SmartStat Truth Pack",
+      "type": "shell",
+      "command": "repomix",
+      "args": [
+        "--include",
+        "SmartStat_v4.0.0_beta.vbs,SmartStat_v4.1.0.vbs,SmartStat_Mappings.ini,SmartStat_Mappings.learn.ini,SmartStat_MappingsNBA.ini,SmartStat_MappingsNBA.learn.ini,SmartStat_MappingsNHL.ini,SmartStat_MappingsNHL.learn.ini,SmartStat_StaticOverrides.ini,SmartStat_TemplateConfig.ini,docs/viz-trio/**/*.md,docs/onair/**/*.md,tests/**/*.md,tests/**/*.json,tests/**/*.txt,tests/**/*.ps1,tests/**/*.vbs",
+        "-o",
+        "repomix-smartstat-truth.xml"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated", "clear": true }
+    },
+    {
+      "label": "Repomix: Build SmartStat Review Sandwich",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}\\.tools\\build-repomix-review-sandwich.ps1"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      }
+    }
+  ],
+  "inputs": [
+    {
+      "id": "showLinesPath",
+      "type": "promptString",
+      "description": "Path to file"
+    },
+    {
+      "id": "showLinesFrom",
+      "type": "promptString",
+      "description": "Start line"
+    },
+    {
+      "id": "showLinesTo",
+      "type": "promptString",
+      "description": "End line"
     }
   ]
 }

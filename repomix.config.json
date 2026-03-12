@@ -1,0 +1,100 @@
+{
+  "$schema": "https://repomix.com/schemas/latest/schema.json",
+  "input": {
+    "maxFileSize": 50000000
+  },
+  "output": {
+    "filePath": "repomix-smartstat-core.xml",
+    "style": "xml",
+    "parsableStyle": false,
+    "compress": false,
+    "headerText": "SmartStat curated core-engine context pack. Focus on deterministic engine behavior, INI governance, fail-closed logic, Viz Trio grounding, and external compatibility risks. This pack is intentionally narrow and should not be treated as a license to broaden scope.",
+    "instructionFilePath": "docs/ai/repomix-smartstat-instructions.md",
+    "fileSummary": true,
+    "directoryStructure": true,
+    "files": true,
+    "removeComments": false,
+    "removeEmptyLines": false,
+    "topFilesLength": 20,
+    "showLineNumbers": true,
+    "truncateBase64": true,
+    "copyToClipboard": false,
+    "includeEmptyDirectories": false,
+    "includeFullDirectoryStructure": false,
+    "git": {
+      "sortByChanges": true,
+      "sortByChangesMaxCommits": 100,
+      "includeDiffs": false,
+      "includeLogs": false,
+      "includeLogsCount": 20
+    }
+  },
+  "include": [
+    "SmartStat_v4.0.0_beta.vbs",
+    "SmartStat_v4.1.0.vbs",
+    "AGENTS.md",
+    "SESSION.md",
+    "ROADMAP.md",
+    "CHANGELOG.md",
+    "VERSION.txt",
+    "SmartStat_Mappings.ini",
+    "SmartStat_Mappings.learn.ini",
+    "SmartStat_MappingsNBA.ini",
+    "SmartStat_MappingsNBA.learn.ini",
+    "SmartStat_MappingsNHL.ini",
+    "SmartStat_MappingsNHL.learn.ini",
+    "SmartStat_StaticOverrides.ini",
+    "SmartStat_TemplateConfig.ini",
+    ".agents/**/*.md",
+    ".agents/**/*.ps1",
+    "docs/**/*.md",
+    "tests/**/*.md",
+    "tests/**/*.txt",
+    "tests/**/*.json",
+    "tests/**/*.vbs",
+    "tests/**/*.ps1",
+    "governance/**/*.md"
+  ],
+  "ignore": {
+    "useGitignore": true,
+    "useDotIgnore": true,
+    "useDefaultPatterns": true,
+    "customPatterns": [
+      "**/.git/**",
+      "**/.vs/**",
+      "**/.vscode/**",
+      "**/bin/**",
+      "**/obj/**",
+      "**/node_modules/**",
+      "**/coverage/**",
+      "**/dist/**",
+      "**/build/**",
+      "**/_scratch/**",
+      "**/live_evidence/**",
+      "**/Logs/**",
+      "**/*.log",
+      "**/*.zip",
+      "**/*.7z",
+      "**/*.png",
+      "**/*.jpg",
+      "**/*.jpeg",
+      "**/*.gif",
+      "**/*.webp",
+      "**/*.pdf",
+      "**/*.exe",
+      "**/*.dll",
+      "**/*.pdb",
+      "**/*.cache",
+      "**/*.tmp",
+      "**/*.bak",
+      "**/*.mp4",
+      "**/*.mov"
+    ]
+  },
+  "security": {
+    "enableSecurityCheck": true
+  },
+  "tokenCount": {
+    "encoding": "o200k_base"
+  }
+}
