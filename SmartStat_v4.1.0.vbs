@@ -6055,6 +6055,7 @@ Function Slice2PlanBridge_LoadProjectionIntake(ByVal projectionPath, ByRef outco
   Dim projectionContract, projectionKind, projectionStatus
   Dim inputArtifact, artifactPath, inputFingerprint
   Dim normalizedPlanHash, replayIdentity, validatorRunIdentity
+  Dim semanticScopeResolution, semanticEffectiveScope, semanticEvidenceSource
   Dim errorCount, warningCount
 
   Slice2PlanBridge_LoadProjectionIntake = False
@@ -6156,6 +6157,36 @@ Function Slice2PlanBridge_LoadProjectionIntake(ByVal projectionPath, ByRef outco
     errText = "projection artifact not runtime eligible: error_count=" & CStr(errorCount)
     Exit Function
   End If
+  If Not Slice2PlanBridge_JsonReadString(jsonText, "scope_resolution", semanticScopeResolution) Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: semantic_interpretation_summary.scope_resolution missing"
+    Exit Function
+  End If
+  If Not Slice2PlanBridge_JsonReadString(jsonText, "effective_scope", semanticEffectiveScope) Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: semantic_interpretation_summary.effective_scope missing"
+    Exit Function
+  End If
+  If Not Slice2PlanBridge_JsonReadString(jsonText, "evidence_source", semanticEvidenceSource) Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: semantic_interpretation_summary.evidence_source missing"
+    Exit Function
+  End If
+  If Len(Trim(semanticScopeResolution)) = 0 Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: semantic_interpretation_summary.scope_resolution empty"
+    Exit Function
+  End If
+  If Len(Trim(semanticEffectiveScope)) = 0 Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: semantic_interpretation_summary.effective_scope empty"
+    Exit Function
+  End If
+  If Len(Trim(semanticEvidenceSource)) = 0 Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: semantic_interpretation_summary.evidence_source empty"
+    Exit Function
+  End If
 
   outcome("preview_kind") = SLICE2_PLAN_BRIDGE_PROJECTION_PREVIEW_KIND
   outcome("projection_contract") = CStr(projectionContract)
@@ -6169,6 +6200,9 @@ Function Slice2PlanBridge_LoadProjectionIntake(ByVal projectionPath, ByRef outco
   outcome("projection_normalized_plan_hash") = CStr(normalizedPlanHash)
   outcome("projection_replay_identity") = CStr(replayIdentity)
   outcome("projection_validator_run_identity") = CStr(validatorRunIdentity)
+  outcome("projection_semantic_scope_resolution") = CStr(semanticScopeResolution)
+  outcome("projection_semantic_effective_scope") = CStr(semanticEffectiveScope)
+  outcome("projection_semantic_evidence_source") = CStr(semanticEvidenceSource)
 
   Slice2PlanBridge_LoadProjectionIntake = True
 End Function
@@ -6494,6 +6528,11 @@ Function Slice2PlanBridge_BuildProjectionMetadataJson(ByRef outcome)
   outTxt = outTxt & "        ""normalized_plan_hash"": """ & Slice1Ingress_JsonEscape(CStr(outcome("projection_normalized_plan_hash"))) & """," & vbCrLf
   outTxt = outTxt & "        ""replay_identity"": """ & Slice1Ingress_JsonEscape(CStr(outcome("projection_replay_identity"))) & """," & vbCrLf
   outTxt = outTxt & "        ""validator_run_identity"": """ & Slice1Ingress_JsonEscape(CStr(outcome("projection_validator_run_identity"))) & """" & vbCrLf
+  outTxt = outTxt & "      }," & vbCrLf
+  outTxt = outTxt & "      ""semantic_interpretation_summary"": {" & vbCrLf
+  outTxt = outTxt & "        ""scope_resolution"": """ & Slice1Ingress_JsonEscape(CStr(outcome("projection_semantic_scope_resolution"))) & """," & vbCrLf
+  outTxt = outTxt & "        ""effective_scope"": """ & Slice1Ingress_JsonEscape(CStr(outcome("projection_semantic_effective_scope"))) & """," & vbCrLf
+  outTxt = outTxt & "        ""evidence_source"": """ & Slice1Ingress_JsonEscape(CStr(outcome("projection_semantic_evidence_source"))) & """" & vbCrLf
   outTxt = outTxt & "      }" & vbCrLf
   outTxt = outTxt & "    }"
 

@@ -12,6 +12,8 @@
 | plan_bridge_case01.fixture + projection_unsupported_contract.json | status=fail_closed; error_code=SLICE2_PROJECTION_CONTRACT_UNSUPPORTED | status=fail_closed; error_code=SLICE2_PROJECTION_CONTRACT_UNSUPPORTED | PASS |
 | plan_bridge_case01.fixture + projection_malformed_missing_status.json | status=fail_closed; error_code=SLICE2_PROJECTION_ARTIFACT_MALFORMED | status=fail_closed; error_code=SLICE2_PROJECTION_ARTIFACT_MALFORMED | PASS |
 | plan_bridge_case01.fixture + projection_refuse_case.json | status=fail_closed; error_code=SLICE2_PROJECTION_NOT_RUNTIME_ELIGIBLE | status=fail_closed; error_code=SLICE2_PROJECTION_NOT_RUNTIME_ELIGIBLE | PASS |
+| plan_bridge_case01.fixture + projection_malformed_missing_semantic_scope.json | status=fail_closed; error_code=SLICE2_PROJECTION_ARTIFACT_MALFORMED | status=fail_closed; error_code=SLICE2_PROJECTION_ARTIFACT_MALFORMED | PASS |
+| plan_bridge_case01.fixture + projection_malformed_empty_semantic_evidence_source.json | status=fail_closed; error_code=SLICE2_PROJECTION_ARTIFACT_MALFORMED | status=fail_closed; error_code=SLICE2_PROJECTION_ARTIFACT_MALFORMED | PASS |
 | mutation_boundary_report.txt | TOTAL_MUTATION_CALLS=0 | TOTAL_MUTATION_CALLS=0 | PASS |
 
 Determinism check (positive fixture):
@@ -19,9 +21,9 @@ Determinism check (positive fixture):
 - pos_plan_bridge_run2.json SHA256 = AF124012ED2DA1C62CD5822C9E39FD295FD01BD925B6735FCEA1901AB836C0B7
 - hash_match = True
 
-Determinism check (projection-intake joined preview):
-- pos_projection_intake_run1.json SHA256 = 96924D6C0964AAD8EC5267DFD838E917A49673DCB4ECAE510EA91BA7EA8ADB1E
-- pos_projection_intake_run2.json SHA256 = 96924D6C0964AAD8EC5267DFD838E917A49673DCB4ECAE510EA91BA7EA8ADB1E
+Determinism check (semantic-interpretation joined preview):
+- pos_projection_intake_run1.json SHA256 = A0050A8CAC7309ACBB744029B89D4C7059F21B4CCC14DB873E0A9440C5F20652
+- pos_projection_intake_run2.json SHA256 = A0050A8CAC7309ACBB744029B89D4C7059F21B4CCC14DB873E0A9440C5F20652
 - hash_match = True
 
 Gate-OFF parity check (mock-trio normalized):
