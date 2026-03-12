@@ -839,7 +839,7 @@ Sub FinalizeAndRefresh(logFile, startT)
 End Sub
 
 ' ==========================================
-' v4.0 Stage 4 � Structural Validation Gate
+' v4.0 Stage 4 ï¿½ Structural Validation Gate
 ' - Allows clears ("") and control strings (e.g., SMARTSTAT=PLAYER)
 ' - Only enforces moustache pairing when moustaches are present
 ' ==========================================
@@ -1111,7 +1111,7 @@ Function Stage_ValidatePlan()
 End Function
 
 ' ==========================================
-' v4.0 Stage 5 � Transaction Commit
+' v4.0 Stage 5 ï¿½ Transaction Commit
 ' ==========================================
 Sub Tx_ResetWriteVerifyState()
   G_TRIO_WRITE_ATTEMPTS = 0
@@ -1523,7 +1523,7 @@ End Function
 
 Function StripDiacritics(s)
   Dim src, dst, i
-  src = "áàäâãåĝçĝéèëêěíìïîľĺńñóòöôõřśšťúùüûýžÝÀÄÂÃÅČÇĎÉÈËÊĚÝÌÝÎĽĹŃÑÓÒÖÔÕŘŚŠŤÚÙÜÛÝŽ"
+  src = "Ã¡Ã Ã¤Ã¢Ã£Ã¥Ä�Ã§Ä�Ã©Ã¨Ã«ÃªÄ›Ã­Ã¬Ã¯Ã®Ä¾ÄºÅ„Ã±Ã³Ã²Ã¶Ã´ÃµÅ™Å›Å¡Å¥ÃºÃ¹Ã¼Ã»Ã½Å¾Ã�Ã€Ã„Ã‚ÃƒÃ…ÄŒÃ‡ÄŽÃ‰ÃˆÃ‹ÃŠÄšÃ�ÃŒÃ�ÃŽÄ½Ä¹ÅƒÃ‘Ã“Ã’Ã–Ã”Ã•Å˜ÅšÅ Å¤ÃšÃ™ÃœÃ›Ã�Å½"
   dst = "aaaaaaccdeeeeeiiiillnnooooorsstuuuuyzAAAAAACCDEEEEEIIIILLNNOOOOORSSTUUUUYZ"
   For i = 1 To Len(src): s = Replace(s, Mid(src, i, 1), Mid(dst, i, 1)): Next
   StripDiacritics = s
@@ -1734,7 +1734,7 @@ Sub WriteLearnPendingQualifier(learnPath, where, txt, score)
 End Sub
 
 ' ================== Dynamic USAGE resolver (plural + category aware) ==================
-' Decides the correct USAGE wildcard measure from the row’s fullPath:
+' Decides the correct USAGE wildcard measure from the rowâ€™s fullPath:
 '   - pitch_type(<tok>)      ->  arsenal_<plural(tok)>_percentage
 '   - pitch_category(<tok>)  ->  pitch_category_<normalized(tok)>_percentage
 '
@@ -2157,7 +2157,7 @@ Function HeuristicPick(keyTrim, candidateKeys, learn, ByRef bestKey, ByRef score
     If den = 0 Then den = 1
 
     Dim oneEditBound: oneEditBound = 1 - (1 / den)
-    ' threshold = Min(oneEditBound, shortThresh) — without IIf
+    ' threshold = Min(oneEditBound, shortThresh) â€” without IIf
     If oneEditBound > shortThresh Then
       threshold = shortThresh
     Else
@@ -4223,7 +4223,7 @@ Sub LogLearnPendingWithGuess(learnPath, key, catMap, catPitchMap, catAlias, catP
   did = SuggestCanonKey(key, catMap, catPitchMap, catAlias, catPitchAlias, preferPitcher, learn, canon, isPitch, score, acceptedBy)
 
   If did Then
-    ' VBScript has no IIf — use If/Else
+    ' VBScript has no IIf â€” use If/Else
     If CBool(isPitch) Then
       sec = "[PENDING_ALIASES_PITCHER]"
     Else
