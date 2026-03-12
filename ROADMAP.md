@@ -637,6 +637,20 @@ Status: GOVERNANCE PACKAGE CLOSED / ACCEPTED (2026-03-10 governance/docs/tests o
 - No Trio mutation behavior.
 - No socket mutation behavior.
 - Required validation: gate-OFF parity, carry-forward validation of existing slice-02A positives and negatives, carry-forward validation of existing slice-02B positives and negatives, carry-forward validation of existing slice-02C positives and negatives, deterministic repeat-run hash equality for issues-summary joined preview, issues-summary negative fail-closed checks, mutation boundary audit, and boundary check confirming no new Trio/socket/apply surfaces were introduced.
+- Draft next-step candidate after the frozen current scope of WP20_RUNTIME_SLICE_02D_READONLY_PLAN_BRIDGE_ISSUES_SUMMARY_INTAKE: WP20_RUNTIME_SLICE_02E_READONLY_PLAN_BRIDGE_RESOLUTION_PREVIEW.
+- Draft objective: emit a deterministic read-only `resolution_preview` block inside the existing joined plan-bridge preview using only already-authorized projection metadata already consumed by slices 02B through 02D.
+- Draft boundary limited to: `status_summary.status`, `semantic_interpretation_summary.scope_resolution`, `semantic_interpretation_summary.effective_scope`, and `semantic_interpretation_summary.evidence_source`, assembled as read-only preview metadata only.
+- Draft lane remains read-only.
+- Draft joined preview output remains deterministic.
+- Draft joined preview output must keep `mutation_authorized=false`.
+- Draft fail closed if required resolution-preview inputs are absent after the current projection-intake validation path.
+- Draft packet is review-only and non-authorizing until separately approved.
+- No new upstream projection-contract intake in this draft step.
+- No `rule_evaluation_summary` intake in this draft step.
+- No apply behavior.
+- No Trio mutation behavior.
+- No socket mutation behavior.
+- Draft required validation: gate-OFF parity, carry-forward validation of existing slice-02A positives and negatives, carry-forward validation of existing slice-02B positives and negatives, carry-forward validation of existing slice-02C positives and negatives, carry-forward validation of existing slice-02D positives and negatives, deterministic repeat-run hash equality for resolution-preview joined preview, resolution-preview block presence and field-order checks, resolution-preview fail-closed checks for missing required inputs, mutation boundary audit, and boundary check confirming no new Trio/socket/apply surfaces were introduced.
 
 ### Definition of Done
 - Runtime bridge contract documented with explicit guardrails.
