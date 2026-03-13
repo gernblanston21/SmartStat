@@ -1,0 +1,8 @@
+{
+  "projection_contract": "wp19.viewer_projection.v1",
+  "projection_kind": "read_only_view_model",
+  "input_artifact": "tests/wp-18/fixtures/good/good_schema_compatible_capture.json",
+  "input_identity": {
+    "input_fingerprint_sha256": "ABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABAB"
+  }
+}

@@ -5977,6 +5977,10 @@ Function Slice2PlanBridge_Execute(ByRef outcome)
       Call Slice2PlanBridge_FailClosed(outcome, SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED, errText)
       Exit Function
     End If
+    If Not Slice2PlanBridge_ValidateRuleEvaluationTracePreviewInputs(outcome, errText) Then
+      Call Slice2PlanBridge_FailClosed(outcome, SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED, errText)
+      Exit Function
+    End If
   End If
   outcome("status") = "success"
   Slice2PlanBridge_Execute = True
@@ -6529,6 +6533,36 @@ Function Slice2PlanBridge_ValidateRuleEvaluationSummaryPreviewInputs(ByRef outco
   Slice2PlanBridge_ValidateRuleEvaluationSummaryPreviewInputs = True
 End Function
 
+Function Slice2PlanBridge_ValidateRuleEvaluationTracePreviewInputs(ByRef outcome, ByRef errText)
+  Dim requiredKeys, keyName, keyValue
+
+  Slice2PlanBridge_ValidateRuleEvaluationTracePreviewInputs = False
+  errText = ""
+  requiredKeys = Array( _
+    "projection_contract", _
+    "projection_kind", _
+    "projection_input_artifact", _
+    "projection_artifact_path", _
+    "projection_input_fingerprint_sha256", _
+    "projection_normalized_plan_hash", _
+    "projection_replay_identity", _
+    "projection_validator_run_identity")
+
+  For Each keyName In requiredKeys
+    If Not outcome.Exists(CStr(keyName)) Then
+      errText = "rule_evaluation_trace preview input missing: " & CStr(keyName)
+      Exit Function
+    End If
+    keyValue = CStr(outcome(CStr(keyName)))
+    If Len(Trim(keyValue)) = 0 Then
+      errText = "rule_evaluation_trace preview input empty: " & CStr(keyName)
+      Exit Function
+    End If
+  Next
+
+  Slice2PlanBridge_ValidateRuleEvaluationTracePreviewInputs = True
+End Function
+
 Sub Slice2PlanBridge_FailClosed(ByRef outcome, ByVal errCode, ByVal errText)
   outcome("status") = "fail_closed"
   outcome("error_code") = CStr(errCode)
@@ -6639,7 +6673,8 @@ Function Slice2PlanBridge_BuildPreviewPayloadJson(ByVal tabfieldRecords, ByVal p
     payload = payload & "," & vbCrLf
     payload = payload & "    ""projection_metadata"": " & Slice2PlanBridge_BuildProjectionMetadataJson(outcome) & "," & vbCrLf
     payload = payload & "    ""resolution_preview"": " & Slice2PlanBridge_BuildResolutionPreviewJson(outcome) & "," & vbCrLf
-    payload = payload & "    ""rule_evaluation_summary_preview"": " & Slice2PlanBridge_BuildRuleEvaluationSummaryPreviewJson(outcome) & vbCrLf
+    payload = payload & "    ""rule_evaluation_summary_preview"": " & Slice2PlanBridge_BuildRuleEvaluationSummaryPreviewJson(outcome) & "," & vbCrLf
+    payload = payload & "    ""rule_evaluation_trace_preview"": " & Slice2PlanBridge_BuildRuleEvaluationTracePreviewJson(outcome) & vbCrLf
   Else
     payload = payload & vbCrLf
   End If
@@ -6749,6 +6784,28 @@ Function Slice2PlanBridge_BuildRuleEvaluationSummaryPreviewJson(ByRef outcome)
   outTxt = outTxt & "    }"
 
   Slice2PlanBridge_BuildRuleEvaluationSummaryPreviewJson = outTxt
+End Function
+
+Function Slice2PlanBridge_BuildRuleEvaluationTracePreviewJson(ByRef outcome)
+  Dim outTxt
+
+  outTxt = ""
+  outTxt = outTxt & "{" & vbCrLf
+  outTxt = outTxt & "      ""projection_contract"": """ & Slice1Ingress_JsonEscape(CStr(outcome("projection_contract"))) & """," & vbCrLf
+  outTxt = outTxt & "      ""projection_kind"": """ & Slice1Ingress_JsonEscape(CStr(outcome("projection_kind"))) & """," & vbCrLf
+  outTxt = outTxt & "      ""input_artifact"": """ & Slice1Ingress_JsonEscape(CStr(outcome("projection_input_artifact"))) & """," & vbCrLf
+  outTxt = outTxt & "      ""input_identity"": {" & vbCrLf
+  outTxt = outTxt & "        ""artifact_path"": """ & Slice1Ingress_JsonEscape(CStr(outcome("projection_artifact_path"))) & """," & vbCrLf
+  outTxt = outTxt & "        ""input_fingerprint_sha256"": """ & Slice1Ingress_JsonEscape(CStr(outcome("projection_input_fingerprint_sha256"))) & """" & vbCrLf
+  outTxt = outTxt & "      }," & vbCrLf
+  outTxt = outTxt & "      ""deterministic_identity_summary"": {" & vbCrLf
+  outTxt = outTxt & "        ""normalized_plan_hash"": """ & Slice1Ingress_JsonEscape(CStr(outcome("projection_normalized_plan_hash"))) & """," & vbCrLf
+  outTxt = outTxt & "        ""replay_identity"": """ & Slice1Ingress_JsonEscape(CStr(outcome("projection_replay_identity"))) & """," & vbCrLf
+  outTxt = outTxt & "        ""validator_run_identity"": """ & Slice1Ingress_JsonEscape(CStr(outcome("projection_validator_run_identity"))) & """" & vbCrLf
+  outTxt = outTxt & "      }" & vbCrLf
+  outTxt = outTxt & "    }"
+
+  Slice2PlanBridge_BuildRuleEvaluationTracePreviewJson = outTxt
 End Function
 ' ================================
 ' END WP20_RUNTIME_SLICE_02_READONLY_PLAN_BRIDGE
