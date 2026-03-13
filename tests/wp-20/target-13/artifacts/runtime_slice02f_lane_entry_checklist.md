@@ -50,7 +50,8 @@ Checklist state: `HOLD / NOT READY`
 - Baseline comparison plan defined: `true`
 - Rollback criteria/path documented: `true`
 - Determinism/fail-closed requirements documented: `true`
-- Slice-02F approval/evidence linkage complete: `false`
+- Slice-02F version-line evidence/signoff linkage complete: `true`
+- Slice-02F implementation-start approval/evidence bundle complete: `false`
 
 ### Checkpoint 5: Implementation Authorization Checkpoint
 
@@ -77,5 +78,5 @@ Checklist state: `HOLD / NOT READY`
 ## Overall Lane Entry Outcome
 
 - `lane_entry_outcome`: `blocked_pending_authorization`
-- `hold_reason`: `Explicit implementation authorization and branch approval remain hold, and slice-02F evidence/signoff linkage is not yet complete.`
+- `hold_reason`: `Explicit implementation authorization and branch approval remain hold, and the broader implementation-start approval/evidence bundle is not yet complete despite completed Target-15/Target-16 linkage.`
 - `runtime_work_start_allowed`: `false`
