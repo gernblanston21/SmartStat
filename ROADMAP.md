@@ -749,9 +749,9 @@ Explicit future choices:
 - No ordered-rules rendering expansion beyond the bounded read-only summary-intake scope
 - Validation status: PASS for gate-OFF parity, carry-forward validation of existing slice-02A through slice-02E positives and negatives, deterministic repeat-run hash equality for the rule-evaluation-summary joined preview, phase-order and ordered-rules stability checks, rule-evaluation-summary negative fail-closed checks, mutation boundary audit, and the boundary check confirming no new Trio/socket/apply surfaces were introduced
 
-- Draft next-step candidate after the frozen current scope of `WP20_RUNTIME_SLICE_02F_READONLY_PLAN_BRIDGE_RULE_EVALUATION_SUMMARY_INTAKE`: `WP20_RUNTIME_SLICE_02G_READONLY_PLAN_BRIDGE_RULE_EVALUATION_TRACE_PREVIEW`
-- Draft objective: emit a deterministic read-only `rule_evaluation_trace_preview` block inside the existing joined plan-bridge preview using only already-authorized traceability metadata already present in the existing WP-19 projection artifact and already loaded by slice-02B projection intake
-- Draft boundary limited to:
+- Validated/frozen step after the frozen current scope of `WP20_RUNTIME_SLICE_02F_READONLY_PLAN_BRIDGE_RULE_EVALUATION_SUMMARY_INTAKE`: `WP20_RUNTIME_SLICE_02G_READONLY_PLAN_BRIDGE_RULE_EVALUATION_TRACE_PREVIEW`
+- Objective: emit a deterministic read-only `rule_evaluation_trace_preview` block inside the existing joined plan-bridge preview using only already-authorized traceability metadata already present in the existing WP-19 projection artifact and already loaded by slice-02B projection intake
+- Boundary limited to:
     - `projection_contract`
     - `projection_kind`
     - `input_artifact`
@@ -760,23 +760,27 @@ Explicit future choices:
     - `deterministic_identity_summary.normalized_plan_hash`
     - `deterministic_identity_summary.replay_identity`
     - `deterministic_identity_summary.validator_run_identity`
-- Draft lane remains read-only
-- Draft joined preview output remains deterministic
-- Draft joined preview output must keep `mutation_authorized=false`
-- Draft fail closed if required traceability fields are missing or empty after the existing projection-intake validation path
-- Draft packet is review-only and non-authorizing until separately approved
-- No new upstream projection-contract intake or projection-contract expansion in this draft step
+- Lane remains read-only
+- Joined preview output remains deterministic
+- Joined preview output must keep `mutation_authorized=false`
+- Fail closed if required traceability fields are missing or empty after the existing projection-intake validation path
+- No new upstream projection-contract intake or projection-contract expansion in this step
 - No rule-execution behavior
 - No rule-scoring logic
 - No rule-ordering logic
 - No rule-interpretation logic
 - No rule-filtering logic
 - No rule-result derivation or aggregation behavior
-- No ordered-rules rendering expansion in this draft step
+- No ordered-rules rendering expansion in this step
 - No apply behavior
 - No Trio mutation behavior
 - No socket mutation behavior
-- Draft required validation: gate-OFF parity, carry-forward validation of existing slice-02A positives and negatives, carry-forward validation of existing slice-02B positives and negatives, carry-forward validation of existing slice-02C positives and negatives, carry-forward validation of existing slice-02D positives and negatives, carry-forward validation of existing slice-02E positives and negatives, carry-forward validation of existing slice-02F positives and negatives, deterministic repeat-run hash equality for rule-evaluation-trace joined preview, trace-preview block presence and field-order checks, traceability-field malformed-input fail-closed checks, mutation boundary audit, and boundary check confirming no new Trio/socket/apply surfaces were introduced
+- Validation status: PASS for gate-OFF parity, carry-forward validation of existing slice-02A through slice-02F positives and negatives, deterministic repeat-run hash equality for the rule-evaluation-trace joined preview, trace-preview block presence and field-order checks, traceability-field malformed-input fail-closed checks, mutation boundary audit, and the boundary check confirming no new Trio/socket/apply surfaces were introduced
+
+- Distinct-slice check after the frozen current scope of `WP20_RUNTIME_SLICE_02G_READONLY_PLAN_BRIDGE_RULE_EVALUATION_TRACE_PREVIEW`: `WP20_RUNTIME_SLICE_02H_READONLY_PLAN_BRIDGE_DETERMINISTIC_IDENTITY_PREVIEW` is not a justified next slice under current repo truth
+- Reason: `projection_metadata.deterministic_identity_summary` already exposes the bounded deterministic-identity metadata surface, and validated `rule_evaluation_trace_preview` already serializes that same `deterministic_identity_summary` surface together with the surrounding traceability metadata already defined by the existing WP-19 projection/adapter contracts
+- Runtime lane posture after 02G: HOLD pending a future non-redundant bounded slice definition
+- No new next-step runtime slice is added in this pass
 
 ### Definition of Done
 

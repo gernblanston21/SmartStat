@@ -88,14 +88,17 @@ Slice 02C -> Semantic interpretation intake
 Slice 02D -> Issues summary intake
 Slice 02E -> Resolution preview
 Slice 02F -> Rule evaluation summary intake
-Slice 02G -> Rule evaluation trace preview (planned)
+Slice 02G -> Rule evaluation trace preview
 ```
 
-All implemented slices through 02F in this map are read-only, deterministic,
+All implemented slices through 02G in this map are read-only, deterministic,
 fail-closed, and mutation-blocked.
 
-Slice 02G is the next planning-defined bounded step in the read-only runtime
-bridge sequence and does not imply implemented runtime behavior.
+No distinct Slice 02H is currently justified in repo truth because the bounded
+deterministic-identity metadata is already exposed by `projection_metadata` and
+the validated `rule_evaluation_trace_preview` surface. The runtime bridge
+sequence is therefore on hold pending a future non-redundant bounded slice
+definition.
 
 ---
 

@@ -425,16 +425,41 @@ Notes:
 - does NOT authorize rule-evaluation execution behavior or ordered-rules rendering expansion beyond the bounded read-only summary-intake scope
 - future slice-02F expansion requires a new authorized lane step and independent validation
 
-### Runtime Lane Posture: `WP20_RUNTIME_SLICE_02G_READONLY_PLAN_BRIDGE_RULE_EVALUATION_TRACE_PREVIEW`
+### Runtime Lane: `WP20_RUNTIME_SLICE_02G_READONLY_PLAN_BRIDGE_RULE_EVALUATION_TRACE_PREVIEW`
 
 Status:
-- PLANNING DEFINED
-- NOT IMPLEMENTED
+- VALIDATED
+- FROZEN
+
+Evidence Location:
+- `tests/_scratch/runtime-slice-02-readonly-plan-bridge/`
 
 Notes:
-- next bounded candidate step after the validated/frozen slice-02F scope
-- planning scope is limited to a new read-only `rule_evaluation_trace_preview` surface
-- candidate metadata is limited to copy/serialize-only traceability fields already present in the existing WP-19 projection contract and already loaded by slice-02B projection intake
-- no new upstream projection-contract intake or projection-contract expansion is permitted
-- no rule execution, rule scoring, rule ordering, rule interpretation, rule filtering, rule-result derivation, aggregation behavior, or rendering expansion is permitted
+- applies to current read-only rule-evaluation-trace-preview scope only
+- gate-OFF parity passed
+- slice-02A carry-forward validations passed
+- slice-02B carry-forward validations passed
+- slice-02C carry-forward validations passed
+- slice-02D carry-forward validations passed
+- slice-02E carry-forward validations passed
+- slice-02F carry-forward validations passed
+- rule-evaluation-trace deterministic positive validation passed
+- rule-evaluation-trace malformed-input fail-closed validations passed
+- mutation boundary preserved
+- does NOT authorize apply behavior
+- does NOT authorize Trio mutation behavior
+- does NOT authorize socket mutation behavior
+- does NOT authorize rule execution, rule scoring, rule ordering, rule interpretation, rule filtering, rule-result derivation, aggregation behavior, identity recomputation, replay derivation, or projection-contract expansion
+- future slice-02G expansion requires a new authorized lane step and independent validation
+
+### Runtime Lane Posture After `WP20_RUNTIME_SLICE_02G_READONLY_PLAN_BRIDGE_RULE_EVALUATION_TRACE_PREVIEW`
+
+Status:
+- HOLD
+- NO DISTINCT NEXT SLICE CURRENTLY JUSTIFIED
+
+Notes:
+- proposed `WP20_RUNTIME_SLICE_02H_READONLY_PLAN_BRIDGE_DETERMINISTIC_IDENTITY_PREVIEW` is redundant with the existing `projection_metadata.deterministic_identity_summary` surface and the validated `rule_evaluation_trace_preview.deterministic_identity_summary` surface
+- this planning pass does not authorize a new successor slice
+- next runtime-lane advancement requires a fresh non-redundant bounded slice definition plus separate approval
 - mutation boundary remains closed; apply behavior, Trio mutation behavior, and socket mutation behavior remain unauthorized
