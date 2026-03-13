@@ -258,11 +258,12 @@ Fail closed by default.
 
 - Frozen runtime/core baselines: `v4.0.0_beta` and `v4.0.0_RC1`.
 - Single active development lane:
-  `feature/semantic-layer` (semantic architecture/tooling only).
+  `feature/semantic-layer` (semantic architecture/tooling plus read-only runtime-slice planning/validation only).
 - WP-18 CLOSED (validation layer).
 - WP-19 CLOSED (viewer contracts).
 - WP-20 governance package CLOSED / ACCEPTED.
-- WP-20 runtime implementation NOT STARTED.
+- WP-20 read-only runtime slice chain is implemented and validated through `WP20_RUNTIME_SLICE_02F_READONLY_PLAN_BRIDGE_RULE_EVALUATION_SUMMARY_INTAKE`.
+- Broader WP-20 runtime mutation/apply implementation remains NOT STARTED / NOT AUTHORIZED.
 
 WP-20 allowed upstream inputs:
 
@@ -270,13 +271,14 @@ WP-20 allowed upstream inputs:
 - WP-18 validation outputs
 - WP-19 projection contracts
 
-WP-20 forbidden behavior before implementation:
+WP-20 forbidden behavior before broader implementation:
 
-- no runtime bridge code
+- no runtime mutation/apply behavior
 - no apply behavior
 - no Trio integration
 - no SmartStat engine calls
 - no viewer implementation
+- no socket mutation behavior
 - no artifact mutation
 
 Runtime baseline protection rule:

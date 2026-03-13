@@ -36,7 +36,7 @@ If a `docs/ai/*` file drifts from this session file, update the `docs/ai/*` file
 - Frozen baseline: SmartStat runtime/core behavior anchored to `v4.0.0_beta` and `v4.0.0_RC1` lineage.
 - WP-18 lane state: CLOSED (2026-03-09) with acceptance evidence in `tests/wp-18/artifacts/wp18_validator_runs/target06/`.
 - WP-19 is CLOSED (2026-03-09); read-only viewer-contract package accepted with harness evidence under `tests/wp-19/`.
-- WP-20 governance package is CLOSED / ACCEPTED (2026-03-10 governance/docs/tests only); runtime implementation remains not started.
+- WP-20 governance package is CLOSED / ACCEPTED (2026-03-10 governance/docs/tests only); broader runtime mutation/apply implementation remains not started.
 - Branch boundary: runtime bridge/execution proposals require explicit approval and may require a separate branch to avoid lane contamination.
 - No implicit runtime integration: WP-15 through WP-17 artifacts do not imply runtime bridge/apply behavior.
 
@@ -56,7 +56,7 @@ Active WP:
 - WP-17 CLOSED (plan-capture contract layer implemented as docs/tests/tooling-only package under `tests/wp-17/` plus `docs/onair/` contract/schema).
 - WP-18 CLOSED (validation-layer package accepted; structural/semantic/determinism/boundary + hardened result model + interpretation metadata).
 - WP-19 CLOSED (read-only viewer-contract package accepted; no UI/runtime behavior introduced).
-- WP-20 GOVERNANCE PACKAGE CLOSED / ACCEPTED (governance/docs/tests only; runtime implementation not started; explicit implementation approval still required).
+- WP-20 GOVERNANCE PACKAGE CLOSED / ACCEPTED (governance/docs/tests only; broader runtime mutation/apply implementation not started; explicit implementation approval still required).
 
 No opportunistic refactors.
 No scope creep.
@@ -162,7 +162,7 @@ Constraints:
 - WP-17 - Plan Capture Contract Layer
 - WP-18 - Plan Validation CLOSED (accepted 2026-03-09; validation-only, runtime-independent)
 - WP-19 - Plan Viewer CLOSED (accepted 2026-03-09; read-only contract/harness package only)
-- WP-20 - Runtime Bridge GOVERNANCE PACKAGE CLOSED / ACCEPTED (2026-03-10 governance/docs/tests only; implementation not started; no runtime coupling until explicit implementation approval)
+- WP-20 - Runtime Bridge GOVERNANCE PACKAGE CLOSED / ACCEPTED (2026-03-10 governance/docs/tests only; broader runtime mutation/apply implementation not started; no runtime coupling until explicit implementation approval)
 - Strategic target: `Stat Query -> Deterministic Execution Plan`
 - Sequence rationale: Semantic Source View now exists, so semantic inspection/explainability leads the plan-engine track.
 - Active branch for this sequence: `feature/semantic-layer`
@@ -197,13 +197,13 @@ Validation accepted on 2026-03-08:
 - WP-19 must not imply runtime execution/apply/bridge behavior and must not mutate artifacts.
 - Future implementation lane may consume WP-19 projection and adapter contracts as read-only inputs for viewer implementation handoff only.
 - Future implementation lane must preserve deterministic ordering and must not introduce runtime/apply/bridge behavior without separate WP-20 kickoff/approval.
-- WP-20 governance package is CLOSED / ACCEPTED (governance/docs/tests only) and runtime implementation remains NOT STARTED.
+- WP-20 governance package is CLOSED / ACCEPTED (governance/docs/tests only) and broader runtime mutation/apply implementation remains NOT STARTED.
 - WP-20 allowed upstream inputs are limited to WP-17 artifacts, WP-18 validation outputs, and WP-19 projection/adapter contract surfaces.
-- WP-20 pre-implementation forbidden behavior remains absolute: no runtime/apply/bridge code, no Trio integration, no SmartStat engine/apply calls, and no artifact mutation.
+- WP-20 pre-implementation forbidden behavior remains absolute beyond separately authorized read-only preview slices: no runtime mutation/apply behavior, no Trio integration, no SmartStat engine/apply calls, and no artifact mutation.
 - WP-20 implementation requires explicit approval, dedicated branch isolation, and an approved runtime-bridge evidence plan before code changes begin.
 - WP-20 governance package completion does not equal implementation authorization; explicit recorded implementation authorization is still required.
 - WP-20 frozen baseline reminder: `SmartStat_v4.0.0_beta.vbs` remains protected and must not be modified by WP-20 runtime implementation targets.
-- WP-20 runtime implementation remains blocked until explicit authorization, explicit version-line decision, evidence completeness, evidence review/signoff, and runtime lane-entry conditions are all satisfied.
+- WP-20 broader runtime mutation/apply implementation remains blocked until explicit authorization, explicit version-line decision, evidence completeness, evidence review/signoff, and runtime lane-entry conditions are all satisfied.
 
 WP-20 future choices:
 1. Stop at governance completion.
@@ -351,3 +351,90 @@ Notes:
 - does NOT authorize Trio mutation behavior
 - does NOT authorize socket mutation behavior
 - future slice-02C expansion requires a new authorized lane step and independent validation
+
+### Runtime Lane: `WP20_RUNTIME_SLICE_02D_READONLY_PLAN_BRIDGE_ISSUES_SUMMARY_INTAKE`
+
+Status:
+- VALIDATED
+- FROZEN
+
+Evidence Location:
+- `tests/_scratch/runtime-slice-02-readonly-plan-bridge/`
+
+Notes:
+- applies to current read-only issues-summary intake scope only
+- gate-OFF parity passed
+- slice-02A carry-forward validations passed
+- slice-02B carry-forward validations passed
+- slice-02C carry-forward validations passed
+- issues-summary deterministic positive validation passed
+- issues-summary negative malformed-artifact validations passed
+- mutation boundary preserved
+- does NOT authorize apply behavior
+- does NOT authorize Trio mutation behavior
+- does NOT authorize socket mutation behavior
+- future slice-02D expansion requires a new authorized lane step and independent validation
+
+### Runtime Lane: `WP20_RUNTIME_SLICE_02E_READONLY_PLAN_BRIDGE_RESOLUTION_PREVIEW`
+
+Status:
+- VALIDATED
+- FROZEN
+
+Evidence Location:
+- `tests/_scratch/runtime-slice-02-readonly-plan-bridge/`
+
+Notes:
+- applies to current read-only resolution-preview scope only
+- gate-OFF parity passed
+- slice-02A carry-forward validations passed
+- slice-02B carry-forward validations passed
+- slice-02C carry-forward validations passed
+- slice-02D carry-forward validations passed
+- resolution-preview deterministic positive validation passed
+- resolution-preview malformed-input fail-closed validations passed
+- mutation boundary preserved
+- does NOT authorize apply behavior
+- does NOT authorize Trio mutation behavior
+- does NOT authorize socket mutation behavior
+- future slice-02E expansion requires a new authorized lane step and independent validation
+
+### Runtime Lane: `WP20_RUNTIME_SLICE_02F_READONLY_PLAN_BRIDGE_RULE_EVALUATION_SUMMARY_INTAKE`
+
+Status:
+- VALIDATED
+- FROZEN
+
+Evidence Location:
+- `tests/_scratch/runtime-slice-02-readonly-plan-bridge/`
+
+Notes:
+- applies to current read-only rule-evaluation-summary scope only
+- gate-OFF parity passed
+- slice-02A carry-forward validations passed
+- slice-02B carry-forward validations passed
+- slice-02C carry-forward validations passed
+- slice-02D carry-forward validations passed
+- slice-02E carry-forward validations passed
+- rule-evaluation-summary deterministic positive validation passed
+- rule-evaluation-summary negative malformed-artifact validations passed
+- mutation boundary preserved
+- does NOT authorize apply behavior
+- does NOT authorize Trio mutation behavior
+- does NOT authorize socket mutation behavior
+- does NOT authorize rule-evaluation execution behavior or ordered-rules rendering expansion beyond the bounded read-only summary-intake scope
+- future slice-02F expansion requires a new authorized lane step and independent validation
+
+### Runtime Lane Posture: `WP20_RUNTIME_SLICE_02G_READONLY_PLAN_BRIDGE_RULE_EVALUATION_TRACE_PREVIEW`
+
+Status:
+- PLANNING DEFINED
+- NOT IMPLEMENTED
+
+Notes:
+- next bounded candidate step after the validated/frozen slice-02F scope
+- planning scope is limited to a new read-only `rule_evaluation_trace_preview` surface
+- candidate metadata is limited to copy/serialize-only traceability fields already present in the existing WP-19 projection contract and already loaded by slice-02B projection intake
+- no new upstream projection-contract intake or projection-contract expansion is permitted
+- no rule execution, rule scoring, rule ordering, rule interpretation, rule filtering, rule-result derivation, aggregation behavior, or rendering expansion is permitted
+- mutation boundary remains closed; apply behavior, Trio mutation behavior, and socket mutation behavior remain unauthorized

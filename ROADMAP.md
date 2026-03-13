@@ -9,7 +9,7 @@
 - WP-17 defines a versioned, deterministic plan-capture contract layer (docs/tests/tooling only).
 - WP-18 is CLOSED as a validation-layer package (docs/tests/tooling only; runtime-independent).
 - WP-19 is CLOSED as a read-only viewer-contract package over WP-17/WP-18 artifacts (docs/tests/tooling only; no UI/runtime behavior).
-- WP-20 governance package is CLOSED / ACCEPTED as a governance/docs/tests-only runtime-bridge lane package; runtime implementation is NOT STARTED and is not implied by WP-19 closeout.
+- WP-20 governance package is CLOSED / ACCEPTED as a governance/docs/tests-only runtime-bridge lane package; broader runtime mutation/apply implementation is NOT STARTED and is not implied by WP-19 closeout.
 
 ---
 
@@ -19,7 +19,7 @@
 - Frozen runtime/core baseline: `v4.0.0_beta` and `v4.0.0_RC1` (no implicit runtime execution lane is active).
 - WP-18 lane state: CLOSED (2026-03-09) with acceptance evidence under `tests/wp-18/artifacts/wp18_validator_runs/`.
 - WP-19 lane state: CLOSED (2026-03-09) with acceptance evidence under `tests/wp-19/`.
-- WP-20 lane state: GOVERNANCE PACKAGE CLOSED / ACCEPTED (2026-03-10 governance/docs/tests only; runtime implementation not started; explicit approval still required).
+- WP-20 lane state: GOVERNANCE PACKAGE CLOSED / ACCEPTED (2026-03-10 governance/docs/tests only; broader runtime mutation/apply implementation not started; explicit approval still required).
 - Branch boundary: runtime bridge/execution work requires explicit approval and should run on a separate dedicated branch when started.
 - WP-15 through WP-17 closeout does not imply runtime bridge/apply integration.
 
@@ -563,7 +563,7 @@ Status: GOVERNANCE PACKAGE CLOSED / ACCEPTED (2026-03-10 governance/docs/tests o
 
 ### Forbidden Pre-Implementation Behaviors
 
-- no runtime bridge code paths
+- no runtime mutation/apply code paths beyond separately authorized read-only preview slices
 - no apply behavior implementation
 - no Trio integration
 - no SmartStat engine/apply calls
@@ -644,10 +644,10 @@ Status: GOVERNANCE PACKAGE CLOSED / ACCEPTED (2026-03-10 governance/docs/tests o
 
 ### Closeout-Planning Alignment (Non-Authorizing)
 
-- WP-20 governance package is CLOSED / ACCEPTED as governance/docs/tests packaging, while runtime implementation remains NOT STARTED
+- WP-20 governance package is CLOSED / ACCEPTED as governance/docs/tests packaging, while broader runtime mutation/apply implementation remains NOT STARTED
 - governance package completion does not equal implementation authorization
 - implementation authorization still requires explicit recorded decision input + approval records
-- runtime implementation remains blocked until explicit authorization, explicit recorded version-line decision, evidence completeness, evidence review/signoff, and runtime lane-entry conditions are all satisfied
+- broader runtime mutation/apply implementation remains blocked until explicit authorization, explicit recorded version-line decision, evidence completeness, evidence review/signoff, and runtime lane-entry conditions are all satisfied
 - runtime bridge remains a distinct risk-class lane with mandatory branch separation
 - protected surfaces remain protected until separately authorized implementation work
 
@@ -714,26 +714,25 @@ Explicit future choices:
 - No socket mutation behavior
 - Required validation: gate-OFF parity, carry-forward validation of existing slice-02A positives and negatives, carry-forward validation of existing slice-02B positives and negatives, carry-forward validation of existing slice-02C positives and negatives, deterministic repeat-run hash equality for issues-summary joined preview, issues-summary negative fail-closed checks, mutation boundary audit, and boundary check confirming no new Trio/socket/apply surfaces were introduced
 
-- Draft next-step candidate after the frozen current scope of `WP20_RUNTIME_SLICE_02D_READONLY_PLAN_BRIDGE_ISSUES_SUMMARY_INTAKE`: `WP20_RUNTIME_SLICE_02E_READONLY_PLAN_BRIDGE_RESOLUTION_PREVIEW`
-- Draft objective: emit a deterministic read-only `resolution_preview` block inside the existing joined plan-bridge preview using only already-authorized projection metadata already consumed by slices 02B through 02D
-- Draft boundary limited to:
+- Validated/frozen step after the frozen current scope of `WP20_RUNTIME_SLICE_02D_READONLY_PLAN_BRIDGE_ISSUES_SUMMARY_INTAKE`: `WP20_RUNTIME_SLICE_02E_READONLY_PLAN_BRIDGE_RESOLUTION_PREVIEW`
+- Objective: emit a deterministic read-only `resolution_preview` block inside the existing joined plan-bridge preview using only already-authorized projection metadata already consumed by slices 02B through 02D
+- Boundary limited to:
     - `status_summary.status`
     - `semantic_interpretation_summary.scope_resolution`
     - `semantic_interpretation_summary.effective_scope`
     - `semantic_interpretation_summary.evidence_source`
-- Draft lane remains read-only
-- Draft joined preview output remains deterministic
-- Draft joined preview output must keep `mutation_authorized=false`
-- Draft fail closed if required resolution-preview inputs are absent after the current projection-intake validation path
-- Draft packet is review-only and non-authorizing until separately approved
-- No new upstream projection-contract intake in this draft step
-- No `rule_evaluation_summary` intake in this draft step
+- Lane remains read-only
+- Joined preview output remains deterministic
+- Joined preview output must keep `mutation_authorized=false`
+- Fail closed if required resolution-preview inputs are absent after the current projection-intake validation path
+- No new upstream projection-contract intake in this step
+- No `rule_evaluation_summary` intake in this step
 - No apply behavior
 - No Trio mutation behavior
 - No socket mutation behavior
-- Draft required validation: gate-OFF parity, carry-forward validation of existing slice-02A positives and negatives, carry-forward validation of existing slice-02B positives and negatives, carry-forward validation of existing slice-02C positives and negatives, carry-forward validation of existing slice-02D positives and negatives, deterministic repeat-run hash equality for resolution-preview joined preview, resolution-preview block presence and field-order checks, resolution-preview fail-closed checks for missing required inputs, mutation boundary audit, and boundary check confirming no new Trio/socket/apply surfaces were introduced
+- Validation status: PASS for gate-OFF parity, carry-forward validation of existing slice-02A through slice-02D positives and negatives, deterministic repeat-run hash equality for the resolution-preview joined preview, resolution-preview block presence and field-order checks, resolution-preview fail-closed checks for missing required inputs, mutation boundary audit, and the boundary check confirming no new Trio/socket/apply surfaces were introduced
 
-- Next authorized step after the frozen current scope of `WP20_RUNTIME_SLICE_02E_READONLY_PLAN_BRIDGE_RESOLUTION_PREVIEW`: `WP20_RUNTIME_SLICE_02F_READONLY_PLAN_BRIDGE_RULE_EVALUATION_SUMMARY_INTAKE`
+- Validated/frozen step after the frozen current scope of `WP20_RUNTIME_SLICE_02E_READONLY_PLAN_BRIDGE_RESOLUTION_PREVIEW`: `WP20_RUNTIME_SLICE_02F_READONLY_PLAN_BRIDGE_RULE_EVALUATION_SUMMARY_INTAKE`
 - Objective: intake exactly the `rule_evaluation_summary` metadata surface from the existing WP-19 projection artifact into the existing read-only plan-bridge path
 - Intake limited to:
     - `rule_evaluation_summary.phase_order`
@@ -748,7 +747,36 @@ Explicit future choices:
 - No socket mutation behavior
 - No rule-evaluation execution behavior beyond bounded read-only summary intake
 - No ordered-rules rendering expansion beyond the bounded read-only summary-intake scope
-- Required validation: gate-OFF parity, carry-forward validation of existing slice-02A positives and negatives, carry-forward validation of existing slice-02B positives and negatives, carry-forward validation of existing slice-02C positives and negatives, carry-forward validation of existing slice-02D positives and negatives, carry-forward validation of existing slice-02E positives and negatives, deterministic repeat-run hash equality for rule-evaluation-summary joined preview, phase-order and ordered-rules stability checks, rule-evaluation-summary negative fail-closed checks, mutation boundary audit, and boundary check confirming no new Trio/socket/apply surfaces were introduced
+- Validation status: PASS for gate-OFF parity, carry-forward validation of existing slice-02A through slice-02E positives and negatives, deterministic repeat-run hash equality for the rule-evaluation-summary joined preview, phase-order and ordered-rules stability checks, rule-evaluation-summary negative fail-closed checks, mutation boundary audit, and the boundary check confirming no new Trio/socket/apply surfaces were introduced
+
+- Draft next-step candidate after the frozen current scope of `WP20_RUNTIME_SLICE_02F_READONLY_PLAN_BRIDGE_RULE_EVALUATION_SUMMARY_INTAKE`: `WP20_RUNTIME_SLICE_02G_READONLY_PLAN_BRIDGE_RULE_EVALUATION_TRACE_PREVIEW`
+- Draft objective: emit a deterministic read-only `rule_evaluation_trace_preview` block inside the existing joined plan-bridge preview using only already-authorized traceability metadata already present in the existing WP-19 projection artifact and already loaded by slice-02B projection intake
+- Draft boundary limited to:
+    - `projection_contract`
+    - `projection_kind`
+    - `input_artifact`
+    - `input_identity.artifact_path`
+    - `input_identity.input_fingerprint_sha256`
+    - `deterministic_identity_summary.normalized_plan_hash`
+    - `deterministic_identity_summary.replay_identity`
+    - `deterministic_identity_summary.validator_run_identity`
+- Draft lane remains read-only
+- Draft joined preview output remains deterministic
+- Draft joined preview output must keep `mutation_authorized=false`
+- Draft fail closed if required traceability fields are missing or empty after the existing projection-intake validation path
+- Draft packet is review-only and non-authorizing until separately approved
+- No new upstream projection-contract intake or projection-contract expansion in this draft step
+- No rule-execution behavior
+- No rule-scoring logic
+- No rule-ordering logic
+- No rule-interpretation logic
+- No rule-filtering logic
+- No rule-result derivation or aggregation behavior
+- No ordered-rules rendering expansion in this draft step
+- No apply behavior
+- No Trio mutation behavior
+- No socket mutation behavior
+- Draft required validation: gate-OFF parity, carry-forward validation of existing slice-02A positives and negatives, carry-forward validation of existing slice-02B positives and negatives, carry-forward validation of existing slice-02C positives and negatives, carry-forward validation of existing slice-02D positives and negatives, carry-forward validation of existing slice-02E positives and negatives, carry-forward validation of existing slice-02F positives and negatives, deterministic repeat-run hash equality for rule-evaluation-trace joined preview, trace-preview block presence and field-order checks, traceability-field malformed-input fail-closed checks, mutation boundary audit, and boundary check confirming no new Trio/socket/apply surfaces were introduced
 
 ### Definition of Done
 
