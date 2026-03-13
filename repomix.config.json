@@ -36,7 +36,6 @@
     "SESSION.md",
     "ROADMAP.md",
     "CHANGELOG.md",
-    "VERSION.txt",
     "SmartStat_Mappings.ini",
     "SmartStat_Mappings.learn.ini",
     "SmartStat_MappingsNBA.ini",
@@ -47,12 +46,21 @@
     "SmartStat_TemplateConfig.ini",
     ".agents/**/*.md",
     ".agents/**/*.ps1",
+    ".agents/**/*.vbs",
+    ".tools/**/*.md",
+    ".tools/**/*.json",
+    ".tools/**/*.ps1",
+    ".tools/**/*.py",
     "docs/**/*.md",
+    "docs/**/*.json",
     "tests/**/*.md",
     "tests/**/*.txt",
     "tests/**/*.json",
     "tests/**/*.vbs",
     "tests/**/*.ps1",
+    "tools/**/*.md",
+    "tools/**/*.json",
+    "tools/**/*.py",
     "governance/**/*.md"
   ],
   "ignore": {
@@ -61,6 +69,7 @@
     "useDefaultPatterns": true,
     "customPatterns": [
       "**/.git/**",
+      "VERSION.txt",
       "**/.vs/**",
       "**/.vscode/**",
       "**/bin/**",
@@ -88,7 +97,13 @@
       "**/*.tmp",
       "**/*.bak",
       "**/*.mp4",
-      "**/*.mov"
+      "**/*.mov",
+      ".tools/semantic-source-view/dist/**",
+      ".tools/semantic-source-view/node_modules/**",
+      ".tools/semantic-source-view/src/**",
+      ".tools/semantic-source-view/**.html",
+      ".tools/semantic-source-view/**.tsbuildinfo",
+      ".tools/semantic-source-view/**.ts"
     ]
   },
   "security": {

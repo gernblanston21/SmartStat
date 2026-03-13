@@ -16,6 +16,8 @@
 | plan_bridge_case01.fixture + projection_malformed_empty_semantic_evidence_source.json | status=fail_closed; error_code=SLICE2_PROJECTION_ARTIFACT_MALFORMED | status=fail_closed; error_code=SLICE2_PROJECTION_ARTIFACT_MALFORMED | PASS |
 | plan_bridge_case01.fixture + projection_malformed_missing_issues_errors.json | status=fail_closed; error_code=SLICE2_PROJECTION_ARTIFACT_MALFORMED | status=fail_closed; error_code=SLICE2_PROJECTION_ARTIFACT_MALFORMED | PASS |
 | plan_bridge_case01.fixture + projection_malformed_issues_warnings_not_array.json | status=fail_closed; error_code=SLICE2_PROJECTION_ARTIFACT_MALFORMED | status=fail_closed; error_code=SLICE2_PROJECTION_ARTIFACT_MALFORMED | PASS |
+| plan_bridge_case01.fixture + projection_malformed_missing_rule_phase_order.json | status=fail_closed; error_code=SLICE2_PROJECTION_ARTIFACT_MALFORMED | status=fail_closed; error_code=SLICE2_PROJECTION_ARTIFACT_MALFORMED | PASS |
+| plan_bridge_case01.fixture + projection_malformed_ordered_rules_not_array.json | status=fail_closed; error_code=SLICE2_PROJECTION_ARTIFACT_MALFORMED | status=fail_closed; error_code=SLICE2_PROJECTION_ARTIFACT_MALFORMED | PASS |
 | mutation_boundary_report.txt | TOTAL_MUTATION_CALLS=0 | TOTAL_MUTATION_CALLS=0 | PASS |
 
 Determinism check (positive fixture):
@@ -23,15 +25,19 @@ Determinism check (positive fixture):
 - pos_plan_bridge_run2.json SHA256 = AF124012ED2DA1C62CD5822C9E39FD295FD01BD925B6735FCEA1901AB836C0B7
 - hash_match = True
 
-Determinism check (resolution-preview joined preview):
-- pos_projection_intake_run1.json SHA256 = 2929A3EE93894F2B19E316B5EBE1B355DD6AC12F1F75E20DD12BDA93D7BB4629
-- pos_projection_intake_run2.json SHA256 = 2929A3EE93894F2B19E316B5EBE1B355DD6AC12F1F75E20DD12BDA93D7BB4629
+Determinism check (rule-evaluation-summary joined preview):
+- pos_projection_intake_run1.json SHA256 = 7027027C8335D5F71F818081B4F193BD9B90F23D219571A22C037BC8BAD4BAB2
+- pos_projection_intake_run2.json SHA256 = 7027027C8335D5F71F818081B4F193BD9B90F23D219571A22C037BC8BAD4BAB2
 - hash_match = True
 
 Resolution-preview fail-closed coverage:
 - projection_malformed_missing_status.json -> `SLICE2_PROJECTION_ARTIFACT_MALFORMED`
 - projection_malformed_missing_semantic_scope.json -> `SLICE2_PROJECTION_ARTIFACT_MALFORMED`
 - projection_malformed_empty_semantic_evidence_source.json -> `SLICE2_PROJECTION_ARTIFACT_MALFORMED`
+
+Rule-evaluation-summary fail-closed coverage:
+- projection_malformed_missing_rule_phase_order.json -> `SLICE2_PROJECTION_ARTIFACT_MALFORMED`
+- projection_malformed_ordered_rules_not_array.json -> `SLICE2_PROJECTION_ARTIFACT_MALFORMED`
 
 Gate-OFF parity check (mock-trio normalized):
 - method: mock_trio_runner.vbs baseline/successor comparison with identity-only exclusions

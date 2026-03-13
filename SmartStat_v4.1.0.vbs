@@ -5973,6 +5973,10 @@ Function Slice2PlanBridge_Execute(ByRef outcome)
       Call Slice2PlanBridge_FailClosed(outcome, SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED, errText)
       Exit Function
     End If
+    If Not Slice2PlanBridge_ValidateRuleEvaluationSummaryPreviewInputs(outcome, errText) Then
+      Call Slice2PlanBridge_FailClosed(outcome, SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED, errText)
+      Exit Function
+    End If
   End If
   outcome("status") = "success"
   Slice2PlanBridge_Execute = True
@@ -6062,6 +6066,8 @@ Function Slice2PlanBridge_LoadProjectionIntake(ByVal projectionPath, ByRef outco
   Dim semanticScopeResolution, semanticEffectiveScope, semanticEvidenceSource
   Dim issuesErrorsJson, issuesWarningsJson
   Dim issuesErrorsErr, issuesWarningsErr
+  Dim rulePhaseOrderJson, ruleOrderedRulesJson
+  Dim rulePhaseOrderErr, ruleOrderedRulesErr
   Dim errorCount, warningCount
 
   Slice2PlanBridge_LoadProjectionIntake = False
@@ -6203,6 +6209,16 @@ Function Slice2PlanBridge_LoadProjectionIntake(ByVal projectionPath, ByRef outco
     errText = "projection artifact malformed: issues_summary.warnings " & issuesWarningsErr
     Exit Function
   End If
+  If Not Slice2PlanBridge_JsonReadArray(jsonText, "phase_order", rulePhaseOrderJson, rulePhaseOrderErr) Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: rule_evaluation_summary.phase_order " & rulePhaseOrderErr
+    Exit Function
+  End If
+  If Not Slice2PlanBridge_JsonReadArray(jsonText, "ordered_rules", ruleOrderedRulesJson, ruleOrderedRulesErr) Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: rule_evaluation_summary.ordered_rules " & ruleOrderedRulesErr
+    Exit Function
+  End If
 
   outcome("preview_kind") = SLICE2_PLAN_BRIDGE_PROJECTION_PREVIEW_KIND
   outcome("projection_contract") = CStr(projectionContract)
@@ -6221,6 +6237,8 @@ Function Slice2PlanBridge_LoadProjectionIntake(ByVal projectionPath, ByRef outco
   outcome("projection_semantic_evidence_source") = CStr(semanticEvidenceSource)
   outcome("projection_issues_errors_json") = CStr(issuesErrorsJson)
   outcome("projection_issues_warnings_json") = CStr(issuesWarningsJson)
+  outcome("projection_rule_phase_order_json") = CStr(rulePhaseOrderJson)
+  outcome("projection_rule_ordered_rules_json") = CStr(ruleOrderedRulesJson)
 
   Slice2PlanBridge_LoadProjectionIntake = True
 End Function
@@ -6487,6 +6505,30 @@ Function Slice2PlanBridge_ValidateResolutionPreviewInputs(ByRef outcome, ByRef e
   Slice2PlanBridge_ValidateResolutionPreviewInputs = True
 End Function
 
+Function Slice2PlanBridge_ValidateRuleEvaluationSummaryPreviewInputs(ByRef outcome, ByRef errText)
+  Dim requiredKeys, keyName, keyValue
+
+  Slice2PlanBridge_ValidateRuleEvaluationSummaryPreviewInputs = False
+  errText = ""
+  requiredKeys = Array( _
+    "projection_rule_phase_order_json", _
+    "projection_rule_ordered_rules_json")
+
+  For Each keyName In requiredKeys
+    If Not outcome.Exists(CStr(keyName)) Then
+      errText = "rule_evaluation_summary preview input missing: " & CStr(keyName)
+      Exit Function
+    End If
+    keyValue = CStr(outcome(CStr(keyName)))
+    If Len(Trim(keyValue)) = 0 Then
+      errText = "rule_evaluation_summary preview input empty: " & CStr(keyName)
+      Exit Function
+    End If
+  Next
+
+  Slice2PlanBridge_ValidateRuleEvaluationSummaryPreviewInputs = True
+End Function
+
 Sub Slice2PlanBridge_FailClosed(ByRef outcome, ByVal errCode, ByVal errText)
   outcome("status") = "fail_closed"
   outcome("error_code") = CStr(errCode)
@@ -6596,7 +6638,8 @@ Function Slice2PlanBridge_BuildPreviewPayloadJson(ByVal tabfieldRecords, ByVal p
   If Slice2PlanBridge_HasProjectionIntake(outcome) Then
     payload = payload & "," & vbCrLf
     payload = payload & "    ""projection_metadata"": " & Slice2PlanBridge_BuildProjectionMetadataJson(outcome) & "," & vbCrLf
-    payload = payload & "    ""resolution_preview"": " & Slice2PlanBridge_BuildResolutionPreviewJson(outcome) & vbCrLf
+    payload = payload & "    ""resolution_preview"": " & Slice2PlanBridge_BuildResolutionPreviewJson(outcome) & "," & vbCrLf
+    payload = payload & "    ""rule_evaluation_summary_preview"": " & Slice2PlanBridge_BuildRuleEvaluationSummaryPreviewJson(outcome) & vbCrLf
   Else
     payload = payload & vbCrLf
   End If
@@ -6694,6 +6737,18 @@ Function Slice2PlanBridge_BuildResolutionPreviewJson(ByRef outcome)
   outTxt = outTxt & "    }"
 
   Slice2PlanBridge_BuildResolutionPreviewJson = outTxt
+End Function
+
+Function Slice2PlanBridge_BuildRuleEvaluationSummaryPreviewJson(ByRef outcome)
+  Dim outTxt
+
+  outTxt = ""
+  outTxt = outTxt & "{" & vbCrLf
+  outTxt = outTxt & "      ""phase_order"": " & CStr(outcome("projection_rule_phase_order_json")) & "," & vbCrLf
+  outTxt = outTxt & "      ""ordered_rules"": " & CStr(outcome("projection_rule_ordered_rules_json")) & vbCrLf
+  outTxt = outTxt & "    }"
+
+  Slice2PlanBridge_BuildRuleEvaluationSummaryPreviewJson = outTxt
 End Function
 ' ================================
 ' END WP20_RUNTIME_SLICE_02_READONLY_PLAN_BRIDGE

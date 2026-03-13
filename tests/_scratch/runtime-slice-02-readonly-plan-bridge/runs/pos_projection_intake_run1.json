@@ -67,6 +67,10 @@
       "scope_resolution": "implicit_default",
       "effective_scope": "career",
       "evidence_source": "operator_grounded_default"
+    },
+    "rule_evaluation_summary_preview": {
+      "phase_order": ["STRUCTURAL","SEMANTIC","DETERMINISM","BOUNDARY"],
+      "ordered_rules": [{"category":"STRUCTURAL","rule_id":"STRUCT_SLOT_ORDER_CONTIGUOUS_ASC","outcome":"PASS"},{"category":"STRUCTURAL","rule_id":"STRUCT_CAPTURED_PLAN_TERMINAL_REQUIRED","outcome":"PASS"},{"category":"STRUCTURAL","rule_id":"STRUCT_ILLEGAL_SLOT_COMBINATION","outcome":"PASS"},{"category":"STRUCTURAL","rule_id":"STRUCT_NO_NON_FORMATTER_AFTER_TERMINAL","outcome":"PASS"},{"category":"STRUCTURAL","rule_id":"STRUCT_FORMATTER_COUNT_MAX_ONE","outcome":"PASS"},{"category":"SEMANTIC","rule_id":"SEM_REQUIRED_DEPENDENCIES_PRESENT","outcome":"PASS"},{"category":"SEMANTIC","rule_id":"SEM_FORMATTER_TERMINAL_ADJACENT_AND_TYPE_COMPATIBLE","outcome":"PASS"},{"category":"SEMANTIC","rule_id":"SEM_ENTITY_FAMILY_OPERATOR_TERMINAL_COMPATIBLE","outcome":"PASS"},{"category":"SEMANTIC","rule_id":"SEM_AMBIGUOUS_OR_INCOMPATIBLE_COMBINATION_REFUSED","outcome":"PASS"},{"category":"DETERMINISM","rule_id":"DET_RULE_EVALUATION_ORDER_STABLE","outcome":"PASS"},{"category":"DETERMINISM","rule_id":"DET_ERROR_WARNING_ORDER_STABLE","outcome":"PASS"},{"category":"DETERMINISM","rule_id":"DET_OUTPUT_NORMALIZATION_STABLE","outcome":"PASS"},{"category":"DETERMINISM","rule_id":"DET_AMBIGUOUS_INTERPRETATION_REFUSED","outcome":"PASS"},{"category":"DETERMINISM","rule_id":"DET_REPLAY_IDENTITY_STABLE","outcome":"PASS"},{"category":"BOUNDARY","rule_id":"BOUND_VALIDATION_RUNTIME_INDEPENDENT","outcome":"PASS"},{"category":"BOUNDARY","rule_id":"BOUND_NO_TRIO_OR_ENGINE_APPLY_CALLS","outcome":"PASS"},{"category":"BOUNDARY","rule_id":"BOUND_CAPTURED_PLAN_READ_ONLY","outcome":"PASS"},{"category":"BOUNDARY","rule_id":"BOUND_NO_RUNTIME_SIDE_EFFECT_INFERENCE","outcome":"PASS"}]
     }
   }
 }
