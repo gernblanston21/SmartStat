@@ -258,11 +258,12 @@ Fail closed by default.
 
 - Frozen runtime/core baselines: `v4.0.0_beta` and `v4.0.0_RC1`.
 - Single active development lane:
-  `feature/semantic-layer` (semantic architecture/tooling plus read-only runtime-slice planning/validation only).
+  `feature/semantic-layer` (semantic architecture/tooling plus bounded read-only runtime-slice implementation/validation/governance only).
 - WP-18 CLOSED (validation layer).
 - WP-19 CLOSED (viewer contracts).
 - WP-20 governance package CLOSED / ACCEPTED.
-- WP-20 read-only runtime slice chain is implemented and validated through `WP20_RUNTIME_SLICE_02F_READONLY_PLAN_BRIDGE_RULE_EVALUATION_SUMMARY_INTAKE`.
+- WP-20 read-only runtime slice chain is implemented and validated through `WP20_RUNTIME_SLICE_02G_READONLY_PLAN_BRIDGE_RULE_EVALUATION_TRACE_PREVIEW`.
+- Current post-02G runtime-lane posture: `NO DISTINCT NEXT SLICE / HOLD`.
 - Broader WP-20 runtime mutation/apply implementation remains NOT STARTED / NOT AUTHORIZED.
 
 WP-20 allowed upstream inputs:

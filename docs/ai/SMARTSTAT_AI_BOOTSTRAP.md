@@ -92,7 +92,9 @@ Current repo state:
 - WP-18 CLOSED
 - WP-19 CLOSED
 - WP-20 governance package CLOSED / ACCEPTED
-- WP-20 runtime implementation NOT STARTED
+- WP-20 read-only runtime slice chain implemented and validated through Slice 02G
+- Broader WP-20 runtime mutation/apply implementation NOT STARTED / NOT AUTHORIZED
+- Current post-02G runtime-lane posture: NO DISTINCT NEXT SLICE / HOLD
 
 Runtime lane map:
 - Slice 01 -> Read-only ingress
@@ -103,6 +105,8 @@ Runtime lane map:
 - Slice 02D -> Issues summary intake
 - Slice 02E -> Resolution preview
 - Slice 02F -> Rule evaluation summary intake
+- Slice 02G -> Rule evaluation trace preview
+- No distinct Slice 02H is justified under current repo truth
 
 Critical runtime boundary:
 - no Trio mutation
