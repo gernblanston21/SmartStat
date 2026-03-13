@@ -1,0 +1,48 @@
+{
+  "identity": {
+    "evidence_record_id": "wp20_target15_runtime_slice02f_version_line_evidence_20260313",
+    "wp_target": "WP-20 Target-15",
+    "record_date": "2026-03-13T00:42:15Z",
+    "record_owner": "runtime_lane_evidence_owner",
+    "source_bundle_ref": "tests/wp-20/target-15/artifacts/runtime_slice02f_version_line_evidence_checklist.md"
+  },
+  "selection": {
+    "selected_version_line": "SmartStat_v4.1.0.vbs",
+    "selection_count": 1,
+    "selection_consistency": true
+  },
+  "linkages": {
+    "target_05": {
+      "implementation_authorization_record_ref": "tests/wp-20/target-05/artifacts/runtime_slice02f_implementation_authorization_record.md",
+      "branch_approval_record_ref": "tests/wp-20/target-05/artifacts/runtime_slice02f_branch_approval_record.md",
+      "authorization_outcome_ref": "hold"
+    },
+    "target_13": {
+      "runtime_lane_entry_checklist_ref": "tests/wp-20/target-13/artifacts/runtime_slice02f_lane_entry_checklist.md",
+      "version_line_decision_checkpoint_ref": "tests/wp-20/target-13/artifacts/runtime_slice02f_lane_entry_checklist.md#checkpoint-1-version-line-decision-checkpoint",
+      "protected_file_checkpoint_ref": "tests/wp-20/target-13/artifacts/runtime_slice02f_lane_entry_checklist.md#checkpoint-3-protected-file-checkpoint"
+    },
+    "target_14": {
+      "version_line_decision_record_ref": "tests/wp-20/target-14/artifacts/runtime_slice02f_version_line_decision_record.md"
+    }
+  },
+  "approval_verification": {
+    "prepared_by": "runtime_lane_evidence_owner",
+    "reviewed_by": "runtime_lane_review_owner",
+    "verified_by": "runtime_lane_verification_owner",
+    "verification_date": "2026-03-13T00:42:15Z",
+    "verification_outcome": "verified_complete",
+    "verification_notes": "Version-line decision evidence is complete and internally consistent for slice-02F governance tracking. Target-14 is approved; Target-05 authorization and Target-13 lane entry remain hold. The evidence package remains governance-only and non-authorizing, preserving the current read-only rule-evaluation-summary boundary, deterministic posture, mutation_authorized=false requirement, intake limited to rule_evaluation_summary.phase_order and rule_evaluation_summary.ordered_rules as read-only summary metadata only, and the prohibitions on rule-evaluation execution behavior, ordered-rules rendering expansion beyond bounded read-only summary intake, new upstream projection-contract intake, apply behavior, Trio mutation, socket mutation, INI/schema/contract edits, and SmartStatTrayApp compatibility changes."
+  },
+  "baseline_confirmation": {
+    "frozen_baseline_file": "SmartStat_v4.0.0_beta.vbs",
+    "no_runtime_edit_confirmed": true,
+    "comparison_readiness_confirmed": true
+  },
+  "completeness": {
+    "required_items_total": 24,
+    "required_items_complete": 24,
+    "missing_items_count": 0,
+    "overall_status": "verified_complete"
+  }
+}
