@@ -1,42 +1,134 @@
 # AGENTS.md - SmartStat Core Governance
 
 ## Project Scope
+
 SmartStat Core Engine (VBScript + INI system)
 
 Includes:
-- SmartStat_v4.0.0_beta.vbs
-- All SmartStat_Mappings*.ini variants
-- SmartStat_StaticOverrides.ini
-- SmartStat_TemplateConfig.ini
+- `SmartStat_v4.0.0_beta.vbs`
+- all `SmartStat_Mappings*.ini` variants
+- `SmartStat_StaticOverrides.ini`
+- `SmartStat_TemplateConfig.ini`
 
 Excludes:
-- Naming convention changes
+- naming convention changes
 - Viz Trio tabfield redesign
-- External tool schema changes
+- external tool schema changes
 
 ---
 
-## Viz Trio Grounding Requirement (Method A â€” Same Repo)
+# AI Kernel Initialization (Advanced Repo Pattern)
+
+Before performing reasoning, planning, or code generation, the agent MUST align
+with the SmartStat AI Kernel context system.
+
+To minimize token usage while maximizing architectural grounding,
+use the following fast-load sequence:
+
+### Phase 1 - Kernel Index (fast architecture orientation)
+
+Load:
+
+- `docs/ai/SYSTEM_INDEX.md`
+
+### Phase 2 - Governance Sources
+
+Load only the authoritative governance files:
+
+1. `AGENTS.md`
+2. `SESSION.md`
+3. `ROADMAP.md`
+
+These override any AI context files.
+
+### Phase 3 - Architecture Kernel
+
+Load:
+
+- `docs/ai/PROJECT_BRAIN.md`
+- `docs/ai/ARCHITECTURE_ANCHOR.md`
+- `docs/ai/DEVELOPMENT_RULES.md`
+- `docs/ai/RUNTIME_PIPELINE.md`
+- `docs/ai/SMARTSTAT_RUNTIME_MAP.md`
+- `docs/ai/AI_KERNEL.md`
+
+### Phase 4 - Domain Grounding
+
+Load only if the task involves runtime behavior or Viz interaction:
+
+- `docs/viz-trio/`
+- `docs/architecture/smartstat-architecture.md`
+- `docs/onair/`
+
+### Phase 5 - Skill Router and Session Helpers
+
+Load skill routing rules before planning:
+
+- `docs/ai/AGENTS_SKILL_ROUTER.md`
+
+Load prompt helpers only when needed:
+
+- `docs/ai/context_seed.md`
+- `docs/ai/SMARTSTAT_AI_BOOTSTRAP.md`
+- `docs/ai/chat-starters.md`
+
+These are prompt helpers, not governance.
+
+### Hard Rule
+
+AI context files improve reasoning but never override governance.
+
+Authoritative hierarchy:
+
+1. `AGENTS.md`
+2. `SESSION.md`
+3. `ROADMAP.md`
+4. `docs/viz-trio/`
+5. `docs/architecture/smartstat-architecture.md`
+6. `docs/onair/`
+7. `docs/ai/*`
+8. `.agents/skills/*`
+
+---
+
+## AI Context System Alignment
+
+This repo includes a repo-local AI grounding layer under `docs/ai/`.
+
+Use it to improve session continuity and architecture accuracy,
+but do not treat it as authoritative over repo governance.
+
+If `docs/ai/*` conflicts with governance sources,
+the higher-priority source wins.
+
+---
+
+## Viz Trio Grounding Requirement (Method A - Same Repo)
 
 All SmartStat changes must align with `docs/viz-trio/`.
 
-No Trio command, tabfield assumption, or operator workflow may be inferred without documentation support.
+No Trio command, tabfield assumption, or operator workflow may be inferred
+without documentation support.
 
-Before proposing ANY SmartStat changes:
-1) Read `docs/viz-trio/environment_constraints.md` (live-safe rules)
-2) Read `docs/viz-trio/command_reference.md`
-3) Read `docs/viz-trio/commands_full_index.md`
-4) Read `docs/viz-trio/tabfields.md` (tabfield prefix heuristics)
-5) Use `page_list.md`, `page_editor.md`, and `show_control.md` when reasoning about operator workflow
+Before proposing any SmartStat changes:
+
+1. Read `docs/viz-trio/environment_constraints.md` (live-safe rules)
+2. Read `docs/viz-trio/command_reference.md`
+3. Read `docs/viz-trio/commands_full_index.md`
+4. Read `docs/viz-trio/tabfields.md` (tabfield prefix heuristics)
+5. Use `page_list.md`, `page_editor.md`, and `show_control.md`
+   when reasoning about operator workflow
 
 If uncertain:
-- Quote the relevant section.
-- Justify the decision.
-- Fail closed.
+
+- quote the relevant section
+- justify the decision
+- fail closed
 
 If a proposal conflicts with those docs:
-- STOP.
-- Propose a safer alternative.
+
+- stop
+- propose a safer alternative
 
 Use `PROMPTS.md` for standardized Codex kickoff blocks.
 
@@ -45,86 +137,118 @@ Use `PROMPTS.md` for standardized Codex kickoff blocks.
 ## Codex Agent Skills
 
 This repo uses Codex-compatible skills stored in:
-- `.agents/skills/<skill-name>/SKILL.md`
 
-When a task falls into one of these domains, Codex must prefer the matching skill workflow:
-- Viz Trio semantics / TrioCmd / tabfields / operator workflow â†’ `viztrio-grounding`
-- INI contract/order/aliases/dup keys â†’ `smartstat-ini-governance`
-- Determinism evidence / run comparisons / stable hashing â†’ `smartstat-determinism-audit`
-- RC-only allowed work / regression evidence requirements â†’ `rc-stabilization-discipline`
-- Standard repo mechanics (-U5 diffs, line extraction) â†’ `repo-ops-codex`
+`.agents/skills/<skill-name>/SKILL.md`
+
+Before planning, the agent should consult
+`docs/ai/AGENTS_SKILL_ROUTER.md` to select the most specific matching skill.
+
+When a task falls into one of these domains,
+Codex should prefer the matching skill workflow:
+
+- Viz Trio semantics / TrioCmd / tabfields / operator workflow
+  -> `viztrio-grounding`
+- INI contract/order/aliases/dup keys
+  -> `smartstat-ini-governance`
+- determinism evidence / run comparisons / stable hashing
+  -> `smartstat-determinism-audit`
+- RC-only allowed work / regression evidence requirements
+  -> `rc-stabilization-discipline`
+- standard repo mechanics (`-U5` diffs, line extraction)
+  -> `repo-ops-codex`
 
 ---
 
 ## Release Discipline
 
-### Beta (v4.0.0_beta)
-- Feature complete
-- Frozen for behavioral change
+### Beta (`v4.0.0_beta`)
 
-### RC (v4.0.0_RC1)
+- feature complete
+- frozen for behavioral change
+
+### RC (`v4.0.0_RC1`)
+
 Allowed:
-- Stability validation
-- Log clarity
-- Determinism verification
-- Minor guardrails
+
+- stability validation
+- log clarity
+- determinism verification
+- minor guardrails
 
 Forbidden:
-- Resolver math changes
-- Transaction behavior changes
-- Schema changes
-- Feature additions
+
+- resolver math changes
+- transaction behavior changes
+- schema changes
+- feature additions
 
 ### v4.1+
+
 Allowed:
-- Architectural improvements
-- Resolver enhancements
-- Performance work
-- New harness capabilities
+
+- architectural improvements
+- resolver enhancements
+- performance work
+- new harness capabilities
 
 ### RC Stabilization Rules
-- RC work is doc/tests/log clarity only unless explicitly approved as a roadmap item.
-- Any behavior change requires a new WP entry + Phase-4 style regression evidence.
+
+- RC work is doc/tests/log clarity only unless explicitly approved
+  as a roadmap item.
+- Any behavior change requires a new WP entry plus
+  Phase-4 style regression evidence.
 - All new harness artifacts must remain under `/tests/...`.
 
 All changes must:
-- Preserve fail-closed ambiguity gating
-- Preserve transaction integrity
-- Avoid unintended behavioral drift
 
-### Branch / Lane Separation (Mandatory)
-- Single active lane is `feature/semantic-layer` for semantic architecture/tooling only.
-- Do not mix runtime execution work with semantic architecture/tooling work in one pass.
-- Runtime bridge/execution proposals require explicit approval before implementation.
-- Runtime bridge/execution implementation may require a separate dedicated branch.
-- If lane boundaries are unclear, halt and request explicit scope confirmation.
+- preserve fail-closed ambiguity gating
+- preserve transaction integrity
+- avoid unintended behavioral drift
+
+---
+
+## Branch / Lane Separation (Mandatory)
+
+- Single active lane is `feature/semantic-layer`
+  for semantic architecture/tooling only.
+- Do not mix runtime execution work with semantic architecture/tooling work.
+- Runtime bridge/execution proposals require explicit approval
+  before implementation.
+- Runtime bridge implementation may require a separate dedicated branch.
+
+If lane boundaries are unclear:
+
+- halt
+- request explicit scope confirmation
 
 ---
 
 ## Code Delivery Rules
 
-- Always provide unified diffs (-U5 minimum)
-- Preserve INI formatting and key order
-- Full file required if partial patch is unsafe
-- Flag SmartStatTrayApp compatibility risks
-- Do not silently refactor unrelated code
-- Clearly state regression impact
+- Always provide unified diffs (`-U5` minimum)
+- preserve INI formatting and key order
+- full file required if partial patch is unsafe
+- flag SmartStatTrayApp compatibility risks
+- do not silently refactor unrelated code
+- clearly state regression impact
 
 ---
 
 ## Conflict Policy
 
 If a request:
-- Breaks determinism
-- Alters ambiguity gating
-- Reorders INI keys
-- Risks external compatibility
-- Conflicts with Viz Trio documentation
+
+- breaks determinism
+- alters ambiguity gating
+- reorders INI keys
+- risks external compatibility
+- conflicts with Viz Trio documentation
 
 Then:
+
 1. Halt
 2. Explain conflict clearly
-3. Propose safe alternative implementation
+3. Propose a safe alternative implementation
 
 Fail closed by default.
 
@@ -133,66 +257,37 @@ Fail closed by default.
 ## Current Release Target and Branch Strategy
 
 - Frozen runtime/core baselines: `v4.0.0_beta` and `v4.0.0_RC1`.
-- Single active development lane: `feature/semantic-layer` (semantic architecture/tooling only).
-- WP-18 is CLOSED as a validation-layer-only package and must remain runtime-independent.
-- WP-19 is CLOSED as a read-only viewer-contract package over WP-17/WP-18 artifacts.
-- WP-19 contract surfaces may be consumed read-only only: projection contract, projection summary/consumption surfaces, and projection-to-view-model adapter contract.
-- WP-20 kickoff gate, Target-01 approval package, Target-02 charter/plan gate, Target-03 rehearsal gate, Target-04 sign-off gate, Target-05 implementation-authorization decision gate, Target-06 authorization-packet fill/verification gate, Target-07 draft/verification-dry-run template gate, Target-08 sample-fill/dry-run-structure gate, Target-09 authorization-input collection scaffold gate, Target-10 packet-population readiness planning scaffold gate, Target-11 tracking-and-reporting mechanics scaffold gate, Target-12 governance-only cadence/operating-rhythm definition gate, Target-13 runtime version-line fork governance-rule gate, Target-14 version-line decision-record template gate, Target-15 version-line decision evidence checklist/schema gate, Target-16 version-line evidence review procedure/signoff template gate, Target-17 governance closeout criteria/stop-or-advance decision-template gate, Target-18 governance package closeout summary/acceptance-record template gate, and Target-19 governance evidence index/final non-authorizing closure-note gate are defined; WP-20 governance package is CLOSED / ACCEPTED (governance/docs/tests only) and runtime implementation remains NOT STARTED.
-- WP-20 allowed upstream inputs are limited to: WP-17 captured-plan artifacts, WP-18 validation outputs (`validation_result`, `rule_evaluations`, refusal diagnostics, deterministic identities, `semantic_interpretation`), and WP-19 projection/adapter contract surfaces.
-- WP-20 forbidden pre-implementation behavior: no runtime bridge code, no apply behavior, no Trio integration, no SmartStat engine/apply calls, no viewer implementation, and no artifact mutation.
-- WP-20 implementation requires explicit approval, dedicated branch/lane separation, and an approved runtime-bridge regression/evidence plan before code changes begin.
-- WP-20 governance completion does not authorize implementation; explicit recorded implementation authorization is still required.
-- WP-20 kickoff checklist reference: `docs/onair/wp20_kickoff_checklist.md`.
-- WP-20 approval requirements reference: `docs/onair/wp20_approval_requirements.md`.
-- WP-20 lane charter reference: `docs/onair/wp20_lane_charter.md`.
-- WP-20 regression/evidence plan reference: `docs/onair/wp20_regression_evidence_plan.md`.
-- WP-20 rehearsal protocol reference: `docs/onair/wp20_rehearsal_protocol.md`.
-- WP-20 rehearsal manifest template reference: `docs/onair/wp20_rehearsal_manifest_template.md`.
-- WP-20 gate review checklist reference: `docs/onair/wp20_gate_review_checklist.md`.
-- WP-20 implementation-authorization record reference: `docs/onair/wp20_implementation_authorization_record.md`.
-- WP-20 branch-approval record reference: `docs/onair/wp20_branch_approval_record.md`.
-- WP-20 authorization packet index template reference: `docs/onair/wp20_authorization_packet_index_template.md`.
-- WP-20 packet completeness checklist reference: `docs/onair/wp20_packet_completeness_checklist.md`.
-- WP-20 authorization packet draft template reference: `docs/onair/wp20_authorization_packet_draft_template.md`.
-- WP-20 packet verification dry-run template reference: `docs/onair/wp20_packet_verification_dry_run_template.md`.
-- WP-20 authorization packet sample reference: `docs/onair/wp20_authorization_packet_sample.md`.
-- WP-20 packet verification dry-run sample reference: `docs/onair/wp20_packet_verification_dry_run_sample.md`.
-- WP-20 authorization-input collection template reference: `docs/onair/wp20_authorization_input_collection_template.md`.
-- WP-20 authorization-input evidence register reference: `docs/onair/wp20_authorization_input_evidence_register.md`.
-- WP-20 packet-population readiness plan reference: `docs/onair/wp20_packet_population_readiness_plan.md`.
-- WP-20 authorization-input owner assignment template reference: `docs/onair/wp20_authorization_input_owner_assignment_template.md`.
-- WP-20 authorization-input tracking ledger reference: `docs/onair/wp20_authorization_input_tracking_ledger.md`.
-- WP-20 readiness status report template reference: `docs/onair/wp20_readiness_status_report_template.md`.
-- WP-20 tracking/reporting operating-rhythm reference: `docs/onair/wp20_tracking_reporting_operating_rhythm.md`.
-- WP-20 readiness review meeting template reference: `docs/onair/wp20_readiness_review_meeting_template.md`.
-- WP-20 runtime version-line fork rule reference: `docs/onair/wp20_runtime_version_line_rule.md`.
-- WP-20 runtime implementation lane entry checklist reference: `docs/onair/wp20_runtime_implementation_lane_entry_checklist.md`.
-- WP-20 runtime version-line decision record template reference: `docs/onair/wp20_runtime_version_line_decision_record_template.md`.
-- WP-20 runtime version-line decision guidance reference: `docs/onair/wp20_runtime_version_line_decision_guidance.md`.
-- WP-20 runtime version-line evidence checklist reference: `docs/onair/wp20_runtime_version_line_evidence_checklist.md`.
-- WP-20 runtime version-line evidence schema reference: `docs/onair/wp20_runtime_version_line_evidence_schema.md`.
-- WP-20 runtime version-line evidence review procedure reference: `docs/onair/wp20_runtime_version_line_evidence_review_procedure.md`.
-- WP-20 runtime version-line evidence signoff template reference: `docs/onair/wp20_runtime_version_line_evidence_signoff_template.md`.
-- WP-20 governance closeout criteria reference: `docs/onair/wp20_governance_closeout_criteria.md`.
-- WP-20 stop-or-advance decision template reference: `docs/onair/wp20_stop_or_advance_decision_template.md`.
-- WP-20 governance package closeout summary reference: `docs/onair/wp20_governance_package_closeout_summary.md`.
-- WP-20 governance acceptance record template reference: `docs/onair/wp20_governance_acceptance_record_template.md`.
-- WP-20 governance evidence index reference: `docs/onair/wp20_governance_evidence_index.md`.
-- WP-20 final non-authorizing closure note reference: `docs/onair/wp20_final_non_authorizing_closure_note.md`.
-- WP-20 governance closeout acceptance note reference: `docs/onair/wp20_governance_closeout_acceptance_note.md`.
-- WP-20 post-closeout runtime boundary note reference: `docs/onair/wp20_post_closeout_runtime_boundary_note.md`.
-- WP-20 frozen baseline runtime rule: `SmartStat_v4.0.0_beta.vbs` remains protected and may not be modified by WP-20 runtime implementation targets.
-- WP-20 runtime implementation requires explicit authorization, explicit recorded version-line decision, evidence completeness, evidence review/signoff, and separate runtime branch/lane entry readiness before code changes begin.
-- WP-20 approval evidence template reference: `tests/wp-20/target-01/approval_evidence_template.md`.
-- WP-20 acceptance-planning note reference: `tests/wp-20/ACCEPTANCE_PLANNING.md`.
-- Runtime bridge/execution work is a distinct risk class and may require a separate dedicated branch.
-- `v4_Dev` remains historical RC lineage baseline, not the active semantic feature lane.
+- Single active development lane:
+  `feature/semantic-layer` (semantic architecture/tooling only).
+- WP-18 CLOSED (validation layer).
+- WP-19 CLOSED (viewer contracts).
+- WP-20 governance package CLOSED / ACCEPTED.
+- WP-20 runtime implementation NOT STARTED.
+
+WP-20 allowed upstream inputs:
+
+- WP-17 captured plans
+- WP-18 validation outputs
+- WP-19 projection contracts
+
+WP-20 forbidden behavior before implementation:
+
+- no runtime bridge code
+- no apply behavior
+- no Trio integration
+- no SmartStat engine calls
+- no viewer implementation
+- no artifact mutation
+
+Runtime baseline protection rule:
+
+`SmartStat_v4.0.0_beta.vbs` may not be modified by WP-20 runtime work.
 
 ---
 
 ## Testing Governance
 
 - Codex may create any harness files needed.
-- All harnesses and outputs must go under `/tests/wp-XX/target-YY/`.
-- If WP/target is unknown, use `/tests/_scratch/<task>/`.
-- Root `tmp_*` files are forbidden; move them into `/tests` before final output.
+- All harness outputs must go under `/tests/wp-XX/target-YY/`.
+- If WP/target unknown, use `/tests/_scratch/<task>/`.
+- Root `tmp_*` files are forbidden.
