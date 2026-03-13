@@ -651,6 +651,20 @@ Status: GOVERNANCE PACKAGE CLOSED / ACCEPTED (2026-03-10 governance/docs/tests o
 - No Trio mutation behavior.
 - No socket mutation behavior.
 - Draft required validation: gate-OFF parity, carry-forward validation of existing slice-02A positives and negatives, carry-forward validation of existing slice-02B positives and negatives, carry-forward validation of existing slice-02C positives and negatives, carry-forward validation of existing slice-02D positives and negatives, deterministic repeat-run hash equality for resolution-preview joined preview, resolution-preview block presence and field-order checks, resolution-preview fail-closed checks for missing required inputs, mutation boundary audit, and boundary check confirming no new Trio/socket/apply surfaces were introduced.
+- Next authorized step after the frozen current scope of WP20_RUNTIME_SLICE_02E_READONLY_PLAN_BRIDGE_RESOLUTION_PREVIEW: WP20_RUNTIME_SLICE_02F_READONLY_PLAN_BRIDGE_RULE_EVALUATION_SUMMARY_INTAKE.
+- Objective: intake exactly the `rule_evaluation_summary` metadata surface from the existing WP-19 projection artifact into the existing read-only plan-bridge path.
+- Intake limited to: `rule_evaluation_summary.phase_order` and `rule_evaluation_summary.ordered_rules`, carried through as read-only summary metadata only.
+- Lane remains read-only.
+- Joined preview output remains deterministic.
+- Joined preview output must keep `mutation_authorized=false`.
+- Fail closed if required `rule_evaluation_summary` fields are missing or malformed.
+- No new upstream projection-contract intake in this step.
+- No apply behavior.
+- No Trio mutation behavior.
+- No socket mutation behavior.
+- No rule-evaluation execution behavior beyond bounded read-only summary intake.
+- No ordered-rules rendering expansion beyond the bounded read-only summary-intake scope.
+- Required validation: gate-OFF parity, carry-forward validation of existing slice-02A positives and negatives, carry-forward validation of existing slice-02B positives and negatives, carry-forward validation of existing slice-02C positives and negatives, carry-forward validation of existing slice-02D positives and negatives, carry-forward validation of existing slice-02E positives and negatives, deterministic repeat-run hash equality for rule-evaluation-summary joined preview, phase-order and ordered-rules stability checks, rule-evaluation-summary negative fail-closed checks, mutation boundary audit, and boundary check confirming no new Trio/socket/apply surfaces were introduced.
 
 ### Definition of Done
 - Runtime bridge contract documented with explicit guardrails.
