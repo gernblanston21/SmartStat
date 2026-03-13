@@ -59,15 +59,15 @@ Status posture: `DRAFT / HOLD` (`non-authorizing`)
   - `tests/wp-20/target-13/artifacts/runtime_slice02f_lane_entry_checklist.md`
   - `tests/wp-20/target-14/artifacts/runtime_slice02f_version_line_decision_record.md`
 - `input_completeness`: `false`
-- `input_gaps`: `No approved Target-05 authorization outcome; no approved Target-13 lane-entry readiness; no approved Target-14 version-line decision signoff; no Target-15/Target-16 evidence review package linked for this slice.`
-- `review_notes`: `Draft review packet only. Branch isolation is identified, but implementation-start authority remains blocked pending separate approval and evidence completion.`
+- `input_gaps`: `No approved Target-05 authorization outcome; no approved Target-13 lane-entry readiness; no Target-15/Target-16 evidence review package linked for this slice.`
+- `review_notes`: `Version-line decision is approved and branch isolation is identified, but implementation-start authority remains blocked pending downstream evidence completion and separate Target-05 approval.`
 
 ### 6. Decision
 
 - `decision_outcome`: `hold`
 - `decision_rationale`: `The draft slice-02F boundary is defined for formal review, but no implementation-start approval has been granted.`
-- `blocking_conditions`: `ROADMAP slice-02F entry is definition-only; Target-05 authorization is draft only; Target-13 lane-entry checklist is not ready; Target-14 version-line decision is still draft; downstream evidence/signoff gates are incomplete.`
-- `required_follow_up`: `Obtain explicit approval for the drafted slice boundary, complete version-line and lane-entry review artifacts, and record a separate final authorization decision before any implementation begins.`
+- `blocking_conditions`: `ROADMAP slice-02F entry is definition-only; Target-05 authorization is draft only; Target-13 lane-entry checklist is not ready; downstream Target-15/Target-16 version-line evidence and signoff gates are incomplete.`
+- `required_follow_up`: `Obtain explicit approval for the drafted slice boundary, complete version-line evidence and lane-entry review artifacts, and record a separate final authorization decision before any implementation begins.`
 
 ### 7. Ownership
 
@@ -92,5 +92,5 @@ Status posture: `DRAFT / HOLD` (`non-authorizing`)
 ### 9. Sign-Off
 
 - `final_disposition`: `hold`
-- `signoff_date_utc`: `2026-03-13T00:15:00Z`
-- `signoff_notes_ref`: `Draft-only record. No implementation authorization or branch-start approval is recorded here.`
+- `signoff_date_utc`: `2026-03-13T00:33:46Z`
+- `signoff_notes_ref`: `Hold preserved after Target-14 version-line approval. No implementation authorization or branch-start approval is recorded here.`

@@ -14,8 +14,8 @@ Checklist state: `HOLD / NOT READY`
   - Status: `HOLD`
   - Evidence: `feature/wp20-runtime-bridge` and `tests/wp-20/target-05/artifacts/runtime_slice02f_branch_approval_record.md` (draft-only; not approved)
 3. Runtime version-line decision is explicitly recorded.
-  - Status: `HOLD`
-  - Evidence: `tests/wp-20/target-14/artifacts/runtime_slice02f_version_line_decision_record.md` (`status=draft`)
+  - Status: `PASS`
+  - Evidence: `tests/wp-20/target-14/artifacts/runtime_slice02f_version_line_decision_record.md` (`status=approved`)
 4. Protected-baseline controls are confirmed and enforced.
   - Status: `PASS`
   - Evidence: `SmartStat_v4.0.0_beta.vbs` remains frozen/protected under `docs/onair/wp20_runtime_version_line_rule.md`
@@ -27,8 +27,8 @@ Checklist state: `HOLD / NOT READY`
 
 ### Checkpoint 1: Version-Line Decision Checkpoint
 
-- Status: `HOLD`
-- Recorded one-and-only runtime line: `SmartStat_v4.1.0.vbs` (draft only)
+- Status: `PASS`
+- Recorded one-and-only runtime line: `SmartStat_v4.1.0.vbs`
 - Decision record owner/date/reference present: `tests/wp-20/target-14/artifacts/runtime_slice02f_version_line_decision_record.md`
 
 ### Checkpoint 2: Branch/Lane Separation Checkpoint
@@ -77,5 +77,5 @@ Checklist state: `HOLD / NOT READY`
 ## Overall Lane Entry Outcome
 
 - `lane_entry_outcome`: `blocked_pending_authorization`
-- `hold_reason`: `Explicit implementation authorization, branch approval, and version-line decision remain draft/hold only.`
+- `hold_reason`: `Explicit implementation authorization and branch approval remain hold, and slice-02F evidence/signoff linkage is not yet complete.`
 - `runtime_work_start_allowed`: `false`

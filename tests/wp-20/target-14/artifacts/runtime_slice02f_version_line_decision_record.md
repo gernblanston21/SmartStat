@@ -1,4 +1,4 @@
-# Runtime Slice-02F Version-Line Decision Record (Draft)
+# Runtime Slice-02F Version-Line Decision Record
 
 Decision scope: `WP-20 Target-14`
 Slice name: `WP20_RUNTIME_SLICE_02F_READONLY_PLAN_BRIDGE_RULE_EVALUATION_SUMMARY_INTAKE`
@@ -10,7 +10,7 @@ Slice name: `WP20_RUNTIME_SLICE_02F_READONLY_PLAN_BRIDGE_RULE_EVALUATION_SUMMARY
 3. `decision_owner`: `runtime_lane_governance_owner`
 4. `review_cycle_reference`: `runtime_slice02f_authorization_draft_cycle_20260313`
 5. `related_wp_target`: `WP-20 Target-14`
-6. `status`: `draft`
+6. `status`: `approved`
 
 ## Allowed Version-Line Choices (Only)
 
@@ -22,19 +22,19 @@ Slice name: `WP20_RUNTIME_SLICE_02F_READONLY_PLAN_BRIDGE_RULE_EVALUATION_SUMMARY
 1. `selected_version_line`: `SmartStat_v4.1.0.vbs`
 2. `selection_count`: `1`
 3. `selection_consistency`: `true`
-4. `selection_rationale_summary`: `Draft continuation stays on SmartStat_v4.1.0.vbs to preserve the frozen baseline and keep slice-02F bound to the current runtime line for review only.`
+4. `selection_rationale_summary`: `Slice-02F remains on SmartStat_v4.1.0.vbs to preserve the frozen baseline and keep the bounded read-only rule-evaluation-summary intake on the current runtime line without opening a new runtime version line.`
 5. `regression_comparison_impact_statement`: `Regression baseline remains SmartStat_v4.0.0_beta.vbs; any future slice-02F comparisons must continue to measure behavior against the frozen baseline without modifying that file.`
-6. `rollback_impact_statement`: `Rollback posture remains unchanged in draft form: if future approval is granted and then revoked, revert only SmartStat_v4.1.0.vbs runtime-line commits and preserve the frozen baseline untouched.`
-7. `frozen_baseline_preservation_statement`: `SmartStat_v4.0.0_beta.vbs remains frozen/protected and is excluded from this draft next-step definition.`
-8. `risk_notes`: `This decision record is draft only. Implementation start remains blocked until explicit Target-05 approval and Target-13 lane-entry readiness are separately recorded.`
+6. `rollback_impact_statement`: `Rollback posture remains unchanged: if later implementation authorization is granted and then revoked, revert only SmartStat_v4.1.0.vbs runtime-line commits and preserve the frozen baseline untouched.`
+7. `frozen_baseline_preservation_statement`: `SmartStat_v4.0.0_beta.vbs remains frozen/protected and is excluded from slice-02F runtime edits.`
+8. `risk_notes`: `Version-line decision is approved as a governance decision only; implementation start remains blocked until explicit Target-05 approval, Target-13 lane-entry readiness, and later Target-15/Target-16 evidence review/signoff are separately recorded.`
 
 ## Approval and Sign-Off Fields
 
 1. `prepared_by`: `runtime_lane_governance_owner`
-2. `reviewed_by`: `draft_review_pending`
-3. `approved_by`: `not_approved`
-4. `approval_date`: `not_approved`
-5. `approval_notes`: `Draft-only record for formal review. No version-line approval is granted by this artifact.`
+2. `reviewed_by`: `runtime_lane_review_chair`
+3. `approved_by`: `runtime_lane_authorization_owner`
+4. `approval_date`: `2026-03-13T00:33:46Z`
+5. `approval_notes`: `Version-line choice approved as the Target-14 governance decision for slice-02F only. This approval does not authorize implementation and does not remove Target-05/Target-13 hold conditions pending later evidence gates.`
 
 ## Target-05 Authorization Linkage
 
@@ -60,7 +60,8 @@ Slice name: `WP20_RUNTIME_SLICE_02F_READONLY_PLAN_BRIDGE_RULE_EVALUATION_SUMMARY
 - `no_trio_mutation`: `true`
 - `no_socket_mutation`: `true`
 
-## Draft Boundary Statement
+## Boundary Statement
 
-This record is draft-only and non-authorizing.
+This record is approved as the Target-14 version-line decision for slice-02F.
+It remains governance-only and non-authorizing.
 It does not authorize implementation and does not start runtime work.

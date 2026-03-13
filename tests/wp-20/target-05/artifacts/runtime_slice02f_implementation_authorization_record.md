@@ -29,13 +29,13 @@ Authorization posture: `DRAFT / HOLD` (`non-authorizing`)
   - `tests/wp-20/target-14/artifacts/runtime_slice02f_version_line_decision_record.md`
   - `docs/onair/plan-viewer-contract.md`
 - `missing_inputs`: `No approved branch approval outcome; no approved implementation authorization outcome; no slice-02F rehearsal artifact pack; no completed protected-surface integrity evidence; no Target-15 version-line evidence checklist instance; no Target-16 version-line signoff instance.`
-- `input_review_notes`: `This is a draft-only review record for the next bounded slice candidate. Required governance inputs remain incomplete, so authorization stays blocked.`
+- `input_review_notes`: `Target-14 version-line decision is approved, but required Target-05 decision inputs remain incomplete, so implementation authorization stays blocked.`
 
 ### 3. Authorization Decision
 
 - `decision_outcome`: `hold`
 - `decision_rationale`: `The next-step slice boundary is drafted for review, but the required approval, evidence, and readiness inputs are not complete.`
-- `blocking_conditions`: `ROADMAP slice-02F entry is definition-only; branch approval record is hold; version-line decision remains draft; lane-entry checklist is not ready; evidence/signoff package is incomplete.`
+- `blocking_conditions`: `ROADMAP slice-02F entry is definition-only; branch approval record is hold; lane-entry checklist remains HOLD / NOT READY; evidence/signoff package is incomplete.`
 - `required_follow_up`: `Complete formal review of the drafted slice boundary, produce the remaining required evidence artifacts, and record an explicit separate authorization outcome before implementation begins.`
 
 ### 4. Approved Scope Guardrails
@@ -87,5 +87,5 @@ Authorization posture: `DRAFT / HOLD` (`non-authorizing`)
 ### 8. Final Sign-Off
 
 - `final_disposition`: `hold`
-- `signoff_date_utc`: `2026-03-13T00:15:00Z`
-- `signoff_notes_ref`: `Draft-only record. No implementation authorization has been granted.`
+- `signoff_date_utc`: `2026-03-13T00:33:46Z`
+- `signoff_notes_ref`: `Hold preserved after Target-14 version-line approval. No implementation authorization has been granted.`
