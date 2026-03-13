@@ -1,0 +1,34 @@
+{
+  "rehearsal_label": "runtime_slice02f_rehearsal_20260313_hold",
+  "required_outputs": {
+    "R0": [
+      "checkpoint_r0_intake.md",
+      "checkpoint_r0_scope_assertions.json"
+    ],
+    "R1": [
+      "checkpoint_r1_pack_layout.md",
+      "checkpoint_r1_pack_tree.txt"
+    ],
+    "R2": [
+      "checkpoint_r2_checkpoint_map.md",
+      "checkpoint_r2_required_outputs.json"
+    ],
+    "R3": [
+      "checkpoint_r3_naming_validation.md",
+      "checkpoint_r3_location_validation.md"
+    ],
+    "R4": [
+      "checkpoint_r4_fail_abort_matrix.md",
+      "checkpoint_r4_abort_path.md"
+    ],
+    "R5": [
+      "checkpoint_r5_completion_gate.md",
+      "checkpoint_r5_rehearsal_result.json"
+    ],
+    "R6": [
+      "checkpoint_r6_signoff.md",
+      "rehearsal_index.md"
+    ]
+  },
+  "all_required_outputs_present": true
+}
