@@ -24,6 +24,7 @@
 | plan_bridge_case01.fixture + projection_malformed_empty_replay_identity.json | status=fail_closed; error_code=SLICE2_PROJECTION_ARTIFACT_MALFORMED | status=fail_closed; error_code=SLICE2_PROJECTION_ARTIFACT_MALFORMED | PASS |
 | plan_bridge_case01.fixture + projection_malformed_missing_validator_run_identity.json | status=fail_closed; error_code=SLICE2_PROJECTION_ARTIFACT_MALFORMED | status=fail_closed; error_code=SLICE2_PROJECTION_ARTIFACT_MALFORMED | PASS |
 | mutation_boundary_report.txt | TOTAL_MUTATION_CALLS=0 | TOTAL_MUTATION_CALLS=0 | PASS |
+| traceability_subtree_equivalence_report.json | overall_pass=true; overlap_byte_identical=true; projection_metadata_key_order_match=true | overall_pass=true; overlap_byte_identical=true; projection_metadata_key_order_match=true | PASS |
 
 Determinism check (positive fixture):
 - pos_plan_bridge_run1.json SHA256 = AF124012ED2DA1C62CD5822C9E39FD295FD01BD925B6735FCEA1901AB836C0B7
@@ -36,6 +37,21 @@ Determinism check (rule-evaluation-trace joined preview):
 - hash_match = True
 - preview_payload SHA256 = 219C453056459B89F9C79DACF8EB85B7BF30D0B8B6E59E01418855FB5144F09A
 - preview_payload_match = True
+
+Traceability-subtree drift hardening:
+- report file: `tests/_scratch/runtime-slice-02-readonly-plan-bridge/runs/traceability_subtree_equivalence_report.json`
+- bounded overlap field set: `projection_contract`, `projection_kind`, `input_artifact`, `input_identity`, `deterministic_identity_summary`
+- run1 projection_metadata overlap SHA256 = `8F6AC36D62159D9B35071EA0070B12114E97C3ED4B9A4DBA8C26F6908F89722A`
+- run1 rule_evaluation_trace_preview overlap SHA256 = `8F6AC36D62159D9B35071EA0070B12114E97C3ED4B9A4DBA8C26F6908F89722A`
+- run2 projection_metadata overlap SHA256 = `8F6AC36D62159D9B35071EA0070B12114E97C3ED4B9A4DBA8C26F6908F89722A`
+- run2 rule_evaluation_trace_preview overlap SHA256 = `8F6AC36D62159D9B35071EA0070B12114E97C3ED4B9A4DBA8C26F6908F89722A`
+- run1 overlap_byte_identical = True
+- run2 overlap_byte_identical = True
+- cross-run overlap hash match = True
+- projection_metadata expected key order = `projection_contract`, `projection_kind`, `input_artifact`, `input_identity`, `status_summary`, `deterministic_identity_summary`, `semantic_interpretation_summary`, `issues_summary`
+- run1 projection_metadata key order match = True
+- run2 projection_metadata key order match = True
+- projection_metadata key order consistent across runs = True
 
 Resolution-preview fail-closed coverage:
 - projection_malformed_missing_status.json -> `SLICE2_PROJECTION_ARTIFACT_MALFORMED`

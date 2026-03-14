@@ -1,0 +1,80 @@
+{
+  "report_kind": "slice02_traceability_subtree_equivalence_v1",
+  "comparison_mode": "bounded_overlap_only",
+  "positive_runs": {
+    "run1": {
+      "artifact_path": "E:\\EDRIVE\\UNIVERSAL\\SmartStat\\tests\\_scratch\\runtime-slice-02-readonly-plan-bridge\\runs\\pos_projection_intake_run1.json",
+      "overlap_field_set": [
+        "projection_contract",
+        "projection_kind",
+        "input_artifact",
+        "input_identity",
+        "deterministic_identity_summary"
+      ],
+      "projection_metadata_overlap_sha256": "8F6AC36D62159D9B35071EA0070B12114E97C3ED4B9A4DBA8C26F6908F89722A",
+      "rule_evaluation_trace_preview_overlap_sha256": "8F6AC36D62159D9B35071EA0070B12114E97C3ED4B9A4DBA8C26F6908F89722A",
+      "overlap_byte_identical": true,
+      "projection_metadata_key_order_expected": [
+        "projection_contract",
+        "projection_kind",
+        "input_artifact",
+        "input_identity",
+        "status_summary",
+        "deterministic_identity_summary",
+        "semantic_interpretation_summary",
+        "issues_summary"
+      ],
+      "projection_metadata_key_order_actual": [
+        "projection_contract",
+        "projection_kind",
+        "input_artifact",
+        "input_identity",
+        "status_summary",
+        "deterministic_identity_summary",
+        "semantic_interpretation_summary",
+        "issues_summary"
+      ],
+      "projection_metadata_key_order_match": true
+    },
+    "run2": {
+      "artifact_path": "E:\\EDRIVE\\UNIVERSAL\\SmartStat\\tests\\_scratch\\runtime-slice-02-readonly-plan-bridge\\runs\\pos_projection_intake_run2.json",
+      "overlap_field_set": [
+        "projection_contract",
+        "projection_kind",
+        "input_artifact",
+        "input_identity",
+        "deterministic_identity_summary"
+      ],
+      "projection_metadata_overlap_sha256": "8F6AC36D62159D9B35071EA0070B12114E97C3ED4B9A4DBA8C26F6908F89722A",
+      "rule_evaluation_trace_preview_overlap_sha256": "8F6AC36D62159D9B35071EA0070B12114E97C3ED4B9A4DBA8C26F6908F89722A",
+      "overlap_byte_identical": true,
+      "projection_metadata_key_order_expected": [
+        "projection_contract",
+        "projection_kind",
+        "input_artifact",
+        "input_identity",
+        "status_summary",
+        "deterministic_identity_summary",
+        "semantic_interpretation_summary",
+        "issues_summary"
+      ],
+      "projection_metadata_key_order_actual": [
+        "projection_contract",
+        "projection_kind",
+        "input_artifact",
+        "input_identity",
+        "status_summary",
+        "deterministic_identity_summary",
+        "semantic_interpretation_summary",
+        "issues_summary"
+      ],
+      "projection_metadata_key_order_match": true
+    }
+  },
+  "cross_run": {
+    "projection_metadata_overlap_sha256_match": true,
+    "rule_evaluation_trace_preview_overlap_sha256_match": true,
+    "projection_metadata_key_order_consistent": true
+  },
+  "overall_pass": true
+}
