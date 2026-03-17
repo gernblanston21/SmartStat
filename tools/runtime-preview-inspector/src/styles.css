@@ -142,6 +142,104 @@ body {
   color: #36435d;
 }
 
+.drilldown-strip {
+  margin-top: 10px;
+  border: 1px solid #efbcbc;
+  border-radius: 8px;
+  background: #fff6f6;
+  padding: 10px;
+}
+
+.drilldown-strip h3 {
+  margin: 0 0 6px;
+  font-size: 0.95rem;
+}
+
+.drilldown-list {
+  display: grid;
+  gap: 8px;
+}
+
+.drilldown-card {
+  border: 1px solid #ebc7c7;
+  border-left: 4px solid #d64a4a;
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 9px 10px;
+}
+
+.drilldown-card.is-medium {
+  border-left-color: #d2822d;
+}
+
+.drilldown-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.drilldown-card-header h4 {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.drilldown-priority {
+  border: 1px solid #e4d2d2;
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #6e3636;
+  background: #fff4f4;
+  white-space: nowrap;
+}
+
+.drilldown-diff-list {
+  margin: 8px 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 4px;
+}
+
+.drilldown-diff-row {
+  border: 1px solid #efdddd;
+  border-radius: 6px;
+  background: #fff9f9;
+  padding: 6px 8px;
+}
+
+.drilldown-diff-row code {
+  overflow-wrap: anywhere;
+}
+
+.diff-label {
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.diff-label-before {
+  color: #5e495f;
+}
+
+.diff-label-after {
+  color: #8c2323;
+}
+
+.drilldown-fields {
+  margin: 0 0 6px;
+  font-size: 0.84rem;
+  color: #4b5164;
+}
+
+.drilldown-links-title {
+  margin: 0 0 4px;
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+
 .review-hero {
   display: grid;
   grid-template-columns: 1.4fr 1fr;
@@ -390,8 +488,13 @@ td {
   background: #ffeeee;
 }
 
+.summary-table .priority-row.is-mismatch td {
+  background: #fff1f1;
+}
+
 .summary-table .priority-row.is-mismatch td:first-child {
-  border-left: 3px solid #d64a4a;
+  border-left: 4px solid #d64a4a;
+  font-weight: 600;
 }
 
 .comparison-evidence-list {

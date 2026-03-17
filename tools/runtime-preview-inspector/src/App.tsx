@@ -47,11 +47,62 @@ interface InspectionSignal {
   priority: "High" | "Medium";
 }
 
+type ComparisonCheckKey =
+  | "semantic_resolution"
+  | "deterministic_identity"
+  | "traceability_overlap"
+  | "rule_phase_order";
+
 interface ComparisonCheck {
-  key: string;
+  key: ComparisonCheckKey;
   label: string;
   pass: boolean;
+  priority: "High" | "Medium";
   evidenceTargets: PanelKey[];
+}
+
+interface DrillDownDiffLine {
+  key: string;
+  expectedLabel: string;
+  expectedValue: string;
+  actualLabel: string;
+  actualValue: string;
+  mismatch: boolean;
+}
+
+interface DrillDownCard {
+  key: ComparisonCheckKey;
+  label: string;
+  priority: "High" | "Medium";
+  evidenceTargets: PanelKey[];
+  contributingFields: string[];
+  diffLines: DrillDownDiffLine[];
+}
+
+function formatDiffValue(value: string | readonly string[]): string {
+  if (typeof value === "string") {
+    return value;
+  }
+  return `[${value.join(", ")}]`;
+}
+
+function createDiffLine(
+  key: string,
+  expectedLabel: string,
+  expectedValue: string | readonly string[],
+  actualLabel: string,
+  actualValue: string | readonly string[]
+): DrillDownDiffLine {
+  const expected = formatDiffValue(expectedValue);
+  const actual = formatDiffValue(actualValue);
+  return {
+    key,
+    expectedLabel,
+    expectedValue: expected,
+    actualLabel,
+    actualValue: actual,
+    mismatch: expected !== actual,
+  };
 }
 
 export default function App({ viewModel }: AppProps): JSX.Element {
@@ -166,27 +217,193 @@ export default function App({ viewModel }: AppProps): JSX.Element {
       key: "semantic_resolution",
       label: "Semantic vs Resolution",
       pass: semanticResolutionParity,
+      priority: "High",
       evidenceTargets: ["semantic_view", "resolution_view"],
     },
     {
       key: "deterministic_identity",
       label: "Deterministic Identity",
       pass: deterministicIdentityParity,
+      priority: "High",
       evidenceTargets: ["deterministic_identity_view"],
     },
     {
       key: "traceability_overlap",
       label: "Traceability Overlap",
       pass: traceabilityOverlapParity,
+      priority: "Medium",
       evidenceTargets: ["projection_metadata_view", "rule_evaluation_trace_view"],
     },
     {
       key: "rule_phase_order",
       label: "Rule Phase Order",
       pass: phaseOrderParity,
+      priority: "Medium",
       evidenceTargets: ["rule_evaluation_summary_view"],
     },
   ];
+  const ruleCategorySequence = Array.from(
+    new Set(sections.rule_evaluation_summary_view.ordered_rules.map((rule) => rule.category))
+  );
+  const drillDownCardsByKey: Record<ComparisonCheckKey, DrillDownCard> = {
+    semantic_resolution: {
+      key: "semantic_resolution",
+      label: "Semantic vs Resolution",
+      priority: "High",
+      evidenceTargets: ["semantic_view", "resolution_view"],
+      contributingFields: [
+        "semantic.scope_resolution",
+        "semantic.effective_scope",
+        "semantic.evidence_source",
+        "resolution.scope_resolution",
+        "resolution.effective_scope",
+        "resolution.evidence_source",
+      ],
+      diffLines: [
+        createDiffLine(
+          "scope_resolution",
+          "semantic.scope_resolution",
+          sections.semantic_view.scope_resolution,
+          "resolution.scope_resolution",
+          sections.resolution_view.scope_resolution
+        ),
+        createDiffLine(
+          "effective_scope",
+          "semantic.effective_scope",
+          sections.semantic_view.effective_scope,
+          "resolution.effective_scope",
+          sections.resolution_view.effective_scope
+        ),
+        createDiffLine(
+          "evidence_source",
+          "semantic.evidence_source",
+          sections.semantic_view.evidence_source,
+          "resolution.evidence_source",
+          sections.resolution_view.evidence_source
+        ),
+      ],
+    },
+    deterministic_identity: {
+      key: "deterministic_identity",
+      label: "Deterministic Identity",
+      priority: "High",
+      evidenceTargets: ["deterministic_identity_view"],
+      contributingFields: [
+        "projection_metadata.normalized_plan_hash",
+        "projection_metadata.replay_identity",
+        "projection_metadata.validator_run_identity",
+        "rule_trace.normalized_plan_hash",
+        "rule_trace.replay_identity",
+        "rule_trace.validator_run_identity",
+      ],
+      diffLines: [
+        createDiffLine(
+          "normalized_plan_hash",
+          "projection_metadata.normalized_plan_hash",
+          sections.deterministic_identity_view.projection_metadata.normalized_plan_hash,
+          "rule_trace.normalized_plan_hash",
+          sections.deterministic_identity_view.rule_evaluation_trace.normalized_plan_hash
+        ),
+        createDiffLine(
+          "replay_identity",
+          "projection_metadata.replay_identity",
+          sections.deterministic_identity_view.projection_metadata.replay_identity,
+          "rule_trace.replay_identity",
+          sections.deterministic_identity_view.rule_evaluation_trace.replay_identity
+        ),
+        createDiffLine(
+          "validator_run_identity",
+          "projection_metadata.validator_run_identity",
+          sections.deterministic_identity_view.projection_metadata.validator_run_identity,
+          "rule_trace.validator_run_identity",
+          sections.deterministic_identity_view.rule_evaluation_trace.validator_run_identity
+        ),
+      ],
+    },
+    traceability_overlap: {
+      key: "traceability_overlap",
+      label: "Traceability Overlap",
+      priority: "Medium",
+      evidenceTargets: ["projection_metadata_view", "rule_evaluation_trace_view"],
+      contributingFields: [
+        "projection_contract",
+        "projection_kind",
+        "input_artifact",
+        "input_identity.artifact_path",
+        "input_identity.input_fingerprint_sha256",
+      ],
+      diffLines: [
+        createDiffLine(
+          "projection_contract",
+          "projection_metadata.projection_contract",
+          sections.projection_metadata_view.projection_contract,
+          "rule_trace.projection_contract",
+          sections.rule_evaluation_trace_view.projection_contract
+        ),
+        createDiffLine(
+          "projection_kind",
+          "projection_metadata.projection_kind",
+          sections.projection_metadata_view.projection_kind,
+          "rule_trace.projection_kind",
+          sections.rule_evaluation_trace_view.projection_kind
+        ),
+        createDiffLine(
+          "input_artifact",
+          "projection_metadata.input_artifact",
+          sections.projection_metadata_view.input_artifact,
+          "rule_trace.input_artifact",
+          sections.rule_evaluation_trace_view.input_artifact
+        ),
+        createDiffLine(
+          "artifact_path",
+          "projection_metadata.input_identity.artifact_path",
+          sections.projection_metadata_view.input_identity.artifact_path,
+          "rule_trace.input_identity.artifact_path",
+          sections.rule_evaluation_trace_view.input_identity.artifact_path
+        ),
+        createDiffLine(
+          "input_fingerprint_sha256",
+          "projection_metadata.input_identity.input_fingerprint_sha256",
+          sections.projection_metadata_view.input_identity.input_fingerprint_sha256,
+          "rule_trace.input_identity.input_fingerprint_sha256",
+          sections.rule_evaluation_trace_view.input_identity.input_fingerprint_sha256
+        ),
+      ],
+    },
+    rule_phase_order: {
+      key: "rule_phase_order",
+      label: "Rule Phase Order",
+      priority: "Medium",
+      evidenceTargets: ["rule_evaluation_summary_view"],
+      contributingFields: [
+        "rule_evaluation_summary.phase_order",
+        "ordered_rules[*].category",
+      ],
+      diffLines: [
+        createDiffLine(
+          "phase_order",
+          "expected.phase_order",
+          EXPECTED_RULE_PHASE_ORDER,
+          "actual.phase_order",
+          sections.rule_evaluation_summary_view.phase_order
+        ),
+        createDiffLine(
+          "rule_category_sequence",
+          "expected.category_sequence",
+          EXPECTED_RULE_PHASE_ORDER,
+          "actual.category_sequence",
+          ruleCategorySequence
+        ),
+      ],
+    },
+  };
+  const mismatchDrillDownCards = comparisonChecks
+    .filter((check) => !check.pass)
+    .map((check) => drillDownCardsByKey[check.key])
+    .map((card) => ({
+      ...card,
+      diffLines: card.diffLines.filter((diffLine) => diffLine.mismatch),
+    }));
 
   const orderedPanels: Array<{
     key: PanelKey;
@@ -374,6 +591,55 @@ export default function App({ viewModel }: AppProps): JSX.Element {
             High-priority mismatches: <strong>{highPriorityMismatchCount}</strong>. Total
             mismatches: <strong>{mismatchCount}</strong>.
           </p>
+          {mismatchDrillDownCards.length > 0 ? (
+            <section className="drilldown-strip" aria-label="Mismatch drill-down">
+              <h3>Mismatch drill-down</h3>
+              <p className="panel-note">
+                Each card summarizes what failed, how values differ, and where detailed
+                evidence lives.
+              </p>
+              <div className="drilldown-list">
+                {mismatchDrillDownCards.map((card) => (
+                  <article
+                    key={`drilldown-${card.key}`}
+                    className={`drilldown-card ${
+                      card.priority === "High" ? "is-high" : "is-medium"
+                    }`}
+                  >
+                    <div className="drilldown-card-header">
+                      <h4>{card.label} - Why this failed</h4>
+                      <span className="drilldown-priority">{card.priority} Priority</span>
+                    </div>
+                    <ul className="drilldown-diff-list">
+                      {card.diffLines.map((diffLine) => (
+                        <li key={`diff-${card.key}-${diffLine.key}`} className="drilldown-diff-row">
+                          <div>
+                            <span className="diff-label diff-label-before">BEFORE:</span>{" "}
+                            <code>{`${diffLine.expectedLabel} = ${diffLine.expectedValue}`}</code>
+                          </div>
+                          <div>
+                            <span className="diff-label diff-label-after">AFTER:</span>{" "}
+                            <code>{`${diffLine.actualLabel} = ${diffLine.actualValue}`}</code>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                    <p className="drilldown-fields">
+                      Key contributing fields: {card.contributingFields.join(", ")}
+                    </p>
+                    <p className="drilldown-links-title">Related evidence panels:</p>
+                    <ul className="comparison-evidence-list">
+                      {card.evidenceTargets.map((panelKey) => (
+                        <li key={`drilldown-link-${card.key}-${panelKey}`}>
+                          <a href={`#panel-${panelKey}`}>{PANEL_TITLE_BY_KEY[panelKey]}</a>
+                        </li>
+                      ))}
+                    </ul>
+                  </article>
+                ))}
+              </div>
+            </section>
+          ) : null}
         </section>
         <details className="secondary-checks" open={!overviewHealthy}>
           <summary>Secondary checks and supporting context</summary>

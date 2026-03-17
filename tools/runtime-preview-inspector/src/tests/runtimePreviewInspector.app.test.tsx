@@ -31,6 +31,7 @@ describe("runtime preview inspector UI scaffold", () => {
     expect(html).toContain("All Core Checks PASS");
     expect(html).toContain("Follow links in the last column");
     expect(html).toContain("Panel Order Reference");
+    expect(html).not.toContain("Mismatch drill-down");
     expect(html).not.toContain('class="secondary-checks" open=""');
   });
 
@@ -89,6 +90,13 @@ describe("runtime preview inspector UI scaffold", () => {
     expect(html).toContain("Inconsistencies Found");
     expect(html).toContain("Review Needed");
     expect(html).toContain("MISMATCH");
+    expect(html).toContain("Mismatch drill-down");
+    expect(html).toContain("Semantic vs Resolution - Why this failed");
+    expect(html).toContain("BEFORE:");
+    expect(html).toContain("AFTER:");
+    expect(html).toContain("semantic.scope_resolution = forced_mismatch");
+    expect(html).toContain('href="#panel-semantic_view"');
+    expect(html).toContain('href="#panel-resolution_view"');
     expect(html).toContain('class="secondary-checks" open=""');
   });
 });
