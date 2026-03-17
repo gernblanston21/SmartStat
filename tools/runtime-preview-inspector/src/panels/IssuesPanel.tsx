@@ -8,7 +8,15 @@ interface IssuesPanelProps {
 export function IssuesPanel({ view }: IssuesPanelProps): JSX.Element {
   const badges = [view.status, "Preview", "Read-Only"];
   return (
-    <PanelShell title="Issues Summary" subtitle="Preview Diagnostics" badges={badges}>
+    <PanelShell
+      title="Issues Summary"
+      subtitle="Errors and warnings that affect preview confidence"
+      badges={badges}
+    >
+      <p className="panel-note">
+        If errors are present, treat the preview as needing review before trusting
+        downstream interpretation.
+      </p>
       <dl className="kv-grid">
         <dt>Status</dt>
         <dd>{view.status}</dd>

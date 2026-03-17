@@ -10,9 +10,13 @@ export function RawPayloadPanel({ view }: RawPayloadPanelProps): JSX.Element {
   return (
     <PanelShell
       title="Raw Payload Debug"
-      subtitle="Read-Only Debug Snapshot"
+      subtitle="Technical detail, with summary first"
       badges={badges}
     >
+      <p className="panel-note">
+        Use this section when you need deeper inspection. The key checks are
+        surfaced above first.
+      </p>
       <dl className="kv-grid">
         <dt>Payload Kind</dt>
         <dd>{view.payload_kind}</dd>

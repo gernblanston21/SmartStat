@@ -10,9 +10,13 @@ export function ResolutionPanel({ view }: ResolutionPanelProps): JSX.Element {
   return (
     <PanelShell
       title="Resolution Preview"
-      subtitle="Read-Only Resolution View"
+      subtitle="Final interpreted result shown in plain contract fields"
       badges={badges}
     >
+      <p className="panel-note">
+        Compare this panel with Semantic Interpretation to confirm they describe
+        the same outcome.
+      </p>
       <dl className="kv-grid">
         <dt>Status</dt>
         <dd>{view.status}</dd>

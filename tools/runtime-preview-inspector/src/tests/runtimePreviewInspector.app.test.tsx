@@ -15,6 +15,10 @@ describe("runtime preview inspector UI scaffold", () => {
     expect(html).toContain("Contract parity checks");
     expect(html).toContain("Semantic vs Resolution");
     expect(html).toContain("Deterministic Identity");
+    expect(html).toContain("What this screen is");
+    expect(html).toContain("What read-only means");
+    expect(html).toContain("What to check first");
+    expect(html).toContain("Healthy Preview");
   });
 
   it("renders panels in deterministic approved order", () => {

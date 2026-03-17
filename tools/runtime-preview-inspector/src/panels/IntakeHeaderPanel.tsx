@@ -10,9 +10,13 @@ export function IntakeHeaderPanel({ view }: IntakeHeaderPanelProps): JSX.Element
   return (
     <PanelShell
       title="Intake Header"
-      subtitle="Read-Only Preview Contract View"
+      subtitle="Where this preview came from and what was read"
       badges={badges}
     >
+      <p className="panel-note">
+        Start here if you want to confirm you are inspecting the expected page and
+        expected preview mode.
+      </p>
       <dl className="kv-grid">
         <dt>Status</dt>
         <dd>{view.status}</dd>

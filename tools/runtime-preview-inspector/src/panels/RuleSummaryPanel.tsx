@@ -1,6 +1,7 @@
 import { RuntimePreviewViewModel } from "../contracts/runtimePreviewIntake";
 import { EXPECTED_RULE_PHASE_ORDER } from "../contracts/runtimePreviewIntake";
 import { PanelShell } from "./PanelShell";
+import { compactRuleId } from "./valueFormatting";
 
 interface RuleSummaryPanelProps {
   view: RuntimePreviewViewModel["view_model"]["rule_evaluation_summary_view"];
@@ -15,7 +16,15 @@ export function RuleSummaryPanel({ view }: RuleSummaryPanelProps): JSX.Element {
   }, {});
   const badges = [phaseOrderMatches ? "Phase Order PASS" : "Phase Order MISMATCH", "Contract View"];
   return (
-    <PanelShell title="Rule Evaluation Summary" subtitle="Contract View" badges={badges}>
+    <PanelShell
+      title="Rule Evaluation Summary"
+      subtitle="Order and outcomes of rule checks"
+      badges={badges}
+    >
+      <p className="panel-note">
+        Read this table top-to-bottom. It preserves deterministic ordering from
+        the preview contract.
+      </p>
       <h3>Phase Order</h3>
       <ol>
         {view.phase_order.map((phase) => (
@@ -44,7 +53,7 @@ export function RuleSummaryPanel({ view }: RuleSummaryPanelProps): JSX.Element {
           {view.ordered_rules.map((rule) => (
             <tr key={`${rule.category}:${rule.rule_id}`}>
               <td>{rule.category}</td>
-              <td>{rule.rule_id}</td>
+              <td title={rule.rule_id}>{compactRuleId(rule.rule_id)}</td>
               <td>{rule.outcome}</td>
             </tr>
           ))}

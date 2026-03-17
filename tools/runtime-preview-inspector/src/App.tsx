@@ -59,6 +59,17 @@ export default function App({ viewModel }: AppProps): JSX.Element {
       sections.rule_evaluation_trace_view.input_identity.artifact_path &&
     sections.projection_metadata_view.input_identity.input_fingerprint_sha256 ===
       sections.rule_evaluation_trace_view.input_identity.input_fingerprint_sha256;
+  const topStatusPass = sections.issues_view.status === "PASS";
+  const hasNoErrors = sections.issues_view.error_count === 0;
+  const overviewHealthy =
+    topStatusPass &&
+    hasNoErrors &&
+    semanticResolutionParity &&
+    deterministicIdentityParity &&
+    traceabilityOverlapParity &&
+    phaseOrderParity;
+  const reviewTone = overviewHealthy ? "Healthy Preview" : "Needs Review";
+  const reviewToneClass = overviewHealthy ? "is-pass" : "is-mismatch";
 
   const orderedPanels: Array<{
     key: (typeof PANEL_RENDER_ORDER)[number]["key"];
@@ -117,9 +128,10 @@ export default function App({ viewModel }: AppProps): JSX.Element {
     <div className="app-shell">
       <header className="app-header">
         <h1>SmartStat Runtime Preview Inspector</h1>
-        <p>
-          Read-Only viewer scaffold for frozen runtime preview payloads using
-          adapter-mediated contract surfaces.
+        <p className="app-summary">
+          This screen helps you review one saved preview file. It is read-only:
+          nothing here writes to graphics systems, runs runtime actions, or changes
+          SmartStat state.
         </p>
         <ul className="status-tags">
           <li>Read-Only</li>
@@ -127,6 +139,46 @@ export default function App({ viewModel }: AppProps): JSX.Element {
           <li>Contract View</li>
           <li>Traceability</li>
         </ul>
+        <section className="overview-strip" aria-label="Screen overview">
+          <article className="overview-card">
+            <h3>What this screen is</h3>
+            <p>
+              A viewer for one frozen preview payload that shows whether key sections
+              agree with each other.
+            </p>
+          </article>
+          <article className="overview-card">
+            <h3>What read-only means</h3>
+            <p>
+              You can inspect values, but you cannot run, apply, refresh, or mutate
+              anything from this page.
+            </p>
+          </article>
+          <article className="overview-card">
+            <h3>What you are seeing</h3>
+            <p>
+              Status, scope interpretation, rule ordering, traceability identities,
+              and a compact raw snapshot.
+            </p>
+          </article>
+        </section>
+        <section className="check-first-strip" aria-label="What to check first">
+          <h2>What to check first</h2>
+          <p className={`check-first-result ${reviewToneClass}`}>{reviewTone}</p>
+          <ol>
+            <li>
+              Preview status is <strong>{sections.issues_view.status}</strong>.
+            </li>
+            <li>
+              Error count is <strong>{sections.issues_view.error_count}</strong> and
+              warning count is <strong>{sections.issues_view.warning_count}</strong>.
+            </li>
+            <li>
+              Core parity checks below should read <strong>PASS</strong> for a
+              consistent preview.
+            </li>
+          </ol>
+        </section>
         <section className="parity-strip" aria-label="Contract parity checks">
           <article className="parity-card">
             <h3>Semantic vs Resolution</h3>

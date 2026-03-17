@@ -1,15 +1,9 @@
 import { RuntimePreviewViewModel } from "../contracts/runtimePreviewIntake";
 import { PanelShell } from "./PanelShell";
+import { compactHash } from "./valueFormatting";
 
 interface DeterministicIdentityPanelProps {
   view: RuntimePreviewViewModel["view_model"]["deterministic_identity_view"];
-}
-
-function compactHash(value: string): string {
-  if (value.length <= 24) {
-    return value;
-  }
-  return `${value.slice(0, 12)}...${value.slice(-12)}`;
 }
 
 export function DeterministicIdentityPanel({
@@ -38,9 +32,13 @@ export function DeterministicIdentityPanel({
   return (
     <PanelShell
       title="Deterministic Identity"
-      subtitle="Traceability Contract View"
+      subtitle="Side-by-side identity comparison"
       badges={badges}
     >
+      <p className="panel-note">
+        All parity rows should read PASS. A mismatch means two contract surfaces
+        disagree on identity.
+      </p>
       <h3>Projection Metadata</h3>
       <dl className="kv-grid">
         <dt>Normalized Plan Hash</dt>
