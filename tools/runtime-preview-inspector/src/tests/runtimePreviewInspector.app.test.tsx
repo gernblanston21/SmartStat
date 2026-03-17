@@ -18,10 +18,11 @@ describe("runtime preview inspector UI scaffold", () => {
     expect(html).toContain("What this screen is");
     expect(html).toContain("What read-only means");
     expect(html).toContain("What to check first");
-    expect(html).toContain("Healthy Preview");
+    expect(html).toContain("Consistent Preview");
     expect(html).toContain("Discrepancy Summary");
     expect(html).toContain("Rule Count Snapshot");
     expect(html).toContain("High-priority mismatches");
+    expect(html).toContain("Secondary checks and supporting context");
   });
 
   it("renders panels in deterministic approved order", () => {

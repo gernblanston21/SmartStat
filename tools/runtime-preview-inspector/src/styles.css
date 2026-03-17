@@ -116,16 +116,95 @@ body {
   color: #36435d;
 }
 
-.comparison-overview-strip {
+.review-hero {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 12px;
   margin-top: 12px;
+  padding: 12px;
+  border: 1px solid #d7e0ee;
+  border-radius: 10px;
+  background: #f9fbff;
+}
+
+.review-hero h2 {
+  margin: 0 0 8px;
+}
+
+.review-hero h3 {
+  margin: 10px 0 6px;
+  font-size: 0.95rem;
+}
+
+.review-hero.is-pass {
+  border-color: #b8dfca;
+  background: #f4fcf7;
+}
+
+.review-hero.is-mismatch {
+  border-color: #efbcbc;
+  background: #fff7f7;
+}
+
+.review-hero-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  align-content: start;
+}
+
+.metric-chip {
+  border: 1px solid #d9e3f3;
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.metric-chip span {
+  font-size: 0.8rem;
+  color: #44506a;
+}
+
+.metric-chip strong {
+  font-size: 1.15rem;
+}
+
+.metric-chip.is-pass {
+  border-color: #a8d6bb;
+  background: #effaf3;
+}
+
+.metric-chip.is-mismatch {
+  border-color: #efbcbc;
+  background: #fff0f0;
+}
+
+.secondary-checks {
+  margin-top: 12px;
+  border: 1px solid #d7e0ee;
+  border-radius: 8px;
+  background: #f7f9fd;
+  padding: 8px 10px;
+}
+
+.secondary-checks summary {
+  cursor: default;
+  font-weight: 700;
+}
+
+.secondary-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 8px;
 }
 
 .parity-strip {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 8px;
   margin-top: 12px;
 }
@@ -141,6 +220,15 @@ body {
   margin: 0;
   font-size: 0.85rem;
   color: #42506b;
+}
+
+.parity-card.is-pass {
+  border-color: #cde4d8;
+}
+
+.parity-card.is-mismatch {
+  border-color: #edb7b7;
+  background: #fff6f6;
 }
 
 .parity-result {
@@ -253,6 +341,10 @@ body {
   font-size: 0.88rem;
 }
 
+.summary-table--priority th {
+  background: #ecf3ff;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
@@ -267,12 +359,12 @@ td {
 
 .summary-table tr.is-pass td,
 .comparison-row.is-pass td {
-  background: #f2fbf5;
+  background: #fbfdfc;
 }
 
 .summary-table tr.is-mismatch td,
 .comparison-row.is-mismatch td {
-  background: #fff4f4;
+  background: #fff0f0;
 }
 
 .parity-pill {
@@ -329,12 +421,16 @@ pre {
     grid-template-columns: 1fr;
   }
 
-  .comparison-overview-strip {
+  .review-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .secondary-grid {
     grid-template-columns: 1fr;
   }
 
   .parity-strip {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
   }
 
   .panel-stack {

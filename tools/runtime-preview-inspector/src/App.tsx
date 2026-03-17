@@ -141,11 +141,34 @@ export default function App({ viewModel }: AppProps): JSX.Element {
   const mismatchSignals = inspectionSignals.filter((signal) => !signal.pass);
   const passSignals = inspectionSignals.length - mismatchSignals.length;
   const highPrioritySignals = inspectionSignals.filter((signal) => signal.priority === "High");
+  const mediumPrioritySignals = inspectionSignals.filter((signal) => signal.priority === "Medium");
   const highPriorityMismatches = highPrioritySignals.filter((signal) => !signal.pass);
   const overviewHealthy =
     mismatchSignals.length === 0;
-  const reviewTone = overviewHealthy ? "Healthy Preview" : "Needs Review";
+  const reviewTone = overviewHealthy ? "Consistent Preview" : "Inconsistencies Found";
   const reviewToneClass = overviewHealthy ? "is-pass" : "is-mismatch";
+  const parityCards = [
+    {
+      key: "semantic_resolution",
+      label: "Semantic vs Resolution",
+      pass: semanticResolutionParity,
+    },
+    {
+      key: "deterministic_identity",
+      label: "Deterministic Identity",
+      pass: deterministicIdentityParity,
+    },
+    {
+      key: "traceability_overlap",
+      label: "Traceability Overlap",
+      pass: traceabilityOverlapParity,
+    },
+    {
+      key: "rule_phase_order",
+      label: "Rule Phase Order",
+      pass: phaseOrderParity,
+    },
+  ];
 
   const orderedPanels: Array<{
     key: (typeof PANEL_RENDER_ORDER)[number]["key"];
@@ -229,8 +252,8 @@ export default function App({ viewModel }: AppProps): JSX.Element {
           <article className="overview-card">
             <h3>What this screen is</h3>
             <p>
-              A viewer for one frozen preview payload that shows whether key sections
-              agree with each other.
+              A viewer for one frozen preview payload that shows whether important
+              sections agree with each other.
             </p>
           </article>
           <article className="overview-card">
@@ -241,31 +264,74 @@ export default function App({ viewModel }: AppProps): JSX.Element {
             </p>
           </article>
           <article className="overview-card">
-            <h3>What you are seeing</h3>
+            <h3>How to review quickly</h3>
             <p>
-              Status, scope interpretation, rule ordering, traceability identities,
-              and a compact raw snapshot.
+              Start with high-priority checks, then use secondary context and panel
+              detail only when something looks off.
             </p>
           </article>
+        </section>
+        <section className={`review-hero ${reviewToneClass}`} aria-label="Review outcome summary">
+          <div className="review-hero-main">
+            <h2>{reviewTone}</h2>
+            <p>
+              PASS checks: <strong>{passSignals}</strong> / {inspectionSignals.length}. MISMATCH
+              checks: <strong>{mismatchSignals.length}</strong>.
+            </p>
+            <h3>Discrepancy Summary</h3>
+            {mismatchSignals.length ? (
+              <ul className="compact-list">
+                {mismatchSignals.map((signal) => (
+                  <li key={`mismatch-${signal.key}`}>
+                    <strong>{signal.label}</strong>: {signal.detail}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="panel-note">
+                No discrepancy signals detected in this preview.
+              </p>
+            )}
+          </div>
+          <div className="review-hero-metrics" aria-label="Review metrics">
+            <article className="metric-chip is-mismatch">
+              <span>High-priority mismatches</span>
+              <strong>{highPriorityMismatches.length}</strong>
+            </article>
+            <article className="metric-chip is-mismatch">
+              <span>Total mismatches</span>
+              <strong>{mismatchSignals.length}</strong>
+            </article>
+            <article className={`metric-chip ${hasNoErrors ? "is-pass" : "is-mismatch"}`}>
+              <span>Error count</span>
+              <strong>{sections.issues_view.error_count}</strong>
+            </article>
+            <article className={`metric-chip ${hasNoWarnings ? "is-pass" : "is-mismatch"}`}>
+              <span>Warning count</span>
+              <strong>{sections.issues_view.warning_count}</strong>
+            </article>
+          </div>
         </section>
         <section className="check-first-strip" aria-label="What to check first">
           <h2>What to check first</h2>
           <p className={`check-first-result ${reviewToneClass}`}>{reviewTone}</p>
-          <table className="summary-table">
+          <table className="summary-table summary-table--priority">
             <thead>
               <tr>
                 <th>Check</th>
-                <th>Priority</th>
                 <th>Result</th>
                 <th>Detail</th>
               </tr>
             </thead>
             <tbody>
-              {inspectionSignals.map((signal) => (
+              {highPrioritySignals.map((signal) => (
                 <tr key={signal.key} className={signal.pass ? "is-pass" : "is-mismatch"}>
                   <td>{signal.label}</td>
-                  <td>{signal.priority}</td>
-                  <td>{parityLabel(signal.pass)}</td>
+                  <td>
+                    <span className={`parity-pill ${signal.pass ? "is-pass" : "is-mismatch"}`}>
+                      {parityLabel(signal.pass)}
+                    </span>
+                  </td>
                   <td>{signal.detail}</td>
                 </tr>
               ))}
@@ -276,97 +342,80 @@ export default function App({ viewModel }: AppProps): JSX.Element {
             mismatches: <strong>{mismatchSignals.length}</strong>.
           </p>
         </section>
-        <section className="comparison-overview-strip" aria-label="Comparison workflow summary">
-          <article className="overview-card">
-            <h3>Discrepancy Summary</h3>
-            <p>
-              PASS checks: <strong>{passSignals}</strong> / {inspectionSignals.length}. MISMATCH
-              checks: <strong>{mismatchSignals.length}</strong>.
-            </p>
-            {mismatchSignals.length ? (
-              <ul className="compact-list">
-                {mismatchSignals.map((signal) => (
-                  <li key={`mismatch-${signal.key}`}>
-                    <strong>{signal.label}</strong>: {signal.detail}
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>All high-value checks are aligned for this preview.</p>
-            )}
-          </article>
-          <article className="overview-card">
-            <h3>Rule Count Snapshot</h3>
-            <table className="summary-table">
-              <thead>
-                <tr>
-                  <th>Phase</th>
-                  <th>Rules</th>
+        <details className="secondary-checks">
+          <summary>Secondary checks and supporting context</summary>
+          <p className="panel-note">
+            Use this section after the high-priority checks. It provides additional
+            parity and count context without crowding the first scan.
+          </p>
+          <table className="summary-table">
+            <thead>
+              <tr>
+                <th>Secondary Check</th>
+                <th>Result</th>
+                <th>Detail</th>
+              </tr>
+            </thead>
+            <tbody>
+              {mediumPrioritySignals.map((signal) => (
+                <tr key={`secondary-${signal.key}`} className={signal.pass ? "is-pass" : "is-mismatch"}>
+                  <td>{signal.label}</td>
+                  <td>
+                    <span className={`parity-pill ${signal.pass ? "is-pass" : "is-mismatch"}`}>
+                      {parityLabel(signal.pass)}
+                    </span>
+                  </td>
+                  <td>{signal.detail}</td>
                 </tr>
-              </thead>
-              <tbody>
-                {EXPECTED_RULE_PHASE_ORDER.map((phase) => (
-                  <tr key={`phase-count-${phase}`}>
-                    <td>{phase}</td>
-                    <td>{ruleCountsByPhase[phase]}</td>
+              ))}
+            </tbody>
+          </table>
+          <section className="secondary-grid">
+            <article className="overview-card">
+              <h3>Rule Count Snapshot</h3>
+              <table className="summary-table">
+                <thead>
+                  <tr>
+                    <th>Phase</th>
+                    <th>Rules</th>
                   </tr>
-                ))}
-                <tr>
-                  <td>Total Ordered Rules</td>
-                  <td>{sections.rule_evaluation_summary_view.ordered_rules.length}</td>
-                </tr>
-              </tbody>
-            </table>
-          </article>
-          <article className="overview-card">
-            <h3>Traceability Snapshot</h3>
-            <dl className="kv-grid compact-kv-grid">
-              <dt>Projection Contract</dt>
-              <dd>{sections.projection_metadata_view.projection_contract}</dd>
-              <dt>Projection Kind</dt>
-              <dd>{sections.projection_metadata_view.projection_kind}</dd>
-              <dt>Input Artifact</dt>
-              <dd>{sections.projection_metadata_view.input_artifact}</dd>
-            </dl>
-          </article>
-        </section>
+                </thead>
+                <tbody>
+                  {EXPECTED_RULE_PHASE_ORDER.map((phase) => (
+                    <tr key={`phase-count-${phase}`}>
+                      <td>{phase}</td>
+                      <td>{ruleCountsByPhase[phase]}</td>
+                    </tr>
+                  ))}
+                  <tr>
+                    <td>Total Ordered Rules</td>
+                    <td>{sections.rule_evaluation_summary_view.ordered_rules.length}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </article>
+            <article className="overview-card">
+              <h3>Traceability Snapshot</h3>
+              <dl className="kv-grid compact-kv-grid">
+                <dt>Projection Contract</dt>
+                <dd>{sections.projection_metadata_view.projection_contract}</dd>
+                <dt>Projection Kind</dt>
+                <dd>{sections.projection_metadata_view.projection_kind}</dd>
+                <dt>Input Artifact</dt>
+                <dd>{sections.projection_metadata_view.input_artifact}</dd>
+              </dl>
+            </article>
+          </section>
+        </details>
         <section className="parity-strip" aria-label="Contract parity checks">
-          <article className="parity-card">
-            <h3>Semantic vs Resolution</h3>
-            <p className={`parity-result ${semanticResolutionParity ? "is-pass" : "is-mismatch"}`}>
-              {parityLabel(semanticResolutionParity)}
-            </p>
-          </article>
-          <article className="parity-card">
-            <h3>Deterministic Identity</h3>
-            <p className={`parity-result ${deterministicIdentityParity ? "is-pass" : "is-mismatch"}`}>
-              {parityLabel(deterministicIdentityParity)}
-            </p>
-          </article>
-          <article className="parity-card">
-            <h3>Traceability Overlap</h3>
-            <p className={`parity-result ${traceabilityOverlapParity ? "is-pass" : "is-mismatch"}`}>
-              {parityLabel(traceabilityOverlapParity)}
-            </p>
-          </article>
-          <article className="parity-card">
-            <h3>Rule Phase Order</h3>
-            <p className={`parity-result ${phaseOrderParity ? "is-pass" : "is-mismatch"}`}>
-              {parityLabel(phaseOrderParity)}
-            </p>
-          </article>
-          <article className="parity-card">
-            <h3>Error Count</h3>
-            <p className={`parity-result ${hasNoErrors ? "is-pass" : "is-mismatch"}`}>
-              {hasNoErrors ? "PASS" : "MISMATCH"}
-            </p>
-          </article>
-          <article className="parity-card">
-            <h3>Warning Count</h3>
-            <p className={`parity-result ${hasNoWarnings ? "is-pass" : "is-mismatch"}`}>
-              {hasNoWarnings ? "PASS" : "MISMATCH"}
-            </p>
-          </article>
+          {parityCards.map((card) => (
+            <article key={card.key} className={`parity-card ${card.pass ? "is-pass" : "is-mismatch"}`}>
+              <h3>{card.label}</h3>
+              <p className={`parity-result ${card.pass ? "is-pass" : "is-mismatch"}`}>
+                {parityLabel(card.pass)}
+              </p>
+            </article>
+          ))}
         </section>
       </header>
 
