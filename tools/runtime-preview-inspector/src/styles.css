@@ -749,6 +749,16 @@ td {
   color: #45536c;
 }
 
+.comparison-target-chip.is-unavailable {
+  border-color: #cfd6e3;
+  background: #f3f6fb;
+}
+
+.comparison-target-chip.is-unavailable code,
+.comparison-target-chip.is-unavailable span {
+  color: #4f5f76;
+}
+
 .comparison-cell-meta {
   display: flex;
   gap: 6px;
@@ -785,6 +795,18 @@ td {
 
 .comparison-evidence-list li {
   margin: 1px 0;
+}
+
+.comparison-evidence-list li.is-unavailable {
+  color: #4f5f76;
+}
+
+.comparison-evidence-unavailable {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  color: #4f5f76;
 }
 
 .parity-pill {

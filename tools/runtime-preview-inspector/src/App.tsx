@@ -42,9 +42,46 @@ type ComparisonCheckKey =
 const PANEL_TITLE_BY_KEY = Object.fromEntries(
   PANEL_RENDER_ORDER.map((panel) => [panel.key, panel.title])
 ) as Record<PanelKey, string>;
+const PANEL_KEY_SET = new Set<string>(PANEL_RENDER_ORDER.map((panel) => panel.key));
 
 const UNAVAILABLE_LABEL = "Unavailable in this preview";
 const NO_EVIDENCE_LABEL = "No evidence provided in current payload";
+
+interface ResolvedEvidenceTarget {
+  requestedKey: string;
+  panelKey: PanelKey | null;
+  title: string;
+  href: string | null;
+  isUnavailable: boolean;
+}
+
+function isPanelKey(value: string): value is PanelKey {
+  return PANEL_KEY_SET.has(value);
+}
+
+export function resolveEvidenceTarget(panelKey: string): ResolvedEvidenceTarget {
+  if (isPanelKey(panelKey)) {
+    return {
+      requestedKey: panelKey,
+      panelKey,
+      title: PANEL_TITLE_BY_KEY[panelKey],
+      href: `#panel-${panelKey}`,
+      isUnavailable: false,
+    };
+  }
+
+  return {
+    requestedKey: panelKey,
+    panelKey: null,
+    title: "UNAVAILABLE",
+    href: null,
+    isUnavailable: true,
+  };
+}
+
+export function resolveEvidenceTargets(panelKeys: readonly string[]): ResolvedEvidenceTarget[] {
+  return panelKeys.map((panelKey) => resolveEvidenceTarget(panelKey));
+}
 
 function comparisonResultLabel(result: ComparisonResult): "PASS" | "MISMATCH" | "UNAVAILABLE" {
   if (result === "pass") {
@@ -179,7 +216,11 @@ interface ComparisonCheck {
   pairingKey: string;
   leftTag: string;
   rightTag: string;
-  evidenceTargets: PanelKey[];
+  evidenceTargets: string[];
+}
+
+interface ComparisonCheckWithEvidence extends ComparisonCheck {
+  resolvedEvidenceTargets: ResolvedEvidenceTarget[];
 }
 
 interface DrillDownDiffLine {
@@ -200,7 +241,8 @@ interface DrillDownCard {
   pairingKey: string;
   leftTag: string;
   rightTag: string;
-  evidenceTargets: PanelKey[];
+  evidenceTargets: string[];
+  resolvedEvidenceTargets: ResolvedEvidenceTarget[];
   contributingFields: string[];
   diffLines: DrillDownDiffLine[];
   unavailableDiffCount: number;
@@ -622,11 +664,20 @@ export default function App({ viewModel }: AppProps): JSX.Element {
       evidenceTargets: ["rule_evaluation_summary_view"],
     },
   ];
-  const comparisonPassCount = comparisonChecks.filter((check) => check.result === "pass").length;
-  const comparisonMismatchCount = comparisonChecks.filter(
+  const comparisonChecksWithEvidence: ComparisonCheckWithEvidence[] = comparisonChecks.map(
+    (check) => ({
+      ...check,
+      resolvedEvidenceTargets: resolveEvidenceTargets(check.evidenceTargets),
+    })
+  );
+
+  const comparisonPassCount = comparisonChecksWithEvidence.filter(
+    (check) => check.result === "pass"
+  ).length;
+  const comparisonMismatchCount = comparisonChecksWithEvidence.filter(
     (check) => check.result === "mismatch"
   ).length;
-  const comparisonUnavailableCount = comparisonChecks.filter(
+  const comparisonUnavailableCount = comparisonChecksWithEvidence.filter(
     (check) => check.result === "unavailable"
   ).length;
   const comparisonCoverageClass =
@@ -656,11 +707,13 @@ export default function App({ viewModel }: AppProps): JSX.Element {
     {} as Record<PanelKey, string[]>
   );
 
-  comparisonChecks
+  comparisonChecksWithEvidence
     .filter((check) => check.result === "mismatch")
     .forEach((check) => {
-      check.evidenceTargets.forEach((panelKey) => {
-        reviewPairingKeysByPanel[panelKey].push(check.pairingKey);
+      check.resolvedEvidenceTargets.forEach((target) => {
+        if (target.panelKey) {
+          reviewPairingKeysByPanel[target.panelKey].push(check.pairingKey);
+        }
       });
     });
 
@@ -823,7 +876,7 @@ export default function App({ viewModel }: AppProps): JSX.Element {
       unavailableDiffCount: 0,
     },
   };
-  const reviewDrillDownCards: DrillDownCard[] = comparisonChecks
+  const reviewDrillDownCards: DrillDownCard[] = comparisonChecksWithEvidence
     .filter((check) => check.result !== "pass")
     .map((check) => {
       const details = drillDownDetailsByKey[check.key];
@@ -831,6 +884,7 @@ export default function App({ viewModel }: AppProps): JSX.Element {
       const mismatchDiffLines = details.diffLines.filter((line) => line.mismatch);
       return {
         ...check,
+        resolvedEvidenceTargets: check.resolvedEvidenceTargets,
         contributingFields: details.contributingFields,
         diffLines: mismatchDiffLines,
         unavailableDiffCount,
@@ -1118,7 +1172,7 @@ export default function App({ viewModel }: AppProps): JSX.Element {
               </tr>
             </thead>
             <tbody>
-              {comparisonChecks.map((check) => (
+              {comparisonChecksWithEvidence.map((check) => (
                 <tr
                   key={check.key}
                   className={`priority-row priority-${check.priority.toLowerCase()} ${
@@ -1140,14 +1194,16 @@ export default function App({ viewModel }: AppProps): JSX.Element {
                           Evidence targets ({check.evidenceTargets.length})
                         </p>
                         <ul className="comparison-target-chip-list">
-                          {check.evidenceTargets.map((panelKey) => (
+                          {check.resolvedEvidenceTargets.map((target) => (
                             <li
-                              key={`target-map-${check.key}:${panelKey}`}
-                              className="comparison-target-chip"
-                              data-evidence-panel-key={panelKey}
+                              key={`target-map-${check.key}:${target.requestedKey}`}
+                              className={`comparison-target-chip ${
+                                target.isUnavailable ? "is-unavailable" : ""
+                              }`}
+                              data-evidence-panel-key={target.requestedKey}
                             >
-                              <code>{panelKey}</code>
-                              <span>{PANEL_TITLE_BY_KEY[panelKey]}</span>
+                              <code>{target.requestedKey}</code>
+                              <span>{target.title}</span>
                             </li>
                           ))}
                         </ul>
@@ -1161,9 +1217,18 @@ export default function App({ viewModel }: AppProps): JSX.Element {
                   </td>
                   <td>
                     <ul className="comparison-evidence-list">
-                      {check.evidenceTargets.map((panelKey) => (
-                        <li key={`${check.key}:${panelKey}`}>
-                          <a href={`#panel-${panelKey}`}>{PANEL_TITLE_BY_KEY[panelKey]}</a>
+                      {check.resolvedEvidenceTargets.map((target) => (
+                        <li
+                          key={`${check.key}:${target.requestedKey}`}
+                          className={target.isUnavailable ? "is-unavailable" : ""}
+                        >
+                          {target.href ? (
+                            <a href={target.href}>{target.title}</a>
+                          ) : (
+                            <span className="comparison-evidence-unavailable">
+                              <code>{target.requestedKey}</code> - UNAVAILABLE
+                            </span>
+                          )}
                         </li>
                       ))}
                     </ul>
@@ -1246,9 +1311,18 @@ export default function App({ viewModel }: AppProps): JSX.Element {
                     </ul>
                     <p className="drilldown-links-title">Related evidence panels:</p>
                     <ul className="comparison-evidence-list">
-                      {card.evidenceTargets.map((panelKey) => (
-                        <li key={`drilldown-link-${card.key}-${panelKey}`}>
-                          <a href={`#panel-${panelKey}`}>{PANEL_TITLE_BY_KEY[panelKey]}</a>
+                      {card.resolvedEvidenceTargets.map((target) => (
+                        <li
+                          key={`drilldown-link-${card.key}-${target.requestedKey}`}
+                          className={target.isUnavailable ? "is-unavailable" : ""}
+                        >
+                          {target.href ? (
+                            <a href={target.href}>{target.title}</a>
+                          ) : (
+                            <span className="comparison-evidence-unavailable">
+                              <code>{target.requestedKey}</code> - UNAVAILABLE
+                            </span>
+                          )}
                         </li>
                       ))}
                     </ul>

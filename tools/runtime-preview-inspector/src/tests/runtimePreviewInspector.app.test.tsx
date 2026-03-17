@@ -1,6 +1,6 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
-import App, { PANEL_RENDER_ORDER } from "../App";
+import App, { PANEL_RENDER_ORDER, resolveEvidenceTargets } from "../App";
 import { adaptPreviewPayloadToViewModel } from "../adapters/previewPayloadToViewModel";
 import { RuntimePreviewViewModel } from "../contracts/runtimePreviewIntake";
 import previewFixture from "../../../../tests/_scratch/runtime-slice-02-readonly-plan-bridge/runs/pos_projection_intake_run1.json";
@@ -52,6 +52,8 @@ describe("runtime preview inspector UI scaffold", () => {
     expect(html).toContain('data-coverage-count="mismatch">0</strong>');
     expect(html).toContain('data-coverage-count="unavailable">0</strong>');
     expect(countMatches(html, /data-evidence-panel-key="/g)).toBe(6);
+    expect(html).not.toContain("comparison-target-chip is-unavailable");
+    expect(html).not.toContain("comparison-evidence-unavailable");
     expect(countMatches(html, /data-panel-status="ready"/g)).toBe(PANEL_RENDER_ORDER.length);
     expect(countMatches(html, /data-panel-jump-status="ready"/g)).toBe(PANEL_RENDER_ORDER.length);
     expect(html).not.toContain('data-panel-status="review"');
@@ -103,6 +105,29 @@ describe("runtime preview inspector UI scaffold", () => {
     expect(html).toContain('id="panel-rule_evaluation_summary_view"');
   });
 
+  it("fails closed for invalid evidence target references", () => {
+    const resolved = resolveEvidenceTargets([
+      "semantic_view",
+      "invalid_panel_key",
+    ]);
+
+    expect(resolved).toHaveLength(2);
+    expect(resolved[0]).toEqual({
+      requestedKey: "semantic_view",
+      panelKey: "semantic_view",
+      title: "Semantic Interpretation",
+      href: "#panel-semantic_view",
+      isUnavailable: false,
+    });
+    expect(resolved[1]).toEqual({
+      requestedKey: "invalid_panel_key",
+      panelKey: null,
+      title: "UNAVAILABLE",
+      href: null,
+      isUnavailable: true,
+    });
+  });
+
   it("surfaces mismatch state with stronger review emphasis", () => {
     const viewModel = adaptPreviewPayloadToViewModel(previewFixture);
     const mismatched = cloneViewModel(viewModel);
@@ -126,6 +151,8 @@ describe("runtime preview inspector UI scaffold", () => {
     expect(html).toContain('data-coverage-count="mismatch">1</strong>');
     expect(html).toContain('data-coverage-count="unavailable">0</strong>');
     expect(countMatches(html, /data-evidence-panel-key="/g)).toBe(6);
+    expect(html).not.toContain("comparison-target-chip is-unavailable");
+    expect(html).not.toContain("comparison-evidence-unavailable");
     expect(html).toContain('data-panel-key="semantic_view" data-panel-status="review"');
     expect(html).toContain('data-panel-key="resolution_view" data-panel-status="review"');
     expect(html).toContain('data-panel-jump-key="semantic_view" data-panel-jump-status="review"');
@@ -172,6 +199,8 @@ describe("runtime preview inspector UI scaffold", () => {
     expect(html).toContain('data-coverage-count="pass">3</strong>');
     expect(html).toContain('data-coverage-count="mismatch">0</strong>');
     expect(html).toContain('data-coverage-count="unavailable">1</strong>');
+    expect(html).not.toContain("comparison-target-chip is-unavailable");
+    expect(html).not.toContain("comparison-evidence-unavailable");
     expect(html).toContain(
       'data-panel-key="projection_metadata_view" data-panel-status="unavailable"'
     );
