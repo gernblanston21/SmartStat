@@ -32,6 +32,7 @@ export const PANEL_RENDER_ORDER = [
 
 type PanelKey = (typeof PANEL_RENDER_ORDER)[number]["key"];
 type ComparisonResult = "pass" | "mismatch" | "unavailable";
+type PanelStatus = "ready" | "review" | "unavailable";
 type ComparisonCheckKey =
   | "semantic_resolution"
   | "deterministic_identity"
@@ -63,6 +64,39 @@ function comparisonResultClass(result: ComparisonResult): string {
     return "is-mismatch";
   }
   return "is-unavailable";
+}
+
+function panelStatusLabel(status: PanelStatus): "READY" | "REVIEW" | "UNAVAILABLE" {
+  if (status === "ready") {
+    return "READY";
+  }
+  if (status === "review") {
+    return "REVIEW";
+  }
+  return "UNAVAILABLE";
+}
+
+function panelStatusClass(status: PanelStatus): string {
+  if (status === "ready") {
+    return "is-ready";
+  }
+  if (status === "review") {
+    return "is-review";
+  }
+  return "is-unavailable";
+}
+
+function panelStatusNote(
+  status: PanelStatus,
+  reviewPairingKeys: readonly string[]
+): string {
+  if (status === "review" && reviewPairingKeys.length > 0) {
+    return `Review evidence targeted by ${reviewPairingKeys.join(", ")}.`;
+  }
+  if (status === "unavailable") {
+    return NO_EVIDENCE_LABEL;
+  }
+  return "Grounded evidence available.";
 }
 
 function comparisonPairingKey(key: ComparisonCheckKey): string {
@@ -588,6 +622,50 @@ export default function App({ viewModel }: AppProps): JSX.Element {
       evidenceTargets: ["rule_evaluation_summary_view"],
     },
   ];
+  const hasPanelEvidenceByKey: Record<PanelKey, boolean> = {
+    intake_header: hasIntakeHeaderPanel,
+    projection_metadata_view: hasProjectionMetadataPanel && hasRuleTracePanel,
+    semantic_view: hasSemanticPanel,
+    issues_view: hasIssuesPanel,
+    resolution_view: hasResolutionPanel,
+    rule_evaluation_summary_view: hasRuleSummaryPanel,
+    rule_evaluation_trace_view: hasRuleTracePanel,
+    deterministic_identity_view: hasDeterministicIdentityPanel,
+    raw_payload_debug_view: hasRawPayloadPanel,
+  };
+
+  const reviewPairingKeysByPanel = PANEL_RENDER_ORDER.reduce<Record<PanelKey, string[]>>(
+    (acc, panel) => {
+      acc[panel.key] = [];
+      return acc;
+    },
+    {} as Record<PanelKey, string[]>
+  );
+
+  comparisonChecks
+    .filter((check) => check.result === "mismatch")
+    .forEach((check) => {
+      check.evidenceTargets.forEach((panelKey) => {
+        reviewPairingKeysByPanel[panelKey].push(check.pairingKey);
+      });
+    });
+
+  const panelStatusByKey = PANEL_RENDER_ORDER.reduce<Record<PanelKey, PanelStatus>>(
+    (acc, panel) => {
+      if (!hasPanelEvidenceByKey[panel.key]) {
+        acc[panel.key] = "unavailable";
+        return acc;
+      }
+      if (reviewPairingKeysByPanel[panel.key].length > 0) {
+        acc[panel.key] = "review";
+        return acc;
+      }
+      acc[panel.key] = "ready";
+      return acc;
+    },
+    {} as Record<PanelKey, PanelStatus>
+  );
+
   const drillDownDetailsByKey: Record<
     ComparisonCheckKey,
     Pick<DrillDownCard, "contributingFields" | "diffLines" | "unavailableDiffCount">
@@ -780,11 +858,15 @@ export default function App({ viewModel }: AppProps): JSX.Element {
   const orderedPanels: Array<{
     key: PanelKey;
     className: string;
+    status: PanelStatus;
+    reviewPairingKeys: string[];
     node: JSX.Element;
   }> = [
     {
       key: "intake_header",
       className: "panel-slot panel-slot--half",
+      status: panelStatusByKey.intake_header,
+      reviewPairingKeys: reviewPairingKeysByPanel.intake_header,
       node:
         hasIntakeHeaderPanel && intakeHeaderView
           ? <IntakeHeaderPanel view={intakeHeaderView} />
@@ -796,6 +878,8 @@ export default function App({ viewModel }: AppProps): JSX.Element {
     {
       key: "projection_metadata_view",
       className: "panel-slot panel-slot--half",
+      status: panelStatusByKey.projection_metadata_view,
+      reviewPairingKeys: reviewPairingKeysByPanel.projection_metadata_view,
       node:
         hasProjectionMetadataPanel && hasRuleTracePanel && projectionMetadataView && ruleTraceView
           ? (
@@ -812,6 +896,8 @@ export default function App({ viewModel }: AppProps): JSX.Element {
     {
       key: "semantic_view",
       className: "panel-slot panel-slot--half",
+      status: panelStatusByKey.semantic_view,
+      reviewPairingKeys: reviewPairingKeysByPanel.semantic_view,
       node:
         hasSemanticPanel && semanticView && resolutionView
           ? <SemanticPanel view={semanticView} resolutionView={resolutionView} />
@@ -823,6 +909,8 @@ export default function App({ viewModel }: AppProps): JSX.Element {
     {
       key: "issues_view",
       className: "panel-slot panel-slot--half",
+      status: panelStatusByKey.issues_view,
+      reviewPairingKeys: reviewPairingKeysByPanel.issues_view,
       node:
         hasIssuesPanel && issuesView
           ? <IssuesPanel view={issuesView} />
@@ -834,6 +922,8 @@ export default function App({ viewModel }: AppProps): JSX.Element {
     {
       key: "resolution_view",
       className: "panel-slot panel-slot--half",
+      status: panelStatusByKey.resolution_view,
+      reviewPairingKeys: reviewPairingKeysByPanel.resolution_view,
       node:
         hasResolutionPanel && resolutionView
           ? <ResolutionPanel view={resolutionView} />
@@ -845,6 +935,8 @@ export default function App({ viewModel }: AppProps): JSX.Element {
     {
       key: "rule_evaluation_summary_view",
       className: "panel-slot panel-slot--full",
+      status: panelStatusByKey.rule_evaluation_summary_view,
+      reviewPairingKeys: reviewPairingKeysByPanel.rule_evaluation_summary_view,
       node:
         hasRuleSummaryPanel && ruleSummaryView
           ? <RuleSummaryPanel view={ruleSummaryView} />
@@ -856,6 +948,8 @@ export default function App({ viewModel }: AppProps): JSX.Element {
     {
       key: "rule_evaluation_trace_view",
       className: "panel-slot panel-slot--half",
+      status: panelStatusByKey.rule_evaluation_trace_view,
+      reviewPairingKeys: reviewPairingKeysByPanel.rule_evaluation_trace_view,
       node:
         hasRuleTracePanel && ruleTraceView
           ? <RuleTracePanel view={ruleTraceView} />
@@ -867,6 +961,8 @@ export default function App({ viewModel }: AppProps): JSX.Element {
     {
       key: "deterministic_identity_view",
       className: "panel-slot panel-slot--half",
+      status: panelStatusByKey.deterministic_identity_view,
+      reviewPairingKeys: reviewPairingKeysByPanel.deterministic_identity_view,
       node:
         hasDeterministicIdentityPanel && deterministicIdentityView
           ? <DeterministicIdentityPanel view={deterministicIdentityView} />
@@ -878,6 +974,8 @@ export default function App({ viewModel }: AppProps): JSX.Element {
     {
       key: "raw_payload_debug_view",
       className: "panel-slot panel-slot--full",
+      status: panelStatusByKey.raw_payload_debug_view,
+      reviewPairingKeys: reviewPairingKeysByPanel.raw_payload_debug_view,
       node:
         hasRawPayloadPanel && rawPayloadView
           ? <RawPayloadPanel view={rawPayloadView} />
@@ -1118,10 +1216,22 @@ export default function App({ viewModel }: AppProps): JSX.Element {
           </p>
           <nav className="panel-jump-nav" aria-label="Panel order reference">
             <h3>Panel Order Reference</h3>
+            <p className="panel-note">
+              Status key: READY = grounded evidence available, REVIEW = linked to current mismatch
+              checks, UNAVAILABLE = no evidence in this payload.
+            </p>
             <ol className="panel-jump-list">
-              {PANEL_RENDER_ORDER.map((panel) => (
-                <li key={`jump-${panel.key}`}>
-                  <a href={`#panel-${panel.key}`}>{panel.title}</a>
+              {orderedPanels.map((panel) => (
+                <li
+                  key={`jump-${panel.key}`}
+                  className={`panel-jump-item ${panelStatusClass(panel.status)}`}
+                  data-panel-jump-key={panel.key}
+                  data-panel-jump-status={panel.status}
+                >
+                  <a href={`#panel-${panel.key}`}>{PANEL_TITLE_BY_KEY[panel.key]}</a>
+                  <span className={`panel-status-pill ${panelStatusClass(panel.status)}`}>
+                    {panelStatusLabel(panel.status)}
+                  </span>
                 </li>
               ))}
             </ol>
@@ -1175,8 +1285,17 @@ export default function App({ viewModel }: AppProps): JSX.Element {
             key={panel.key}
             id={`panel-${panel.key}`}
             data-panel-key={panel.key}
-            className={panel.className}
+            data-panel-status={panel.status}
+            className={`${panel.className} panel-status-${panel.status}`}
           >
+            <div className="panel-status-row">
+              <span className={`panel-status-pill ${panelStatusClass(panel.status)}`}>
+                {panelStatusLabel(panel.status)}
+              </span>
+              <span className="panel-status-note">
+                {panelStatusNote(panel.status, panel.reviewPairingKeys)}
+              </span>
+            </div>
             {panel.node}
           </section>
         ))}

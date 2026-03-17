@@ -9,6 +9,10 @@ function cloneViewModel(viewModel: RuntimePreviewViewModel): RuntimePreviewViewM
   return JSON.parse(JSON.stringify(viewModel)) as RuntimePreviewViewModel;
 }
 
+function countMatches(haystack: string, pattern: RegExp): number {
+  return (haystack.match(pattern) ?? []).length;
+}
+
 describe("runtime preview inspector UI scaffold", () => {
   it("renders from frozen fixture via adapter", () => {
     const viewModel = adaptPreviewPayloadToViewModel(previewFixture);
@@ -31,8 +35,13 @@ describe("runtime preview inspector UI scaffold", () => {
     expect(html).toContain("All Core Checks PASS");
     expect(html).toContain("Follow links in the last column");
     expect(html).toContain("Panel Order Reference");
+    expect(html).toContain("Status key: READY");
     expect(html).not.toContain("Mismatch drill-down");
     expect(html).not.toContain('class="secondary-checks" open=""');
+    expect(countMatches(html, /data-panel-status="ready"/g)).toBe(PANEL_RENDER_ORDER.length);
+    expect(countMatches(html, /data-panel-jump-status="ready"/g)).toBe(PANEL_RENDER_ORDER.length);
+    expect(html).not.toContain('data-panel-status="review"');
+    expect(html).not.toContain('data-panel-status="unavailable"');
   });
 
   it("renders panels in deterministic approved order", () => {
@@ -98,6 +107,11 @@ describe("runtime preview inspector UI scaffold", () => {
     expect(html).toContain("semantic.scope_resolution = forced_mismatch");
     expect(html).toContain('href="#panel-semantic_view"');
     expect(html).toContain('href="#panel-resolution_view"');
+    expect(html).toContain('data-panel-key="semantic_view" data-panel-status="review"');
+    expect(html).toContain('data-panel-key="resolution_view" data-panel-status="review"');
+    expect(html).toContain('data-panel-jump-key="semantic_view" data-panel-jump-status="review"');
+    expect(html).toContain('data-panel-jump-key="resolution_view" data-panel-jump-status="review"');
+    expect(html).toContain("Review evidence targeted by CHK-SEMANTIC-RESOLUTION.");
     expect(html).not.toContain("BEFORE:");
     expect(html).not.toContain("AFTER:");
     expect(html).toContain('class="secondary-checks" open=""');
@@ -135,6 +149,15 @@ describe("runtime preview inspector UI scaffold", () => {
     expect(html).toContain("Unavailable in this preview");
     expect(html).toContain("No evidence provided in current payload");
     expect(html).toContain("UNAVAILABLE");
+    expect(html).toContain(
+      'data-panel-key="projection_metadata_view" data-panel-status="unavailable"'
+    );
+    expect(html).toContain(
+      'data-panel-jump-key="projection_metadata_view" data-panel-jump-status="unavailable"'
+    );
+    expect(html).not.toContain(
+      'data-panel-key="projection_metadata_view" data-panel-status="ready"'
+    );
   });
 
   it("keeps drill-down grounded when some related evidence is unavailable", () => {

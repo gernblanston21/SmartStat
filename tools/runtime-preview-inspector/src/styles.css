@@ -428,6 +428,17 @@ body {
   margin: 2px 0;
 }
 
+.panel-jump-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.panel-jump-item.is-review {
+  font-weight: 600;
+}
+
 .panel-jump-list a,
 .comparison-evidence-list a {
   color: #2e5f97;
@@ -456,6 +467,16 @@ body {
 
 .panel-slot {
   min-width: 0;
+}
+
+.panel-slot.panel-status-review .panel-shell {
+  border-color: #efbcbc;
+  box-shadow: 0 0 0 2px #fff1f1 inset;
+}
+
+.panel-slot.panel-status-unavailable .panel-shell {
+  border-color: #d8dde7;
+  background: #fbfcff;
 }
 
 .panel-slot:target .panel-shell {
@@ -519,6 +540,20 @@ body {
   margin: 0 0 10px;
   color: #49556d;
   line-height: 1.38;
+}
+
+.panel-status-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 0 0 8px;
+}
+
+.panel-status-note {
+  margin: 0;
+  font-size: 0.82rem;
+  color: #4b576f;
 }
 
 .kv-grid {
@@ -671,6 +706,35 @@ td {
   background: #f3f6fb;
 }
 
+.panel-status-pill {
+  display: inline-block;
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 0.73rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+
+.panel-status-pill.is-ready {
+  color: #3d516f;
+  border-color: #cad7e8;
+  background: #f2f6fd;
+}
+
+.panel-status-pill.is-review {
+  color: #972d2d;
+  border-color: #ebb9b9;
+  background: #fff0f0;
+}
+
+.panel-status-pill.is-unavailable {
+  color: #4e6078;
+  border-color: #cfd6e3;
+  background: #f3f6fb;
+}
+
 .compact-list {
   margin: 0;
   padding-left: 18px;
@@ -714,6 +778,11 @@ pre {
 
   .drilldown-card-meta {
     justify-content: flex-start;
+  }
+
+  .panel-status-row {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .secondary-grid {
