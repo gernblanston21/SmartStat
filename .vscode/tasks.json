@@ -184,6 +184,22 @@
       "presentation": { "reveal": "always", "panel": "dedicated", "clear": true }
     },
     {
+      "label": "Repomix: Build SmartStat Agents Pack",
+      "type": "shell",
+      "command": "repomix",
+      "args": [
+        "--include",
+        "AGENTS.md,SESSION.md,ROADMAP.md,CHANGELOG.md,PROMPTS.md,docs/*,.agents/*",
+        "-o",
+        "repomix-smartstat-agents.xml"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated", "clear": true }
+    },
+    {
       "label": "Repomix: Build SmartStat Rules Pack",
       "type": "shell",
       "command": "repomix",
