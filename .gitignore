@@ -29,5 +29,11 @@ tools/semantic-source-view/dist/
 tools/semantic-source-view/.vite/
 tools/semantic-source-view/npm-debug.log*
 tools/semantic-source-view/.DS_Store
+# Runtime Preview Inspector local/dependency/build outputs
+tools/runtime-preview-inspector/node_modules/
+tools/runtime-preview-inspector/dist/
+tools/runtime-preview-inspector/.vite/
+tools/runtime-preview-inspector/npm-debug.log*
+tools/runtime-preview-inspector/.DS_Store
 # TypeScript build cache
 *.tsbuildinfo
