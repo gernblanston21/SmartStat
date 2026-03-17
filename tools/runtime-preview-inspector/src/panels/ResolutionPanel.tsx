@@ -6,8 +6,13 @@ interface ResolutionPanelProps {
 }
 
 export function ResolutionPanel({ view }: ResolutionPanelProps): JSX.Element {
+  const badges = [view.status, "Preview", "Read-Only"];
   return (
-    <PanelShell title="Resolution Preview" subtitle="Read-Only Resolution View">
+    <PanelShell
+      title="Resolution Preview"
+      subtitle="Read-Only Resolution View"
+      badges={badges}
+    >
       <dl className="kv-grid">
         <dt>Status</dt>
         <dd>{view.status}</dd>

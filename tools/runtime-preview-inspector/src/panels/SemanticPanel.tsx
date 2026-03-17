@@ -6,8 +6,13 @@ interface SemanticPanelProps {
 }
 
 export function SemanticPanel({ view }: SemanticPanelProps): JSX.Element {
+  const badges = ["Read-Only", "Contract View"];
   return (
-    <PanelShell title="Semantic Interpretation" subtitle="Read-Only Metadata">
+    <PanelShell
+      title="Semantic Interpretation"
+      subtitle="Read-Only Metadata"
+      badges={badges}
+    >
       <dl className="kv-grid">
         <dt>Scope Resolution</dt>
         <dd>{view.scope_resolution}</dd>

@@ -12,6 +12,9 @@ describe("runtime preview inspector UI scaffold", () => {
     expect(html).toContain("SmartStat Runtime Preview Inspector");
     expect(html).toContain("Read-Only");
     expect(html).toContain("Contract View");
+    expect(html).toContain("Contract parity checks");
+    expect(html).toContain("Semantic vs Resolution");
+    expect(html).toContain("Deterministic Identity");
   });
 
   it("renders panels in deterministic approved order", () => {
@@ -25,5 +28,14 @@ describe("runtime preview inspector UI scaffold", () => {
       expect(currentIndex).toBeGreaterThan(previousIndex);
       previousIndex = currentIndex;
     });
+  });
+
+  it("keeps raw payload in a compact summary with optional full JSON details", () => {
+    const viewModel = adaptPreviewPayloadToViewModel(previewFixture);
+    const html = renderToStaticMarkup(<App viewModel={viewModel} />);
+
+    expect(html).toContain("Field Preview (Contract-Ordered)");
+    expect(html).toContain("View full raw payload JSON");
+    expect(html).toContain("<details>");
   });
 });

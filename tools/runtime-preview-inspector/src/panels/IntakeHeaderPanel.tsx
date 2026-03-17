@@ -6,8 +6,13 @@ interface IntakeHeaderPanelProps {
 }
 
 export function IntakeHeaderPanel({ view }: IntakeHeaderPanelProps): JSX.Element {
+  const badges = [view.status, "Read-Only", view.mutation_authorized ? "Mutation On" : "Mutation Off"];
   return (
-    <PanelShell title="Intake Header" subtitle="Read-Only Preview Contract View">
+    <PanelShell
+      title="Intake Header"
+      subtitle="Read-Only Preview Contract View"
+      badges={badges}
+    >
       <dl className="kv-grid">
         <dt>Status</dt>
         <dd>{view.status}</dd>
@@ -27,6 +32,8 @@ export function IntakeHeaderPanel({ view }: IntakeHeaderPanelProps): JSX.Element
         <dd>{view.bridge_mode}</dd>
         <dt>Mutation Authorized</dt>
         <dd>{String(view.mutation_authorized)}</dd>
+        <dt>Read Surfaces Count</dt>
+        <dd>{view.supported_read_surfaces.length}</dd>
       </dl>
       <h3>Supported Read Surfaces</h3>
       <ul>
