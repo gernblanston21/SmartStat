@@ -39,6 +39,10 @@ function parityLabel(value: boolean): "PASS" | "MISMATCH" {
   return value ? "PASS" : "MISMATCH";
 }
 
+function comparisonPairingKey(key: ComparisonCheckKey): string {
+  return `CHK-${key.replace(/_/g, "-").toUpperCase()}`;
+}
+
 interface InspectionSignal {
   key: string;
   label: string;
@@ -58,6 +62,9 @@ interface ComparisonCheck {
   label: string;
   pass: boolean;
   priority: "High" | "Medium";
+  pairingKey: string;
+  leftTag: string;
+  rightTag: string;
   evidenceTargets: PanelKey[];
 }
 
@@ -74,6 +81,9 @@ interface DrillDownCard {
   key: ComparisonCheckKey;
   label: string;
   priority: "High" | "Medium";
+  pairingKey: string;
+  leftTag: string;
+  rightTag: string;
   evidenceTargets: PanelKey[];
   contributingFields: string[];
   diffLines: DrillDownDiffLine[];
@@ -218,6 +228,9 @@ export default function App({ viewModel }: AppProps): JSX.Element {
       label: "Semantic vs Resolution",
       pass: semanticResolutionParity,
       priority: "High",
+      pairingKey: comparisonPairingKey("semantic_resolution"),
+      leftTag: "SEMANTIC",
+      rightTag: "RESOLUTION",
       evidenceTargets: ["semantic_view", "resolution_view"],
     },
     {
@@ -225,6 +238,9 @@ export default function App({ viewModel }: AppProps): JSX.Element {
       label: "Deterministic Identity",
       pass: deterministicIdentityParity,
       priority: "High",
+      pairingKey: comparisonPairingKey("deterministic_identity"),
+      leftTag: "PROJECTION",
+      rightTag: "RULE TRACE",
       evidenceTargets: ["deterministic_identity_view"],
     },
     {
@@ -232,6 +248,9 @@ export default function App({ viewModel }: AppProps): JSX.Element {
       label: "Traceability Overlap",
       pass: traceabilityOverlapParity,
       priority: "Medium",
+      pairingKey: comparisonPairingKey("traceability_overlap"),
+      leftTag: "PROJECTION",
+      rightTag: "RULE TRACE",
       evidenceTargets: ["projection_metadata_view", "rule_evaluation_trace_view"],
     },
     {
@@ -239,18 +258,20 @@ export default function App({ viewModel }: AppProps): JSX.Element {
       label: "Rule Phase Order",
       pass: phaseOrderParity,
       priority: "Medium",
+      pairingKey: comparisonPairingKey("rule_phase_order"),
+      leftTag: "EXPECTED",
+      rightTag: "ACTUAL",
       evidenceTargets: ["rule_evaluation_summary_view"],
     },
   ];
   const ruleCategorySequence = Array.from(
     new Set(sections.rule_evaluation_summary_view.ordered_rules.map((rule) => rule.category))
   );
-  const drillDownCardsByKey: Record<ComparisonCheckKey, DrillDownCard> = {
+  const drillDownDetailsByKey: Record<
+    ComparisonCheckKey,
+    Pick<DrillDownCard, "contributingFields" | "diffLines">
+  > = {
     semantic_resolution: {
-      key: "semantic_resolution",
-      label: "Semantic vs Resolution",
-      priority: "High",
-      evidenceTargets: ["semantic_view", "resolution_view"],
       contributingFields: [
         "semantic.scope_resolution",
         "semantic.effective_scope",
@@ -284,10 +305,6 @@ export default function App({ viewModel }: AppProps): JSX.Element {
       ],
     },
     deterministic_identity: {
-      key: "deterministic_identity",
-      label: "Deterministic Identity",
-      priority: "High",
-      evidenceTargets: ["deterministic_identity_view"],
       contributingFields: [
         "projection_metadata.normalized_plan_hash",
         "projection_metadata.replay_identity",
@@ -321,10 +338,6 @@ export default function App({ viewModel }: AppProps): JSX.Element {
       ],
     },
     traceability_overlap: {
-      key: "traceability_overlap",
-      label: "Traceability Overlap",
-      priority: "Medium",
-      evidenceTargets: ["projection_metadata_view", "rule_evaluation_trace_view"],
       contributingFields: [
         "projection_contract",
         "projection_kind",
@@ -371,10 +384,6 @@ export default function App({ viewModel }: AppProps): JSX.Element {
       ],
     },
     rule_phase_order: {
-      key: "rule_phase_order",
-      label: "Rule Phase Order",
-      priority: "Medium",
-      evidenceTargets: ["rule_evaluation_summary_view"],
       contributingFields: [
         "rule_evaluation_summary.phase_order",
         "ordered_rules[*].category",
@@ -397,13 +406,16 @@ export default function App({ viewModel }: AppProps): JSX.Element {
       ],
     },
   };
-  const mismatchDrillDownCards = comparisonChecks
+  const mismatchDrillDownCards: DrillDownCard[] = comparisonChecks
     .filter((check) => !check.pass)
-    .map((check) => drillDownCardsByKey[check.key])
-    .map((card) => ({
-      ...card,
-      diffLines: card.diffLines.filter((diffLine) => diffLine.mismatch),
-    }));
+    .map((check) => {
+      const details = drillDownDetailsByKey[check.key];
+      return {
+        ...check,
+        contributingFields: details.contributingFields,
+        diffLines: details.diffLines.filter((diffLine) => diffLine.mismatch),
+      };
+    });
 
   const orderedPanels: Array<{
     key: PanelKey;
@@ -566,9 +578,22 @@ export default function App({ viewModel }: AppProps): JSX.Element {
               {comparisonChecks.map((check) => (
                 <tr
                   key={check.key}
-                  className={`priority-row ${check.pass ? "is-pass" : "is-mismatch"}`}
+                  className={`priority-row priority-${check.priority.toLowerCase()} ${
+                    check.pass ? "is-pass" : "is-mismatch"
+                  }`}
                 >
-                  <td>{check.label}</td>
+                  <td>
+                    <div className="comparison-label-cell">
+                      <strong>{check.label}</strong>
+                      <div className="comparison-cell-meta">
+                        <span
+                          className={`comparison-key-chip priority-${check.priority.toLowerCase()}`}
+                        >
+                          {check.pairingKey}
+                        </span>
+                      </div>
+                    </div>
+                  </td>
                   <td>
                     <span className={`parity-pill ${check.pass ? "is-pass" : "is-mismatch"}`}>
                       {parityLabel(check.pass)}
@@ -608,25 +633,41 @@ export default function App({ viewModel }: AppProps): JSX.Element {
                   >
                     <div className="drilldown-card-header">
                       <h4>{card.label} - Why this failed</h4>
-                      <span className="drilldown-priority">{card.priority} Priority</span>
+                      <div className="drilldown-card-meta">
+                        <span
+                          className={`comparison-key-chip priority-${card.priority.toLowerCase()}`}
+                        >
+                          {card.pairingKey}
+                        </span>
+                        <span className="drilldown-priority">{card.priority} Priority</span>
+                      </div>
                     </div>
+                    <p className="drilldown-diff-count">
+                      Differing fields: <strong>{card.diffLines.length}</strong>
+                    </p>
                     <ul className="drilldown-diff-list">
                       {card.diffLines.map((diffLine) => (
                         <li key={`diff-${card.key}-${diffLine.key}`} className="drilldown-diff-row">
+                          <p className="drilldown-field-name">{diffLine.key}</p>
                           <div>
-                            <span className="diff-label diff-label-before">BEFORE:</span>{" "}
+                            <span className="diff-label diff-label-before">{card.leftTag}:</span>{" "}
                             <code>{`${diffLine.expectedLabel} = ${diffLine.expectedValue}`}</code>
                           </div>
                           <div>
-                            <span className="diff-label diff-label-after">AFTER:</span>{" "}
+                            <span className="diff-label diff-label-after">{card.rightTag}:</span>{" "}
                             <code>{`${diffLine.actualLabel} = ${diffLine.actualValue}`}</code>
                           </div>
                         </li>
                       ))}
                     </ul>
-                    <p className="drilldown-fields">
-                      Key contributing fields: {card.contributingFields.join(", ")}
-                    </p>
+                    <p className="drilldown-fields-title">Key contributing fields</p>
+                    <ul className="drilldown-fields">
+                      {card.contributingFields.map((fieldName) => (
+                        <li key={`field-${card.key}-${fieldName}`}>
+                          <code>{fieldName}</code>
+                        </li>
+                      ))}
+                    </ul>
                     <p className="drilldown-links-title">Related evidence panels:</p>
                     <ul className="comparison-evidence-list">
                       {card.evidenceTargets.map((panelKey) => (

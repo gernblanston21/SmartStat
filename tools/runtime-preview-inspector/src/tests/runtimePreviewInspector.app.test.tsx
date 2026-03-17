@@ -92,11 +92,33 @@ describe("runtime preview inspector UI scaffold", () => {
     expect(html).toContain("MISMATCH");
     expect(html).toContain("Mismatch drill-down");
     expect(html).toContain("Semantic vs Resolution - Why this failed");
-    expect(html).toContain("BEFORE:");
-    expect(html).toContain("AFTER:");
+    expect(html).toContain("SEMANTIC:");
+    expect(html).toContain("RESOLUTION:");
+    expect(html).toContain("CHK-SEMANTIC-RESOLUTION");
     expect(html).toContain("semantic.scope_resolution = forced_mismatch");
     expect(html).toContain('href="#panel-semantic_view"');
     expect(html).toContain('href="#panel-resolution_view"');
+    expect(html).not.toContain("BEFORE:");
+    expect(html).not.toContain("AFTER:");
     expect(html).toContain('class="secondary-checks" open=""');
+  });
+
+  it("uses expected/actual labels for rule phase order mismatches", () => {
+    const viewModel = adaptPreviewPayloadToViewModel(previewFixture);
+    const mismatched = cloneViewModel(viewModel);
+    mismatched.view_model.rule_evaluation_summary_view.phase_order = [
+      "STRUCTURAL",
+      "DETERMINISM",
+      "SEMANTIC",
+      "BOUNDARY",
+    ];
+
+    const html = renderToStaticMarkup(<App viewModel={mismatched} />);
+
+    expect(html).toContain("Rule Phase Order - Why this failed");
+    expect(html).toContain("EXPECTED:");
+    expect(html).toContain("ACTUAL:");
+    expect(html).toContain("CHK-RULE-PHASE-ORDER");
+    expect(html).toContain('href="#panel-rule_evaluation_summary_view"');
   });
 });

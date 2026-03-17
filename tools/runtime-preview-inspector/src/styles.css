@@ -175,13 +175,21 @@ body {
 .drilldown-card-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   gap: 8px;
 }
 
 .drilldown-card-header h4 {
   margin: 0;
   font-size: 0.9rem;
+}
+
+.drilldown-card-meta {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .drilldown-priority {
@@ -193,6 +201,12 @@ body {
   color: #6e3636;
   background: #fff4f4;
   white-space: nowrap;
+}
+
+.drilldown-diff-count {
+  margin: 6px 0;
+  font-size: 0.82rem;
+  color: #4a4f63;
 }
 
 .drilldown-diff-list {
@@ -208,6 +222,17 @@ body {
   border-radius: 6px;
   background: #fff9f9;
   padding: 6px 8px;
+  display: grid;
+  gap: 4px;
+}
+
+.drilldown-field-name {
+  margin: 0;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #4c3a3a;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
 .drilldown-diff-row code {
@@ -228,10 +253,28 @@ body {
   color: #8c2323;
 }
 
+.drilldown-fields-title {
+  margin: 0 0 4px;
+  font-size: 0.82rem;
+  color: #4b5164;
+  font-weight: 600;
+}
+
 .drilldown-fields {
   margin: 0 0 6px;
-  font-size: 0.84rem;
-  color: #4b5164;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 6px;
+}
+
+.drilldown-fields li {
+  border: 1px solid #e4e9f2;
+  background: #f7f9fd;
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 0.76rem;
 }
 
 .drilldown-links-title {
@@ -492,9 +535,51 @@ td {
   background: #fff1f1;
 }
 
+.summary-table .priority-row.priority-medium.is-mismatch td {
+  background: #fff7ec;
+}
+
 .summary-table .priority-row.is-mismatch td:first-child {
   border-left: 4px solid #d64a4a;
   font-weight: 600;
+}
+
+.summary-table .priority-row.priority-medium.is-mismatch td:first-child {
+  border-left-color: #d2822d;
+}
+
+.comparison-label-cell {
+  display: grid;
+  gap: 4px;
+}
+
+.comparison-cell-meta {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.comparison-key-chip {
+  border: 1px solid #d9e3f3;
+  border-radius: 999px;
+  padding: 1px 8px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  background: #f4f7fd;
+  color: #2f435f;
+}
+
+.comparison-key-chip.priority-high {
+  border-color: #e7bcbc;
+  background: #fff3f3;
+  color: #7e2b2b;
+}
+
+.comparison-key-chip.priority-medium {
+  border-color: #eacaa7;
+  background: #fff7eb;
+  color: #7c5621;
 }
 
 .comparison-evidence-list {
@@ -562,6 +647,14 @@ pre {
 
   .review-hero {
     grid-template-columns: 1fr;
+  }
+
+  .drilldown-card-header {
+    flex-direction: column;
+  }
+
+  .drilldown-card-meta {
+    justify-content: flex-start;
   }
 
   .secondary-grid {
