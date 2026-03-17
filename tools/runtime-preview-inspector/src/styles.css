@@ -709,6 +709,46 @@ td {
   gap: 4px;
 }
 
+.comparison-target-map {
+  display: grid;
+  gap: 4px;
+}
+
+.comparison-target-map-title {
+  margin: 0;
+  font-size: 0.76rem;
+  color: #4d5a72;
+}
+
+.comparison-target-chip-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 6px;
+}
+
+.comparison-target-chip {
+  border: 1px solid #d6deec;
+  background: #f5f8fe;
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 0.74rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.comparison-target-chip code {
+  color: #304560;
+  font-size: 0.72rem;
+}
+
+.comparison-target-chip span {
+  color: #45536c;
+}
+
 .comparison-cell-meta {
   display: flex;
   gap: 6px;

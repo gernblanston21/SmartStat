@@ -1135,6 +1135,23 @@ export default function App({ viewModel }: AppProps): JSX.Element {
                           {check.pairingKey}
                         </span>
                       </div>
+                      <div className="comparison-target-map">
+                        <p className="comparison-target-map-title">
+                          Evidence targets ({check.evidenceTargets.length})
+                        </p>
+                        <ul className="comparison-target-chip-list">
+                          {check.evidenceTargets.map((panelKey) => (
+                            <li
+                              key={`target-map-${check.key}:${panelKey}`}
+                              className="comparison-target-chip"
+                              data-evidence-panel-key={panelKey}
+                            >
+                              <code>{panelKey}</code>
+                              <span>{PANEL_TITLE_BY_KEY[panelKey]}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     </div>
                   </td>
                   <td>

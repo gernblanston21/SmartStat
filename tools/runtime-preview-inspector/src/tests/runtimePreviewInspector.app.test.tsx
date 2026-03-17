@@ -37,12 +37,21 @@ describe("runtime preview inspector UI scaffold", () => {
     expect(html).toContain("Follow links in the last column");
     expect(html).toContain("Panel Order Reference");
     expect(html).toContain("Status key: READY");
+    expect(html).toContain("Evidence targets (2)");
+    expect(html).toContain('data-evidence-panel-key="semantic_view"');
+    expect(html).toContain('data-evidence-panel-key="resolution_view"');
+    expect(html).toContain('data-evidence-panel-key="rule_evaluation_summary_view"');
+    expect(html).toMatch(/data-evidence-panel-key="semantic_view"[\s\S]*Semantic Interpretation/);
+    expect(html).toMatch(
+      /data-evidence-panel-key="rule_evaluation_summary_view"[\s\S]*Rule Evaluation Summary/
+    );
     expect(html).not.toContain("Mismatch drill-down");
     expect(html).not.toContain('class="secondary-checks" open=""');
     expect(html).toContain('class="comparison-coverage is-pass"');
     expect(html).toContain('data-coverage-count="pass">4</strong>');
     expect(html).toContain('data-coverage-count="mismatch">0</strong>');
     expect(html).toContain('data-coverage-count="unavailable">0</strong>');
+    expect(countMatches(html, /data-evidence-panel-key="/g)).toBe(6);
     expect(countMatches(html, /data-panel-status="ready"/g)).toBe(PANEL_RENDER_ORDER.length);
     expect(countMatches(html, /data-panel-jump-status="ready"/g)).toBe(PANEL_RENDER_ORDER.length);
     expect(html).not.toContain('data-panel-status="review"');
@@ -116,6 +125,7 @@ describe("runtime preview inspector UI scaffold", () => {
     expect(html).toContain('data-coverage-count="pass">3</strong>');
     expect(html).toContain('data-coverage-count="mismatch">1</strong>');
     expect(html).toContain('data-coverage-count="unavailable">0</strong>');
+    expect(countMatches(html, /data-evidence-panel-key="/g)).toBe(6);
     expect(html).toContain('data-panel-key="semantic_view" data-panel-status="review"');
     expect(html).toContain('data-panel-key="resolution_view" data-panel-status="review"');
     expect(html).toContain('data-panel-jump-key="semantic_view" data-panel-jump-status="review"');
