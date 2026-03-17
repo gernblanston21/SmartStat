@@ -141,7 +141,6 @@ export default function App({ viewModel }: AppProps): JSX.Element {
   const mismatchSignals = inspectionSignals.filter((signal) => !signal.pass);
   const passSignals = inspectionSignals.length - mismatchSignals.length;
   const highPrioritySignals = inspectionSignals.filter((signal) => signal.priority === "High");
-  const mediumPrioritySignals = inspectionSignals.filter((signal) => signal.priority === "Medium");
   const highPriorityMismatches = highPrioritySignals.filter((signal) => !signal.pass);
   const mismatchCount = mismatchSignals.length;
   const highPriorityMismatchCount = highPriorityMismatches.length;
@@ -149,26 +148,30 @@ export default function App({ viewModel }: AppProps): JSX.Element {
   const reviewTone = overviewHealthy ? "Consistent Preview" : "Inconsistencies Found";
   const reviewToneClass = overviewHealthy ? "is-pass" : "is-mismatch";
   const topStatusToneLabel = overviewHealthy ? "All Core Checks PASS" : "Review Needed";
-  const parityCards = [
+  const comparisonChecks = [
     {
       key: "semantic_resolution",
       label: "Semantic vs Resolution",
       pass: semanticResolutionParity,
+      detailPanel: "Semantic Interpretation and Resolution Preview",
     },
     {
       key: "deterministic_identity",
       label: "Deterministic Identity",
       pass: deterministicIdentityParity,
+      detailPanel: "Deterministic Identity",
     },
     {
       key: "traceability_overlap",
       label: "Traceability Overlap",
       pass: traceabilityOverlapParity,
+      detailPanel: "Projection Metadata and Rule Evaluation Trace",
     },
     {
       key: "rule_phase_order",
       label: "Rule Phase Order",
       pass: phaseOrderParity,
+      detailPanel: "Rule Evaluation Summary",
     },
   ];
 
@@ -315,30 +318,30 @@ export default function App({ viewModel }: AppProps): JSX.Element {
             </article>
           </div>
         </section>
-        <section className="check-first-strip" aria-label="What to check first">
-          <h2>What to check first</h2>
+        <section className="check-first-strip" aria-label="What to check next">
+          <h2>What to check next</h2>
           <p className={`check-first-result ${reviewToneClass}`}>{reviewTone}</p>
           <table className="summary-table summary-table--priority">
             <thead>
               <tr>
-                <th>Check</th>
+                <th>Comparison</th>
                 <th>Result</th>
-                <th>Detail</th>
+                <th>Where Detailed Evidence Lives</th>
               </tr>
             </thead>
             <tbody>
-              {highPrioritySignals.map((signal) => (
+              {comparisonChecks.map((check) => (
                 <tr
-                  key={signal.key}
-                  className={`priority-row ${signal.pass ? "is-pass" : "is-mismatch"}`}
+                  key={check.key}
+                  className={`priority-row ${check.pass ? "is-pass" : "is-mismatch"}`}
                 >
-                  <td>{signal.label}</td>
+                  <td>{check.label}</td>
                   <td>
-                    <span className={`parity-pill ${signal.pass ? "is-pass" : "is-mismatch"}`}>
-                      {parityLabel(signal.pass)}
+                    <span className={`parity-pill ${check.pass ? "is-pass" : "is-mismatch"}`}>
+                      {parityLabel(check.pass)}
                     </span>
                   </td>
-                  <td>{signal.detail}</td>
+                  <td>{check.detailPanel}</td>
                 </tr>
               ))}
             </tbody>
@@ -354,28 +357,10 @@ export default function App({ viewModel }: AppProps): JSX.Element {
             Use this section after the high-priority checks. It provides additional
             parity and count context without crowding the first scan.
           </p>
-          <table className="summary-table">
-            <thead>
-              <tr>
-                <th>Secondary Check</th>
-                <th>Result</th>
-                <th>Detail</th>
-              </tr>
-            </thead>
-            <tbody>
-              {mediumPrioritySignals.map((signal) => (
-                <tr key={`secondary-${signal.key}`} className={signal.pass ? "is-pass" : "is-mismatch"}>
-                  <td>{signal.label}</td>
-                  <td>
-                    <span className={`parity-pill ${signal.pass ? "is-pass" : "is-mismatch"}`}>
-                      {parityLabel(signal.pass)}
-                    </span>
-                  </td>
-                  <td>{signal.detail}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <p className="panel-note">
+            If a top comparison fails, inspect related panels below in deterministic order.
+            This context helps explain why a mismatch may exist.
+          </p>
           <section className="secondary-grid">
             <article className="overview-card">
               <h3>Rule Count Snapshot</h3>
@@ -413,16 +398,6 @@ export default function App({ viewModel }: AppProps): JSX.Element {
             </article>
           </section>
         </details>
-        <section className="parity-strip" aria-label="Contract parity checks">
-          {parityCards.map((card) => (
-            <article key={card.key} className={`parity-card ${card.pass ? "is-pass" : "is-mismatch"}`}>
-              <h3>{card.label}</h3>
-              <p className={`parity-result ${card.pass ? "is-pass" : "is-mismatch"}`}>
-                {parityLabel(card.pass)}
-              </p>
-            </article>
-          ))}
-        </section>
       </header>
 
       <main className="panel-stack" aria-label="Runtime Preview Panels">

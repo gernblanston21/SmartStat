@@ -17,18 +17,19 @@ describe("runtime preview inspector UI scaffold", () => {
     expect(html).toContain("SmartStat Runtime Preview Inspector");
     expect(html).toContain("Read-Only");
     expect(html).toContain("Contract View");
-    expect(html).toContain("Contract parity checks");
     expect(html).toContain("Semantic vs Resolution");
     expect(html).toContain("Deterministic Identity");
     expect(html).toContain("What this screen is");
     expect(html).toContain("What read-only means");
-    expect(html).toContain("What to check first");
+    expect(html).toContain("What to check next");
+    expect(html).toContain("Where Detailed Evidence Lives");
     expect(html).toContain("Consistent Preview");
     expect(html).toContain("Discrepancy Summary");
     expect(html).toContain("Rule Count Snapshot");
     expect(html).toContain("High-priority mismatches");
     expect(html).toContain("Secondary checks and supporting context");
     expect(html).toContain("All Core Checks PASS");
+    expect(html).not.toContain('class="secondary-checks" open=""');
   });
 
   it("renders panels in deterministic approved order", () => {

@@ -189,11 +189,6 @@ body {
   font-size: 1.15rem;
 }
 
-.metric-chip.is-pass {
-  border-color: #a8d6bb;
-  background: #effaf3;
-}
-
 .metric-chip.is-muted {
   border-color: #d6e0ef;
   background: #f8fbff;
@@ -222,51 +217,6 @@ body {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
   margin-top: 8px;
-}
-
-.parity-strip {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 8px;
-  margin-top: 12px;
-}
-
-.parity-card {
-  border: 1px solid #d7e0ee;
-  border-radius: 8px;
-  background: #f8fbff;
-  padding: 8px 10px;
-}
-
-.parity-card h3 {
-  margin: 0;
-  font-size: 0.85rem;
-  color: #42506b;
-}
-
-.parity-card.is-pass {
-  border-color: #d8e2ef;
-  background: #fcfdff;
-}
-
-.parity-card.is-mismatch {
-  border-color: #edb7b7;
-  background: #fff3f3;
-  box-shadow: 0 0 0 1px #ffdede inset;
-}
-
-.parity-result {
-  margin: 6px 0 0;
-  font-size: 0.92rem;
-  font-weight: 700;
-}
-
-.parity-result.is-pass {
-  color: #3f4f6b;
-}
-
-.parity-result.is-mismatch {
-  color: #b32727;
 }
 
 .panel-stack {
@@ -455,10 +405,6 @@ pre {
 
   .secondary-grid {
     grid-template-columns: 1fr;
-  }
-
-  .parity-strip {
-    grid-template-columns: 1fr 1fr;
   }
 
   .panel-stack {
