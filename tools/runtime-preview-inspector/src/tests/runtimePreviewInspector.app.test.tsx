@@ -19,6 +19,9 @@ describe("runtime preview inspector UI scaffold", () => {
     expect(html).toContain("What read-only means");
     expect(html).toContain("What to check first");
     expect(html).toContain("Healthy Preview");
+    expect(html).toContain("Discrepancy Summary");
+    expect(html).toContain("Rule Count Snapshot");
+    expect(html).toContain("High-priority mismatches");
   });
 
   it("renders panels in deterministic approved order", () => {
@@ -41,5 +44,17 @@ describe("runtime preview inspector UI scaffold", () => {
     expect(html).toContain("Field Preview (Contract-Ordered)");
     expect(html).toContain("View full raw payload JSON");
     expect(html).toContain("<details>");
+  });
+
+  it("renders side-by-side comparison sections for parity-heavy panels", () => {
+    const viewModel = adaptPreviewPayloadToViewModel(previewFixture);
+    const html = renderToStaticMarkup(<App viewModel={viewModel} />);
+
+    expect(html).toContain("Phase Order Comparison");
+    expect(html).toContain("Semantic");
+    expect(html).toContain("Resolution");
+    expect(html).toContain("Projection Metadata");
+    expect(html).toContain("Rule Trace");
+    expect(html).toContain("Parity");
   });
 });

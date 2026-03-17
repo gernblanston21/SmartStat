@@ -17,6 +17,24 @@ export function ResolutionPanel({ view }: ResolutionPanelProps): JSX.Element {
         Compare this panel with Semantic Interpretation to confirm they describe
         the same outcome.
       </p>
+      <table className="summary-table">
+        <thead>
+          <tr>
+            <th>Resolution Check</th>
+            <th>Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr className={view.status === "PASS" ? "is-pass" : "is-mismatch"}>
+            <td>Status</td>
+            <td>{view.status}</td>
+          </tr>
+          <tr>
+            <td>Scope Resolution</td>
+            <td>{view.scope_resolution}</td>
+          </tr>
+        </tbody>
+      </table>
       <dl className="kv-grid">
         <dt>Status</dt>
         <dd>{view.status}</dd>

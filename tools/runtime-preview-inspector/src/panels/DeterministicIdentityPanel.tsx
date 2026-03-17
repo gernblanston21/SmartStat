@@ -1,4 +1,5 @@
 import { RuntimePreviewViewModel } from "../contracts/runtimePreviewIntake";
+import { ComparisonTable } from "./ComparisonTable";
 import { PanelShell } from "./PanelShell";
 import { compactHash } from "./valueFormatting";
 
@@ -12,21 +13,38 @@ export function DeterministicIdentityPanel({
   const parityRows = [
     {
       key: "normalized_plan_hash",
-      left: view.projection_metadata.normalized_plan_hash,
-      right: view.rule_evaluation_trace.normalized_plan_hash,
+      field: "Normalized Plan Hash",
+      left: compactHash(view.projection_metadata.normalized_plan_hash),
+      right: compactHash(view.rule_evaluation_trace.normalized_plan_hash),
+      leftTitle: view.projection_metadata.normalized_plan_hash,
+      rightTitle: view.rule_evaluation_trace.normalized_plan_hash,
+      pass:
+        view.projection_metadata.normalized_plan_hash ===
+        view.rule_evaluation_trace.normalized_plan_hash,
     },
     {
       key: "replay_identity",
-      left: view.projection_metadata.replay_identity,
-      right: view.rule_evaluation_trace.replay_identity,
+      field: "Replay Identity",
+      left: compactHash(view.projection_metadata.replay_identity),
+      right: compactHash(view.rule_evaluation_trace.replay_identity),
+      leftTitle: view.projection_metadata.replay_identity,
+      rightTitle: view.rule_evaluation_trace.replay_identity,
+      pass: view.projection_metadata.replay_identity === view.rule_evaluation_trace.replay_identity,
     },
     {
       key: "validator_run_identity",
-      left: view.projection_metadata.validator_run_identity,
-      right: view.rule_evaluation_trace.validator_run_identity,
+      field: "Validator Run Identity",
+      left: compactHash(view.projection_metadata.validator_run_identity),
+      right: compactHash(view.rule_evaluation_trace.validator_run_identity),
+      leftTitle: view.projection_metadata.validator_run_identity,
+      rightTitle: view.rule_evaluation_trace.validator_run_identity,
+      pass:
+        view.projection_metadata.validator_run_identity ===
+        view.rule_evaluation_trace.validator_run_identity,
     },
   ];
-  const allParityPass = parityRows.every((row) => row.left === row.right);
+  const allParityPass = parityRows.every((row) => row.pass);
+  const mismatchCount = parityRows.filter((row) => !row.pass).length;
   const badges = [allParityPass ? "Parity PASS" : "Parity MISMATCH", "Traceability"];
 
   return (
@@ -39,54 +57,14 @@ export function DeterministicIdentityPanel({
         All parity rows should read PASS. A mismatch means two contract surfaces
         disagree on identity.
       </p>
-      <h3>Projection Metadata</h3>
-      <dl className="kv-grid">
-        <dt>Normalized Plan Hash</dt>
-        <dd title={view.projection_metadata.normalized_plan_hash}>
-          {compactHash(view.projection_metadata.normalized_plan_hash)}
-        </dd>
-        <dt>Replay Identity</dt>
-        <dd title={view.projection_metadata.replay_identity}>
-          {compactHash(view.projection_metadata.replay_identity)}
-        </dd>
-        <dt>Validator Run Identity</dt>
-        <dd title={view.projection_metadata.validator_run_identity}>
-          {compactHash(view.projection_metadata.validator_run_identity)}
-        </dd>
-      </dl>
-
-      <h3>Rule Evaluation Trace</h3>
-      <dl className="kv-grid">
-        <dt>Normalized Plan Hash</dt>
-        <dd title={view.rule_evaluation_trace.normalized_plan_hash}>
-          {compactHash(view.rule_evaluation_trace.normalized_plan_hash)}
-        </dd>
-        <dt>Replay Identity</dt>
-        <dd title={view.rule_evaluation_trace.replay_identity}>
-          {compactHash(view.rule_evaluation_trace.replay_identity)}
-        </dd>
-        <dt>Validator Run Identity</dt>
-        <dd title={view.rule_evaluation_trace.validator_run_identity}>
-          {compactHash(view.rule_evaluation_trace.validator_run_identity)}
-        </dd>
-      </dl>
-      <h3>Field Parity</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>Field</th>
-            <th>Parity</th>
-          </tr>
-        </thead>
-        <tbody>
-          {parityRows.map((row) => (
-            <tr key={row.key}>
-              <td>{row.key}</td>
-              <td>{row.left === row.right ? "PASS" : "MISMATCH"}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <p className="panel-note">
+        Mismatches: {mismatchCount} of {parityRows.length}.
+      </p>
+      <ComparisonTable
+        leftLabel="Projection Metadata"
+        rightLabel="Rule Trace"
+        rows={parityRows}
+      />
     </PanelShell>
   );
 }

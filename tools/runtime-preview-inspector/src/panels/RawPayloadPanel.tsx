@@ -7,6 +7,12 @@ interface RawPayloadPanelProps {
 
 export function RawPayloadPanel({ view }: RawPayloadPanelProps): JSX.Element {
   const badges = ["Read-Only", "Debug"];
+  const orderedRulesCount = view.rule_evaluation_summary_preview.ordered_rules.length;
+  const phaseCount = view.rule_evaluation_summary_preview.phase_order.length;
+  const semanticScope =
+    view.projection_metadata.semantic_interpretation_summary.scope_resolution;
+  const resolutionScope = view.resolution_preview.scope_resolution;
+  const semanticResolutionParity = semanticScope === resolutionScope;
   return (
     <PanelShell
       title="Raw Payload Debug"
@@ -17,6 +23,32 @@ export function RawPayloadPanel({ view }: RawPayloadPanelProps): JSX.Element {
         Use this section when you need deeper inspection. The key checks are
         surfaced above first.
       </p>
+      <table className="summary-table">
+        <thead>
+          <tr>
+            <th>Snapshot Check</th>
+            <th>Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Tabfields</td>
+            <td>{view.tabfield_count}</td>
+          </tr>
+          <tr>
+            <td>Rule Phases</td>
+            <td>{phaseCount}</td>
+          </tr>
+          <tr>
+            <td>Ordered Rules</td>
+            <td>{orderedRulesCount}</td>
+          </tr>
+          <tr className={semanticResolutionParity ? "is-pass" : "is-mismatch"}>
+            <td>Semantic vs Resolution Scope</td>
+            <td>{semanticResolutionParity ? "PASS" : "MISMATCH"}</td>
+          </tr>
+        </tbody>
+      </table>
       <dl className="kv-grid">
         <dt>Payload Kind</dt>
         <dd>{view.payload_kind}</dd>

@@ -6,7 +6,12 @@ interface IntakeHeaderPanelProps {
 }
 
 export function IntakeHeaderPanel({ view }: IntakeHeaderPanelProps): JSX.Element {
-  const badges = [view.status, "Read-Only", view.mutation_authorized ? "Mutation On" : "Mutation Off"];
+  const readOnlyPass = !view.mutation_authorized && view.bridge_mode === "read_only_preview";
+  const badges = [
+    view.status,
+    readOnlyPass ? "Read-Only PASS" : "Read-Only MISMATCH",
+    view.mutation_authorized ? "Mutation On" : "Mutation Off",
+  ];
   return (
     <PanelShell
       title="Intake Header"
@@ -17,6 +22,24 @@ export function IntakeHeaderPanel({ view }: IntakeHeaderPanelProps): JSX.Element
         Start here if you want to confirm you are inspecting the expected page and
         expected preview mode.
       </p>
+      <table className="summary-table">
+        <thead>
+          <tr>
+            <th>Intake Check</th>
+            <th>Result</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr className={view.status === "success" ? "is-pass" : "is-mismatch"}>
+            <td>Artifact Status</td>
+            <td>{view.status}</td>
+          </tr>
+          <tr className={readOnlyPass ? "is-pass" : "is-mismatch"}>
+            <td>Read-Only Boundary</td>
+            <td>{readOnlyPass ? "PASS" : "MISMATCH"}</td>
+          </tr>
+        </tbody>
+      </table>
       <dl className="kv-grid">
         <dt>Status</dt>
         <dd>{view.status}</dd>
