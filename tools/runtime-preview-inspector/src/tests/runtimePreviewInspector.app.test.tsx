@@ -33,11 +33,16 @@ describe("runtime preview inspector UI scaffold", () => {
     expect(html).toContain("High-priority review items");
     expect(html).toContain("Secondary checks and supporting context");
     expect(html).toContain("All Core Checks PASS");
+    expect(html).toContain("Comparison coverage summary");
     expect(html).toContain("Follow links in the last column");
     expect(html).toContain("Panel Order Reference");
     expect(html).toContain("Status key: READY");
     expect(html).not.toContain("Mismatch drill-down");
     expect(html).not.toContain('class="secondary-checks" open=""');
+    expect(html).toContain('class="comparison-coverage is-pass"');
+    expect(html).toContain('data-coverage-count="pass">4</strong>');
+    expect(html).toContain('data-coverage-count="mismatch">0</strong>');
+    expect(html).toContain('data-coverage-count="unavailable">0</strong>');
     expect(countMatches(html, /data-panel-status="ready"/g)).toBe(PANEL_RENDER_ORDER.length);
     expect(countMatches(html, /data-panel-jump-status="ready"/g)).toBe(PANEL_RENDER_ORDER.length);
     expect(html).not.toContain('data-panel-status="review"');
@@ -107,6 +112,10 @@ describe("runtime preview inspector UI scaffold", () => {
     expect(html).toContain("semantic.scope_resolution = forced_mismatch");
     expect(html).toContain('href="#panel-semantic_view"');
     expect(html).toContain('href="#panel-resolution_view"');
+    expect(html).toContain('class="comparison-coverage is-mismatch"');
+    expect(html).toContain('data-coverage-count="pass">3</strong>');
+    expect(html).toContain('data-coverage-count="mismatch">1</strong>');
+    expect(html).toContain('data-coverage-count="unavailable">0</strong>');
     expect(html).toContain('data-panel-key="semantic_view" data-panel-status="review"');
     expect(html).toContain('data-panel-key="resolution_view" data-panel-status="review"');
     expect(html).toContain('data-panel-jump-key="semantic_view" data-panel-jump-status="review"');
@@ -149,6 +158,10 @@ describe("runtime preview inspector UI scaffold", () => {
     expect(html).toContain("Unavailable in this preview");
     expect(html).toContain("No evidence provided in current payload");
     expect(html).toContain("UNAVAILABLE");
+    expect(html).toContain('class="comparison-coverage is-unavailable"');
+    expect(html).toContain('data-coverage-count="pass">3</strong>');
+    expect(html).toContain('data-coverage-count="mismatch">0</strong>');
+    expect(html).toContain('data-coverage-count="unavailable">1</strong>');
     expect(html).toContain(
       'data-panel-key="projection_metadata_view" data-panel-status="unavailable"'
     );

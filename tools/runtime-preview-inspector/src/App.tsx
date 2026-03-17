@@ -622,6 +622,20 @@ export default function App({ viewModel }: AppProps): JSX.Element {
       evidenceTargets: ["rule_evaluation_summary_view"],
     },
   ];
+  const comparisonPassCount = comparisonChecks.filter((check) => check.result === "pass").length;
+  const comparisonMismatchCount = comparisonChecks.filter(
+    (check) => check.result === "mismatch"
+  ).length;
+  const comparisonUnavailableCount = comparisonChecks.filter(
+    (check) => check.result === "unavailable"
+  ).length;
+  const comparisonCoverageClass =
+    comparisonMismatchCount > 0
+      ? "is-mismatch"
+      : comparisonUnavailableCount > 0
+        ? "is-unavailable"
+        : "is-pass";
+
   const hasPanelEvidenceByKey: Record<PanelKey, boolean> = {
     intake_header: hasIntakeHeaderPanel,
     projection_metadata_view: hasProjectionMetadataPanel && hasRuleTracePanel,
@@ -1063,6 +1077,29 @@ export default function App({ viewModel }: AppProps): JSX.Element {
             <article className={`metric-chip ${comparisonResultClass(warningCountResult)}`}>
               <span>Warning count</span>
               <strong>{warningCount !== undefined ? warningCount : UNAVAILABLE_LABEL}</strong>
+            </article>
+          </div>
+        </section>
+        <section
+          className={`comparison-coverage ${comparisonCoverageClass}`}
+          aria-label="Comparison coverage summary"
+        >
+          <h2>Comparison coverage summary</h2>
+          <p className="panel-note">
+            Count of top-level comparison checks by result state.
+          </p>
+          <div className="comparison-coverage-grid">
+            <article className="coverage-chip is-pass" data-coverage-kind="pass">
+              <span>PASS comparisons</span>
+              <strong data-coverage-count="pass">{comparisonPassCount}</strong>
+            </article>
+            <article className="coverage-chip is-mismatch" data-coverage-kind="mismatch">
+              <span>MISMATCH comparisons</span>
+              <strong data-coverage-count="mismatch">{comparisonMismatchCount}</strong>
+            </article>
+            <article className="coverage-chip is-unavailable" data-coverage-kind="unavailable">
+              <span>UNAVAILABLE comparisons</span>
+              <strong data-coverage-count="unavailable">{comparisonUnavailableCount}</strong>
             </article>
           </div>
         </section>

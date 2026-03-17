@@ -118,6 +118,74 @@ body {
   padding: 10px 12px;
 }
 
+.comparison-coverage {
+  margin-top: 12px;
+  border: 1px solid #d7e0ee;
+  border-radius: 10px;
+  background: #f9fbff;
+  padding: 10px 12px;
+}
+
+.comparison-coverage.is-pass {
+  border-color: #d5deec;
+  background: #f7f9fd;
+}
+
+.comparison-coverage.is-mismatch {
+  border-color: #efbcbc;
+  background: #fff5f5;
+}
+
+.comparison-coverage.is-unavailable {
+  border-color: #d8dce4;
+  background: #f7f8fb;
+}
+
+.comparison-coverage h2 {
+  margin: 0 0 4px;
+  font-size: 1rem;
+}
+
+.comparison-coverage-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.coverage-chip {
+  border: 1px solid #d9e3f3;
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.coverage-chip span {
+  font-size: 0.8rem;
+  color: #44506a;
+}
+
+.coverage-chip strong {
+  font-size: 1.15rem;
+}
+
+.coverage-chip.is-pass {
+  border-color: #cad7e8;
+  background: #f3f7fd;
+}
+
+.coverage-chip.is-mismatch {
+  border-color: #efbcbc;
+  background: #fff0f0;
+}
+
+.coverage-chip.is-unavailable {
+  border-color: #cfd6e3;
+  background: #f3f6fb;
+}
+
 .check-first-strip h2 {
   margin: 0;
   font-size: 1rem;
@@ -786,6 +854,10 @@ pre {
   }
 
   .secondary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .comparison-coverage-grid {
     grid-template-columns: 1fr;
   }
 
