@@ -143,10 +143,12 @@ export default function App({ viewModel }: AppProps): JSX.Element {
   const highPrioritySignals = inspectionSignals.filter((signal) => signal.priority === "High");
   const mediumPrioritySignals = inspectionSignals.filter((signal) => signal.priority === "Medium");
   const highPriorityMismatches = highPrioritySignals.filter((signal) => !signal.pass);
-  const overviewHealthy =
-    mismatchSignals.length === 0;
+  const mismatchCount = mismatchSignals.length;
+  const highPriorityMismatchCount = highPriorityMismatches.length;
+  const overviewHealthy = mismatchCount === 0;
   const reviewTone = overviewHealthy ? "Consistent Preview" : "Inconsistencies Found";
   const reviewToneClass = overviewHealthy ? "is-pass" : "is-mismatch";
+  const topStatusToneLabel = overviewHealthy ? "All Core Checks PASS" : "Review Needed";
   const parityCards = [
     {
       key: "semantic_resolution",
@@ -247,6 +249,7 @@ export default function App({ viewModel }: AppProps): JSX.Element {
           <li>Preview</li>
           <li>Contract View</li>
           <li>Traceability</li>
+          <li className={`status-tag--tone ${reviewToneClass}`}>{topStatusToneLabel}</li>
         </ul>
         <section className="overview-strip" aria-label="Screen overview">
           <article className="overview-card">
@@ -276,10 +279,10 @@ export default function App({ viewModel }: AppProps): JSX.Element {
             <h2>{reviewTone}</h2>
             <p>
               PASS checks: <strong>{passSignals}</strong> / {inspectionSignals.length}. MISMATCH
-              checks: <strong>{mismatchSignals.length}</strong>.
+              checks: <strong>{mismatchCount}</strong>.
             </p>
             <h3>Discrepancy Summary</h3>
-            {mismatchSignals.length ? (
+            {mismatchCount ? (
               <ul className="compact-list">
                 {mismatchSignals.map((signal) => (
                   <li key={`mismatch-${signal.key}`}>
@@ -294,19 +297,19 @@ export default function App({ viewModel }: AppProps): JSX.Element {
             )}
           </div>
           <div className="review-hero-metrics" aria-label="Review metrics">
-            <article className="metric-chip is-mismatch">
+            <article className={`metric-chip ${highPriorityMismatchCount > 0 ? "is-mismatch" : "is-muted"}`}>
               <span>High-priority mismatches</span>
-              <strong>{highPriorityMismatches.length}</strong>
+              <strong>{highPriorityMismatchCount}</strong>
             </article>
-            <article className="metric-chip is-mismatch">
+            <article className={`metric-chip ${mismatchCount > 0 ? "is-mismatch" : "is-muted"}`}>
               <span>Total mismatches</span>
-              <strong>{mismatchSignals.length}</strong>
+              <strong>{mismatchCount}</strong>
             </article>
-            <article className={`metric-chip ${hasNoErrors ? "is-pass" : "is-mismatch"}`}>
+            <article className={`metric-chip ${hasNoErrors ? "is-muted" : "is-mismatch"}`}>
               <span>Error count</span>
               <strong>{sections.issues_view.error_count}</strong>
             </article>
-            <article className={`metric-chip ${hasNoWarnings ? "is-pass" : "is-mismatch"}`}>
+            <article className={`metric-chip ${hasNoWarnings ? "is-muted" : "is-mismatch"}`}>
               <span>Warning count</span>
               <strong>{sections.issues_view.warning_count}</strong>
             </article>
@@ -325,7 +328,10 @@ export default function App({ viewModel }: AppProps): JSX.Element {
             </thead>
             <tbody>
               {highPrioritySignals.map((signal) => (
-                <tr key={signal.key} className={signal.pass ? "is-pass" : "is-mismatch"}>
+                <tr
+                  key={signal.key}
+                  className={`priority-row ${signal.pass ? "is-pass" : "is-mismatch"}`}
+                >
                   <td>{signal.label}</td>
                   <td>
                     <span className={`parity-pill ${signal.pass ? "is-pass" : "is-mismatch"}`}>
@@ -338,11 +344,11 @@ export default function App({ viewModel }: AppProps): JSX.Element {
             </tbody>
           </table>
           <p className="check-first-hint">
-            High-priority mismatches: <strong>{highPriorityMismatches.length}</strong>. Total
-            mismatches: <strong>{mismatchSignals.length}</strong>.
+            High-priority mismatches: <strong>{highPriorityMismatchCount}</strong>. Total
+            mismatches: <strong>{mismatchCount}</strong>.
           </p>
         </section>
-        <details className="secondary-checks">
+        <details className="secondary-checks" open={!overviewHealthy}>
           <summary>Secondary checks and supporting context</summary>
           <p className="panel-note">
             Use this section after the high-priority checks. It provides additional

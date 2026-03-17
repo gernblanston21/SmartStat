@@ -2,7 +2,12 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import App, { PANEL_RENDER_ORDER } from "../App";
 import { adaptPreviewPayloadToViewModel } from "../adapters/previewPayloadToViewModel";
+import { RuntimePreviewViewModel } from "../contracts/runtimePreviewIntake";
 import previewFixture from "../../../../tests/_scratch/runtime-slice-02-readonly-plan-bridge/runs/pos_projection_intake_run1.json";
+
+function cloneViewModel(viewModel: RuntimePreviewViewModel): RuntimePreviewViewModel {
+  return JSON.parse(JSON.stringify(viewModel)) as RuntimePreviewViewModel;
+}
 
 describe("runtime preview inspector UI scaffold", () => {
   it("renders from frozen fixture via adapter", () => {
@@ -23,6 +28,7 @@ describe("runtime preview inspector UI scaffold", () => {
     expect(html).toContain("Rule Count Snapshot");
     expect(html).toContain("High-priority mismatches");
     expect(html).toContain("Secondary checks and supporting context");
+    expect(html).toContain("All Core Checks PASS");
   });
 
   it("renders panels in deterministic approved order", () => {
@@ -57,5 +63,18 @@ describe("runtime preview inspector UI scaffold", () => {
     expect(html).toContain("Projection Metadata");
     expect(html).toContain("Rule Trace");
     expect(html).toContain("Parity");
+  });
+
+  it("surfaces mismatch state with stronger review emphasis", () => {
+    const viewModel = adaptPreviewPayloadToViewModel(previewFixture);
+    const mismatched = cloneViewModel(viewModel);
+    mismatched.view_model.semantic_view.scope_resolution = "forced_mismatch";
+
+    const html = renderToStaticMarkup(<App viewModel={mismatched} />);
+
+    expect(html).toContain("Inconsistencies Found");
+    expect(html).toContain("Review Needed");
+    expect(html).toContain("MISMATCH");
+    expect(html).toContain('class="secondary-checks" open=""');
   });
 });

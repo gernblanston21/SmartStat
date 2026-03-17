@@ -58,6 +58,22 @@ body {
   font-size: 0.85rem;
 }
 
+.status-tags li.status-tag--tone {
+  font-weight: 700;
+}
+
+.status-tags li.status-tag--tone.is-pass {
+  border-color: #cbd7ea;
+  background: #f3f7fd;
+  color: #34435e;
+}
+
+.status-tags li.status-tag--tone.is-mismatch {
+  border-color: #ebacac;
+  background: #fff0f0;
+  color: #8f1f1f;
+}
+
 .overview-strip {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -137,13 +153,14 @@ body {
 }
 
 .review-hero.is-pass {
-  border-color: #b8dfca;
-  background: #f4fcf7;
+  border-color: #d5deec;
+  background: #f7f9fd;
 }
 
 .review-hero.is-mismatch {
   border-color: #efbcbc;
-  background: #fff7f7;
+  background: #fff5f5;
+  box-shadow: 0 0 0 2px #ffe3e3 inset;
 }
 
 .review-hero-metrics {
@@ -175,6 +192,11 @@ body {
 .metric-chip.is-pass {
   border-color: #a8d6bb;
   background: #effaf3;
+}
+
+.metric-chip.is-muted {
+  border-color: #d6e0ef;
+  background: #f8fbff;
 }
 
 .metric-chip.is-mismatch {
@@ -223,12 +245,14 @@ body {
 }
 
 .parity-card.is-pass {
-  border-color: #cde4d8;
+  border-color: #d8e2ef;
+  background: #fcfdff;
 }
 
 .parity-card.is-mismatch {
   border-color: #edb7b7;
-  background: #fff6f6;
+  background: #fff3f3;
+  box-shadow: 0 0 0 1px #ffdede inset;
 }
 
 .parity-result {
@@ -238,7 +262,7 @@ body {
 }
 
 .parity-result.is-pass {
-  color: #0d7e41;
+  color: #3f4f6b;
 }
 
 .parity-result.is-mismatch {
@@ -359,12 +383,16 @@ td {
 
 .summary-table tr.is-pass td,
 .comparison-row.is-pass td {
-  background: #fbfdfc;
+  background: transparent;
 }
 
 .summary-table tr.is-mismatch td,
 .comparison-row.is-mismatch td {
-  background: #fff0f0;
+  background: #ffeeee;
+}
+
+.summary-table .priority-row.is-mismatch td:first-child {
+  border-left: 3px solid #d64a4a;
 }
 
 .parity-pill {
@@ -377,9 +405,9 @@ td {
 }
 
 .parity-pill.is-pass {
-  color: #0d7e41;
-  border-color: #94ddb7;
-  background: #e8faef;
+  color: #39506e;
+  border-color: #c7d6ea;
+  background: #f2f6fd;
 }
 
 .parity-pill.is-mismatch {
