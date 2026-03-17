@@ -29,6 +29,12 @@ export const PANEL_RENDER_ORDER = [
   { key: "raw_payload_debug_view", title: "Raw Payload Debug" },
 ] as const;
 
+type PanelKey = (typeof PANEL_RENDER_ORDER)[number]["key"];
+
+const PANEL_TITLE_BY_KEY = Object.fromEntries(
+  PANEL_RENDER_ORDER.map((panel) => [panel.key, panel.title])
+) as Record<PanelKey, string>;
+
 function parityLabel(value: boolean): "PASS" | "MISMATCH" {
   return value ? "PASS" : "MISMATCH";
 }
@@ -39,6 +45,13 @@ interface InspectionSignal {
   pass: boolean;
   detail: string;
   priority: "High" | "Medium";
+}
+
+interface ComparisonCheck {
+  key: string;
+  label: string;
+  pass: boolean;
+  evidenceTargets: PanelKey[];
 }
 
 export default function App({ viewModel }: AppProps): JSX.Element {
@@ -148,35 +161,35 @@ export default function App({ viewModel }: AppProps): JSX.Element {
   const reviewTone = overviewHealthy ? "Consistent Preview" : "Inconsistencies Found";
   const reviewToneClass = overviewHealthy ? "is-pass" : "is-mismatch";
   const topStatusToneLabel = overviewHealthy ? "All Core Checks PASS" : "Review Needed";
-  const comparisonChecks = [
+  const comparisonChecks: ComparisonCheck[] = [
     {
       key: "semantic_resolution",
       label: "Semantic vs Resolution",
       pass: semanticResolutionParity,
-      detailPanel: "Semantic Interpretation and Resolution Preview",
+      evidenceTargets: ["semantic_view", "resolution_view"],
     },
     {
       key: "deterministic_identity",
       label: "Deterministic Identity",
       pass: deterministicIdentityParity,
-      detailPanel: "Deterministic Identity",
+      evidenceTargets: ["deterministic_identity_view"],
     },
     {
       key: "traceability_overlap",
       label: "Traceability Overlap",
       pass: traceabilityOverlapParity,
-      detailPanel: "Projection Metadata and Rule Evaluation Trace",
+      evidenceTargets: ["projection_metadata_view", "rule_evaluation_trace_view"],
     },
     {
       key: "rule_phase_order",
       label: "Rule Phase Order",
       pass: phaseOrderParity,
-      detailPanel: "Rule Evaluation Summary",
+      evidenceTargets: ["rule_evaluation_summary_view"],
     },
   ];
 
   const orderedPanels: Array<{
-    key: (typeof PANEL_RENDER_ORDER)[number]["key"];
+    key: PanelKey;
     className: string;
     node: JSX.Element;
   }> =
@@ -321,6 +334,9 @@ export default function App({ viewModel }: AppProps): JSX.Element {
         <section className="check-first-strip" aria-label="What to check next">
           <h2>What to check next</h2>
           <p className={`check-first-result ${reviewToneClass}`}>{reviewTone}</p>
+          <p className="check-first-note">
+            Follow links in the last column to jump directly to detailed evidence panels.
+          </p>
           <table className="summary-table summary-table--priority">
             <thead>
               <tr>
@@ -341,7 +357,15 @@ export default function App({ viewModel }: AppProps): JSX.Element {
                       {parityLabel(check.pass)}
                     </span>
                   </td>
-                  <td>{check.detailPanel}</td>
+                  <td>
+                    <ul className="comparison-evidence-list">
+                      {check.evidenceTargets.map((panelKey) => (
+                        <li key={`${check.key}:${panelKey}`}>
+                          <a href={`#panel-${panelKey}`}>{PANEL_TITLE_BY_KEY[panelKey]}</a>
+                        </li>
+                      ))}
+                    </ul>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -361,6 +385,16 @@ export default function App({ viewModel }: AppProps): JSX.Element {
             If a top comparison fails, inspect related panels below in deterministic order.
             This context helps explain why a mismatch may exist.
           </p>
+          <nav className="panel-jump-nav" aria-label="Panel order reference">
+            <h3>Panel Order Reference</h3>
+            <ol className="panel-jump-list">
+              {PANEL_RENDER_ORDER.map((panel) => (
+                <li key={`jump-${panel.key}`}>
+                  <a href={`#panel-${panel.key}`}>{panel.title}</a>
+                </li>
+              ))}
+            </ol>
+          </nav>
           <section className="secondary-grid">
             <article className="overview-card">
               <h3>Rule Count Snapshot</h3>
@@ -402,7 +436,12 @@ export default function App({ viewModel }: AppProps): JSX.Element {
 
       <main className="panel-stack" aria-label="Runtime Preview Panels">
         {orderedPanels.map((panel) => (
-          <section key={panel.key} data-panel-key={panel.key} className={panel.className}>
+          <section
+            key={panel.key}
+            id={`panel-${panel.key}`}
+            data-panel-key={panel.key}
+            className={panel.className}
+          >
             {panel.node}
           </section>
         ))}

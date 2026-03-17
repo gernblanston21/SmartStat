@@ -29,6 +29,8 @@ describe("runtime preview inspector UI scaffold", () => {
     expect(html).toContain("High-priority mismatches");
     expect(html).toContain("Secondary checks and supporting context");
     expect(html).toContain("All Core Checks PASS");
+    expect(html).toContain("Follow links in the last column");
+    expect(html).toContain("Panel Order Reference");
     expect(html).not.toContain('class="secondary-checks" open=""');
   });
 
@@ -64,6 +66,17 @@ describe("runtime preview inspector UI scaffold", () => {
     expect(html).toContain("Projection Metadata");
     expect(html).toContain("Rule Trace");
     expect(html).toContain("Parity");
+  });
+
+  it("renders in-page evidence links that point to detailed panel anchors", () => {
+    const viewModel = adaptPreviewPayloadToViewModel(previewFixture);
+    const html = renderToStaticMarkup(<App viewModel={viewModel} />);
+
+    expect(html).toContain('href="#panel-semantic_view"');
+    expect(html).toContain('href="#panel-resolution_view"');
+    expect(html).toContain('href="#panel-rule_evaluation_summary_view"');
+    expect(html).toContain('id="panel-semantic_view"');
+    expect(html).toContain('id="panel-rule_evaluation_summary_view"');
   });
 
   it("surfaces mismatch state with stronger review emphasis", () => {
