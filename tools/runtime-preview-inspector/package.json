@@ -1,0 +1,16 @@
+{
+  "name": "smartstat-runtime-preview-inspector",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Read-only runtime preview adapter and deterministic contract tests for SmartStat viewer tooling.",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.8"
+  }
+}
