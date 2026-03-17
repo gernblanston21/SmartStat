@@ -26,7 +26,7 @@ describe("runtime preview inspector UI scaffold", () => {
     expect(html).toContain("Consistent Preview");
     expect(html).toContain("Discrepancy Summary");
     expect(html).toContain("Rule Count Snapshot");
-    expect(html).toContain("High-priority mismatches");
+    expect(html).toContain("High-priority review items");
     expect(html).toContain("Secondary checks and supporting context");
     expect(html).toContain("All Core Checks PASS");
     expect(html).toContain("Follow links in the last column");
@@ -120,5 +120,34 @@ describe("runtime preview inspector UI scaffold", () => {
     expect(html).toContain("ACTUAL:");
     expect(html).toContain("CHK-RULE-PHASE-ORDER");
     expect(html).toContain('href="#panel-rule_evaluation_summary_view"');
+  });
+
+  it("renders unavailable panel state when a required section is missing", () => {
+    const viewModel = adaptPreviewPayloadToViewModel(previewFixture);
+    const missingProjection = cloneViewModel(viewModel);
+    (
+      missingProjection.view_model as unknown as Record<string, unknown>
+    ).projection_metadata_view = undefined;
+
+    const html = renderToStaticMarkup(<App viewModel={missingProjection} />);
+
+    expect(html).toContain("Projection Metadata");
+    expect(html).toContain("Unavailable in this preview");
+    expect(html).toContain("No evidence provided in current payload");
+    expect(html).toContain("UNAVAILABLE");
+  });
+
+  it("keeps drill-down grounded when some related evidence is unavailable", () => {
+    const viewModel = adaptPreviewPayloadToViewModel(previewFixture);
+    const partial = cloneViewModel(viewModel);
+    partial.view_model.semantic_view.scope_resolution = "forced_mismatch";
+    partial.view_model.resolution_view.evidence_source = "";
+
+    const html = renderToStaticMarkup(<App viewModel={partial} />);
+
+    expect(html).toContain("Semantic vs Resolution - Why this failed");
+    expect(html).toContain("Differing grounded fields");
+    expect(html).toContain("semantic.scope_resolution = forced_mismatch");
+    expect(html).toContain("Some related fields are unavailable in this preview.");
   });
 });

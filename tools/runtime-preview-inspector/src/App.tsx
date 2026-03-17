@@ -6,6 +6,7 @@ import {
 import { DeterministicIdentityPanel } from "./panels/DeterministicIdentityPanel";
 import { IntakeHeaderPanel } from "./panels/IntakeHeaderPanel";
 import { IssuesPanel } from "./panels/IssuesPanel";
+import { PanelShell } from "./panels/PanelShell";
 import { ProjectionMetadataPanel } from "./panels/ProjectionMetadataPanel";
 import { RawPayloadPanel } from "./panels/RawPayloadPanel";
 import { ResolutionPanel } from "./panels/ResolutionPanel";
@@ -30,37 +31,116 @@ export const PANEL_RENDER_ORDER = [
 ] as const;
 
 type PanelKey = (typeof PANEL_RENDER_ORDER)[number]["key"];
-
-const PANEL_TITLE_BY_KEY = Object.fromEntries(
-  PANEL_RENDER_ORDER.map((panel) => [panel.key, panel.title])
-) as Record<PanelKey, string>;
-
-function parityLabel(value: boolean): "PASS" | "MISMATCH" {
-  return value ? "PASS" : "MISMATCH";
-}
-
-function comparisonPairingKey(key: ComparisonCheckKey): string {
-  return `CHK-${key.replace(/_/g, "-").toUpperCase()}`;
-}
-
-interface InspectionSignal {
-  key: string;
-  label: string;
-  pass: boolean;
-  detail: string;
-  priority: "High" | "Medium";
-}
-
+type ComparisonResult = "pass" | "mismatch" | "unavailable";
 type ComparisonCheckKey =
   | "semantic_resolution"
   | "deterministic_identity"
   | "traceability_overlap"
   | "rule_phase_order";
 
+const PANEL_TITLE_BY_KEY = Object.fromEntries(
+  PANEL_RENDER_ORDER.map((panel) => [panel.key, panel.title])
+) as Record<PanelKey, string>;
+
+const UNAVAILABLE_LABEL = "Unavailable in this preview";
+const NO_EVIDENCE_LABEL = "No evidence provided in current payload";
+
+function comparisonResultLabel(result: ComparisonResult): "PASS" | "MISMATCH" | "UNAVAILABLE" {
+  if (result === "pass") {
+    return "PASS";
+  }
+  if (result === "mismatch") {
+    return "MISMATCH";
+  }
+  return "UNAVAILABLE";
+}
+
+function comparisonResultClass(result: ComparisonResult): string {
+  if (result === "pass") {
+    return "is-pass";
+  }
+  if (result === "mismatch") {
+    return "is-mismatch";
+  }
+  return "is-unavailable";
+}
+
+function comparisonPairingKey(key: ComparisonCheckKey): string {
+  return `CHK-${key.replace(/_/g, "-").toUpperCase()}`;
+}
+
+function readText(value: unknown): string | undefined {
+  if (typeof value !== "string") {
+    return undefined;
+  }
+  const trimmed = value.trim();
+  return trimmed.length > 0 ? value : undefined;
+}
+
+function readNumber(value: unknown): number | undefined {
+  return typeof value === "number" && Number.isFinite(value) ? value : undefined;
+}
+
+function readNonEmptyStringArray(value: unknown): string[] | undefined {
+  if (!Array.isArray(value) || value.length === 0) {
+    return undefined;
+  }
+  const entries = value.filter((entry): entry is string => !!readText(entry));
+  return entries.length === value.length ? entries : undefined;
+}
+
+function normalizeComparableValue(
+  value: string | readonly string[] | undefined
+): string | undefined {
+  if (typeof value === "string") {
+    return readText(value);
+  }
+  if (Array.isArray(value) && value.length > 0) {
+    return `[${value.join(", ")}]`;
+  }
+  return undefined;
+}
+
+function compareValues(
+  left: string | readonly string[] | undefined,
+  right: string | readonly string[] | undefined
+): ComparisonResult {
+  const leftNormalized = normalizeComparableValue(left);
+  const rightNormalized = normalizeComparableValue(right);
+
+  if (!leftNormalized || !rightNormalized) {
+    return "unavailable";
+  }
+
+  return leftNormalized === rightNormalized ? "pass" : "mismatch";
+}
+
+function combineComparisonResults(results: ComparisonResult[]): ComparisonResult {
+  if (results.includes("mismatch")) {
+    return "mismatch";
+  }
+  if (results.includes("unavailable")) {
+    return "unavailable";
+  }
+  return "pass";
+}
+
+function isTruthyBoolean(value: unknown): value is boolean {
+  return typeof value === "boolean";
+}
+
+interface InspectionSignal {
+  key: string;
+  label: string;
+  result: ComparisonResult;
+  detail: string;
+  priority: "High" | "Medium";
+}
+
 interface ComparisonCheck {
   key: ComparisonCheckKey;
   label: string;
-  pass: boolean;
+  result: ComparisonResult;
   priority: "High" | "Medium";
   pairingKey: string;
   leftTag: string;
@@ -74,12 +154,14 @@ interface DrillDownDiffLine {
   expectedValue: string;
   actualLabel: string;
   actualValue: string;
+  comparable: boolean;
   mismatch: boolean;
 }
 
 interface DrillDownCard {
   key: ComparisonCheckKey;
   label: string;
+  result: ComparisonResult;
   priority: "High" | "Medium";
   pairingKey: string;
   leftTag: string;
@@ -87,146 +169,388 @@ interface DrillDownCard {
   evidenceTargets: PanelKey[];
   contributingFields: string[];
   diffLines: DrillDownDiffLine[];
-}
-
-function formatDiffValue(value: string | readonly string[]): string {
-  if (typeof value === "string") {
-    return value;
-  }
-  return `[${value.join(", ")}]`;
+  unavailableDiffCount: number;
 }
 
 function createDiffLine(
   key: string,
   expectedLabel: string,
-  expectedValue: string | readonly string[],
+  expectedValue: string | readonly string[] | undefined,
   actualLabel: string,
-  actualValue: string | readonly string[]
+  actualValue: string | readonly string[] | undefined
 ): DrillDownDiffLine {
-  const expected = formatDiffValue(expectedValue);
-  const actual = formatDiffValue(actualValue);
+  const expected = normalizeComparableValue(expectedValue);
+  const actual = normalizeComparableValue(actualValue);
+  const comparable = !!expected && !!actual;
+
   return {
     key,
     expectedLabel,
-    expectedValue: expected,
+    expectedValue: expected ?? UNAVAILABLE_LABEL,
     actualLabel,
-    actualValue: actual,
-    mismatch: expected !== actual,
+    actualValue: actual ?? UNAVAILABLE_LABEL,
+    comparable,
+    mismatch: comparable ? expected !== actual : false,
   };
 }
 
-export default function App({ viewModel }: AppProps): JSX.Element {
-  const sections = viewModel.view_model;
-  const phaseOrderParity =
-    JSON.stringify(sections.rule_evaluation_summary_view.phase_order) ===
-    JSON.stringify(EXPECTED_RULE_PHASE_ORDER);
-  const semanticResolutionParity =
-    sections.semantic_view.scope_resolution === sections.resolution_view.scope_resolution &&
-    sections.semantic_view.effective_scope === sections.resolution_view.effective_scope &&
-    sections.semantic_view.evidence_source === sections.resolution_view.evidence_source;
-  const deterministicIdentityParity =
-    sections.deterministic_identity_view.projection_metadata.normalized_plan_hash ===
-      sections.deterministic_identity_view.rule_evaluation_trace.normalized_plan_hash &&
-    sections.deterministic_identity_view.projection_metadata.replay_identity ===
-      sections.deterministic_identity_view.rule_evaluation_trace.replay_identity &&
-      sections.deterministic_identity_view.projection_metadata.validator_run_identity ===
-        sections.deterministic_identity_view.rule_evaluation_trace.validator_run_identity;
-  const traceabilityOverlapParity =
-    sections.projection_metadata_view.projection_contract ===
-      sections.rule_evaluation_trace_view.projection_contract &&
-    sections.projection_metadata_view.projection_kind ===
-      sections.rule_evaluation_trace_view.projection_kind &&
-    sections.projection_metadata_view.input_artifact ===
-      sections.rule_evaluation_trace_view.input_artifact &&
-    sections.projection_metadata_view.input_identity.artifact_path ===
-      sections.rule_evaluation_trace_view.input_identity.artifact_path &&
-      sections.projection_metadata_view.input_identity.input_fingerprint_sha256 ===
-      sections.rule_evaluation_trace_view.input_identity.input_fingerprint_sha256;
-  const topStatusPass = sections.issues_view.status === "PASS";
-  const hasNoErrors = sections.issues_view.error_count === 0;
-  const hasNoWarnings = sections.issues_view.warning_count === 0;
-
-  const ruleCountsByPhase = sections.rule_evaluation_summary_view.ordered_rules.reduce<
-    Record<RulePhase, number>
-  >(
-    (acc, rule) => {
-      acc[rule.category] += 1;
-      return acc;
-    },
-    {
-      STRUCTURAL: 0,
-      SEMANTIC: 0,
-      DETERMINISM: 0,
-      BOUNDARY: 0,
-    }
+function hasIntakeHeaderEvidence(
+  view: RuntimePreviewViewModel["view_model"]["intake_header"] | undefined
+): boolean {
+  return !!(
+    view &&
+    readText(view.status) &&
+    readText(view.slice_name) &&
+    readText(view.preview_kind) &&
+    readText(view.provider_mode) &&
+    readText(view.normalization_rule) &&
+    readText(view.page_name) &&
+    readText(view.page_template) &&
+    readText(view.bridge_mode) &&
+    isTruthyBoolean(view.mutation_authorized) &&
+    readNonEmptyStringArray(view.supported_read_surfaces)
   );
+}
+
+function hasProjectionMetadataEvidence(
+  view: RuntimePreviewViewModel["view_model"]["projection_metadata_view"] | undefined
+): boolean {
+  return !!(
+    view &&
+    readText(view.projection_contract) &&
+    readText(view.projection_kind) &&
+    readText(view.input_artifact) &&
+    readText(view.input_identity.artifact_path) &&
+    readText(view.input_identity.input_fingerprint_sha256) &&
+    readText(view.status_summary.status) &&
+    readNumber(view.status_summary.error_count) !== undefined &&
+    readNumber(view.status_summary.warning_count) !== undefined &&
+    readText(view.deterministic_identity_summary.normalized_plan_hash) &&
+    readText(view.deterministic_identity_summary.replay_identity) &&
+    readText(view.deterministic_identity_summary.validator_run_identity)
+  );
+}
+
+function hasSemanticEvidence(
+  view: RuntimePreviewViewModel["view_model"]["semantic_view"] | undefined
+): boolean {
+  return !!(
+    view &&
+    readText(view.scope_resolution) &&
+    readText(view.effective_scope) &&
+    readText(view.evidence_source)
+  );
+}
+
+function hasIssuesEvidence(
+  view: RuntimePreviewViewModel["view_model"]["issues_view"] | undefined
+): boolean {
+  return !!(
+    view &&
+    readText(view.status) &&
+    readNumber(view.error_count) !== undefined &&
+    readNumber(view.warning_count) !== undefined &&
+    Array.isArray(view.errors) &&
+    Array.isArray(view.warnings)
+  );
+}
+
+function hasResolutionEvidence(
+  view: RuntimePreviewViewModel["view_model"]["resolution_view"] | undefined
+): boolean {
+  return !!(
+    view &&
+    readText(view.status) &&
+    readText(view.scope_resolution) &&
+    readText(view.effective_scope) &&
+    readText(view.evidence_source)
+  );
+}
+
+function hasRuleSummaryEvidence(
+  view: RuntimePreviewViewModel["view_model"]["rule_evaluation_summary_view"] | undefined
+): boolean {
+  return !!(
+    view &&
+    readNonEmptyStringArray(view.phase_order) &&
+    Array.isArray(view.ordered_rules) &&
+    view.ordered_rules.length > 0 &&
+    view.ordered_rules.every(
+      (rule) => readText(rule.category) && readText(rule.rule_id) && readText(rule.outcome)
+    )
+  );
+}
+
+function hasRuleTraceEvidence(
+  view: RuntimePreviewViewModel["view_model"]["rule_evaluation_trace_view"] | undefined
+): boolean {
+  return !!(
+    view &&
+    readText(view.projection_contract) &&
+    readText(view.projection_kind) &&
+    readText(view.input_artifact) &&
+    readText(view.input_identity.artifact_path) &&
+    readText(view.input_identity.input_fingerprint_sha256) &&
+    readText(view.deterministic_identity_summary.normalized_plan_hash) &&
+    readText(view.deterministic_identity_summary.replay_identity) &&
+    readText(view.deterministic_identity_summary.validator_run_identity)
+  );
+}
+
+function hasDeterministicIdentityEvidence(
+  view: RuntimePreviewViewModel["view_model"]["deterministic_identity_view"] | undefined
+): boolean {
+  return !!(
+    view &&
+    readText(view.projection_metadata.normalized_plan_hash) &&
+    readText(view.projection_metadata.replay_identity) &&
+    readText(view.projection_metadata.validator_run_identity) &&
+    readText(view.rule_evaluation_trace.normalized_plan_hash) &&
+    readText(view.rule_evaluation_trace.replay_identity) &&
+    readText(view.rule_evaluation_trace.validator_run_identity)
+  );
+}
+
+function hasRawPayloadEvidence(
+  view: RuntimePreviewViewModel["view_model"]["raw_payload_debug_view"] | undefined
+): boolean {
+  const validFieldPreview =
+    Array.isArray(view?.field_preview) &&
+    view.field_preview.length > 0 &&
+    view.field_preview.every(
+      (entry) => readText(entry.name) && readText(entry.page_property) && readText(entry.custom_property)
+    );
+
+  return !!(
+    view &&
+    readText(view.payload_kind) &&
+    readNumber(view.tabfield_count) !== undefined &&
+    readNonEmptyStringArray(view.tabfield_order) &&
+    validFieldPreview &&
+    readText(view.resolution_preview.scope_resolution) &&
+    Array.isArray(view.rule_evaluation_summary_preview.phase_order) &&
+    Array.isArray(view.rule_evaluation_summary_preview.ordered_rules)
+  );
+}
+
+function renderUnavailablePanel(title: string, subtitle: string): JSX.Element {
+  return (
+    <PanelShell
+      title={title}
+      subtitle={subtitle}
+      badges={[UNAVAILABLE_LABEL, "Read-Only"]}
+    >
+      <p className="panel-note unavailable-panel-note">{UNAVAILABLE_LABEL}</p>
+      <p className="panel-note unavailable-panel-note">{NO_EVIDENCE_LABEL}</p>
+    </PanelShell>
+  );
+}
+
+export default function App({ viewModel }: AppProps): JSX.Element {
+  const sections =
+    (viewModel?.view_model as Partial<RuntimePreviewViewModel["view_model"]>) ?? {};
+
+  const intakeHeaderView = sections.intake_header;
+  const projectionMetadataView = sections.projection_metadata_view;
+  const semanticView = sections.semantic_view;
+  const issuesView = sections.issues_view;
+  const resolutionView = sections.resolution_view;
+  const ruleSummaryView = sections.rule_evaluation_summary_view;
+  const ruleTraceView = sections.rule_evaluation_trace_view;
+  const deterministicIdentityView = sections.deterministic_identity_view;
+  const rawPayloadView = sections.raw_payload_debug_view;
+
+  const hasIntakeHeaderPanel = hasIntakeHeaderEvidence(intakeHeaderView);
+  const hasProjectionMetadataPanel = hasProjectionMetadataEvidence(projectionMetadataView);
+  const hasSemanticPanel = hasSemanticEvidence(semanticView) && hasResolutionEvidence(resolutionView);
+  const hasIssuesPanel = hasIssuesEvidence(issuesView);
+  const hasResolutionPanel = hasResolutionEvidence(resolutionView);
+  const hasRuleSummaryPanel = hasRuleSummaryEvidence(ruleSummaryView);
+  const hasRuleTracePanel = hasRuleTraceEvidence(ruleTraceView);
+  const hasDeterministicIdentityPanel = hasDeterministicIdentityEvidence(deterministicIdentityView);
+  const hasRawPayloadPanel = hasRawPayloadEvidence(rawPayloadView);
+
+  const semanticScopeResolution = readText(semanticView?.scope_resolution);
+  const semanticEffectiveScope = readText(semanticView?.effective_scope);
+  const semanticEvidenceSource = readText(semanticView?.evidence_source);
+
+  const resolutionScopeResolution = readText(resolutionView?.scope_resolution);
+  const resolutionEffectiveScope = readText(resolutionView?.effective_scope);
+  const resolutionEvidenceSource = readText(resolutionView?.evidence_source);
+
+  const deterministicProjectionHash = readText(
+    deterministicIdentityView?.projection_metadata.normalized_plan_hash
+  );
+  const deterministicProjectionReplay = readText(
+    deterministicIdentityView?.projection_metadata.replay_identity
+  );
+  const deterministicProjectionRun = readText(
+    deterministicIdentityView?.projection_metadata.validator_run_identity
+  );
+
+  const deterministicTraceHash = readText(
+    deterministicIdentityView?.rule_evaluation_trace.normalized_plan_hash
+  );
+  const deterministicTraceReplay = readText(
+    deterministicIdentityView?.rule_evaluation_trace.replay_identity
+  );
+  const deterministicTraceRun = readText(
+    deterministicIdentityView?.rule_evaluation_trace.validator_run_identity
+  );
+
+  const projectionContract = readText(projectionMetadataView?.projection_contract);
+  const projectionKind = readText(projectionMetadataView?.projection_kind);
+  const projectionInputArtifact = readText(projectionMetadataView?.input_artifact);
+  const projectionArtifactPath = readText(projectionMetadataView?.input_identity.artifact_path);
+  const projectionFingerprint = readText(
+    projectionMetadataView?.input_identity.input_fingerprint_sha256
+  );
+
+  const traceContract = readText(ruleTraceView?.projection_contract);
+  const traceKind = readText(ruleTraceView?.projection_kind);
+  const traceInputArtifact = readText(ruleTraceView?.input_artifact);
+  const traceArtifactPath = readText(ruleTraceView?.input_identity.artifact_path);
+  const traceFingerprint = readText(ruleTraceView?.input_identity.input_fingerprint_sha256);
+
+  const phaseOrderActual = readNonEmptyStringArray(ruleSummaryView?.phase_order);
+  const ruleCategorySequence =
+    Array.isArray(ruleSummaryView?.ordered_rules) && ruleSummaryView.ordered_rules.length > 0
+      ? Array.from(new Set(ruleSummaryView.ordered_rules.map((rule) => rule.category)))
+      : undefined;
+
+  const phaseOrderResult = compareValues(EXPECTED_RULE_PHASE_ORDER, phaseOrderActual);
+  const semanticResolutionResult = combineComparisonResults([
+    compareValues(semanticScopeResolution, resolutionScopeResolution),
+    compareValues(semanticEffectiveScope, resolutionEffectiveScope),
+    compareValues(semanticEvidenceSource, resolutionEvidenceSource),
+  ]);
+  const deterministicIdentityResult = combineComparisonResults([
+    compareValues(deterministicProjectionHash, deterministicTraceHash),
+    compareValues(deterministicProjectionReplay, deterministicTraceReplay),
+    compareValues(deterministicProjectionRun, deterministicTraceRun),
+  ]);
+  const traceabilityOverlapResult = combineComparisonResults([
+    compareValues(projectionContract, traceContract),
+    compareValues(projectionKind, traceKind),
+    compareValues(projectionInputArtifact, traceInputArtifact),
+    compareValues(projectionArtifactPath, traceArtifactPath),
+    compareValues(projectionFingerprint, traceFingerprint),
+  ]);
+
+  const previewStatus = readText(issuesView?.status);
+  const previewStatusResult: ComparisonResult = !previewStatus
+    ? "unavailable"
+    : previewStatus === "PASS"
+      ? "pass"
+      : "mismatch";
+
+  const errorCount = readNumber(issuesView?.error_count);
+  const warningCount = readNumber(issuesView?.warning_count);
+
+  const errorCountResult: ComparisonResult =
+    errorCount === undefined ? "unavailable" : errorCount === 0 ? "pass" : "mismatch";
+  const warningCountResult: ComparisonResult =
+    warningCount === undefined ? "unavailable" : warningCount === 0 ? "pass" : "mismatch";
 
   const inspectionSignals: InspectionSignal[] = [
     {
       key: "preview_status",
       label: "Preview status",
-      pass: topStatusPass,
-      detail: sections.issues_view.status,
+      result: previewStatusResult,
+      detail: previewStatus ?? UNAVAILABLE_LABEL,
       priority: "High",
     },
     {
       key: "error_count",
       label: "Error count",
-      pass: hasNoErrors,
-      detail: String(sections.issues_view.error_count),
+      result: errorCountResult,
+      detail: errorCount !== undefined ? String(errorCount) : UNAVAILABLE_LABEL,
       priority: "High",
     },
     {
       key: "semantic_resolution",
       label: "Semantic vs resolution",
-      pass: semanticResolutionParity,
-      detail: semanticResolutionParity ? "All key fields match" : "Scope/evidence mismatch",
+      result: semanticResolutionResult,
+      detail:
+        semanticResolutionResult === "pass"
+          ? "All key fields match"
+          : semanticResolutionResult === "mismatch"
+            ? "Scope/evidence mismatch"
+            : UNAVAILABLE_LABEL,
       priority: "High",
     },
     {
       key: "deterministic_identity",
       label: "Deterministic identity parity",
-      pass: deterministicIdentityParity,
-      detail: deterministicIdentityParity ? "All identity fields match" : "Identity mismatch",
+      result: deterministicIdentityResult,
+      detail:
+        deterministicIdentityResult === "pass"
+          ? "All identity fields match"
+          : deterministicIdentityResult === "mismatch"
+            ? "Identity mismatch"
+            : UNAVAILABLE_LABEL,
       priority: "High",
     },
     {
       key: "traceability_overlap",
       label: "Projection vs trace overlap",
-      pass: traceabilityOverlapParity,
-      detail: traceabilityOverlapParity ? "Overlap fields aligned" : "Overlap mismatch",
+      result: traceabilityOverlapResult,
+      detail:
+        traceabilityOverlapResult === "pass"
+          ? "Overlap fields aligned"
+          : traceabilityOverlapResult === "mismatch"
+            ? "Overlap mismatch"
+            : UNAVAILABLE_LABEL,
       priority: "Medium",
     },
     {
       key: "rule_phase_order",
       label: "Rule phase order",
-      pass: phaseOrderParity,
-      detail: phaseOrderParity ? "Expected deterministic order" : "Order differs from contract",
+      result: phaseOrderResult,
+      detail:
+        phaseOrderResult === "pass"
+          ? "Expected deterministic order"
+          : phaseOrderResult === "mismatch"
+            ? "Order differs from contract"
+            : UNAVAILABLE_LABEL,
       priority: "Medium",
     },
     {
       key: "warning_count",
       label: "Warning count",
-      pass: hasNoWarnings,
-      detail: String(sections.issues_view.warning_count),
+      result: warningCountResult,
+      detail: warningCount !== undefined ? String(warningCount) : UNAVAILABLE_LABEL,
       priority: "Medium",
     },
   ];
-  const mismatchSignals = inspectionSignals.filter((signal) => !signal.pass);
-  const passSignals = inspectionSignals.length - mismatchSignals.length;
-  const highPrioritySignals = inspectionSignals.filter((signal) => signal.priority === "High");
-  const highPriorityMismatches = highPrioritySignals.filter((signal) => !signal.pass);
+  const reviewSignals = inspectionSignals.filter((signal) => signal.result !== "pass");
+  const mismatchSignals = reviewSignals.filter((signal) => signal.result === "mismatch");
+  const unavailableSignals = reviewSignals.filter((signal) => signal.result === "unavailable");
+  const passSignals = inspectionSignals.length - reviewSignals.length;
+  const highPriorityReviewSignals = inspectionSignals.filter(
+    (signal) => signal.priority === "High" && signal.result !== "pass"
+  );
   const mismatchCount = mismatchSignals.length;
-  const highPriorityMismatchCount = highPriorityMismatches.length;
-  const overviewHealthy = mismatchCount === 0;
+  const unavailableCount = unavailableSignals.length;
+  const reviewItemCount = reviewSignals.length;
+  const highPriorityReviewCount = highPriorityReviewSignals.length;
+  const overviewHealthy = reviewItemCount === 0;
   const reviewTone = overviewHealthy ? "Consistent Preview" : "Inconsistencies Found";
-  const reviewToneClass = overviewHealthy ? "is-pass" : "is-mismatch";
-  const topStatusToneLabel = overviewHealthy ? "All Core Checks PASS" : "Review Needed";
+  const reviewToneClass = overviewHealthy
+    ? "is-pass"
+    : mismatchCount > 0
+      ? "is-mismatch"
+      : "is-unavailable";
+  const topStatusToneLabel = overviewHealthy
+    ? "All Core Checks PASS"
+    : mismatchCount > 0
+      ? "Review Needed"
+      : "Evidence Unavailable";
   const comparisonChecks: ComparisonCheck[] = [
     {
       key: "semantic_resolution",
       label: "Semantic vs Resolution",
-      pass: semanticResolutionParity,
+      result: semanticResolutionResult,
       priority: "High",
       pairingKey: comparisonPairingKey("semantic_resolution"),
       leftTag: "SEMANTIC",
@@ -236,7 +560,7 @@ export default function App({ viewModel }: AppProps): JSX.Element {
     {
       key: "deterministic_identity",
       label: "Deterministic Identity",
-      pass: deterministicIdentityParity,
+      result: deterministicIdentityResult,
       priority: "High",
       pairingKey: comparisonPairingKey("deterministic_identity"),
       leftTag: "PROJECTION",
@@ -246,7 +570,7 @@ export default function App({ viewModel }: AppProps): JSX.Element {
     {
       key: "traceability_overlap",
       label: "Traceability Overlap",
-      pass: traceabilityOverlapParity,
+      result: traceabilityOverlapResult,
       priority: "Medium",
       pairingKey: comparisonPairingKey("traceability_overlap"),
       leftTag: "PROJECTION",
@@ -256,7 +580,7 @@ export default function App({ viewModel }: AppProps): JSX.Element {
     {
       key: "rule_phase_order",
       label: "Rule Phase Order",
-      pass: phaseOrderParity,
+      result: phaseOrderResult,
       priority: "Medium",
       pairingKey: comparisonPairingKey("rule_phase_order"),
       leftTag: "EXPECTED",
@@ -264,12 +588,9 @@ export default function App({ viewModel }: AppProps): JSX.Element {
       evidenceTargets: ["rule_evaluation_summary_view"],
     },
   ];
-  const ruleCategorySequence = Array.from(
-    new Set(sections.rule_evaluation_summary_view.ordered_rules.map((rule) => rule.category))
-  );
   const drillDownDetailsByKey: Record<
     ComparisonCheckKey,
-    Pick<DrillDownCard, "contributingFields" | "diffLines">
+    Pick<DrillDownCard, "contributingFields" | "diffLines" | "unavailableDiffCount">
   > = {
     semantic_resolution: {
       contributingFields: [
@@ -284,25 +605,26 @@ export default function App({ viewModel }: AppProps): JSX.Element {
         createDiffLine(
           "scope_resolution",
           "semantic.scope_resolution",
-          sections.semantic_view.scope_resolution,
+          semanticScopeResolution,
           "resolution.scope_resolution",
-          sections.resolution_view.scope_resolution
+          resolutionScopeResolution
         ),
         createDiffLine(
           "effective_scope",
           "semantic.effective_scope",
-          sections.semantic_view.effective_scope,
+          semanticEffectiveScope,
           "resolution.effective_scope",
-          sections.resolution_view.effective_scope
+          resolutionEffectiveScope
         ),
         createDiffLine(
           "evidence_source",
           "semantic.evidence_source",
-          sections.semantic_view.evidence_source,
+          semanticEvidenceSource,
           "resolution.evidence_source",
-          sections.resolution_view.evidence_source
+          resolutionEvidenceSource
         ),
       ],
+      unavailableDiffCount: 0,
     },
     deterministic_identity: {
       contributingFields: [
@@ -317,25 +639,26 @@ export default function App({ viewModel }: AppProps): JSX.Element {
         createDiffLine(
           "normalized_plan_hash",
           "projection_metadata.normalized_plan_hash",
-          sections.deterministic_identity_view.projection_metadata.normalized_plan_hash,
+          deterministicProjectionHash,
           "rule_trace.normalized_plan_hash",
-          sections.deterministic_identity_view.rule_evaluation_trace.normalized_plan_hash
+          deterministicTraceHash
         ),
         createDiffLine(
           "replay_identity",
           "projection_metadata.replay_identity",
-          sections.deterministic_identity_view.projection_metadata.replay_identity,
+          deterministicProjectionReplay,
           "rule_trace.replay_identity",
-          sections.deterministic_identity_view.rule_evaluation_trace.replay_identity
+          deterministicTraceReplay
         ),
         createDiffLine(
           "validator_run_identity",
           "projection_metadata.validator_run_identity",
-          sections.deterministic_identity_view.projection_metadata.validator_run_identity,
+          deterministicProjectionRun,
           "rule_trace.validator_run_identity",
-          sections.deterministic_identity_view.rule_evaluation_trace.validator_run_identity
+          deterministicTraceRun
         ),
       ],
+      unavailableDiffCount: 0,
     },
     traceability_overlap: {
       contributingFields: [
@@ -349,39 +672,40 @@ export default function App({ viewModel }: AppProps): JSX.Element {
         createDiffLine(
           "projection_contract",
           "projection_metadata.projection_contract",
-          sections.projection_metadata_view.projection_contract,
+          projectionContract,
           "rule_trace.projection_contract",
-          sections.rule_evaluation_trace_view.projection_contract
+          traceContract
         ),
         createDiffLine(
           "projection_kind",
           "projection_metadata.projection_kind",
-          sections.projection_metadata_view.projection_kind,
+          projectionKind,
           "rule_trace.projection_kind",
-          sections.rule_evaluation_trace_view.projection_kind
+          traceKind
         ),
         createDiffLine(
           "input_artifact",
           "projection_metadata.input_artifact",
-          sections.projection_metadata_view.input_artifact,
+          projectionInputArtifact,
           "rule_trace.input_artifact",
-          sections.rule_evaluation_trace_view.input_artifact
+          traceInputArtifact
         ),
         createDiffLine(
           "artifact_path",
           "projection_metadata.input_identity.artifact_path",
-          sections.projection_metadata_view.input_identity.artifact_path,
+          projectionArtifactPath,
           "rule_trace.input_identity.artifact_path",
-          sections.rule_evaluation_trace_view.input_identity.artifact_path
+          traceArtifactPath
         ),
         createDiffLine(
           "input_fingerprint_sha256",
           "projection_metadata.input_identity.input_fingerprint_sha256",
-          sections.projection_metadata_view.input_identity.input_fingerprint_sha256,
+          projectionFingerprint,
           "rule_trace.input_identity.input_fingerprint_sha256",
-          sections.rule_evaluation_trace_view.input_identity.input_fingerprint_sha256
+          traceFingerprint
         ),
       ],
+      unavailableDiffCount: 0,
     },
     rule_phase_order: {
       contributingFields: [
@@ -394,7 +718,7 @@ export default function App({ viewModel }: AppProps): JSX.Element {
           "expected.phase_order",
           EXPECTED_RULE_PHASE_ORDER,
           "actual.phase_order",
-          sections.rule_evaluation_summary_view.phase_order
+          phaseOrderActual
         ),
         createDiffLine(
           "rule_category_sequence",
@@ -404,81 +728,165 @@ export default function App({ viewModel }: AppProps): JSX.Element {
           ruleCategorySequence
         ),
       ],
+      unavailableDiffCount: 0,
     },
   };
-  const mismatchDrillDownCards: DrillDownCard[] = comparisonChecks
-    .filter((check) => !check.pass)
+  const reviewDrillDownCards: DrillDownCard[] = comparisonChecks
+    .filter((check) => check.result !== "pass")
     .map((check) => {
       const details = drillDownDetailsByKey[check.key];
+      const unavailableDiffCount = details.diffLines.filter((line) => !line.comparable).length;
+      const mismatchDiffLines = details.diffLines.filter((line) => line.mismatch);
       return {
         ...check,
         contributingFields: details.contributingFields,
-        diffLines: details.diffLines.filter((diffLine) => diffLine.mismatch),
+        diffLines: mismatchDiffLines,
+        unavailableDiffCount,
       };
     });
+
+  const orderedRules =
+    Array.isArray(ruleSummaryView?.ordered_rules) && ruleSummaryView.ordered_rules.length > 0
+      ? ruleSummaryView.ordered_rules
+      : undefined;
+
+  const ruleCountsByPhase: Record<RulePhase, number | undefined> = {
+    STRUCTURAL: undefined,
+    SEMANTIC: undefined,
+    DETERMINISM: undefined,
+    BOUNDARY: undefined,
+  };
+
+  if (orderedRules) {
+    const counts = orderedRules.reduce<Record<RulePhase, number>>(
+      (acc, rule) => {
+        acc[rule.category as RulePhase] += 1;
+        return acc;
+      },
+      {
+        STRUCTURAL: 0,
+        SEMANTIC: 0,
+        DETERMINISM: 0,
+        BOUNDARY: 0,
+      }
+    );
+
+    ruleCountsByPhase.STRUCTURAL = counts.STRUCTURAL;
+    ruleCountsByPhase.SEMANTIC = counts.SEMANTIC;
+    ruleCountsByPhase.DETERMINISM = counts.DETERMINISM;
+    ruleCountsByPhase.BOUNDARY = counts.BOUNDARY;
+  }
 
   const orderedPanels: Array<{
     key: PanelKey;
     className: string;
     node: JSX.Element;
-  }> =
-    [
-      {
-        key: "intake_header",
-        className: "panel-slot panel-slot--half",
-        node: <IntakeHeaderPanel view={sections.intake_header} />,
-      },
-      {
-        key: "projection_metadata_view",
-        className: "panel-slot panel-slot--half",
-        node: (
-          <ProjectionMetadataPanel
-            view={sections.projection_metadata_view}
-            traceView={sections.rule_evaluation_trace_view}
-          />
-        ),
-      },
-      {
-        key: "semantic_view",
-        className: "panel-slot panel-slot--half",
-        node: (
-          <SemanticPanel
-            view={sections.semantic_view}
-            resolutionView={sections.resolution_view}
-          />
-        ),
-      },
-      {
-        key: "issues_view",
-        className: "panel-slot panel-slot--half",
-        node: <IssuesPanel view={sections.issues_view} />,
-      },
-      {
-        key: "resolution_view",
-        className: "panel-slot panel-slot--half",
-        node: <ResolutionPanel view={sections.resolution_view} />,
-      },
-      {
-        key: "rule_evaluation_summary_view",
-        className: "panel-slot panel-slot--full",
-        node: <RuleSummaryPanel view={sections.rule_evaluation_summary_view} />,
-      },
-      {
-        key: "rule_evaluation_trace_view",
-        className: "panel-slot panel-slot--half",
-        node: <RuleTracePanel view={sections.rule_evaluation_trace_view} />,
-      },
-      {
-        key: "deterministic_identity_view",
-        className: "panel-slot panel-slot--half",
-        node: <DeterministicIdentityPanel view={sections.deterministic_identity_view} />,
-      },
-      {
-        key: "raw_payload_debug_view",
-        className: "panel-slot panel-slot--full",
-        node: <RawPayloadPanel view={sections.raw_payload_debug_view} />,
-      },
-    ];
+  }> = [
+    {
+      key: "intake_header",
+      className: "panel-slot panel-slot--half",
+      node:
+        hasIntakeHeaderPanel && intakeHeaderView
+          ? <IntakeHeaderPanel view={intakeHeaderView} />
+          : renderUnavailablePanel(
+              "Intake Header",
+              "Where this preview came from and what was read"
+            ),
+    },
+    {
+      key: "projection_metadata_view",
+      className: "panel-slot panel-slot--half",
+      node:
+        hasProjectionMetadataPanel && hasRuleTracePanel && projectionMetadataView && ruleTraceView
+          ? (
+              <ProjectionMetadataPanel
+                view={projectionMetadataView}
+                traceView={ruleTraceView}
+              />
+            )
+          : renderUnavailablePanel(
+              "Projection Metadata",
+              "Identity, status, and source details for this preview"
+            ),
+    },
+    {
+      key: "semantic_view",
+      className: "panel-slot panel-slot--half",
+      node:
+        hasSemanticPanel && semanticView && resolutionView
+          ? <SemanticPanel view={semanticView} resolutionView={resolutionView} />
+          : renderUnavailablePanel(
+              "Semantic Interpretation",
+              "How the preview interpreted scope and evidence"
+            ),
+    },
+    {
+      key: "issues_view",
+      className: "panel-slot panel-slot--half",
+      node:
+        hasIssuesPanel && issuesView
+          ? <IssuesPanel view={issuesView} />
+          : renderUnavailablePanel(
+              "Issues Summary",
+              "Errors and warnings that affect preview confidence"
+            ),
+    },
+    {
+      key: "resolution_view",
+      className: "panel-slot panel-slot--half",
+      node:
+        hasResolutionPanel && resolutionView
+          ? <ResolutionPanel view={resolutionView} />
+          : renderUnavailablePanel(
+              "Resolution Preview",
+              "Final interpreted result shown in plain contract fields"
+            ),
+    },
+    {
+      key: "rule_evaluation_summary_view",
+      className: "panel-slot panel-slot--full",
+      node:
+        hasRuleSummaryPanel && ruleSummaryView
+          ? <RuleSummaryPanel view={ruleSummaryView} />
+          : renderUnavailablePanel(
+              "Rule Evaluation Summary",
+              "Order and outcomes of rule checks"
+            ),
+    },
+    {
+      key: "rule_evaluation_trace_view",
+      className: "panel-slot panel-slot--half",
+      node:
+        hasRuleTracePanel && ruleTraceView
+          ? <RuleTracePanel view={ruleTraceView} />
+          : renderUnavailablePanel(
+              "Rule Evaluation Trace",
+              "Lineage fields used for traceability checks"
+            ),
+    },
+    {
+      key: "deterministic_identity_view",
+      className: "panel-slot panel-slot--half",
+      node:
+        hasDeterministicIdentityPanel && deterministicIdentityView
+          ? <DeterministicIdentityPanel view={deterministicIdentityView} />
+          : renderUnavailablePanel(
+              "Deterministic Identity",
+              "Side-by-side identity comparison"
+            ),
+    },
+    {
+      key: "raw_payload_debug_view",
+      className: "panel-slot panel-slot--full",
+      node:
+        hasRawPayloadPanel && rawPayloadView
+          ? <RawPayloadPanel view={rawPayloadView} />
+          : renderUnavailablePanel(
+              "Raw Payload Debug",
+              "Technical detail, with summary first"
+            ),
+    },
+  ];
 
   return (
     <div className="app-shell">
@@ -523,13 +931,13 @@ export default function App({ viewModel }: AppProps): JSX.Element {
           <div className="review-hero-main">
             <h2>{reviewTone}</h2>
             <p>
-              PASS checks: <strong>{passSignals}</strong> / {inspectionSignals.length}. MISMATCH
-              checks: <strong>{mismatchCount}</strong>.
+              PASS checks: <strong>{passSignals}</strong> / {inspectionSignals.length}. Review
+              items: <strong>{reviewItemCount}</strong>.
             </p>
             <h3>Discrepancy Summary</h3>
-            {mismatchCount ? (
+            {reviewItemCount ? (
               <ul className="compact-list">
-                {mismatchSignals.map((signal) => (
+                {reviewSignals.map((signal) => (
                   <li key={`mismatch-${signal.key}`}>
                     <strong>{signal.label}</strong>: {signal.detail}
                   </li>
@@ -542,21 +950,21 @@ export default function App({ viewModel }: AppProps): JSX.Element {
             )}
           </div>
           <div className="review-hero-metrics" aria-label="Review metrics">
-            <article className={`metric-chip ${highPriorityMismatchCount > 0 ? "is-mismatch" : "is-muted"}`}>
-              <span>High-priority mismatches</span>
-              <strong>{highPriorityMismatchCount}</strong>
+            <article className={`metric-chip ${highPriorityReviewCount > 0 ? "is-mismatch" : "is-muted"}`}>
+              <span>High-priority review items</span>
+              <strong>{highPriorityReviewCount}</strong>
             </article>
-            <article className={`metric-chip ${mismatchCount > 0 ? "is-mismatch" : "is-muted"}`}>
-              <span>Total mismatches</span>
-              <strong>{mismatchCount}</strong>
+            <article className={`metric-chip ${reviewItemCount > 0 ? "is-mismatch" : "is-muted"}`}>
+              <span>Total review items</span>
+              <strong>{reviewItemCount}</strong>
             </article>
-            <article className={`metric-chip ${hasNoErrors ? "is-muted" : "is-mismatch"}`}>
+            <article className={`metric-chip ${comparisonResultClass(errorCountResult)}`}>
               <span>Error count</span>
-              <strong>{sections.issues_view.error_count}</strong>
+              <strong>{errorCount !== undefined ? errorCount : UNAVAILABLE_LABEL}</strong>
             </article>
-            <article className={`metric-chip ${hasNoWarnings ? "is-muted" : "is-mismatch"}`}>
+            <article className={`metric-chip ${comparisonResultClass(warningCountResult)}`}>
               <span>Warning count</span>
-              <strong>{sections.issues_view.warning_count}</strong>
+              <strong>{warningCount !== undefined ? warningCount : UNAVAILABLE_LABEL}</strong>
             </article>
           </div>
         </section>
@@ -579,7 +987,7 @@ export default function App({ viewModel }: AppProps): JSX.Element {
                 <tr
                   key={check.key}
                   className={`priority-row priority-${check.priority.toLowerCase()} ${
-                    check.pass ? "is-pass" : "is-mismatch"
+                    comparisonResultClass(check.result)
                   }`}
                 >
                   <td>
@@ -595,8 +1003,8 @@ export default function App({ viewModel }: AppProps): JSX.Element {
                     </div>
                   </td>
                   <td>
-                    <span className={`parity-pill ${check.pass ? "is-pass" : "is-mismatch"}`}>
-                      {parityLabel(check.pass)}
+                    <span className={`parity-pill ${comparisonResultClass(check.result)}`}>
+                      {comparisonResultLabel(check.result)}
                     </span>
                   </td>
                   <td>
@@ -613,10 +1021,10 @@ export default function App({ viewModel }: AppProps): JSX.Element {
             </tbody>
           </table>
           <p className="check-first-hint">
-            High-priority mismatches: <strong>{highPriorityMismatchCount}</strong>. Total
-            mismatches: <strong>{mismatchCount}</strong>.
+            High-priority review items: <strong>{highPriorityReviewCount}</strong>. Mismatches:{" "}
+            <strong>{mismatchCount}</strong>. Unavailable evidence: <strong>{unavailableCount}</strong>.
           </p>
-          {mismatchDrillDownCards.length > 0 ? (
+          {reviewDrillDownCards.length > 0 ? (
             <section className="drilldown-strip" aria-label="Mismatch drill-down">
               <h3>Mismatch drill-down</h3>
               <p className="panel-note">
@@ -624,15 +1032,17 @@ export default function App({ viewModel }: AppProps): JSX.Element {
                 evidence lives.
               </p>
               <div className="drilldown-list">
-                {mismatchDrillDownCards.map((card) => (
+                {reviewDrillDownCards.map((card) => (
                   <article
                     key={`drilldown-${card.key}`}
                     className={`drilldown-card ${
                       card.priority === "High" ? "is-high" : "is-medium"
-                    }`}
+                    } ${comparisonResultClass(card.result)}`}
                   >
                     <div className="drilldown-card-header">
-                      <h4>{card.label} - Why this failed</h4>
+                      <h4>
+                        {card.label} - {card.result === "unavailable" ? "Evidence unavailable" : "Why this failed"}
+                      </h4>
                       <div className="drilldown-card-meta">
                         <span
                           className={`comparison-key-chip priority-${card.priority.toLowerCase()}`}
@@ -640,26 +1050,40 @@ export default function App({ viewModel }: AppProps): JSX.Element {
                           {card.pairingKey}
                         </span>
                         <span className="drilldown-priority">{card.priority} Priority</span>
+                        <span className={`drilldown-state-chip ${comparisonResultClass(card.result)}`}>
+                          {comparisonResultLabel(card.result)}
+                        </span>
                       </div>
                     </div>
-                    <p className="drilldown-diff-count">
-                      Differing fields: <strong>{card.diffLines.length}</strong>
-                    </p>
-                    <ul className="drilldown-diff-list">
-                      {card.diffLines.map((diffLine) => (
-                        <li key={`diff-${card.key}-${diffLine.key}`} className="drilldown-diff-row">
-                          <p className="drilldown-field-name">{diffLine.key}</p>
-                          <div>
-                            <span className="diff-label diff-label-before">{card.leftTag}:</span>{" "}
-                            <code>{`${diffLine.expectedLabel} = ${diffLine.expectedValue}`}</code>
-                          </div>
-                          <div>
-                            <span className="diff-label diff-label-after">{card.rightTag}:</span>{" "}
-                            <code>{`${diffLine.actualLabel} = ${diffLine.actualValue}`}</code>
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
+                    {card.diffLines.length > 0 ? (
+                      <>
+                        <p className="drilldown-diff-count">
+                          Differing grounded fields: <strong>{card.diffLines.length}</strong>
+                        </p>
+                        <ul className="drilldown-diff-list">
+                          {card.diffLines.map((diffLine) => (
+                            <li key={`diff-${card.key}-${diffLine.key}`} className="drilldown-diff-row">
+                              <p className="drilldown-field-name">{diffLine.key}</p>
+                              <div>
+                                <span className="diff-label diff-label-before">{card.leftTag}:</span>{" "}
+                                <code>{`${diffLine.expectedLabel} = ${diffLine.expectedValue}`}</code>
+                              </div>
+                              <div>
+                                <span className="diff-label diff-label-after">{card.rightTag}:</span>{" "}
+                                <code>{`${diffLine.actualLabel} = ${diffLine.actualValue}`}</code>
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                      </>
+                    ) : (
+                      <p className="panel-note unavailable-panel-note">{NO_EVIDENCE_LABEL}</p>
+                    )}
+                    {card.unavailableDiffCount > 0 ? (
+                      <p className="panel-note unavailable-panel-note">
+                        Some related fields are unavailable in this preview.
+                      </p>
+                    ) : null}
                     <p className="drilldown-fields-title">Key contributing fields</p>
                     <ul className="drilldown-fields">
                       {card.contributingFields.map((fieldName) => (
@@ -716,12 +1140,16 @@ export default function App({ viewModel }: AppProps): JSX.Element {
                   {EXPECTED_RULE_PHASE_ORDER.map((phase) => (
                     <tr key={`phase-count-${phase}`}>
                       <td>{phase}</td>
-                      <td>{ruleCountsByPhase[phase]}</td>
+                      <td>
+                        {ruleCountsByPhase[phase] !== undefined
+                          ? ruleCountsByPhase[phase]
+                          : UNAVAILABLE_LABEL}
+                      </td>
                     </tr>
                   ))}
                   <tr>
                     <td>Total Ordered Rules</td>
-                    <td>{sections.rule_evaluation_summary_view.ordered_rules.length}</td>
+                    <td>{orderedRules ? orderedRules.length : UNAVAILABLE_LABEL}</td>
                   </tr>
                 </tbody>
               </table>
@@ -730,11 +1158,11 @@ export default function App({ viewModel }: AppProps): JSX.Element {
               <h3>Traceability Snapshot</h3>
               <dl className="kv-grid compact-kv-grid">
                 <dt>Projection Contract</dt>
-                <dd>{sections.projection_metadata_view.projection_contract}</dd>
+                <dd>{projectionContract ?? UNAVAILABLE_LABEL}</dd>
                 <dt>Projection Kind</dt>
-                <dd>{sections.projection_metadata_view.projection_kind}</dd>
+                <dd>{projectionKind ?? UNAVAILABLE_LABEL}</dd>
                 <dt>Input Artifact</dt>
-                <dd>{sections.projection_metadata_view.input_artifact}</dd>
+                <dd>{projectionInputArtifact ?? UNAVAILABLE_LABEL}</dd>
               </dl>
             </article>
           </section>

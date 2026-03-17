@@ -78,6 +78,12 @@ body {
   color: #8f1f1f;
 }
 
+.status-tags li.status-tag--tone.is-unavailable {
+  border-color: #d8dce4;
+  background: #f3f5f9;
+  color: #4f5a6c;
+}
+
 .overview-strip {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -172,6 +178,12 @@ body {
   border-left-color: #d2822d;
 }
 
+.drilldown-card.is-unavailable {
+  border-left-color: #97a4b8;
+  border-color: #d5dce8;
+  background: #f8fafe;
+}
+
 .drilldown-card-header {
   display: flex;
   justify-content: space-between;
@@ -201,6 +213,23 @@ body {
   color: #6e3636;
   background: #fff4f4;
   white-space: nowrap;
+}
+
+.drilldown-state-chip {
+  border: 1px solid #d5dbe5;
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  background: #f5f7fb;
+  color: #475367;
+  white-space: nowrap;
+}
+
+.drilldown-state-chip.is-mismatch {
+  border-color: #ebbcbc;
+  background: #fff0f0;
+  color: #8f1f1f;
 }
 
 .drilldown-diff-count {
@@ -283,6 +312,10 @@ body {
   font-weight: 600;
 }
 
+.unavailable-panel-note {
+  color: #4a5568;
+}
+
 .review-hero {
   display: grid;
   grid-template-columns: 1.4fr 1fr;
@@ -312,6 +345,12 @@ body {
   border-color: #efbcbc;
   background: #fff5f5;
   box-shadow: 0 0 0 2px #ffe3e3 inset;
+}
+
+.review-hero.is-unavailable {
+  border-color: #d8dce4;
+  background: #f7f8fb;
+  box-shadow: 0 0 0 2px #eceff5 inset;
 }
 
 .review-hero-metrics {
@@ -348,6 +387,11 @@ body {
 .metric-chip.is-mismatch {
   border-color: #efbcbc;
   background: #fff0f0;
+}
+
+.metric-chip.is-unavailable {
+  border-color: #d6dbe5;
+  background: #f5f7fb;
 }
 
 .secondary-checks {
@@ -539,6 +583,10 @@ td {
   background: #fff7ec;
 }
 
+.summary-table .priority-row.is-unavailable td {
+  background: #f6f8fc;
+}
+
 .summary-table .priority-row.is-mismatch td:first-child {
   border-left: 4px solid #d64a4a;
   font-weight: 600;
@@ -546,6 +594,11 @@ td {
 
 .summary-table .priority-row.priority-medium.is-mismatch td:first-child {
   border-left-color: #d2822d;
+}
+
+.summary-table .priority-row.is-unavailable td:first-child {
+  border-left: 4px solid #9aa9bf;
+  font-weight: 600;
 }
 
 .comparison-label-cell {
@@ -610,6 +663,12 @@ td {
   color: #b32727;
   border-color: #f0b2b2;
   background: #ffeaea;
+}
+
+.parity-pill.is-unavailable {
+  color: #4f5f76;
+  border-color: #cfd6e3;
+  background: #f3f6fb;
 }
 
 .compact-list {
