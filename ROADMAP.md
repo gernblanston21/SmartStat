@@ -783,6 +783,7 @@ Explicit future choices:
 - No new next-step runtime slice is added in this pass
 - Runtime continuation marker: `RUNTIME_CONTINUATION_PASS_01` completed as a stabilization-only hardening pass on existing slice-01 through 02G outputs (deterministic ordering + fail-closed ordering-input handling), with no new slice, no schema change, and no mutation/apply authorization change
 - Runtime continuation marker: `RUNTIME_CONTINUATION_PASS_02` completed as a stabilization-only hardening pass on existing slice-01 through 02G outputs (evidence completeness + structural consistency fail-closed enforcement), with no new slice, no schema change, and no mutation/apply authorization change
+- Runtime continuation marker: `RUNTIME_CONTINUATION_PASS_03` completed as a stabilization-only hardening pass on existing slice-01 through 02G outputs (canonical serialization stability + fail-closed canonicalization prerequisite enforcement), with no new slice, no schema change, and no mutation/apply authorization change
 
 ### Definition of Done
 

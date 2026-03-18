@@ -541,3 +541,41 @@ Fail-Closed Validation Summary:
   - issues-warning entries missing required `message`
   - `status_summary.warning_count` mismatch vs `issues_summary.warnings` array count
 - no silent degradation or auto-correction path was introduced
+
+### Runtime Continuation: `RUNTIME_CONTINUATION_PASS_03`
+
+Status:
+- IMPLEMENTED
+- VALIDATED
+- CLOSED
+
+Objective:
+- harden canonical serialization stability for existing WP20 read-only runtime outputs so logically identical validated inputs cannot vary by object-fragment or field-order differences
+
+Boundary Scope:
+- no new slice
+- no schema changes
+- no viewer changes
+- no adapter changes
+- no mutation/apply behavior changes
+- no `SmartStat_v4.0.0_beta.vbs` edits
+
+Canonical Serialization Stability Summary:
+- issues evidence entries are now parsed and rebuilt into canonical object form with deterministic key order (`code`, `message`) before sorting/emission
+- rule evaluation summary canonical object emission remains explicit and deterministic (`category`, `rule_id`, `outcome`)
+- canonicalization now rejects non-canonicalizable issue objects (unsupported/duplicate/missing/non-string fields) instead of emitting partially canonicalized structures
+
+Determinism Validation Summary:
+- repeat-run hash equality confirmed for positive projection intake replay (`pass03_pos_runA` vs `pass03_pos_runB`)
+- regression parity confirmed against established valid baseline output hash (`pos_projection_intake_run1`)
+- field-order variants of logically identical inputs were normalized to byte-identical outputs:
+  - issue object order variant A/B produced identical output hash
+  - rule object key-order variant A/B produced identical output hash
+
+Fail-Closed Validation Summary:
+- malformed canonicalization prerequisites fail closed with `SLICE2_PROJECTION_ARTIFACT_MALFORMED`
+- negative checks passed for:
+  - issues entry with unsupported extra field
+  - issues entry with non-string `message`
+  - ordered-rule entry missing required `outcome`
+- no silent fallback path to partial or incidental serialization order was introduced

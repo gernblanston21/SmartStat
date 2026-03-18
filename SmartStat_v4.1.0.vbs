@@ -6432,6 +6432,7 @@ End Function
 
 Function Slice2PlanBridge_NormalizeGenericArrayJson(ByVal arrayJsonIn, ByVal contextLabel, ByRef arrayJsonOut, ByRef errText)
   Dim elements, elementCount, i
+  Dim canonicalElements(), canonicalElement
   Dim sortedElements
 
   Slice2PlanBridge_NormalizeGenericArrayJson = False
@@ -6448,19 +6449,39 @@ Function Slice2PlanBridge_NormalizeGenericArrayJson(ByVal arrayJsonIn, ByVal con
     Slice2PlanBridge_NormalizeGenericArrayJson = True
     Exit Function
   End If
+  ReDim canonicalElements(CLng(elementCount) - 1)
   For i = 0 To CLng(elementCount) - 1
-    If Not Slice2PlanBridge_ValidateIssueEvidenceEntry(CStr(elements(i)), CStr(contextLabel), CLng(i), errText) Then Exit Function
+    If Not Slice2PlanBridge_CanonicalizeIssueEvidenceEntry(CStr(elements(i)), CStr(contextLabel), CLng(i), canonicalElement, errText) Then Exit Function
+    canonicalElements(i) = CStr(canonicalElement)
   Next
 
-  sortedElements = Slice1Ingress_SortTextBinary(elements)
+  sortedElements = Slice1Ingress_SortTextBinary(canonicalElements)
   arrayJsonOut = Slice2PlanBridge_JsonBuildArrayFromElements(sortedElements, CLng(elementCount))
   Slice2PlanBridge_NormalizeGenericArrayJson = True
 End Function
 
-Function Slice2PlanBridge_ValidateIssueEvidenceEntry(ByVal elementJson, ByVal contextLabel, ByVal indexValue, ByRef errText)
-  Dim token, codeTxt, messageTxt
+Function Slice2PlanBridge_CanonicalizeIssueEvidenceEntry(ByVal elementJson, ByVal contextLabel, ByVal indexValue, ByRef canonicalOut, ByRef errText)
+  Dim codeTxt, messageTxt
 
-  Slice2PlanBridge_ValidateIssueEvidenceEntry = False
+  Slice2PlanBridge_CanonicalizeIssueEvidenceEntry = False
+  canonicalOut = ""
+  errText = ""
+
+  If Not Slice2PlanBridge_ParseIssueEvidenceEntry(CStr(elementJson), CStr(contextLabel), CLng(indexValue), codeTxt, messageTxt, errText) Then Exit Function
+
+  canonicalOut = Slice2PlanBridge_BuildCanonicalIssueObject(codeTxt, messageTxt)
+  Slice2PlanBridge_CanonicalizeIssueEvidenceEntry = True
+End Function
+
+Function Slice2PlanBridge_ParseIssueEvidenceEntry(ByVal elementJson, ByVal contextLabel, ByVal indexValue, ByRef codeOut, ByRef messageOut, ByRef errText)
+  Dim token, pairs, pairCount, pairErr
+  Dim pairToken, keyName, valueToken, valueText, keyUpper
+  Dim seenKeys
+  Dim i
+
+  Slice2PlanBridge_ParseIssueEvidenceEntry = False
+  codeOut = ""
+  messageOut = ""
   errText = ""
   token = Trim(CStr(elementJson))
 
@@ -6468,24 +6489,221 @@ Function Slice2PlanBridge_ValidateIssueEvidenceEntry(ByVal elementJson, ByVal co
     errText = CStr(contextLabel) & " malformed entry at index " & CStr(indexValue)
     Exit Function
   End If
-  If Not Slice2PlanBridge_JsonReadString(token, "code", codeTxt) Then
+  If Not Slice2PlanBridge_JsonSplitObjectTopLevelPairs(token, pairs, pairCount, pairErr) Then
+    errText = CStr(contextLabel) & " malformed entry at index " & CStr(indexValue)
+    Exit Function
+  End If
+  If CLng(pairCount) <> 2 Then
+    errText = CStr(contextLabel) & " unsupported field set at index " & CStr(indexValue)
+    Exit Function
+  End If
+  Set seenKeys = CreateObject("Scripting.Dictionary")
+  For i = 0 To CLng(pairCount) - 1
+    pairToken = CStr(pairs(i))
+    If Not Slice2PlanBridge_JsonParseObjectPair(pairToken, keyName, valueToken, pairErr) Then
+      errText = CStr(contextLabel) & " malformed entry at index " & CStr(indexValue)
+      Exit Function
+    End If
+    keyUpper = UCase(Trim(CStr(keyName)))
+    If keyUpper <> "CODE" And keyUpper <> "MESSAGE" Then
+      errText = CStr(contextLabel) & " unsupported field '" & CStr(keyName) & "' at index " & CStr(indexValue)
+      Exit Function
+    End If
+    If seenKeys.Exists(keyUpper) Then
+      errText = CStr(contextLabel) & " duplicate field '" & CStr(keyName) & "' at index " & CStr(indexValue)
+      Exit Function
+    End If
+    seenKeys.Add keyUpper, keyUpper
+    If Not Slice2PlanBridge_JsonParseStringScalar(valueToken, valueText) Then
+      errText = CStr(contextLabel) & " non-string " & LCase(CStr(keyName)) & " at index " & CStr(indexValue)
+      Exit Function
+    End If
+    If keyUpper = "CODE" Then
+      codeOut = CStr(valueText)
+    ElseIf keyUpper = "MESSAGE" Then
+      messageOut = CStr(valueText)
+    End If
+  Next
+  If Not seenKeys.Exists("CODE") Then
     errText = CStr(contextLabel) & " missing code at index " & CStr(indexValue)
     Exit Function
   End If
-  If Not Slice2PlanBridge_JsonReadString(token, "message", messageTxt) Then
+  If Not seenKeys.Exists("MESSAGE") Then
     errText = CStr(contextLabel) & " missing message at index " & CStr(indexValue)
     Exit Function
   End If
-  If Len(Trim(CStr(codeTxt))) = 0 Then
+  If Len(Trim(CStr(codeOut))) = 0 Then
     errText = CStr(contextLabel) & " empty code at index " & CStr(indexValue)
     Exit Function
   End If
-  If Len(Trim(CStr(messageTxt))) = 0 Then
+  If Len(Trim(CStr(messageOut))) = 0 Then
     errText = CStr(contextLabel) & " empty message at index " & CStr(indexValue)
     Exit Function
   End If
 
-  Slice2PlanBridge_ValidateIssueEvidenceEntry = True
+  Slice2PlanBridge_ParseIssueEvidenceEntry = True
+End Function
+
+Function Slice2PlanBridge_JsonSplitObjectTopLevelPairs(ByVal objectJson, ByRef pairsOut, ByRef countOut, ByRef errText)
+  Dim compactObj, innerText
+  Dim inString, escapeNext
+  Dim depthObj, depthArr
+  Dim i, ch
+  Dim currentToken
+  Dim pairArray()
+
+  Slice2PlanBridge_JsonSplitObjectTopLevelPairs = False
+  pairsOut = Array()
+  countOut = 0
+  errText = "malformed"
+
+  compactObj = Slice2PlanBridge_JsonCompact(CStr(objectJson))
+  If Len(compactObj) < 2 Then Exit Function
+  If Left(compactObj, 1) <> "{" Then Exit Function
+  If Right(compactObj, 1) <> "}" Then Exit Function
+
+  innerText = Mid(compactObj, 2, Len(compactObj) - 2)
+  If Len(innerText) = 0 Then
+    errText = ""
+    Slice2PlanBridge_JsonSplitObjectTopLevelPairs = True
+    Exit Function
+  End If
+
+  inString = False
+  escapeNext = False
+  depthObj = 0
+  depthArr = 0
+  currentToken = ""
+
+  For i = 1 To Len(innerText)
+    ch = Mid(innerText, i, 1)
+    If inString Then
+      currentToken = currentToken & ch
+      If escapeNext Then
+        escapeNext = False
+      ElseIf ch = "\" Then
+        escapeNext = True
+      ElseIf ch = """" Then
+        inString = False
+      End If
+    Else
+      If ch = """" Then
+        inString = True
+        currentToken = currentToken & ch
+      ElseIf ch = "{" Then
+        depthObj = depthObj + 1
+        currentToken = currentToken & ch
+      ElseIf ch = "}" Then
+        depthObj = depthObj - 1
+        If depthObj < 0 Then Exit Function
+        currentToken = currentToken & ch
+      ElseIf ch = "[" Then
+        depthArr = depthArr + 1
+        currentToken = currentToken & ch
+      ElseIf ch = "]" Then
+        depthArr = depthArr - 1
+        If depthArr < 0 Then Exit Function
+        currentToken = currentToken & ch
+      ElseIf ch = "," And depthObj = 0 And depthArr = 0 Then
+        currentToken = Trim(CStr(currentToken))
+        If Len(currentToken) = 0 Then Exit Function
+        If CLng(countOut) = 0 Then
+          ReDim pairArray(0)
+        Else
+          ReDim Preserve pairArray(CLng(countOut))
+        End If
+        pairArray(CLng(countOut)) = currentToken
+        countOut = CLng(countOut) + 1
+        currentToken = ""
+      Else
+        currentToken = currentToken & ch
+      End If
+    End If
+  Next
+
+  If inString Or depthObj <> 0 Or depthArr <> 0 Then Exit Function
+
+  currentToken = Trim(CStr(currentToken))
+  If Len(currentToken) = 0 Then Exit Function
+  If CLng(countOut) = 0 Then
+    ReDim pairArray(0)
+  Else
+    ReDim Preserve pairArray(CLng(countOut))
+  End If
+  pairArray(CLng(countOut)) = currentToken
+  countOut = CLng(countOut) + 1
+
+  pairsOut = pairArray
+  errText = ""
+  Slice2PlanBridge_JsonSplitObjectTopLevelPairs = True
+End Function
+
+Function Slice2PlanBridge_JsonParseObjectPair(ByVal pairToken, ByRef keyOut, ByRef valueTokenOut, ByRef errText)
+  Dim token, inString, escapeNext
+  Dim depthObj, depthArr
+  Dim i, ch, colonPos
+  Dim keyToken
+
+  Slice2PlanBridge_JsonParseObjectPair = False
+  keyOut = ""
+  valueTokenOut = ""
+  errText = "malformed"
+
+  token = Trim(CStr(pairToken))
+  If Len(token) = 0 Then Exit Function
+
+  inString = False
+  escapeNext = False
+  depthObj = 0
+  depthArr = 0
+  colonPos = 0
+
+  For i = 1 To Len(token)
+    ch = Mid(token, i, 1)
+    If inString Then
+      If escapeNext Then
+        escapeNext = False
+      ElseIf ch = "\" Then
+        escapeNext = True
+      ElseIf ch = """" Then
+        inString = False
+      End If
+    Else
+      If ch = """" Then
+        inString = True
+      ElseIf ch = "{" Then
+        depthObj = depthObj + 1
+      ElseIf ch = "}" Then
+        depthObj = depthObj - 1
+      ElseIf ch = "[" Then
+        depthArr = depthArr + 1
+      ElseIf ch = "]" Then
+        depthArr = depthArr - 1
+      ElseIf ch = ":" And depthObj = 0 And depthArr = 0 Then
+        colonPos = i
+        Exit For
+      End If
+    End If
+  Next
+
+  If colonPos <= 1 Then Exit Function
+  keyToken = Trim(Left(token, colonPos - 1))
+  valueTokenOut = Trim(Mid(token, colonPos + 1))
+  If Len(valueTokenOut) = 0 Then Exit Function
+  If Not Slice2PlanBridge_JsonParseStringScalar(keyToken, keyOut) Then Exit Function
+
+  errText = ""
+  Slice2PlanBridge_JsonParseObjectPair = True
+End Function
+
+Function Slice2PlanBridge_BuildCanonicalIssueObject(ByVal codeValue, ByVal messageValue)
+  Dim outTxt
+
+  outTxt = "{"
+  outTxt = outTxt & """code"":""" & Slice1Ingress_JsonEscape(CStr(codeValue)) & """"
+  outTxt = outTxt & ",""message"":""" & Slice1Ingress_JsonEscape(CStr(messageValue)) & """"
+  outTxt = outTxt & "}"
+  Slice2PlanBridge_BuildCanonicalIssueObject = outTxt
 End Function
 
 Function Slice2PlanBridge_NormalizeRuleEvaluationSummaryArrays(ByVal phaseOrderJsonIn, ByVal orderedRulesJsonIn, ByRef phaseOrderJsonOut, ByRef orderedRulesJsonOut, ByRef errText)
