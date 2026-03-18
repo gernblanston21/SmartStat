@@ -6072,6 +6072,7 @@ Function Slice2PlanBridge_LoadProjectionIntake(ByVal projectionPath, ByRef outco
   Dim issuesErrorsErr, issuesWarningsErr
   Dim rulePhaseOrderJson, ruleOrderedRulesJson
   Dim rulePhaseOrderErr, ruleOrderedRulesErr
+  Dim orderingErr
   Dim errorCount, warningCount
 
   Slice2PlanBridge_LoadProjectionIntake = False
@@ -6221,6 +6222,11 @@ Function Slice2PlanBridge_LoadProjectionIntake(ByVal projectionPath, ByRef outco
   If Not Slice2PlanBridge_JsonReadArray(jsonText, "ordered_rules", ruleOrderedRulesJson, ruleOrderedRulesErr) Then
     errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
     errText = "projection artifact malformed: rule_evaluation_summary.ordered_rules " & ruleOrderedRulesErr
+    Exit Function
+  End If
+  If Not Slice2PlanBridge_NormalizeProjectionEvidenceArrays(issuesErrorsJson, issuesWarningsJson, rulePhaseOrderJson, ruleOrderedRulesJson, orderingErr) Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: " & orderingErr
     Exit Function
   End If
 
@@ -6382,6 +6388,403 @@ Function Slice2PlanBridge_JsonReadArray(ByVal jsonText, ByVal keyName, ByRef val
   End If
 
   Slice2PlanBridge_JsonReadArray = True
+End Function
+
+Function Slice2PlanBridge_NormalizeProjectionEvidenceArrays(ByRef issuesErrorsJson, ByRef issuesWarningsJson, ByRef rulePhaseOrderJson, ByRef ruleOrderedRulesJson, ByRef errText)
+  Dim normalizedIssuesErrors, normalizedIssuesWarnings
+  Dim normalizedPhaseOrder, normalizedOrderedRules
+
+  Slice2PlanBridge_NormalizeProjectionEvidenceArrays = False
+  errText = ""
+
+  If Not Slice2PlanBridge_NormalizeGenericArrayJson(issuesErrorsJson, "issues_summary.errors", normalizedIssuesErrors, errText) Then Exit Function
+  If Not Slice2PlanBridge_NormalizeGenericArrayJson(issuesWarningsJson, "issues_summary.warnings", normalizedIssuesWarnings, errText) Then Exit Function
+  If Not Slice2PlanBridge_NormalizeRuleEvaluationSummaryArrays(rulePhaseOrderJson, ruleOrderedRulesJson, normalizedPhaseOrder, normalizedOrderedRules, errText) Then Exit Function
+
+  issuesErrorsJson = CStr(normalizedIssuesErrors)
+  issuesWarningsJson = CStr(normalizedIssuesWarnings)
+  rulePhaseOrderJson = CStr(normalizedPhaseOrder)
+  ruleOrderedRulesJson = CStr(normalizedOrderedRules)
+  Slice2PlanBridge_NormalizeProjectionEvidenceArrays = True
+End Function
+
+Function Slice2PlanBridge_NormalizeGenericArrayJson(ByVal arrayJsonIn, ByVal contextLabel, ByRef arrayJsonOut, ByRef errText)
+  Dim elements, elementCount
+  Dim sortedElements
+
+  Slice2PlanBridge_NormalizeGenericArrayJson = False
+  arrayJsonOut = ""
+  errText = ""
+
+  If Not Slice2PlanBridge_JsonSplitArrayElements(arrayJsonIn, elements, elementCount, errText) Then
+    errText = CStr(contextLabel) & " " & CStr(errText)
+    Exit Function
+  End If
+
+  If CLng(elementCount) = 0 Then
+    arrayJsonOut = "[]"
+    Slice2PlanBridge_NormalizeGenericArrayJson = True
+    Exit Function
+  End If
+
+  sortedElements = Slice1Ingress_SortTextBinary(elements)
+  arrayJsonOut = Slice2PlanBridge_JsonBuildArrayFromElements(sortedElements, CLng(elementCount))
+  Slice2PlanBridge_NormalizeGenericArrayJson = True
+End Function
+
+Function Slice2PlanBridge_NormalizeRuleEvaluationSummaryArrays(ByVal phaseOrderJsonIn, ByVal orderedRulesJsonIn, ByRef phaseOrderJsonOut, ByRef orderedRulesJsonOut, ByRef errText)
+  Dim phaseElements, phaseCount
+  Dim ruleElements, ruleCount
+  Dim phaseRank, phasePresent
+  Dim canonicalPhaseOrder
+  Dim i, tokenValue, phaseKey
+  Dim sortedRulePairs
+  Dim pairDelimiter, posSep
+
+  Slice2PlanBridge_NormalizeRuleEvaluationSummaryArrays = False
+  phaseOrderJsonOut = ""
+  orderedRulesJsonOut = ""
+  errText = ""
+  pairDelimiter = Chr(30)
+
+  If Not Slice2PlanBridge_JsonSplitArrayElements(phaseOrderJsonIn, phaseElements, phaseCount, errText) Then
+    errText = "rule_evaluation_summary.phase_order " & CStr(errText)
+    Exit Function
+  End If
+  If CLng(phaseCount) = 0 Then
+    errText = "rule_evaluation_summary.phase_order empty"
+    Exit Function
+  End If
+
+  Set phaseRank = CreateObject("Scripting.Dictionary")
+  phaseRank.Add "STRUCTURAL", 1
+  phaseRank.Add "SEMANTIC", 2
+  phaseRank.Add "DETERMINISM", 3
+  phaseRank.Add "BOUNDARY", 4
+
+  Set phasePresent = CreateObject("Scripting.Dictionary")
+  For i = 0 To CLng(phaseCount) - 1
+    If Not Slice2PlanBridge_JsonParseStringScalar(CStr(phaseElements(i)), tokenValue) Then
+      errText = "rule_evaluation_summary.phase_order malformed element at index " & CStr(i)
+      Exit Function
+    End If
+    phaseKey = UCase(Trim(CStr(tokenValue)))
+    If Len(phaseKey) = 0 Then
+      errText = "rule_evaluation_summary.phase_order contains empty phase token"
+      Exit Function
+    End If
+    If Not phaseRank.Exists(phaseKey) Then
+      errText = "rule_evaluation_summary.phase_order contains unsupported phase token: " & phaseKey
+      Exit Function
+    End If
+    If phasePresent.Exists(phaseKey) Then
+      errText = "rule_evaluation_summary.phase_order contains duplicate phase token: " & phaseKey
+      Exit Function
+    End If
+    phasePresent.Add phaseKey, phaseKey
+  Next
+
+  canonicalPhaseOrder = Array("STRUCTURAL", "SEMANTIC", "DETERMINISM", "BOUNDARY")
+  phaseOrderJsonOut = Slice2PlanBridge_BuildPhaseOrderJson(canonicalPhaseOrder, phasePresent)
+
+  If Not Slice2PlanBridge_JsonSplitArrayElements(orderedRulesJsonIn, ruleElements, ruleCount, errText) Then
+    errText = "rule_evaluation_summary.ordered_rules " & CStr(errText)
+    Exit Function
+  End If
+  If CLng(ruleCount) = 0 Then
+    errText = "rule_evaluation_summary.ordered_rules empty"
+    Exit Function
+  End If
+
+  If Not Slice2PlanBridge_NormalizeOrderedRulesArray(ruleElements, CLng(ruleCount), phaseRank, phasePresent, sortedRulePairs, errText) Then
+    errText = "rule_evaluation_summary.ordered_rules " & CStr(errText)
+    Exit Function
+  End If
+
+  orderedRulesJsonOut = "["
+  For i = 0 To CLng(ruleCount) - 1
+    posSep = InStr(1, CStr(sortedRulePairs(i)), pairDelimiter, vbBinaryCompare)
+    If posSep <= 0 Then
+      errText = "normalization internal error: invalid ordered_rules pair encoding"
+      Exit Function
+    End If
+    If i > 0 Then orderedRulesJsonOut = orderedRulesJsonOut & ","
+    orderedRulesJsonOut = orderedRulesJsonOut & Mid(CStr(sortedRulePairs(i)), posSep + 1)
+  Next
+  orderedRulesJsonOut = orderedRulesJsonOut & "]"
+
+  Slice2PlanBridge_NormalizeRuleEvaluationSummaryArrays = True
+End Function
+
+Function Slice2PlanBridge_NormalizeOrderedRulesArray(ByVal ruleElements, ByVal ruleCount, ByVal phaseRank, ByVal phasePresent, ByRef sortedPairsOut, ByRef errText)
+  Dim i
+  Dim ruleObj, category, ruleId, outcome
+  Dim categoryKey, duplicateKey, rankValue, ruleRank
+  Dim seenRuleKeys
+  Dim sortPairs()
+  Dim sortKey, canonicalRuleObj
+
+  Slice2PlanBridge_NormalizeOrderedRulesArray = False
+  errText = ""
+  Set seenRuleKeys = CreateObject("Scripting.Dictionary")
+  ReDim sortPairs(ruleCount - 1)
+
+  For i = 0 To CLng(ruleCount) - 1
+    ruleObj = Trim(CStr(ruleElements(i)))
+    If Left(ruleObj, 1) <> "{" Or Right(ruleObj, 1) <> "}" Then
+      errText = "malformed object at index " & CStr(i)
+      Exit Function
+    End If
+    If Not Slice2PlanBridge_JsonReadString(ruleObj, "category", category) Then
+      errText = "missing category at index " & CStr(i)
+      Exit Function
+    End If
+    If Not Slice2PlanBridge_JsonReadString(ruleObj, "rule_id", ruleId) Then
+      errText = "missing rule_id at index " & CStr(i)
+      Exit Function
+    End If
+    If Not Slice2PlanBridge_JsonReadString(ruleObj, "outcome", outcome) Then
+      errText = "missing outcome at index " & CStr(i)
+      Exit Function
+    End If
+
+    categoryKey = UCase(Trim(CStr(category)))
+    ruleId = Trim(CStr(ruleId))
+    outcome = Trim(CStr(outcome))
+    If Len(categoryKey) = 0 Then
+      errText = "empty category at index " & CStr(i)
+      Exit Function
+    End If
+    If Len(ruleId) = 0 Then
+      errText = "empty rule_id at index " & CStr(i)
+      Exit Function
+    End If
+    If Len(outcome) = 0 Then
+      errText = "empty outcome at index " & CStr(i)
+      Exit Function
+    End If
+    If Not phasePresent.Exists(categoryKey) Then
+      errText = "category not present in phase_order at index " & CStr(i) & ": " & categoryKey
+      Exit Function
+    End If
+    If Not phaseRank.Exists(categoryKey) Then
+      errText = "unsupported category at index " & CStr(i) & ": " & categoryKey
+      Exit Function
+    End If
+    If Not Slice2PlanBridge_RuleIdRank(categoryKey, ruleId, ruleRank) Then
+      errText = "unsupported rule_id at index " & CStr(i) & ": " & ruleId
+      Exit Function
+    End If
+
+    duplicateKey = categoryKey & "|" & UCase(ruleId)
+    If seenRuleKeys.Exists(duplicateKey) Then
+      errText = "duplicate category/rule_id entry detected: " & categoryKey & "/" & ruleId
+      Exit Function
+    End If
+    seenRuleKeys.Add duplicateKey, duplicateKey
+
+    rankValue = CInt(phaseRank(categoryKey))
+    canonicalRuleObj = Slice2PlanBridge_BuildCanonicalRuleObject(categoryKey, ruleId, outcome)
+    sortKey = Right("0000" & CStr(rankValue), 4) & "|" & Right("0000" & CStr(ruleRank), 4) & "|" & UCase(ruleId) & "|" & UCase(outcome)
+    sortPairs(i) = sortKey & Chr(30) & canonicalRuleObj
+  Next
+
+  sortedPairsOut = Slice1Ingress_SortTextBinary(sortPairs)
+  Slice2PlanBridge_NormalizeOrderedRulesArray = True
+End Function
+
+Function Slice2PlanBridge_RuleIdRank(ByVal categoryKey, ByVal ruleId, ByRef rankOut)
+  Dim rid
+
+  Slice2PlanBridge_RuleIdRank = False
+  rankOut = 0
+  rid = UCase(Trim(CStr(ruleId)))
+
+  Select Case UCase(Trim(CStr(categoryKey)))
+    Case "STRUCTURAL"
+      If rid = "STRUCT_SLOT_ORDER_CONTIGUOUS_ASC" Then rankOut = 1: Slice2PlanBridge_RuleIdRank = True: Exit Function
+      If rid = "STRUCT_CAPTURED_PLAN_TERMINAL_REQUIRED" Then rankOut = 2: Slice2PlanBridge_RuleIdRank = True: Exit Function
+      If rid = "STRUCT_ILLEGAL_SLOT_COMBINATION" Then rankOut = 3: Slice2PlanBridge_RuleIdRank = True: Exit Function
+      If rid = "STRUCT_NO_NON_FORMATTER_AFTER_TERMINAL" Then rankOut = 4: Slice2PlanBridge_RuleIdRank = True: Exit Function
+      If rid = "STRUCT_FORMATTER_COUNT_MAX_ONE" Then rankOut = 5: Slice2PlanBridge_RuleIdRank = True: Exit Function
+    Case "SEMANTIC"
+      If rid = "SEM_REQUIRED_DEPENDENCIES_PRESENT" Then rankOut = 1: Slice2PlanBridge_RuleIdRank = True: Exit Function
+      If rid = "SEM_FORMATTER_TERMINAL_ADJACENT_AND_TYPE_COMPATIBLE" Then rankOut = 2: Slice2PlanBridge_RuleIdRank = True: Exit Function
+      If rid = "SEM_ENTITY_FAMILY_OPERATOR_TERMINAL_COMPATIBLE" Then rankOut = 3: Slice2PlanBridge_RuleIdRank = True: Exit Function
+      If rid = "SEM_AMBIGUOUS_OR_INCOMPATIBLE_COMBINATION_REFUSED" Then rankOut = 4: Slice2PlanBridge_RuleIdRank = True: Exit Function
+    Case "DETERMINISM"
+      If rid = "DET_RULE_EVALUATION_ORDER_STABLE" Then rankOut = 1: Slice2PlanBridge_RuleIdRank = True: Exit Function
+      If rid = "DET_ERROR_WARNING_ORDER_STABLE" Then rankOut = 2: Slice2PlanBridge_RuleIdRank = True: Exit Function
+      If rid = "DET_OUTPUT_NORMALIZATION_STABLE" Then rankOut = 3: Slice2PlanBridge_RuleIdRank = True: Exit Function
+      If rid = "DET_AMBIGUOUS_INTERPRETATION_REFUSED" Then rankOut = 4: Slice2PlanBridge_RuleIdRank = True: Exit Function
+      If rid = "DET_REPLAY_IDENTITY_STABLE" Then rankOut = 5: Slice2PlanBridge_RuleIdRank = True: Exit Function
+    Case "BOUNDARY"
+      If rid = "BOUND_VALIDATION_RUNTIME_INDEPENDENT" Then rankOut = 1: Slice2PlanBridge_RuleIdRank = True: Exit Function
+      If rid = "BOUND_NO_TRIO_OR_ENGINE_APPLY_CALLS" Then rankOut = 2: Slice2PlanBridge_RuleIdRank = True: Exit Function
+      If rid = "BOUND_CAPTURED_PLAN_READ_ONLY" Then rankOut = 3: Slice2PlanBridge_RuleIdRank = True: Exit Function
+      If rid = "BOUND_NO_RUNTIME_SIDE_EFFECT_INFERENCE" Then rankOut = 4: Slice2PlanBridge_RuleIdRank = True: Exit Function
+  End Select
+End Function
+
+Function Slice2PlanBridge_BuildCanonicalRuleObject(ByVal categoryValue, ByVal ruleIdValue, ByVal outcomeValue)
+  Dim outTxt
+  outTxt = "{"
+  outTxt = outTxt & """category"":""" & Slice1Ingress_JsonEscape(CStr(categoryValue)) & """"
+  outTxt = outTxt & ",""rule_id"":""" & Slice1Ingress_JsonEscape(CStr(ruleIdValue)) & """"
+  outTxt = outTxt & ",""outcome"":""" & Slice1Ingress_JsonEscape(CStr(outcomeValue)) & """"
+  outTxt = outTxt & "}"
+  Slice2PlanBridge_BuildCanonicalRuleObject = outTxt
+End Function
+
+Function Slice2PlanBridge_BuildPhaseOrderJson(ByVal canonicalPhaseOrder, ByVal phasePresent)
+  Dim i, phaseKey, outTxt
+
+  outTxt = "["
+  For i = LBound(canonicalPhaseOrder) To UBound(canonicalPhaseOrder)
+    phaseKey = CStr(canonicalPhaseOrder(i))
+    If phasePresent.Exists(phaseKey) Then
+      If outTxt <> "[" Then outTxt = outTxt & ","
+      outTxt = outTxt & """" & Slice1Ingress_JsonEscape(phaseKey) & """"
+    End If
+  Next
+  outTxt = outTxt & "]"
+  Slice2PlanBridge_BuildPhaseOrderJson = outTxt
+End Function
+
+Function Slice2PlanBridge_JsonSplitArrayElements(ByVal arrayJson, ByRef elementsOut, ByRef countOut, ByRef errText)
+  Dim compactArray, innerText
+  Dim inString, escapeNext
+  Dim depthObj, depthArr
+  Dim i, ch
+  Dim currentToken
+  Dim elementArray()
+
+  Slice2PlanBridge_JsonSplitArrayElements = False
+  elementsOut = Array()
+  countOut = 0
+  errText = "malformed"
+
+  compactArray = Slice2PlanBridge_JsonCompact(CStr(arrayJson))
+  If Len(compactArray) < 2 Then Exit Function
+  If Left(compactArray, 1) <> "[" Then Exit Function
+  If Right(compactArray, 1) <> "]" Then Exit Function
+
+  innerText = Mid(compactArray, 2, Len(compactArray) - 2)
+  If Len(innerText) = 0 Then
+    errText = ""
+    Slice2PlanBridge_JsonSplitArrayElements = True
+    Exit Function
+  End If
+
+  inString = False
+  escapeNext = False
+  depthObj = 0
+  depthArr = 0
+  currentToken = ""
+
+  For i = 1 To Len(innerText)
+    ch = Mid(innerText, i, 1)
+    If inString Then
+      currentToken = currentToken & ch
+      If escapeNext Then
+        escapeNext = False
+      ElseIf ch = "\" Then
+        escapeNext = True
+      ElseIf ch = """" Then
+        inString = False
+      End If
+    Else
+      If ch = """" Then
+        inString = True
+        currentToken = currentToken & ch
+      ElseIf ch = "{" Then
+        depthObj = depthObj + 1
+        currentToken = currentToken & ch
+      ElseIf ch = "}" Then
+        depthObj = depthObj - 1
+        If depthObj < 0 Then Exit Function
+        currentToken = currentToken & ch
+      ElseIf ch = "[" Then
+        depthArr = depthArr + 1
+        currentToken = currentToken & ch
+      ElseIf ch = "]" Then
+        depthArr = depthArr - 1
+        If depthArr < 0 Then Exit Function
+        currentToken = currentToken & ch
+      ElseIf ch = "," And depthObj = 0 And depthArr = 0 Then
+        currentToken = Trim(CStr(currentToken))
+        If Len(currentToken) = 0 Then Exit Function
+        If CLng(countOut) = 0 Then
+          ReDim elementArray(0)
+        Else
+          ReDim Preserve elementArray(CLng(countOut))
+        End If
+        elementArray(CLng(countOut)) = currentToken
+        countOut = CLng(countOut) + 1
+        currentToken = ""
+      Else
+        currentToken = currentToken & ch
+      End If
+    End If
+  Next
+
+  If inString Or depthObj <> 0 Or depthArr <> 0 Then Exit Function
+
+  currentToken = Trim(CStr(currentToken))
+  If Len(currentToken) = 0 Then Exit Function
+  If CLng(countOut) = 0 Then
+    ReDim elementArray(0)
+  Else
+    ReDim Preserve elementArray(CLng(countOut))
+  End If
+  elementArray(CLng(countOut)) = currentToken
+  countOut = CLng(countOut) + 1
+
+  elementsOut = elementArray
+  errText = ""
+  Slice2PlanBridge_JsonSplitArrayElements = True
+End Function
+
+Function Slice2PlanBridge_JsonBuildArrayFromElements(ByVal elementsIn, ByVal elementCount)
+  Dim i, outTxt
+
+  outTxt = "["
+  For i = 0 To CLng(elementCount) - 1
+    If i > 0 Then outTxt = outTxt & ","
+    outTxt = outTxt & CStr(elementsIn(i))
+  Next
+  outTxt = outTxt & "]"
+  Slice2PlanBridge_JsonBuildArrayFromElements = outTxt
+End Function
+
+Function Slice2PlanBridge_JsonParseStringScalar(ByVal tokenIn, ByRef valueOut)
+  Dim token, i, ch, outTxt
+
+  Slice2PlanBridge_JsonParseStringScalar = False
+  valueOut = ""
+  token = Trim(CStr(tokenIn))
+  If Len(token) < 2 Then Exit Function
+  If Left(token, 1) <> """" Then Exit Function
+  If Right(token, 1) <> """" Then Exit Function
+
+  outTxt = ""
+  i = 2
+  Do While i <= Len(token) - 1
+    ch = Mid(token, i, 1)
+    If ch = "\" Then
+      i = i + 1
+      If i > Len(token) - 1 Then Exit Function
+      outTxt = outTxt & Mid(token, i, 1)
+    ElseIf ch = """" Then
+      Exit Function
+    Else
+      outTxt = outTxt & ch
+    End If
+    i = i + 1
+  Loop
+
+  valueOut = outTxt
+  Slice2PlanBridge_JsonParseStringScalar = True
 End Function
 
 Function Slice2PlanBridge_JsonExtractArray(ByVal jsonText, ByVal valuePos, ByRef valueOut)
