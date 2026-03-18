@@ -43,6 +43,7 @@ const PANEL_TITLE_BY_KEY = Object.fromEntries(
   PANEL_RENDER_ORDER.map((panel) => [panel.key, panel.title])
 ) as Record<PanelKey, string>;
 const PANEL_KEY_SET = new Set<string>(PANEL_RENDER_ORDER.map((panel) => panel.key));
+const EMPTY_EVIDENCE_TARGET_KEY = "__none__";
 
 const UNAVAILABLE_LABEL = "Unavailable in this preview";
 const NO_EVIDENCE_LABEL = "No evidence provided in current payload";
@@ -80,6 +81,18 @@ export function resolveEvidenceTarget(panelKey: string): ResolvedEvidenceTarget 
 }
 
 export function resolveEvidenceTargets(panelKeys: readonly string[]): ResolvedEvidenceTarget[] {
+  if (panelKeys.length === 0) {
+    return [
+      {
+        requestedKey: EMPTY_EVIDENCE_TARGET_KEY,
+        panelKey: null,
+        title: NO_EVIDENCE_LABEL,
+        href: null,
+        isUnavailable: true,
+      },
+    ];
+  }
+
   return panelKeys.map((panelKey) => resolveEvidenceTarget(panelKey));
 }
 
@@ -1202,7 +1215,9 @@ export default function App({ viewModel }: AppProps): JSX.Element {
                               }`}
                               data-evidence-panel-key={target.requestedKey}
                             >
-                              <code>{target.requestedKey}</code>
+                              {target.requestedKey === EMPTY_EVIDENCE_TARGET_KEY ? null : (
+                                <code>{target.requestedKey}</code>
+                              )}
                               <span>{target.title}</span>
                             </li>
                           ))}
@@ -1226,7 +1241,13 @@ export default function App({ viewModel }: AppProps): JSX.Element {
                             <a href={target.href}>{target.title}</a>
                           ) : (
                             <span className="comparison-evidence-unavailable">
-                              <code>{target.requestedKey}</code> - UNAVAILABLE
+                              {target.requestedKey === EMPTY_EVIDENCE_TARGET_KEY ? (
+                                NO_EVIDENCE_LABEL
+                              ) : (
+                                <>
+                                  <code>{target.requestedKey}</code> - UNAVAILABLE
+                                </>
+                              )}
                             </span>
                           )}
                         </li>
@@ -1303,11 +1324,15 @@ export default function App({ viewModel }: AppProps): JSX.Element {
                     ) : null}
                     <p className="drilldown-fields-title">Key contributing fields</p>
                     <ul className="drilldown-fields">
-                      {card.contributingFields.map((fieldName) => (
-                        <li key={`field-${card.key}-${fieldName}`}>
-                          <code>{fieldName}</code>
-                        </li>
-                      ))}
+                      {card.contributingFields.length > 0 ? (
+                        card.contributingFields.map((fieldName) => (
+                          <li key={`field-${card.key}-${fieldName}`}>
+                            <code>{fieldName}</code>
+                          </li>
+                        ))
+                      ) : (
+                        <li className="drilldown-field-empty">{NO_EVIDENCE_LABEL}</li>
+                      )}
                     </ul>
                     <p className="drilldown-links-title">Related evidence panels:</p>
                     <ul className="comparison-evidence-list">
@@ -1320,7 +1345,13 @@ export default function App({ viewModel }: AppProps): JSX.Element {
                             <a href={target.href}>{target.title}</a>
                           ) : (
                             <span className="comparison-evidence-unavailable">
-                              <code>{target.requestedKey}</code> - UNAVAILABLE
+                              {target.requestedKey === EMPTY_EVIDENCE_TARGET_KEY ? (
+                                NO_EVIDENCE_LABEL
+                              ) : (
+                                <>
+                                  <code>{target.requestedKey}</code> - UNAVAILABLE
+                                </>
+                              )}
                             </span>
                           )}
                         </li>

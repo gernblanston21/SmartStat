@@ -386,6 +386,12 @@ body {
   font-size: 0.76rem;
 }
 
+.drilldown-field-empty {
+  border-color: #d3dbe8;
+  background: #f4f7fb;
+  color: #4f5f76;
+}
+
 .drilldown-links-title {
   margin: 0 0 4px;
   font-size: 0.84rem;

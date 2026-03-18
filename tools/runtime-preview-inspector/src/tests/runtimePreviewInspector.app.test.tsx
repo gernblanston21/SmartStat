@@ -128,6 +128,20 @@ describe("runtime preview inspector UI scaffold", () => {
     });
   });
 
+  it("fails closed for empty evidence target lists", () => {
+    const resolved = resolveEvidenceTargets([]);
+
+    expect(resolved).toEqual([
+      {
+        requestedKey: "__none__",
+        panelKey: null,
+        title: "No evidence provided in current payload",
+        href: null,
+        isUnavailable: true,
+      },
+    ]);
+  });
+
   it("surfaces mismatch state with stronger review emphasis", () => {
     const viewModel = adaptPreviewPayloadToViewModel(previewFixture);
     const mismatched = cloneViewModel(viewModel);
@@ -224,5 +238,49 @@ describe("runtime preview inspector UI scaffold", () => {
     expect(html).toContain("Differing grounded fields");
     expect(html).toContain("semantic.scope_resolution = forced_mismatch");
     expect(html).toContain("Some related fields are unavailable in this preview.");
+  });
+
+  it("renders calmly when all top comparisons are unavailable", () => {
+    const viewModel = adaptPreviewPayloadToViewModel(previewFixture);
+    const unavailable = cloneViewModel(viewModel);
+
+    unavailable.view_model.semantic_view.scope_resolution = "";
+    unavailable.view_model.semantic_view.effective_scope = "";
+    unavailable.view_model.semantic_view.evidence_source = "";
+    unavailable.view_model.resolution_view.scope_resolution = "";
+    unavailable.view_model.resolution_view.effective_scope = "";
+    unavailable.view_model.resolution_view.evidence_source = "";
+
+    unavailable.view_model.deterministic_identity_view.projection_metadata.normalized_plan_hash = "";
+    unavailable.view_model.deterministic_identity_view.projection_metadata.replay_identity = "";
+    unavailable.view_model.deterministic_identity_view.projection_metadata.validator_run_identity = "";
+    unavailable.view_model.deterministic_identity_view.rule_evaluation_trace.normalized_plan_hash = "";
+    unavailable.view_model.deterministic_identity_view.rule_evaluation_trace.replay_identity = "";
+    unavailable.view_model.deterministic_identity_view.rule_evaluation_trace.validator_run_identity = "";
+
+    unavailable.view_model.projection_metadata_view.projection_contract = "";
+    unavailable.view_model.projection_metadata_view.projection_kind = "";
+    unavailable.view_model.projection_metadata_view.input_artifact = "";
+    unavailable.view_model.projection_metadata_view.input_identity.artifact_path = "";
+    unavailable.view_model.projection_metadata_view.input_identity.input_fingerprint_sha256 = "";
+
+    unavailable.view_model.rule_evaluation_trace_view.projection_contract = "";
+    unavailable.view_model.rule_evaluation_trace_view.projection_kind = "";
+    unavailable.view_model.rule_evaluation_trace_view.input_artifact = "";
+    unavailable.view_model.rule_evaluation_trace_view.input_identity.artifact_path = "";
+    unavailable.view_model.rule_evaluation_trace_view.input_identity.input_fingerprint_sha256 = "";
+
+    unavailable.view_model.rule_evaluation_summary_view.phase_order = [];
+    unavailable.view_model.rule_evaluation_summary_view.ordered_rules = [];
+
+    const html = renderToStaticMarkup(<App viewModel={unavailable} />);
+
+    expect(html).toContain('class="comparison-coverage is-unavailable"');
+    expect(html).toContain('data-coverage-count="pass">0</strong>');
+    expect(html).toContain('data-coverage-count="mismatch">0</strong>');
+    expect(html).toContain('data-coverage-count="unavailable">4</strong>');
+    expect(html).toContain("Mismatch drill-down");
+    expect(html).toContain("No evidence provided in current payload");
+    expect(html).not.toContain('href="#panel-__none__"');
   });
 });
