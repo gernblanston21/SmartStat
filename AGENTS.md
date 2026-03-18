@@ -134,6 +134,42 @@ Use `PROMPTS.md` for standardized Codex kickoff blocks.
 
 ---
 
+## Viewer Layer Boundary (WP-20 Enforcement)
+
+The viewer layer is strictly:
+
+- read-only
+- deterministic
+- a visualization of runtime output only
+
+The viewer must NOT:
+
+- implement runtime logic
+- derive new data not present in runtime output
+- infer relationships between entities
+- perform validation or scoring
+- simulate mutation or apply behavior
+
+The viewer is:
+
+- a truth surface
+- a debug surface
+- an inspection surface
+
+The viewer is NOT:
+
+- a reasoning engine
+- a validation engine
+- a runtime extension layer
+
+Any violation:
+
+1. Halt
+2. Reject change
+3. Re-scope to viewer-only
+
+---
+
 ## Codex Agent Skills
 
 This repo uses Codex-compatible skills stored in:
@@ -223,6 +259,28 @@ If lane boundaries are unclear:
 
 ---
 
+## Runtime Re-entry Authorization Gate
+
+Runtime work may not resume automatically after viewer completion.
+
+Before any runtime execution, mutation, or apply work:
+
+The following must be explicitly defined:
+
+1. A single bounded runtime objective
+2. Allowed surfaces (what CAN change)
+3. Forbidden surfaces (what MUST NOT change)
+4. Determinism guarantees
+5. Fail-closed behavior model
+6. Regression validation requirements
+
+Without this:
+
+- Runtime work is NOT authorized
+- Codex must halt and request scope confirmation
+
+---
+
 ## Code Delivery Rules
 
 - Always provide unified diffs (`-U5` minimum)
@@ -251,6 +309,30 @@ Then:
 3. Propose a safe alternative implementation
 
 Fail closed by default.
+
+---
+
+## No Derived Data Rule
+
+AI and implementation layers must not create new data that is not explicitly present in:
+
+- runtime output
+- validated upstream artifacts (WP-17, WP-18, WP-19)
+
+Forbidden:
+
+- inferred relationships
+- synthesized summaries not present in source
+- heuristic grouping or scoring
+- “helpful” explanations not backed by data
+
+All outputs must be:
+
+- traceable to source
+- reproducible
+- deterministic
+
+Fail closed if data is incomplete.
 
 ---
 
