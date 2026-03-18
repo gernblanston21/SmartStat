@@ -6073,6 +6073,8 @@ Function Slice2PlanBridge_LoadProjectionIntake(ByVal projectionPath, ByRef outco
   Dim rulePhaseOrderJson, ruleOrderedRulesJson
   Dim rulePhaseOrderErr, ruleOrderedRulesErr
   Dim orderingErr
+  Dim issuesErrorElements, issuesWarningElements
+  Dim issuesErrorCountActual, issuesWarningCountActual
   Dim errorCount, warningCount
 
   Slice2PlanBridge_LoadProjectionIntake = False
@@ -6227,6 +6229,26 @@ Function Slice2PlanBridge_LoadProjectionIntake(ByVal projectionPath, ByRef outco
   If Not Slice2PlanBridge_NormalizeProjectionEvidenceArrays(issuesErrorsJson, issuesWarningsJson, rulePhaseOrderJson, ruleOrderedRulesJson, orderingErr) Then
     errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
     errText = "projection artifact malformed: " & orderingErr
+    Exit Function
+  End If
+  If Not Slice2PlanBridge_JsonSplitArrayElements(issuesErrorsJson, issuesErrorElements, issuesErrorCountActual, orderingErr) Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: issues_summary.errors " & orderingErr
+    Exit Function
+  End If
+  If Not Slice2PlanBridge_JsonSplitArrayElements(issuesWarningsJson, issuesWarningElements, issuesWarningCountActual, orderingErr) Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: issues_summary.warnings " & orderingErr
+    Exit Function
+  End If
+  If CLng(issuesErrorCountActual) <> CLng(errorCount) Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: issues_summary.errors count mismatch status_summary.error_count=" & CStr(errorCount) & " actual=" & CStr(issuesErrorCountActual)
+    Exit Function
+  End If
+  If CLng(issuesWarningCountActual) <> CLng(warningCount) Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: issues_summary.warnings count mismatch status_summary.warning_count=" & CStr(warningCount) & " actual=" & CStr(issuesWarningCountActual)
     Exit Function
   End If
 
@@ -6409,7 +6431,7 @@ Function Slice2PlanBridge_NormalizeProjectionEvidenceArrays(ByRef issuesErrorsJs
 End Function
 
 Function Slice2PlanBridge_NormalizeGenericArrayJson(ByVal arrayJsonIn, ByVal contextLabel, ByRef arrayJsonOut, ByRef errText)
-  Dim elements, elementCount
+  Dim elements, elementCount, i
   Dim sortedElements
 
   Slice2PlanBridge_NormalizeGenericArrayJson = False
@@ -6426,16 +6448,51 @@ Function Slice2PlanBridge_NormalizeGenericArrayJson(ByVal arrayJsonIn, ByVal con
     Slice2PlanBridge_NormalizeGenericArrayJson = True
     Exit Function
   End If
+  For i = 0 To CLng(elementCount) - 1
+    If Not Slice2PlanBridge_ValidateIssueEvidenceEntry(CStr(elements(i)), CStr(contextLabel), CLng(i), errText) Then Exit Function
+  Next
 
   sortedElements = Slice1Ingress_SortTextBinary(elements)
   arrayJsonOut = Slice2PlanBridge_JsonBuildArrayFromElements(sortedElements, CLng(elementCount))
   Slice2PlanBridge_NormalizeGenericArrayJson = True
 End Function
 
+Function Slice2PlanBridge_ValidateIssueEvidenceEntry(ByVal elementJson, ByVal contextLabel, ByVal indexValue, ByRef errText)
+  Dim token, codeTxt, messageTxt
+
+  Slice2PlanBridge_ValidateIssueEvidenceEntry = False
+  errText = ""
+  token = Trim(CStr(elementJson))
+
+  If Left(token, 1) <> "{" Or Right(token, 1) <> "}" Then
+    errText = CStr(contextLabel) & " malformed entry at index " & CStr(indexValue)
+    Exit Function
+  End If
+  If Not Slice2PlanBridge_JsonReadString(token, "code", codeTxt) Then
+    errText = CStr(contextLabel) & " missing code at index " & CStr(indexValue)
+    Exit Function
+  End If
+  If Not Slice2PlanBridge_JsonReadString(token, "message", messageTxt) Then
+    errText = CStr(contextLabel) & " missing message at index " & CStr(indexValue)
+    Exit Function
+  End If
+  If Len(Trim(CStr(codeTxt))) = 0 Then
+    errText = CStr(contextLabel) & " empty code at index " & CStr(indexValue)
+    Exit Function
+  End If
+  If Len(Trim(CStr(messageTxt))) = 0 Then
+    errText = CStr(contextLabel) & " empty message at index " & CStr(indexValue)
+    Exit Function
+  End If
+
+  Slice2PlanBridge_ValidateIssueEvidenceEntry = True
+End Function
+
 Function Slice2PlanBridge_NormalizeRuleEvaluationSummaryArrays(ByVal phaseOrderJsonIn, ByVal orderedRulesJsonIn, ByRef phaseOrderJsonOut, ByRef orderedRulesJsonOut, ByRef errText)
   Dim phaseElements, phaseCount
   Dim ruleElements, ruleCount
   Dim phaseRank, phasePresent
+  Dim phaseRuleCounts
   Dim canonicalPhaseOrder
   Dim i, tokenValue, phaseKey
   Dim sortedRulePairs
@@ -6496,10 +6553,16 @@ Function Slice2PlanBridge_NormalizeRuleEvaluationSummaryArrays(ByVal phaseOrderJ
     Exit Function
   End If
 
-  If Not Slice2PlanBridge_NormalizeOrderedRulesArray(ruleElements, CLng(ruleCount), phaseRank, phasePresent, sortedRulePairs, errText) Then
+  If Not Slice2PlanBridge_NormalizeOrderedRulesArray(ruleElements, CLng(ruleCount), phaseRank, phasePresent, sortedRulePairs, phaseRuleCounts, errText) Then
     errText = "rule_evaluation_summary.ordered_rules " & CStr(errText)
     Exit Function
   End If
+  For Each phaseKey In phasePresent.Keys
+    If Not phaseRuleCounts.Exists(CStr(phaseKey)) Then
+      errText = "rule_evaluation_summary.phase_order contains phase with no ordered_rules entries: " & CStr(phaseKey)
+      Exit Function
+    End If
+  Next
 
   orderedRulesJsonOut = "["
   For i = 0 To CLng(ruleCount) - 1
@@ -6516,7 +6579,7 @@ Function Slice2PlanBridge_NormalizeRuleEvaluationSummaryArrays(ByVal phaseOrderJ
   Slice2PlanBridge_NormalizeRuleEvaluationSummaryArrays = True
 End Function
 
-Function Slice2PlanBridge_NormalizeOrderedRulesArray(ByVal ruleElements, ByVal ruleCount, ByVal phaseRank, ByVal phasePresent, ByRef sortedPairsOut, ByRef errText)
+Function Slice2PlanBridge_NormalizeOrderedRulesArray(ByVal ruleElements, ByVal ruleCount, ByVal phaseRank, ByVal phasePresent, ByRef sortedPairsOut, ByRef phaseRuleCountsOut, ByRef errText)
   Dim i
   Dim ruleObj, category, ruleId, outcome
   Dim categoryKey, duplicateKey, rankValue, ruleRank
@@ -6527,6 +6590,7 @@ Function Slice2PlanBridge_NormalizeOrderedRulesArray(ByVal ruleElements, ByVal r
   Slice2PlanBridge_NormalizeOrderedRulesArray = False
   errText = ""
   Set seenRuleKeys = CreateObject("Scripting.Dictionary")
+  Set phaseRuleCountsOut = CreateObject("Scripting.Dictionary")
   ReDim sortPairs(ruleCount - 1)
 
   For i = 0 To CLng(ruleCount) - 1
@@ -6587,6 +6651,11 @@ Function Slice2PlanBridge_NormalizeOrderedRulesArray(ByVal ruleElements, ByVal r
     canonicalRuleObj = Slice2PlanBridge_BuildCanonicalRuleObject(categoryKey, ruleId, outcome)
     sortKey = Right("0000" & CStr(rankValue), 4) & "|" & Right("0000" & CStr(ruleRank), 4) & "|" & UCase(ruleId) & "|" & UCase(outcome)
     sortPairs(i) = sortKey & Chr(30) & canonicalRuleObj
+    If phaseRuleCountsOut.Exists(categoryKey) Then
+      phaseRuleCountsOut(categoryKey) = CLng(phaseRuleCountsOut(categoryKey)) + 1
+    Else
+      phaseRuleCountsOut.Add categoryKey, 1
+    End If
   Next
 
   sortedPairsOut = Slice1Ingress_SortTextBinary(sortPairs)

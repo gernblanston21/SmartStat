@@ -498,3 +498,46 @@ Fail-Closed Validation Summary:
   - duplicate phase token in `phase_order`
   - unsupported `rule_id` in `ordered_rules`
 - no implicit fallback to runtime-dependent ordering was allowed
+
+### Runtime Continuation: `RUNTIME_CONTINUATION_PASS_02`
+
+Status:
+- IMPLEMENTED
+- VALIDATED
+- CLOSED
+
+Objective:
+- harden evidence completeness and structural validation for existing WP20 read-only runtime outputs in `SmartStat_v4.1.0.vbs` only
+
+Boundary Scope:
+- no new slice
+- no schema changes
+- no viewer changes
+- no adapter changes
+- no mutation/apply behavior changes
+- no `SmartStat_v4.0.0_beta.vbs` edits
+
+Structural Validation Summary:
+- required evidence structures validated for:
+  - `rule_evaluation_summary.phase_order`
+  - `rule_evaluation_summary.ordered_rules`
+  - `issues_summary.errors`
+  - `issues_summary.warnings`
+- rule object structural completeness is now enforced (`category`, `rule_id`, `outcome`)
+- phase-to-rule relationship consistency is now enforced (no orphan phase references and no rule categories outside `phase_order`)
+- status-summary issue-count parity is now enforced against the corresponding issues arrays
+
+Determinism Validation Summary:
+- deterministic repeat-run hash equality confirmed under identical fixture + projection input
+- regression parity for valid existing output confirmed against the established positive reference output
+- structural validation path remains deterministic and does not introduce runtime-dependent ordering
+
+Fail-Closed Validation Summary:
+- structural inconsistencies fail closed with `SLICE2_PROJECTION_ARTIFACT_MALFORMED`
+- negative checks passed for:
+  - missing `outcome` in ordered-rule entries
+  - category present in rules but absent from `phase_order`
+  - phase listed in `phase_order` with zero rules
+  - issues-warning entries missing required `message`
+  - `status_summary.warning_count` mismatch vs `issues_summary.warnings` array count
+- no silent degradation or auto-correction path was introduced
