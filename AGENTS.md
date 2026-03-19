@@ -292,6 +292,46 @@ Without this:
 
 ---
 
+## Codex Efficiency Profile (Enforced)
+
+This section defines how Codex must control context, scope,
+and execution cost during all SmartStat work.
+
+All Codex work must follow the SmartStat efficiency model:
+
+### Default Mode
+- Precision Patch Mode (single-file, minimal context)
+
+### Mode Escalation
+Escalate ONLY if required:
+- Read-Only Audit → for planning
+- Cross-File Implementation → only after audit proves necessity
+- New Slice Definition → for WP/runtime progression
+
+### Hard Rules
+- No no-op prompts
+- No unnecessary repo-wide context
+- No opportunistic refactors
+- Preserve determinism and fail-closed behavior
+
+### Closeout Enforcement
+All approved passes must include:
+- commit of approved files only
+- SESSION.md update
+- ROADMAP.md update (if needed)
+- untracked file triage
+- `_scratch` artifacts remain untracked
+
+### Context Discipline
+- Prefer tagged files or pasted code over full repo context
+- Avoid IDE-wide context unless explicitly required
+
+Violation of this section:
+- halt
+- rescope to minimal-context mode
+
+---
+
 ## Conflict Policy
 
 If a request:
