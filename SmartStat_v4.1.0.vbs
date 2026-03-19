@@ -6297,6 +6297,11 @@ Function Slice2PlanBridge_LoadProjectionIntake(ByVal projectionPath, ByRef outco
     errText = "projection artifact malformed: semantic_interpretation_summary.evidence_source empty"
     Exit Function
   End If
+  If Not Slice2PlanBridge_ValidateSemanticResolutionCoherence(CStr(jsonText), CStr(projectionStatus), CStr(semanticScopeResolution), CStr(semanticEffectiveScope), CStr(semanticEvidenceSource), orderingErr) Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: " & CStr(orderingErr)
+    Exit Function
+  End If
   If Not Slice2PlanBridge_JsonReadArray(jsonText, "errors", issuesErrorsJson, issuesErrorsErr) Then
     errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
     errText = "projection artifact malformed: issues_summary.errors " & issuesErrorsErr
@@ -6422,6 +6427,132 @@ Function Slice2PlanBridge_ValidateStatusSummaryCoherence(ByVal projectionStatus,
   End If
 
   Slice2PlanBridge_ValidateStatusSummaryCoherence = True
+End Function
+
+Function Slice2PlanBridge_ValidateSemanticResolutionCoherence(ByVal projectionJsonText, ByVal projectionStatus, ByVal semanticScopeResolution, ByVal semanticEffectiveScope, ByVal semanticEvidenceSource, ByRef errText)
+  Dim semanticSummaryObjJson, semanticSummaryErr
+  Dim scopeFromSemanticObj, effectiveFromSemanticObj, evidenceFromSemanticObj
+  Dim resolutionPreviewObjJson, resolutionPreviewErr
+  Dim resolutionStatus, resolutionScope, resolutionEffective, resolutionEvidence
+
+  Slice2PlanBridge_ValidateSemanticResolutionCoherence = False
+  errText = ""
+
+  If Not Slice2PlanBridge_JsonReadObject(CStr(projectionJsonText), "semantic_interpretation_summary", semanticSummaryObjJson, semanticSummaryErr) Then
+    errText = "semantic_interpretation_summary " & CStr(semanticSummaryErr)
+    Exit Function
+  End If
+  If Not Slice2PlanBridge_JsonReadString(semanticSummaryObjJson, "scope_resolution", scopeFromSemanticObj) Then
+    errText = "semantic_interpretation_summary.scope_resolution missing"
+    Exit Function
+  End If
+  If Not Slice2PlanBridge_JsonReadString(semanticSummaryObjJson, "effective_scope", effectiveFromSemanticObj) Then
+    errText = "semantic_interpretation_summary.effective_scope missing"
+    Exit Function
+  End If
+  If Not Slice2PlanBridge_JsonReadString(semanticSummaryObjJson, "evidence_source", evidenceFromSemanticObj) Then
+    errText = "semantic_interpretation_summary.evidence_source missing"
+    Exit Function
+  End If
+
+  scopeFromSemanticObj = Trim(CStr(scopeFromSemanticObj))
+  effectiveFromSemanticObj = Trim(CStr(effectiveFromSemanticObj))
+  evidenceFromSemanticObj = Trim(CStr(evidenceFromSemanticObj))
+  semanticScopeResolution = Trim(CStr(semanticScopeResolution))
+  semanticEffectiveScope = Trim(CStr(semanticEffectiveScope))
+  semanticEvidenceSource = Trim(CStr(semanticEvidenceSource))
+
+  If Len(scopeFromSemanticObj) = 0 Then
+    errText = "semantic_interpretation_summary.scope_resolution empty"
+    Exit Function
+  End If
+  If Len(effectiveFromSemanticObj) = 0 Then
+    errText = "semantic_interpretation_summary.effective_scope empty"
+    Exit Function
+  End If
+  If Len(evidenceFromSemanticObj) = 0 Then
+    errText = "semantic_interpretation_summary.evidence_source empty"
+    Exit Function
+  End If
+  If semanticScopeResolution <> scopeFromSemanticObj Then
+    errText = "semantic_interpretation_summary.scope_resolution mismatch"
+    Exit Function
+  End If
+  If semanticEffectiveScope <> effectiveFromSemanticObj Then
+    errText = "semantic_interpretation_summary.effective_scope mismatch"
+    Exit Function
+  End If
+  If semanticEvidenceSource <> evidenceFromSemanticObj Then
+    errText = "semantic_interpretation_summary.evidence_source mismatch"
+    Exit Function
+  End If
+
+  If Not Slice2PlanBridge_JsonReadObject(CStr(projectionJsonText), "resolution_preview", resolutionPreviewObjJson, resolutionPreviewErr) Then
+    If LCase(CStr(resolutionPreviewErr)) <> "missing" Then
+      errText = "resolution_preview " & CStr(resolutionPreviewErr)
+      Exit Function
+    End If
+    Slice2PlanBridge_ValidateSemanticResolutionCoherence = True
+    Exit Function
+  End If
+
+  If Not Slice2PlanBridge_JsonReadString(resolutionPreviewObjJson, "status", resolutionStatus) Then
+    errText = "resolution_preview.status missing"
+    Exit Function
+  End If
+  If Not Slice2PlanBridge_JsonReadString(resolutionPreviewObjJson, "scope_resolution", resolutionScope) Then
+    errText = "resolution_preview.scope_resolution missing"
+    Exit Function
+  End If
+  If Not Slice2PlanBridge_JsonReadString(resolutionPreviewObjJson, "effective_scope", resolutionEffective) Then
+    errText = "resolution_preview.effective_scope missing"
+    Exit Function
+  End If
+  If Not Slice2PlanBridge_JsonReadString(resolutionPreviewObjJson, "evidence_source", resolutionEvidence) Then
+    errText = "resolution_preview.evidence_source missing"
+    Exit Function
+  End If
+
+  resolutionStatus = Trim(CStr(resolutionStatus))
+  resolutionScope = Trim(CStr(resolutionScope))
+  resolutionEffective = Trim(CStr(resolutionEffective))
+  resolutionEvidence = Trim(CStr(resolutionEvidence))
+  projectionStatus = Trim(CStr(projectionStatus))
+
+  If Len(resolutionStatus) = 0 Then
+    errText = "resolution_preview.status empty"
+    Exit Function
+  End If
+  If Len(resolutionScope) = 0 Then
+    errText = "resolution_preview.scope_resolution empty"
+    Exit Function
+  End If
+  If Len(resolutionEffective) = 0 Then
+    errText = "resolution_preview.effective_scope empty"
+    Exit Function
+  End If
+  If Len(resolutionEvidence) = 0 Then
+    errText = "resolution_preview.evidence_source empty"
+    Exit Function
+  End If
+  If resolutionStatus <> projectionStatus Then
+    errText = "resolution_preview.status mismatch status_summary.status"
+    Exit Function
+  End If
+  If resolutionScope <> semanticScopeResolution Then
+    errText = "resolution_preview.scope_resolution mismatch semantic_interpretation_summary.scope_resolution"
+    Exit Function
+  End If
+  If resolutionEffective <> semanticEffectiveScope Then
+    errText = "resolution_preview.effective_scope mismatch semantic_interpretation_summary.effective_scope"
+    Exit Function
+  End If
+  If resolutionEvidence <> semanticEvidenceSource Then
+    errText = "resolution_preview.evidence_source mismatch semantic_interpretation_summary.evidence_source"
+    Exit Function
+  End If
+
+  Slice2PlanBridge_ValidateSemanticResolutionCoherence = True
 End Function
 
 Function Slice2PlanBridge_ReadProjectionArtifactText(ByVal projectionPath, ByRef bodyOut, ByRef errCode, ByRef errText)

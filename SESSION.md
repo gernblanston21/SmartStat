@@ -659,3 +659,46 @@ Fail-Closed Validation Summary:
   - unsupported ordered-rule `outcome` token preventing deterministic status/detail comparison
   - ordered-rule entry missing required `outcome`
 - no silent preference of summary values over detailed evidence (or vice versa) was introduced
+
+### Runtime Continuation: `RUNTIME_CONTINUATION_PASS_06`
+
+Status:
+- IMPLEMENTED
+- VALIDATED
+- CLOSED
+
+Objective:
+- harden semantic/resolution cross-surface coherence validation for existing WP20 read-only runtime outputs so duplicated existing semantic and resolution fields cannot disagree silently
+
+Boundary Scope:
+- no new slice
+- no schema changes
+- no viewer changes
+- no adapter changes
+- no mutation/apply behavior changes
+- no `SmartStat_v4.0.0_beta.vbs` edits
+
+Semantic/Resolution Coherence Validation Summary:
+- projection intake now enforces deterministic semantic coherence checks against existing semantic metadata:
+  - canonical semantic intake values vs `semantic_interpretation_summary.scope_resolution`
+  - canonical semantic intake values vs `semantic_interpretation_summary.effective_scope`
+  - canonical semantic intake values vs `semantic_interpretation_summary.evidence_source`
+- when `resolution_preview` is present in the projection artifact, paired-value coherence is now enforced for:
+  - `resolution_preview.status` vs `status_summary.status`
+  - `resolution_preview.scope_resolution` vs semantic scope-resolution value
+  - `resolution_preview.effective_scope` vs semantic effective-scope value
+  - `resolution_preview.evidence_source` vs semantic evidence-source value
+- comparisons are fail-closed and deterministic; no source-preference fallback path is allowed
+
+Determinism Validation Summary:
+- repeat-run hash equality confirmed for valid positive replay (`pass06_pos_runA` vs `pass06_pos_runB`)
+- regression parity for valid positive output confirmed against established baseline (`pos_projection_intake_run1`)
+- positive parity also confirmed when a matching `resolution_preview` block is present in the projection artifact (`pass06_pos_match_resolution_run`)
+
+Fail-Closed Validation Summary:
+- conflicting semantic/resolution paired values fail closed with `SLICE2_PROJECTION_ARTIFACT_MALFORMED`
+- partial paired-value presence in `resolution_preview` fails closed when comparison cannot be established
+- negative checks passed for:
+  - `resolution_preview.scope_resolution` mismatch vs semantic scope-resolution value
+  - missing required `resolution_preview.evidence_source`
+- no silent preference of semantic values over resolution values (or vice versa) was introduced
