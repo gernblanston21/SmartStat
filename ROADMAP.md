@@ -777,10 +777,12 @@ Explicit future choices:
 - No socket mutation behavior
 - Validation status: PASS for gate-OFF parity, carry-forward validation of existing slice-02A through slice-02F positives and negatives, deterministic repeat-run hash equality for the rule-evaluation-trace joined preview, trace-preview block presence and field-order checks, traceability-field malformed-input fail-closed checks, mutation boundary audit, and the boundary check confirming no new Trio/socket/apply surfaces were introduced
 
-- Distinct-slice check after the frozen current scope of `WP20_RUNTIME_SLICE_02G_READONLY_PLAN_BRIDGE_RULE_EVALUATION_TRACE_PREVIEW`: `WP20_RUNTIME_SLICE_02H_READONLY_PLAN_BRIDGE_DETERMINISTIC_IDENTITY_PREVIEW` is not a justified next slice under current repo truth
-- Reason: `projection_metadata.deterministic_identity_summary` already exposes the bounded deterministic-identity metadata surface, and validated `rule_evaluation_trace_preview` already serializes that same `deterministic_identity_summary` surface together with the surrounding traceability metadata already defined by the existing WP-19 projection/adapter contracts
-- Runtime lane posture after 02G: HOLD pending a future non-redundant bounded slice definition
-- No new next-step runtime slice is added in this pass
+- Distinct-slice planning after the frozen current scope of `WP20_RUNTIME_SLICE_02G_READONLY_PLAN_BRIDGE_RULE_EVALUATION_TRACE_PREVIEW` rejected deterministic-identity duplication as non-justified under repo truth
+- Validated/frozen step after that planning gate: `WP20_RUNTIME_SLICE_02H_READONLY_PLAN_BRIDGE_INELIGIBLE_EVIDENCE_PREVIEW`
+- Objective: for structurally valid but non-runtime-eligible projection artifacts, emit one deterministic read-only `ineligible_evidence_preview` block using existing projection surfaces while preserving fail-closed non-eligibility semantics
+- Boundary: runtime read-only only; no schema expansion, no viewer changes, no adapter changes, no mutation/apply authorization change
+- Validation status: PASS for non-eligible deterministic repeat-run hash equality, malformed non-eligible fail-closed behavior, PASS-path hash parity, existing malformed/unsupported projection error-code regression checks, and mutation-boundary static scan
+- Runtime lane posture after 02H: HOLD pending any future non-redundant bounded slice definition
 - Runtime continuation marker: `RUNTIME_CONTINUATION_PASS_01` completed as a stabilization-only hardening pass on existing slice-01 through 02G outputs (deterministic ordering + fail-closed ordering-input handling), with no new slice, no schema change, and no mutation/apply authorization change
 - Runtime continuation marker: `RUNTIME_CONTINUATION_PASS_02` completed as a stabilization-only hardening pass on existing slice-01 through 02G outputs (evidence completeness + structural consistency fail-closed enforcement), with no new slice, no schema change, and no mutation/apply authorization change
 - Runtime continuation marker: `RUNTIME_CONTINUATION_PASS_03` completed as a stabilization-only hardening pass on existing slice-01 through 02G outputs (canonical serialization stability + fail-closed canonicalization prerequisite enforcement), with no new slice, no schema change, and no mutation/apply authorization change
@@ -789,6 +791,7 @@ Explicit future choices:
 - Runtime continuation marker: `RUNTIME_CONTINUATION_PASS_06` completed as a stabilization-only hardening pass on existing slice-01 through 02G outputs (semantic/resolution cross-surface coherence validation + fail-closed paired-value conflict/partial-pair handling), with no new slice, no schema change, and no mutation/apply authorization change
 - Runtime continuation marker: `RUNTIME_CONTINUATION_PASS_07` completed as a stabilization-only hardening pass on existing slice-01 through 02G outputs (status-summary object-scoped coherence validation + fail-closed shadow/conflict/partial-object handling), with no new slice, no schema change, and no mutation/apply authorization change
 - Runtime continuation marker: `RUNTIME_CONTINUATION_PASS_08` completed as a stabilization-only hardening pass on existing slice-01 through 02G outputs (object-scoped evidence-array coherence for `issues_summary`/`rule_evaluation_summary` + fail-closed shadow/conflict/partial-array handling), with no new slice, no schema change, and no mutation/apply authorization change
+- Runtime slice marker: `WP20_RUNTIME_SLICE_02H_READONLY_PLAN_BRIDGE_INELIGIBLE_EVIDENCE_PREVIEW` completed as a bounded read-only slice definition/implementation step (non-eligible branch evidence preview only), with no schema change and no mutation/apply authorization change
 
 ### Definition of Done
 

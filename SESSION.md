@@ -783,3 +783,45 @@ Fail-Closed Validation Summary:
   - `rule_evaluation_summary.phase_order` mismatch under a shadow/conflict scenario
   - missing required `issues_summary.warnings`
 - no silent source-preference fallback path was introduced
+
+### Runtime Lane: `WP20_RUNTIME_SLICE_02H_READONLY_PLAN_BRIDGE_INELIGIBLE_EVIDENCE_PREVIEW`
+
+Status:
+- IMPLEMENTED
+- VALIDATED
+- CLOSED
+
+Objective:
+- for structurally valid but non-runtime-eligible projection artifacts, emit one deterministic read-only `ineligible_evidence_preview` block using existing projection surfaces while preserving fail-closed non-eligibility semantics
+
+Boundary Scope:
+- `SmartStat_v4.1.0.vbs` only
+- no schema changes to upstream projection contract
+- no viewer changes
+- no adapter changes
+- no mutation/apply behavior changes
+- no Trio/socket/engine mutation behavior
+- no `SmartStat_v4.0.0_beta.vbs` edits
+
+Real-World Result:
+- non-eligible runtime outputs now expose compact evidence context (`status_summary`, `issues_summary`, `rule_evaluation_summary`, `semantic_interpretation_summary`, and traceability/identity fields) instead of skeleton-only output, so non-eligible cases are inspectable in-place without reopening runtime authorization boundaries
+
+Validation Summary:
+- non-eligible positive deterministic replay passed using `projection_refuse_case.json` with repeat-run hash equality:
+  - `pass09_noneligible_refuse_runA` SHA256 = `A487F54CBA7B030C5BF7A2DB2FEE42835A64AA955D34090E9ADD3CD023782F10`
+  - `pass09_noneligible_refuse_runB` SHA256 = `A487F54CBA7B030C5BF7A2DB2FEE42835A64AA955D34090E9ADD3CD023782F10`
+- malformed non-eligible negative passed:
+  - missing `semantic_interpretation_summary.evidence_source` failed closed with `SLICE2_PROJECTION_ARTIFACT_MALFORMED` and no partial ineligible-evidence block emitted
+- PASS-path regression parity passed:
+  - `pass09_pos_regression_run` SHA256 = `B5B2C3BDB8F6C8093387654318D7671ADA378384E6DC85C043892FDA0E7CF4AC`
+  - baseline `pos_projection_intake_run1` SHA256 = `B5B2C3BDB8F6C8093387654318D7671ADA378384E6DC85C043892FDA0E7CF4AC`
+
+Regression/Boundary Summary:
+- existing malformed/unsupported projection behavior remained stable in-scope:
+  - unsupported contract -> `SLICE2_PROJECTION_CONTRACT_UNSUPPORTED`
+  - missing status -> `SLICE2_PROJECTION_ARTIFACT_MALFORMED`
+  - missing projection artifact -> `SLICE2_PROJECTION_ARTIFACT_MISSING`
+- boundary scan on slice-02 region remained mutation-clean:
+  - `page:set_property` count = 0
+  - `tabfield:set_custom_property` count = 0
+  - `sock:send_socket_data` count = 0

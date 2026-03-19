@@ -5903,6 +5903,7 @@ Function Slice2PlanBridge_Execute(ByRef outcome)
   Dim tabNames, i, tabName, pageValue, customValue
   Dim records
   Dim errCode, errText
+  Dim ineligiblePreviewErr
 
   Slice2PlanBridge_Execute = False
   Set providerFixture = Nothing
@@ -5966,7 +5967,16 @@ Function Slice2PlanBridge_Execute(ByRef outcome)
   outcome("page_template") = CStr(pageTemplate)
   If Len(projectionPath) > 0 Then
     If Not Slice2PlanBridge_LoadProjectionIntake(projectionPath, outcome, errCode, errText) Then
-      Call Slice2PlanBridge_FailClosed(outcome, errCode, errText)
+      If CStr(errCode) = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_NOT_ELIGIBLE Then
+        ineligiblePreviewErr = ""
+        If Not Slice2PlanBridge_ValidateIneligibleEvidencePreviewInputs(outcome, ineligiblePreviewErr) Then
+          Call Slice2PlanBridge_FailClosed(outcome, SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED, "projection artifact malformed: " & CStr(ineligiblePreviewErr))
+        Else
+          Call Slice2PlanBridge_FailClosed(outcome, errCode, errText)
+        End If
+      Else
+        Call Slice2PlanBridge_FailClosed(outcome, errCode, errText)
+      End If
       Exit Function
     End If
     If Not Slice2PlanBridge_ValidateResolutionPreviewInputs(outcome, errText) Then
@@ -6089,6 +6099,7 @@ Function Slice2PlanBridge_LoadProjectionIntake(ByVal projectionPath, ByRef outco
   Dim issuesErrorElements, issuesWarningElements
   Dim issuesErrorCountActual, issuesWarningCountActual
   Dim errorCount, warningCount
+  Dim runtimeEligible, runtimeEligibilityErrText
 
   Slice2PlanBridge_LoadProjectionIntake = False
   errCode = ""
@@ -6307,15 +6318,14 @@ Function Slice2PlanBridge_LoadProjectionIntake(ByVal projectionPath, ByRef outco
     Exit Function
   End If
 
+  runtimeEligible = True
+  runtimeEligibilityErrText = ""
   If UCase(Trim(CStr(projectionStatus))) <> "PASS" Then
-    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_NOT_ELIGIBLE
-    errText = "projection artifact not runtime eligible: status=" & CStr(projectionStatus)
-    Exit Function
-  End If
-  If CLng(errorCount) <> 0 Then
-    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_NOT_ELIGIBLE
-    errText = "projection artifact not runtime eligible: error_count=" & CStr(errorCount)
-    Exit Function
+    runtimeEligible = False
+    runtimeEligibilityErrText = "projection artifact not runtime eligible: status=" & CStr(projectionStatus)
+  ElseIf CLng(errorCount) <> 0 Then
+    runtimeEligible = False
+    runtimeEligibilityErrText = "projection artifact not runtime eligible: error_count=" & CStr(errorCount)
   End If
   If Not Slice2PlanBridge_JsonReadString(jsonText, "scope_resolution", semanticScopeResolution) Then
     errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
@@ -6422,10 +6432,18 @@ Function Slice2PlanBridge_LoadProjectionIntake(ByVal projectionPath, ByRef outco
     errText = "projection artifact malformed: rule_evaluation_summary.ordered_rules mismatch object-scoped intake"
     Exit Function
   End If
-  If Not Slice2PlanBridge_NormalizeProjectionEvidenceArrays(issuesErrorsJson, issuesWarningsJson, rulePhaseOrderJson, ruleOrderedRulesJson, orderingErr) Then
-    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
-    errText = "projection artifact malformed: " & orderingErr
-    Exit Function
+  If runtimeEligible Then
+    If Not Slice2PlanBridge_NormalizeProjectionEvidenceArrays(issuesErrorsJson, issuesWarningsJson, rulePhaseOrderJson, ruleOrderedRulesJson, orderingErr) Then
+      errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+      errText = "projection artifact malformed: " & orderingErr
+      Exit Function
+    End If
+  Else
+    If Not Slice2PlanBridge_NormalizeProjectionRuleEvaluationSummaryJson(rulePhaseOrderJson, ruleOrderedRulesJson, orderingErr) Then
+      errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+      errText = "projection artifact malformed: " & orderingErr
+      Exit Function
+    End If
   End If
   If Not Slice2PlanBridge_JsonSplitArrayElements(issuesErrorsJson, issuesErrorElements, issuesErrorCountActual, orderingErr) Then
     errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
@@ -6447,13 +6465,14 @@ Function Slice2PlanBridge_LoadProjectionIntake(ByVal projectionPath, ByRef outco
     errText = "projection artifact malformed: issues_summary.warnings count mismatch status_summary.warning_count=" & CStr(warningCount) & " actual=" & CStr(issuesWarningCountActual)
     Exit Function
   End If
-  If Not Slice2PlanBridge_ValidateStatusSummaryCoherence(CStr(projectionStatus), CLng(errorCount), CLng(warningCount), CLng(issuesErrorCountActual), CLng(issuesWarningCountActual), CStr(ruleOrderedRulesJson), orderingErr) Then
-    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
-    errText = "projection artifact malformed: " & CStr(orderingErr)
-    Exit Function
+  If runtimeEligible Then
+    If Not Slice2PlanBridge_ValidateStatusSummaryCoherence(CStr(projectionStatus), CLng(errorCount), CLng(warningCount), CLng(issuesErrorCountActual), CLng(issuesWarningCountActual), CStr(ruleOrderedRulesJson), orderingErr) Then
+      errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+      errText = "projection artifact malformed: " & CStr(orderingErr)
+      Exit Function
+    End If
   End If
 
-  outcome("preview_kind") = SLICE2_PLAN_BRIDGE_PROJECTION_PREVIEW_KIND
   outcome("projection_contract") = CStr(projectionContract)
   outcome("projection_kind") = CStr(projectionKind)
   outcome("projection_input_artifact") = CStr(inputArtifact)
@@ -6473,6 +6492,13 @@ Function Slice2PlanBridge_LoadProjectionIntake(ByVal projectionPath, ByRef outco
   outcome("projection_rule_phase_order_json") = CStr(rulePhaseOrderJson)
   outcome("projection_rule_ordered_rules_json") = CStr(ruleOrderedRulesJson)
 
+  If Not runtimeEligible Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_NOT_ELIGIBLE
+    errText = CStr(runtimeEligibilityErrText)
+    Exit Function
+  End If
+
+  outcome("preview_kind") = SLICE2_PLAN_BRIDGE_PROJECTION_PREVIEW_KIND
   Slice2PlanBridge_LoadProjectionIntake = True
 End Function
 
@@ -6834,6 +6860,19 @@ Function Slice2PlanBridge_NormalizeProjectionEvidenceArrays(ByRef issuesErrorsJs
   rulePhaseOrderJson = CStr(normalizedPhaseOrder)
   ruleOrderedRulesJson = CStr(normalizedOrderedRules)
   Slice2PlanBridge_NormalizeProjectionEvidenceArrays = True
+End Function
+
+Function Slice2PlanBridge_NormalizeProjectionRuleEvaluationSummaryJson(ByRef rulePhaseOrderJson, ByRef ruleOrderedRulesJson, ByRef errText)
+  Dim normalizedPhaseOrder, normalizedOrderedRules
+
+  Slice2PlanBridge_NormalizeProjectionRuleEvaluationSummaryJson = False
+  errText = ""
+
+  If Not Slice2PlanBridge_NormalizeRuleEvaluationSummaryArrays(rulePhaseOrderJson, ruleOrderedRulesJson, normalizedPhaseOrder, normalizedOrderedRules, errText) Then Exit Function
+
+  rulePhaseOrderJson = CStr(normalizedPhaseOrder)
+  ruleOrderedRulesJson = CStr(normalizedOrderedRules)
+  Slice2PlanBridge_NormalizeProjectionRuleEvaluationSummaryJson = True
 End Function
 
 Function Slice2PlanBridge_NormalizeGenericArrayJson(ByVal arrayJsonIn, ByVal contextLabel, ByRef arrayJsonOut, ByRef errText)
@@ -7616,6 +7655,12 @@ Function Slice2PlanBridge_HasProjectionIntake(ByRef outcome)
   Slice2PlanBridge_HasProjectionIntake = outcome.Exists("projection_contract")
 End Function
 
+Function Slice2PlanBridge_IsNotEligibleProjectionOutcome(ByRef outcome)
+  Slice2PlanBridge_IsNotEligibleProjectionOutcome = False
+  If Not outcome.Exists("error_code") Then Exit Function
+  Slice2PlanBridge_IsNotEligibleProjectionOutcome = (CStr(outcome("error_code")) = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_NOT_ELIGIBLE)
+End Function
+
 Function Slice2PlanBridge_ValidateResolutionPreviewInputs(ByRef outcome, ByRef errText)
   Dim requiredKeys, keyName, keyValue
 
@@ -7694,6 +7739,87 @@ Function Slice2PlanBridge_ValidateRuleEvaluationTracePreviewInputs(ByRef outcome
   Next
 
   Slice2PlanBridge_ValidateRuleEvaluationTracePreviewInputs = True
+End Function
+
+Function Slice2PlanBridge_ValidateIneligibleEvidencePreviewInputs(ByRef outcome, ByRef errText)
+  Dim requiredStringKeys, requiredJsonKeys, keyName, keyValue
+  Dim errNumCount
+  Dim tmpLong
+
+  Slice2PlanBridge_ValidateIneligibleEvidencePreviewInputs = False
+  errText = ""
+
+  requiredStringKeys = Array( _
+    "projection_contract", _
+    "projection_kind", _
+    "projection_input_artifact", _
+    "projection_artifact_path", _
+    "projection_input_fingerprint_sha256", _
+    "projection_status", _
+    "projection_normalized_plan_hash", _
+    "projection_replay_identity", _
+    "projection_validator_run_identity", _
+    "projection_semantic_scope_resolution", _
+    "projection_semantic_effective_scope", _
+    "projection_semantic_evidence_source")
+  requiredJsonKeys = Array( _
+    "projection_issues_errors_json", _
+    "projection_issues_warnings_json", _
+    "projection_rule_phase_order_json", _
+    "projection_rule_ordered_rules_json")
+
+  For Each keyName In requiredStringKeys
+    If Not outcome.Exists(CStr(keyName)) Then
+      errText = "ineligible evidence preview input missing: " & CStr(keyName)
+      Exit Function
+    End If
+    keyValue = CStr(outcome(CStr(keyName)))
+    If Len(Trim(keyValue)) = 0 Then
+      errText = "ineligible evidence preview input empty: " & CStr(keyName)
+      Exit Function
+    End If
+  Next
+
+  For Each keyName In requiredJsonKeys
+    If Not outcome.Exists(CStr(keyName)) Then
+      errText = "ineligible evidence preview input missing: " & CStr(keyName)
+      Exit Function
+    End If
+    keyValue = Trim(CStr(outcome(CStr(keyName))))
+    If Len(keyValue) = 0 Then
+      errText = "ineligible evidence preview input empty: " & CStr(keyName)
+      Exit Function
+    End If
+    If Mid(keyValue, 1, 1) <> "[" Then
+      errText = "ineligible evidence preview input malformed: " & CStr(keyName)
+      Exit Function
+    End If
+  Next
+
+  If Not outcome.Exists("projection_error_count") Then
+    errText = "ineligible evidence preview input missing: projection_error_count"
+    Exit Function
+  End If
+  If Not outcome.Exists("projection_warning_count") Then
+    errText = "ineligible evidence preview input missing: projection_warning_count"
+    Exit Function
+  End If
+
+  On Error Resume Next
+  errNumCount = 0
+  tmpLong = CLng(outcome("projection_error_count"))
+  errNumCount = Err.Number
+  Err.Clear
+  tmpLong = CLng(outcome("projection_warning_count"))
+  If errNumCount = 0 Then errNumCount = Err.Number
+  Err.Clear
+  On Error GoTo 0
+  If CLng(errNumCount) <> 0 Then
+    errText = "ineligible evidence preview input malformed: status counts"
+    Exit Function
+  End If
+
+  Slice2PlanBridge_ValidateIneligibleEvidencePreviewInputs = True
 End Function
 
 Sub Slice2PlanBridge_FailClosed(ByRef outcome, ByVal errCode, ByVal errText)
@@ -7804,10 +7930,14 @@ Function Slice2PlanBridge_BuildPreviewPayloadJson(ByVal tabfieldRecords, ByVal p
   payload = payload & "    ""field_preview"": " & Slice2PlanBridge_BuildFieldPreviewJson(tabfieldRecords)
   If Slice2PlanBridge_HasProjectionIntake(outcome) Then
     payload = payload & "," & vbCrLf
-    payload = payload & "    ""projection_metadata"": " & Slice2PlanBridge_BuildProjectionMetadataJson(outcome) & "," & vbCrLf
-    payload = payload & "    ""resolution_preview"": " & Slice2PlanBridge_BuildResolutionPreviewJson(outcome) & "," & vbCrLf
-    payload = payload & "    ""rule_evaluation_summary_preview"": " & Slice2PlanBridge_BuildRuleEvaluationSummaryPreviewJson(outcome) & "," & vbCrLf
-    payload = payload & "    ""rule_evaluation_trace_preview"": " & Slice2PlanBridge_BuildRuleEvaluationTracePreviewJson(outcome) & vbCrLf
+    If Slice2PlanBridge_IsNotEligibleProjectionOutcome(outcome) Then
+      payload = payload & "    ""ineligible_evidence_preview"": " & Slice2PlanBridge_BuildIneligibleEvidencePreviewJson(outcome) & vbCrLf
+    Else
+      payload = payload & "    ""projection_metadata"": " & Slice2PlanBridge_BuildProjectionMetadataJson(outcome) & "," & vbCrLf
+      payload = payload & "    ""resolution_preview"": " & Slice2PlanBridge_BuildResolutionPreviewJson(outcome) & "," & vbCrLf
+      payload = payload & "    ""rule_evaluation_summary_preview"": " & Slice2PlanBridge_BuildRuleEvaluationSummaryPreviewJson(outcome) & "," & vbCrLf
+      payload = payload & "    ""rule_evaluation_trace_preview"": " & Slice2PlanBridge_BuildRuleEvaluationTracePreviewJson(outcome) & vbCrLf
+    End If
   Else
     payload = payload & vbCrLf
   End If
@@ -7891,6 +8021,46 @@ Function Slice2PlanBridge_BuildProjectionMetadataJson(ByRef outcome)
   outTxt = outTxt & "    }"
 
   Slice2PlanBridge_BuildProjectionMetadataJson = outTxt
+End Function
+
+Function Slice2PlanBridge_BuildIneligibleEvidencePreviewJson(ByRef outcome)
+  Dim outTxt
+
+  outTxt = ""
+  outTxt = outTxt & "{" & vbCrLf
+  outTxt = outTxt & "      ""projection_contract"": """ & Slice1Ingress_JsonEscape(CStr(outcome("projection_contract"))) & """," & vbCrLf
+  outTxt = outTxt & "      ""projection_kind"": """ & Slice1Ingress_JsonEscape(CStr(outcome("projection_kind"))) & """," & vbCrLf
+  outTxt = outTxt & "      ""input_artifact"": """ & Slice1Ingress_JsonEscape(CStr(outcome("projection_input_artifact"))) & """," & vbCrLf
+  outTxt = outTxt & "      ""input_identity"": {" & vbCrLf
+  outTxt = outTxt & "        ""artifact_path"": """ & Slice1Ingress_JsonEscape(CStr(outcome("projection_artifact_path"))) & """," & vbCrLf
+  outTxt = outTxt & "        ""input_fingerprint_sha256"": """ & Slice1Ingress_JsonEscape(CStr(outcome("projection_input_fingerprint_sha256"))) & """" & vbCrLf
+  outTxt = outTxt & "      }," & vbCrLf
+  outTxt = outTxt & "      ""status_summary"": {" & vbCrLf
+  outTxt = outTxt & "        ""status"": """ & Slice1Ingress_JsonEscape(CStr(outcome("projection_status"))) & """," & vbCrLf
+  outTxt = outTxt & "        ""error_count"": " & CStr(outcome("projection_error_count")) & "," & vbCrLf
+  outTxt = outTxt & "        ""warning_count"": " & CStr(outcome("projection_warning_count")) & vbCrLf
+  outTxt = outTxt & "      }," & vbCrLf
+  outTxt = outTxt & "      ""deterministic_identity_summary"": {" & vbCrLf
+  outTxt = outTxt & "        ""normalized_plan_hash"": """ & Slice1Ingress_JsonEscape(CStr(outcome("projection_normalized_plan_hash"))) & """," & vbCrLf
+  outTxt = outTxt & "        ""replay_identity"": """ & Slice1Ingress_JsonEscape(CStr(outcome("projection_replay_identity"))) & """," & vbCrLf
+  outTxt = outTxt & "        ""validator_run_identity"": """ & Slice1Ingress_JsonEscape(CStr(outcome("projection_validator_run_identity"))) & """" & vbCrLf
+  outTxt = outTxt & "      }," & vbCrLf
+  outTxt = outTxt & "      ""semantic_interpretation_summary"": {" & vbCrLf
+  outTxt = outTxt & "        ""scope_resolution"": """ & Slice1Ingress_JsonEscape(CStr(outcome("projection_semantic_scope_resolution"))) & """," & vbCrLf
+  outTxt = outTxt & "        ""effective_scope"": """ & Slice1Ingress_JsonEscape(CStr(outcome("projection_semantic_effective_scope"))) & """," & vbCrLf
+  outTxt = outTxt & "        ""evidence_source"": """ & Slice1Ingress_JsonEscape(CStr(outcome("projection_semantic_evidence_source"))) & """" & vbCrLf
+  outTxt = outTxt & "      }," & vbCrLf
+  outTxt = outTxt & "      ""issues_summary"": {" & vbCrLf
+  outTxt = outTxt & "        ""errors"": " & CStr(outcome("projection_issues_errors_json")) & "," & vbCrLf
+  outTxt = outTxt & "        ""warnings"": " & CStr(outcome("projection_issues_warnings_json")) & vbCrLf
+  outTxt = outTxt & "      }," & vbCrLf
+  outTxt = outTxt & "      ""rule_evaluation_summary"": {" & vbCrLf
+  outTxt = outTxt & "        ""phase_order"": " & CStr(outcome("projection_rule_phase_order_json")) & "," & vbCrLf
+  outTxt = outTxt & "        ""ordered_rules"": " & CStr(outcome("projection_rule_ordered_rules_json")) & vbCrLf
+  outTxt = outTxt & "      }" & vbCrLf
+  outTxt = outTxt & "    }"
+
+  Slice2PlanBridge_BuildIneligibleEvidencePreviewJson = outTxt
 End Function
 
 Function Slice2PlanBridge_BuildResolutionPreviewJson(ByRef outcome)
