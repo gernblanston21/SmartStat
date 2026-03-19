@@ -6075,6 +6075,12 @@ Function Slice2PlanBridge_LoadProjectionIntake(ByVal projectionPath, ByRef outco
   Dim deterministicIdentityObjJson
   Dim normalizedPlanHashFromIdentityObj, replayIdentityFromIdentityObj, validatorRunIdentityFromIdentityObj
   Dim semanticScopeResolution, semanticEffectiveScope, semanticEvidenceSource
+  Dim issuesSummaryObjJson, issuesSummaryErr
+  Dim issuesErrorsJsonFromIssuesObj, issuesWarningsJsonFromIssuesObj
+  Dim issuesErrorsObjErr, issuesWarningsObjErr
+  Dim ruleEvalSummaryObjJson, ruleEvalSummaryErr
+  Dim rulePhaseOrderJsonFromRuleObj, ruleOrderedRulesJsonFromRuleObj
+  Dim rulePhaseOrderObjErr, ruleOrderedRulesObjErr
   Dim issuesErrorsJson, issuesWarningsJson
   Dim issuesErrorsErr, issuesWarningsErr
   Dim rulePhaseOrderJson, ruleOrderedRulesJson
@@ -6364,6 +6370,56 @@ Function Slice2PlanBridge_LoadProjectionIntake(ByVal projectionPath, ByRef outco
   If Not Slice2PlanBridge_JsonReadArray(jsonText, "ordered_rules", ruleOrderedRulesJson, ruleOrderedRulesErr) Then
     errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
     errText = "projection artifact malformed: rule_evaluation_summary.ordered_rules " & ruleOrderedRulesErr
+    Exit Function
+  End If
+  If Not Slice2PlanBridge_JsonReadObject(jsonText, "issues_summary", issuesSummaryObjJson, issuesSummaryErr) Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: issues_summary " & CStr(issuesSummaryErr)
+    Exit Function
+  End If
+  If Not Slice2PlanBridge_JsonReadArray(issuesSummaryObjJson, "errors", issuesErrorsJsonFromIssuesObj, issuesErrorsObjErr) Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: issues_summary.errors " & CStr(issuesErrorsObjErr)
+    Exit Function
+  End If
+  If Not Slice2PlanBridge_JsonReadArray(issuesSummaryObjJson, "warnings", issuesWarningsJsonFromIssuesObj, issuesWarningsObjErr) Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: issues_summary.warnings " & CStr(issuesWarningsObjErr)
+    Exit Function
+  End If
+  If CStr(issuesErrorsJson) <> CStr(issuesErrorsJsonFromIssuesObj) Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: issues_summary.errors mismatch object-scoped intake"
+    Exit Function
+  End If
+  If CStr(issuesWarningsJson) <> CStr(issuesWarningsJsonFromIssuesObj) Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: issues_summary.warnings mismatch object-scoped intake"
+    Exit Function
+  End If
+  If Not Slice2PlanBridge_JsonReadObject(jsonText, "rule_evaluation_summary", ruleEvalSummaryObjJson, ruleEvalSummaryErr) Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: rule_evaluation_summary " & CStr(ruleEvalSummaryErr)
+    Exit Function
+  End If
+  If Not Slice2PlanBridge_JsonReadArray(ruleEvalSummaryObjJson, "phase_order", rulePhaseOrderJsonFromRuleObj, rulePhaseOrderObjErr) Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: rule_evaluation_summary.phase_order " & CStr(rulePhaseOrderObjErr)
+    Exit Function
+  End If
+  If Not Slice2PlanBridge_JsonReadArray(ruleEvalSummaryObjJson, "ordered_rules", ruleOrderedRulesJsonFromRuleObj, ruleOrderedRulesObjErr) Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: rule_evaluation_summary.ordered_rules " & CStr(ruleOrderedRulesObjErr)
+    Exit Function
+  End If
+  If CStr(rulePhaseOrderJson) <> CStr(rulePhaseOrderJsonFromRuleObj) Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: rule_evaluation_summary.phase_order mismatch object-scoped intake"
+    Exit Function
+  End If
+  If CStr(ruleOrderedRulesJson) <> CStr(ruleOrderedRulesJsonFromRuleObj) Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: rule_evaluation_summary.ordered_rules mismatch object-scoped intake"
     Exit Function
   End If
   If Not Slice2PlanBridge_NormalizeProjectionEvidenceArrays(issuesErrorsJson, issuesWarningsJson, rulePhaseOrderJson, ruleOrderedRulesJson, orderingErr) Then

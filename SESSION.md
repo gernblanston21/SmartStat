@@ -741,3 +741,45 @@ Fail-Closed Validation Summary:
   - `status_summary.status` mismatch under a shadow/conflict scenario
   - missing required `status_summary.warning_count`
 - no silent source-preference fallback path was introduced
+
+### Runtime Continuation: `RUNTIME_CONTINUATION_PASS_08`
+
+Status:
+- IMPLEMENTED
+- VALIDATED
+- CLOSED
+
+Objective:
+- harden object-scoped coherence for existing evidence-array summaries so `issues_summary` and `rule_evaluation_summary` values consumed by the read-only bridge cannot be shadowed or disagreed by duplicated key occurrences elsewhere in the projection artifact
+
+Boundary Scope:
+- no new slice
+- no schema changes
+- no viewer changes
+- no adapter changes
+- no mutation/apply behavior changes
+- no `SmartStat_v4.0.0_beta.vbs` edits
+
+Object-Scoped Evidence-Array Coherence Validation Summary:
+- projection intake now reads `issues_summary` as an explicit object and validates required object-scoped array fields:
+  - `errors`
+  - `warnings`
+- projection intake now reads `rule_evaluation_summary` as an explicit object and validates required object-scoped array fields:
+  - `phase_order`
+  - `ordered_rules`
+- object-scoped arrays above are now enforced to match currently consumed bridge arrays before downstream normalization/validation continues
+- this closes key-shadow ambiguity for evidence-array intake without broadening scope to unrelated fields
+
+Determinism Validation Summary:
+- repeat-run hash equality confirmed for valid positive replay (`pass08_pos_runA` vs `pass08_pos_runB`)
+- regression parity for valid positive output confirmed against established baseline (`pos_projection_intake_run1`)
+- valid deterministic output meaning remains unchanged under identical inputs
+
+Fail-Closed Validation Summary:
+- object-scoped evidence-array conflicts fail closed with `SLICE2_PROJECTION_ARTIFACT_MALFORMED`
+- partial/malformed object-scoped array presence fails closed when required paired comparison cannot be established
+- negative checks passed for:
+  - `issues_summary.errors` mismatch under a shadow/conflict scenario
+  - `rule_evaluation_summary.phase_order` mismatch under a shadow/conflict scenario
+  - missing required `issues_summary.warnings`
+- no silent source-preference fallback path was introduced
