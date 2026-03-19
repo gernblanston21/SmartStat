@@ -702,3 +702,42 @@ Fail-Closed Validation Summary:
   - `resolution_preview.scope_resolution` mismatch vs semantic scope-resolution value
   - missing required `resolution_preview.evidence_source`
 - no silent preference of semantic values over resolution values (or vice versa) was introduced
+
+### Runtime Continuation: `RUNTIME_CONTINUATION_PASS_07`
+
+Status:
+- IMPLEMENTED
+- VALIDATED
+- CLOSED
+
+Objective:
+- harden status-summary object-scoped coherence validation for existing WP20 read-only runtime outputs so status/count values consumed by the bridge cannot be shadowed or disagreed by duplicated key occurrences elsewhere in the projection artifact
+
+Boundary Scope:
+- no new slice
+- no schema changes
+- no viewer changes
+- no adapter changes
+- no mutation/apply behavior changes
+- no `SmartStat_v4.0.0_beta.vbs` edits
+
+Status-Summary Object-Scoped Coherence Validation Summary:
+- projection intake now reads `status_summary` as an explicit object and validates required object-scoped fields:
+  - `status`
+  - `error_count`
+  - `warning_count`
+- object-scoped `status_summary` values are now enforced to match currently consumed status/count values before downstream coherence checks continue
+- this closes key-shadow ambiguity for status/count comparisons without broadening scope to unrelated fields
+
+Determinism Validation Summary:
+- repeat-run hash equality confirmed for valid positive replay (`pass07_pos_runA` vs `pass07_pos_runB`)
+- regression parity for valid positive output confirmed against established baseline (`pos_projection_intake_run1`)
+- valid deterministic output meaning remains unchanged under identical inputs
+
+Fail-Closed Validation Summary:
+- object-scoped status/count conflicts fail closed with `SLICE2_PROJECTION_ARTIFACT_MALFORMED`
+- partial/malformed `status_summary` object presence fails closed when required paired comparison cannot be established
+- negative checks passed for:
+  - `status_summary.status` mismatch under a shadow/conflict scenario
+  - missing required `status_summary.warning_count`
+- no silent source-preference fallback path was introduced

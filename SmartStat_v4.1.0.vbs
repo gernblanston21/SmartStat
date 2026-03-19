@@ -6068,6 +6068,9 @@ Function Slice2PlanBridge_LoadProjectionIntake(ByVal projectionPath, ByRef outco
   Dim inputArtifact, artifactPath, inputFingerprint
   Dim inputIdentityObjJson
   Dim artifactPathFromInputIdentity, inputFingerprintFromInputIdentity
+  Dim statusSummaryObjJson, statusSummaryErr
+  Dim projectionStatusFromStatusSummaryObj
+  Dim errorCountFromStatusSummaryObj, warningCountFromStatusSummaryObj
   Dim normalizedPlanHash, replayIdentity, validatorRunIdentity
   Dim deterministicIdentityObjJson
   Dim normalizedPlanHashFromIdentityObj, replayIdentityFromIdentityObj, validatorRunIdentityFromIdentityObj
@@ -6140,6 +6143,47 @@ Function Slice2PlanBridge_LoadProjectionIntake(ByVal projectionPath, ByRef outco
   If Not Slice2PlanBridge_JsonReadLong(jsonText, "warning_count", warningCount) Then
     errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
     errText = "projection artifact malformed: status_summary.warning_count missing"
+    Exit Function
+  End If
+  If Not Slice2PlanBridge_JsonReadObject(jsonText, "status_summary", statusSummaryObjJson, statusSummaryErr) Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: status_summary " & CStr(statusSummaryErr)
+    Exit Function
+  End If
+  If Not Slice2PlanBridge_JsonReadString(statusSummaryObjJson, "status", projectionStatusFromStatusSummaryObj) Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: status_summary.status missing"
+    Exit Function
+  End If
+  If Not Slice2PlanBridge_JsonReadLong(statusSummaryObjJson, "error_count", errorCountFromStatusSummaryObj) Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: status_summary.error_count missing"
+    Exit Function
+  End If
+  If Not Slice2PlanBridge_JsonReadLong(statusSummaryObjJson, "warning_count", warningCountFromStatusSummaryObj) Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: status_summary.warning_count missing"
+    Exit Function
+  End If
+  projectionStatusFromStatusSummaryObj = Trim(CStr(projectionStatusFromStatusSummaryObj))
+  If Len(projectionStatusFromStatusSummaryObj) = 0 Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: status_summary.status empty"
+    Exit Function
+  End If
+  If Trim(CStr(projectionStatus)) <> projectionStatusFromStatusSummaryObj Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: status_summary.status mismatch"
+    Exit Function
+  End If
+  If CLng(errorCount) <> CLng(errorCountFromStatusSummaryObj) Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: status_summary.error_count mismatch"
+    Exit Function
+  End If
+  If CLng(warningCount) <> CLng(warningCountFromStatusSummaryObj) Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: status_summary.warning_count mismatch"
     Exit Function
   End If
   If Not Slice2PlanBridge_JsonReadString(jsonText, "normalized_plan_hash", normalizedPlanHash) Then
