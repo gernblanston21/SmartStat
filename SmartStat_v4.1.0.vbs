@@ -6066,7 +6066,11 @@ Function Slice2PlanBridge_LoadProjectionIntake(ByVal projectionPath, ByRef outco
   Dim jsonText
   Dim projectionContract, projectionKind, projectionStatus
   Dim inputArtifact, artifactPath, inputFingerprint
+  Dim inputIdentityObjJson
+  Dim artifactPathFromInputIdentity, inputFingerprintFromInputIdentity
   Dim normalizedPlanHash, replayIdentity, validatorRunIdentity
+  Dim deterministicIdentityObjJson
+  Dim normalizedPlanHashFromIdentityObj, replayIdentityFromIdentityObj, validatorRunIdentityFromIdentityObj
   Dim semanticScopeResolution, semanticEffectiveScope, semanticEvidenceSource
   Dim issuesErrorsJson, issuesWarningsJson
   Dim issuesErrorsErr, issuesWarningsErr
@@ -6096,6 +6100,21 @@ Function Slice2PlanBridge_LoadProjectionIntake(ByVal projectionPath, ByRef outco
   If Not Slice2PlanBridge_JsonReadString(jsonText, "input_artifact", inputArtifact) Then
     errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
     errText = "projection artifact malformed: input_artifact missing"
+    Exit Function
+  End If
+  If Not Slice2PlanBridge_JsonReadObject(jsonText, "input_identity", inputIdentityObjJson, orderingErr) Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: input_identity " & orderingErr
+    Exit Function
+  End If
+  If Not Slice2PlanBridge_JsonReadString(inputIdentityObjJson, "artifact_path", artifactPathFromInputIdentity) Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: input_identity.artifact_path missing"
+    Exit Function
+  End If
+  If Not Slice2PlanBridge_JsonReadString(inputIdentityObjJson, "input_fingerprint_sha256", inputFingerprintFromInputIdentity) Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: input_identity.input_fingerprint_sha256 missing"
     Exit Function
   End If
   If Not Slice2PlanBridge_JsonReadString(jsonText, "artifact_path", artifactPath) Then
@@ -6138,6 +6157,26 @@ Function Slice2PlanBridge_LoadProjectionIntake(ByVal projectionPath, ByRef outco
     errText = "projection artifact malformed: deterministic_identity_summary.validator_run_identity missing"
     Exit Function
   End If
+  If Not Slice2PlanBridge_JsonReadObject(jsonText, "deterministic_identity_summary", deterministicIdentityObjJson, orderingErr) Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: deterministic_identity_summary " & orderingErr
+    Exit Function
+  End If
+  If Not Slice2PlanBridge_JsonReadString(deterministicIdentityObjJson, "normalized_plan_hash", normalizedPlanHashFromIdentityObj) Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: deterministic_identity_summary.normalized_plan_hash missing"
+    Exit Function
+  End If
+  If Not Slice2PlanBridge_JsonReadString(deterministicIdentityObjJson, "replay_identity", replayIdentityFromIdentityObj) Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: deterministic_identity_summary.replay_identity missing"
+    Exit Function
+  End If
+  If Not Slice2PlanBridge_JsonReadString(deterministicIdentityObjJson, "validator_run_identity", validatorRunIdentityFromIdentityObj) Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: deterministic_identity_summary.validator_run_identity missing"
+    Exit Function
+  End If
 
   If projectionContract <> SLICE2_PLAN_BRIDGE_PROJECTION_CONTRACT Then
     errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_UNSUPPORTED
@@ -6150,14 +6189,66 @@ Function Slice2PlanBridge_LoadProjectionIntake(ByVal projectionPath, ByRef outco
     Exit Function
   End If
 
-  If Len(Trim(inputArtifact)) = 0 Or Len(Trim(artifactPath)) = 0 Or Len(Trim(inputFingerprint)) = 0 Then
+  inputArtifact = Trim(CStr(inputArtifact))
+  artifactPath = Trim(CStr(artifactPath))
+  inputFingerprint = Trim(CStr(inputFingerprint))
+  artifactPathFromInputIdentity = Trim(CStr(artifactPathFromInputIdentity))
+  inputFingerprintFromInputIdentity = Trim(CStr(inputFingerprintFromInputIdentity))
+  normalizedPlanHash = Trim(CStr(normalizedPlanHash))
+  replayIdentity = Trim(CStr(replayIdentity))
+  validatorRunIdentity = Trim(CStr(validatorRunIdentity))
+  normalizedPlanHashFromIdentityObj = Trim(CStr(normalizedPlanHashFromIdentityObj))
+  replayIdentityFromIdentityObj = Trim(CStr(replayIdentityFromIdentityObj))
+  validatorRunIdentityFromIdentityObj = Trim(CStr(validatorRunIdentityFromIdentityObj))
+
+  If Len(inputArtifact) = 0 Or Len(artifactPath) = 0 Or Len(inputFingerprint) = 0 Then
     errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
     errText = "projection artifact malformed: required input identity values empty"
     Exit Function
   End If
-  If Len(Trim(normalizedPlanHash)) = 0 Or Len(Trim(replayIdentity)) = 0 Or Len(Trim(validatorRunIdentity)) = 0 Then
+  If Len(artifactPathFromInputIdentity) = 0 Or Len(inputFingerprintFromInputIdentity) = 0 Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: input_identity values empty"
+    Exit Function
+  End If
+  If artifactPath <> artifactPathFromInputIdentity Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: input_identity.artifact_path mismatch"
+    Exit Function
+  End If
+  If inputFingerprint <> inputFingerprintFromInputIdentity Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: input_identity.input_fingerprint_sha256 mismatch"
+    Exit Function
+  End If
+  If inputArtifact <> artifactPath Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: input_artifact mismatch input_identity.artifact_path"
+    Exit Function
+  End If
+  If Len(normalizedPlanHash) = 0 Or Len(replayIdentity) = 0 Or Len(validatorRunIdentity) = 0 Then
     errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
     errText = "projection artifact malformed: deterministic identity values empty"
+    Exit Function
+  End If
+  If Len(normalizedPlanHashFromIdentityObj) = 0 Or Len(replayIdentityFromIdentityObj) = 0 Or Len(validatorRunIdentityFromIdentityObj) = 0 Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: deterministic_identity_summary values empty"
+    Exit Function
+  End If
+  If normalizedPlanHash <> normalizedPlanHashFromIdentityObj Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: deterministic_identity_summary.normalized_plan_hash mismatch"
+    Exit Function
+  End If
+  If replayIdentity <> replayIdentityFromIdentityObj Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: deterministic_identity_summary.replay_identity mismatch"
+    Exit Function
+  End If
+  If validatorRunIdentity <> validatorRunIdentityFromIdentityObj Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: deterministic_identity_summary.validator_run_identity mismatch"
     Exit Function
   End If
   If CLng(errorCount) < 0 Or CLng(warningCount) < 0 Then
@@ -6410,6 +6501,32 @@ Function Slice2PlanBridge_JsonReadArray(ByVal jsonText, ByVal keyName, ByRef val
   End If
 
   Slice2PlanBridge_JsonReadArray = True
+End Function
+
+Function Slice2PlanBridge_JsonReadObject(ByVal jsonText, ByVal keyName, ByRef valueOut, ByRef errDetail)
+  Dim valuePos
+
+  Slice2PlanBridge_JsonReadObject = False
+  valueOut = ""
+  errDetail = "missing"
+
+  If Not Slice2PlanBridge_JsonFindValueStart(jsonText, keyName, valuePos) Then Exit Function
+  If Mid(jsonText, valuePos, 1) <> "{" Then
+    errDetail = "malformed"
+    Exit Function
+  End If
+  If Not Slice2PlanBridge_JsonExtractObject(jsonText, valuePos, valueOut) Then
+    errDetail = "malformed"
+    Exit Function
+  End If
+
+  valueOut = Slice2PlanBridge_JsonCompact(valueOut)
+  If Len(valueOut) = 0 Then
+    errDetail = "malformed"
+    Exit Function
+  End If
+
+  Slice2PlanBridge_JsonReadObject = True
 End Function
 
 Function Slice2PlanBridge_NormalizeProjectionEvidenceArrays(ByRef issuesErrorsJson, ByRef issuesWarningsJson, ByRef rulePhaseOrderJson, ByRef ruleOrderedRulesJson, ByRef errText)
@@ -7103,6 +7220,43 @@ Function Slice2PlanBridge_JsonExtractArray(ByVal jsonText, ByVal valuePos, ByRef
         If depth = 0 Then
           valueOut = Mid(jsonText, valuePos, i - valuePos + 1)
           Slice2PlanBridge_JsonExtractArray = True
+          Exit Function
+        End If
+        If depth < 0 Then Exit Function
+      End If
+    End If
+  Next
+End Function
+
+Function Slice2PlanBridge_JsonExtractObject(ByVal jsonText, ByVal valuePos, ByRef valueOut)
+  Dim i, depth, ch, inString, escapeNext
+
+  Slice2PlanBridge_JsonExtractObject = False
+  valueOut = ""
+  depth = 0
+  inString = False
+  escapeNext = False
+
+  For i = valuePos To Len(jsonText)
+    ch = Mid(jsonText, i, 1)
+    If inString Then
+      If escapeNext Then
+        escapeNext = False
+      ElseIf ch = "\" Then
+        escapeNext = True
+      ElseIf ch = """" Then
+        inString = False
+      End If
+    Else
+      If ch = """" Then
+        inString = True
+      ElseIf ch = "{" Then
+        depth = depth + 1
+      ElseIf ch = "}" Then
+        depth = depth - 1
+        If depth = 0 Then
+          valueOut = Mid(jsonText, valuePos, i - valuePos + 1)
+          Slice2PlanBridge_JsonExtractObject = True
           Exit Function
         End If
         If depth < 0 Then Exit Function

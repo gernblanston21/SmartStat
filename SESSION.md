@@ -579,3 +579,44 @@ Fail-Closed Validation Summary:
   - issues entry with non-string `message`
   - ordered-rule entry missing required `outcome`
 - no silent fallback path to partial or incidental serialization order was introduced
+
+### Runtime Continuation: `RUNTIME_CONTINUATION_PASS_04`
+
+Status:
+- IMPLEMENTED
+- VALIDATED
+- CLOSED
+
+Objective:
+- harden cross-surface identity consistency validation for existing WP20 read-only runtime outputs so duplicated existing identity/traceability values cannot disagree silently
+
+Boundary Scope:
+- no new slice
+- no schema changes
+- no viewer changes
+- no adapter changes
+- no mutation/apply behavior changes
+- no `SmartStat_v4.0.0_beta.vbs` edits
+
+Identity Consistency Validation Summary:
+- projection intake now validates paired identity consistency across existing duplicated surfaces:
+  - `input_artifact` vs `input_identity.artifact_path`
+  - consumed `artifact_path` vs nested `input_identity.artifact_path`
+  - consumed `input_fingerprint_sha256` vs nested `input_identity.input_fingerprint_sha256`
+  - consumed deterministic identity values vs nested `deterministic_identity_summary` values (`normalized_plan_hash`, `replay_identity`, `validator_run_identity`)
+- consistency checks are deterministic and fail closed; no conflict-preference fallback path is allowed
+
+Determinism Validation Summary:
+- repeat-run hash equality confirmed for valid positive replay (`pass04_pos_runA` vs `pass04_pos_runB`)
+- regression parity for valid positive output confirmed against established baseline (`pos_projection_intake_run1`)
+- valid deterministic output meaning remains unchanged under identical inputs
+
+Fail-Closed Validation Summary:
+- conflicting duplicated identity values fail closed with `SLICE2_PROJECTION_ARTIFACT_MALFORMED`
+- partial identity presence where a paired comparison is required fails closed
+- negative checks passed for:
+  - `input_artifact` mismatch vs `input_identity.artifact_path`
+  - consumed `replay_identity` mismatch vs nested `deterministic_identity_summary.replay_identity`
+  - missing nested `input_identity.artifact_path` while paired comparison is required
+  - missing nested `deterministic_identity_summary.replay_identity` while paired comparison is required
+- no silent conflict-resolution or source-priority fallback path was introduced
