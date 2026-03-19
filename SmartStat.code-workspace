@@ -1,0 +1,23 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"*.vbs": "vbs",
+			"*.wsf": "xml",
+			"*.ini": "ini",
+			"*.cfg": "ini",
+			"*.bat": "bat",
+			"*.exe": "exe",
+			"*.md": "markdown",
+			"*.txt": "plaintext"
+		},
+		"chat.tools.terminal.autoApprove": {
+			"\\.tools\\\\show-lines\\.ps1": true,
+			"\\.agents\\\\skills\\\\.*\\.ps1": true
+		}
+	}
+}
