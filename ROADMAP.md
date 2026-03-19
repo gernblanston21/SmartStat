@@ -785,6 +785,7 @@ Explicit future choices:
 - Runtime continuation marker: `RUNTIME_CONTINUATION_PASS_02` completed as a stabilization-only hardening pass on existing slice-01 through 02G outputs (evidence completeness + structural consistency fail-closed enforcement), with no new slice, no schema change, and no mutation/apply authorization change
 - Runtime continuation marker: `RUNTIME_CONTINUATION_PASS_03` completed as a stabilization-only hardening pass on existing slice-01 through 02G outputs (canonical serialization stability + fail-closed canonicalization prerequisite enforcement), with no new slice, no schema change, and no mutation/apply authorization change
 - Runtime continuation marker: `RUNTIME_CONTINUATION_PASS_04` completed as a stabilization-only hardening pass on existing slice-01 through 02G outputs (cross-surface identity consistency validation + fail-closed conflict/partial-pair handling), with no new slice, no schema change, and no mutation/apply authorization change
+- Runtime continuation marker: `RUNTIME_CONTINUATION_PASS_05` completed as a stabilization-only hardening pass on existing slice-01 through 02G outputs (status-summary coherence validation + fail-closed aggregate/detail conflict handling), with no new slice, no schema change, and no mutation/apply authorization change
 
 ### Definition of Done
 

@@ -6342,6 +6342,11 @@ Function Slice2PlanBridge_LoadProjectionIntake(ByVal projectionPath, ByRef outco
     errText = "projection artifact malformed: issues_summary.warnings count mismatch status_summary.warning_count=" & CStr(warningCount) & " actual=" & CStr(issuesWarningCountActual)
     Exit Function
   End If
+  If Not Slice2PlanBridge_ValidateStatusSummaryCoherence(CStr(projectionStatus), CLng(errorCount), CLng(warningCount), CLng(issuesErrorCountActual), CLng(issuesWarningCountActual), CStr(ruleOrderedRulesJson), orderingErr) Then
+    errCode = SLICE2_PLAN_BRIDGE_PROJECTION_ERR_MALFORMED
+    errText = "projection artifact malformed: " & CStr(orderingErr)
+    Exit Function
+  End If
 
   outcome("preview_kind") = SLICE2_PLAN_BRIDGE_PROJECTION_PREVIEW_KIND
   outcome("projection_contract") = CStr(projectionContract)
@@ -6364,6 +6369,59 @@ Function Slice2PlanBridge_LoadProjectionIntake(ByVal projectionPath, ByRef outco
   outcome("projection_rule_ordered_rules_json") = CStr(ruleOrderedRulesJson)
 
   Slice2PlanBridge_LoadProjectionIntake = True
+End Function
+
+Function Slice2PlanBridge_ValidateStatusSummaryCoherence(ByVal projectionStatus, ByVal errorCount, ByVal warningCount, ByVal issuesErrorCountActual, ByVal issuesWarningCountActual, ByVal orderedRulesJson, ByRef errText)
+  Dim statusKey
+  Dim ruleElements, ruleCount, splitErr
+  Dim i, ruleObj, ruleOutcome
+  Dim nonPassRuleCount
+
+  Slice2PlanBridge_ValidateStatusSummaryCoherence = False
+  errText = ""
+
+  statusKey = UCase(Trim(CStr(projectionStatus)))
+  If statusKey <> "PASS" Then
+    errText = "status_summary.status unsupported for runtime coherence: " & CStr(projectionStatus)
+    Exit Function
+  End If
+  If CLng(errorCount) <> CLng(issuesErrorCountActual) Then
+    errText = "status_summary.error_count mismatch issues_summary.errors"
+    Exit Function
+  End If
+  If CLng(warningCount) <> CLng(issuesWarningCountActual) Then
+    errText = "status_summary.warning_count mismatch issues_summary.warnings"
+    Exit Function
+  End If
+  If Not Slice2PlanBridge_JsonSplitArrayElements(CStr(orderedRulesJson), ruleElements, ruleCount, splitErr) Then
+    errText = "rule_evaluation_summary.ordered_rules " & CStr(splitErr)
+    Exit Function
+  End If
+  If CLng(ruleCount) = 0 Then
+    errText = "rule_evaluation_summary.ordered_rules empty"
+    Exit Function
+  End If
+
+  nonPassRuleCount = 0
+  For i = 0 To CLng(ruleCount) - 1
+    ruleObj = Trim(CStr(ruleElements(i)))
+    If Not Slice2PlanBridge_JsonReadString(ruleObj, "outcome", ruleOutcome) Then
+      errText = "rule_evaluation_summary.ordered_rules missing outcome at index " & CStr(i)
+      Exit Function
+    End If
+    ruleOutcome = UCase(Trim(CStr(ruleOutcome)))
+    If ruleOutcome <> "PASS" And ruleOutcome <> "WARN" And ruleOutcome <> "REFUSE" And ruleOutcome <> "FAIL" Then
+      errText = "status/detail coherence cannot be established: unsupported ordered_rules outcome at index " & CStr(i) & ": " & CStr(ruleOutcome)
+      Exit Function
+    End If
+    If ruleOutcome <> "PASS" Then nonPassRuleCount = nonPassRuleCount + 1
+  Next
+  If CLng(nonPassRuleCount) <> 0 Then
+    errText = "status_summary.status PASS conflicts with non-PASS ordered_rules outcomes count=" & CStr(nonPassRuleCount)
+    Exit Function
+  End If
+
+  Slice2PlanBridge_ValidateStatusSummaryCoherence = True
 End Function
 
 Function Slice2PlanBridge_ReadProjectionArtifactText(ByVal projectionPath, ByRef bodyOut, ByRef errCode, ByRef errText)

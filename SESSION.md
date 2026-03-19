@@ -620,3 +620,42 @@ Fail-Closed Validation Summary:
   - missing nested `input_identity.artifact_path` while paired comparison is required
   - missing nested `deterministic_identity_summary.replay_identity` while paired comparison is required
 - no silent conflict-resolution or source-priority fallback path was introduced
+
+### Runtime Continuation: `RUNTIME_CONTINUATION_PASS_05`
+
+Status:
+- IMPLEMENTED
+- VALIDATED
+- CLOSED
+
+Objective:
+- harden status-summary coherence validation for existing WP20 read-only runtime outputs so existing aggregate summary values cannot disagree silently with already-emitted detailed bridge evidence
+
+Boundary Scope:
+- no new slice
+- no schema changes
+- no viewer changes
+- no adapter changes
+- no mutation/apply behavior changes
+- no `SmartStat_v4.0.0_beta.vbs` edits
+
+Status-Summary Coherence Validation Summary:
+- projection intake now enforces deterministic coherence checks between existing summary/detail surfaces:
+  - `status_summary.error_count` vs `issues_summary.errors`
+  - `status_summary.warning_count` vs `issues_summary.warnings`
+  - `status_summary.status` vs `rule_evaluation_summary.ordered_rules[*].outcome` (for the existing PASS runtime path)
+- coherence checks use only existing emitted/consumed fields and do not introduce new runtime surface area
+
+Determinism Validation Summary:
+- repeat-run hash equality confirmed for valid positive replay (`pass05_pos_runA` vs `pass05_pos_runB`)
+- regression parity for valid positive output confirmed against established baseline (`pos_projection_intake_run1`)
+- valid deterministic output meaning remains unchanged under identical inputs
+
+Fail-Closed Validation Summary:
+- summary/detail conflicts fail closed with `SLICE2_PROJECTION_ARTIFACT_MALFORMED`
+- partial/malformed detail preventing deterministic coherence comparison fails closed
+- negative checks passed for:
+  - `status_summary.status=PASS` conflicting with non-PASS ordered-rule outcomes
+  - unsupported ordered-rule `outcome` token preventing deterministic status/detail comparison
+  - ordered-rule entry missing required `outcome`
+- no silent preference of summary values over detailed evidence (or vice versa) was introduced
