@@ -221,7 +221,7 @@
       "command": "repomix",
       "args": [
         "--include",
-        "AGENTS.md,SESSION.md,ROADMAP.md,docs/ai/repomix-smartstat-instructions.md,.agents/**/*.md,.agents/**/*.ps1,governance/**/*.md,docs/**/*.md",
+        "AGENTS.md,SESSION.md,ROADMAP.md,docs/ai/repomix-smartstat-instructions.md,.agents/**/*.md,.agents/**/*.ps1,governance/**/*.md,docs/**/*.md,tools/onair/**/*.ps1,tools/onair/**/*.md,tools/onair/**/*.py",
         "-o",
         "repomix-smartstat-data.xml"
       ],

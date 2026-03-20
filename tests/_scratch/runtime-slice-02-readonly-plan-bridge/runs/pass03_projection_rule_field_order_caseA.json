@@ -1,0 +1,128 @@
+{
+  "projection_contract": "wp19.viewer_projection.v1",
+  "projection_kind": "read_only_view_model",
+  "input_artifact": "tests/wp-18/fixtures/good/good_schema_compatible_capture.json",
+  "input_identity": {
+    "artifact_path": "tests/wp-18/fixtures/good/good_schema_compatible_capture.json",
+    "input_fingerprint_sha256": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+  },
+  "status_summary": {
+    "status": "PASS",
+    "error_count": 0,
+    "warning_count": 0
+  },
+  "issues_summary": {
+    "errors": [],
+    "warnings": []
+  },
+  "rule_evaluation_summary": {
+    "phase_order": [
+      "STRUCTURAL",
+      "SEMANTIC",
+      "DETERMINISM",
+      "BOUNDARY"
+    ],
+    "ordered_rules": [
+      {
+        "category": "STRUCTURAL",
+        "rule_id": "STRUCT_SLOT_ORDER_CONTIGUOUS_ASC",
+        "outcome": "PASS"
+      },
+      {
+        "category": "STRUCTURAL",
+        "rule_id": "STRUCT_CAPTURED_PLAN_TERMINAL_REQUIRED",
+        "outcome": "PASS"
+      },
+      {
+        "category": "STRUCTURAL",
+        "rule_id": "STRUCT_ILLEGAL_SLOT_COMBINATION",
+        "outcome": "PASS"
+      },
+      {
+        "category": "STRUCTURAL",
+        "rule_id": "STRUCT_NO_NON_FORMATTER_AFTER_TERMINAL",
+        "outcome": "PASS"
+      },
+      {
+        "category": "STRUCTURAL",
+        "rule_id": "STRUCT_FORMATTER_COUNT_MAX_ONE",
+        "outcome": "PASS"
+      },
+      {
+        "category": "SEMANTIC",
+        "rule_id": "SEM_REQUIRED_DEPENDENCIES_PRESENT",
+        "outcome": "PASS"
+      },
+      {
+        "category": "SEMANTIC",
+        "rule_id": "SEM_FORMATTER_TERMINAL_ADJACENT_AND_TYPE_COMPATIBLE",
+        "outcome": "PASS"
+      },
+      {
+        "category": "SEMANTIC",
+        "rule_id": "SEM_ENTITY_FAMILY_OPERATOR_TERMINAL_COMPATIBLE",
+        "outcome": "PASS"
+      },
+      {
+        "category": "SEMANTIC",
+        "rule_id": "SEM_AMBIGUOUS_OR_INCOMPATIBLE_COMBINATION_REFUSED",
+        "outcome": "PASS"
+      },
+      {
+        "category": "DETERMINISM",
+        "rule_id": "DET_RULE_EVALUATION_ORDER_STABLE",
+        "outcome": "PASS"
+      },
+      {
+        "category": "DETERMINISM",
+        "rule_id": "DET_ERROR_WARNING_ORDER_STABLE",
+        "outcome": "PASS"
+      },
+      {
+        "category": "DETERMINISM",
+        "rule_id": "DET_OUTPUT_NORMALIZATION_STABLE",
+        "outcome": "PASS"
+      },
+      {
+        "category": "DETERMINISM",
+        "rule_id": "DET_AMBIGUOUS_INTERPRETATION_REFUSED",
+        "outcome": "PASS"
+      },
+      {
+        "category": "DETERMINISM",
+        "rule_id": "DET_REPLAY_IDENTITY_STABLE",
+        "outcome": "PASS"
+      },
+      {
+        "category": "BOUNDARY",
+        "rule_id": "BOUND_VALIDATION_RUNTIME_INDEPENDENT",
+        "outcome": "PASS"
+      },
+      {
+        "category": "BOUNDARY",
+        "rule_id": "BOUND_NO_TRIO_OR_ENGINE_APPLY_CALLS",
+        "outcome": "PASS"
+      },
+      {
+        "category": "BOUNDARY",
+        "rule_id": "BOUND_CAPTURED_PLAN_READ_ONLY",
+        "outcome": "PASS"
+      },
+      {
+        "category": "BOUNDARY",
+        "rule_id": "BOUND_NO_RUNTIME_SIDE_EFFECT_INFERENCE",
+        "outcome": "PASS"
+      }
+    ]
+  },
+  "deterministic_identity_summary": {
+    "normalized_plan_hash": "e636e793dd8bd62a7102b0e0752b652b7ae7b8f5c2b4740149eedf129ce69160",
+    "replay_identity": "239f065f030c05d86d0d39f5b9d2cb6a24b60fc4f4e7b56a2e2222be18fe3523",
+    "validator_run_identity": "effa611604a59554737ff487ad5cd228c6cde79381b2f993b96484c2eae126af"
+  },
+  "semantic_interpretation_summary": {
+    "scope_resolution": "implicit_default",
+    "effective_scope": "career",
+    "evidence_source": "operator_grounded_default"
+  }
+}

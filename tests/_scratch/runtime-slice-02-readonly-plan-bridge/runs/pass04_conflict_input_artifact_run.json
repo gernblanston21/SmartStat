@@ -1,0 +1,38 @@
+{
+  "status": "fail_closed",
+  "version": "4.1.0",
+  "runtime_line": "SmartStat_v4.1.0.vbs",
+  "slice_name": "WP20_RUNTIME_SLICE_02_READONLY_PLAN_BRIDGE",
+  "slice_gate_expected": "WP20_RUNTIME_SLICE_02_READONLY_PLAN_BRIDGE",
+  "slice_gate_received": "WP20_RUNTIME_SLICE_02_READONLY_PLAN_BRIDGE",
+  "provider_mode": "fixture",
+  "normalization_rule": "TABFIELD_NAME_TEXT_BINARY_ASC",
+  "preview_kind": "readonly_plan_bridge_preview_skeleton_v1",
+  "supported_read_surfaces": [
+    "page:get_tabfield_names",
+    "page:get_property",
+    "tabfield:get_custom_property",
+    "page:getpagename",
+    "page:getpagetemplate"
+  ],
+  "page_name": "2001",
+  "page_template": "SPORTS_SCOREBUG",
+  "error_code": "SLICE2_PROJECTION_ARTIFACT_MALFORMED",
+  "error_detail": "projection artifact malformed: input_artifact mismatch input_identity.artifact_path",
+  "preview_payload": {
+    "payload_kind": "readonly_plan_bridge_preview_skeleton_v1",
+    "bridge_mode": "read_only_preview",
+    "mutation_authorized": false,
+    "tabfield_count": 3,
+    "tabfield_order": [
+      "B0200",
+      "H0100",
+      "H0110"
+    ],
+    "field_preview": [
+      {"name": "B0200", "page_property": "NBA", "custom_property": "LEAGUE_KEY"},
+      {"name": "H0100", "page_property": "NIKOLA JOKIC", "custom_property": "PLAYER_NAME"},
+      {"name": "H0110", "page_property": "29", "custom_property": "PTS_OUTPUT"}
+    ]
+  }
+}
