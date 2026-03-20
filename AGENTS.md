@@ -284,6 +284,49 @@ Current mandatory re-entry contract:
 - `docs/onair/wp20_runtime_reentry_authorization_envelope_01.md`
 - Status: `NOT AUTHORIZED` (runtime implementation must remain blocked unless a future superseding envelope explicitly authorizes one bounded objective).
 
+### Runtime Advisory Safe Class
+
+SmartStat recognizes a separate governance class for narrow runtime-adjacent
+operator-facing work that has zero execution authority:
+
+- `RUNTIME_ADVISORY_SAFE_CLASS`
+
+This class separates runtime context from execution authority. It does NOT
+constitute broad runtime re-entry.
+
+Allowed inside this class (all must be true):
+
+1. read-only advisory-only behavior only
+2. non-authoritative operator awareness/checkpoint support only
+3. deterministic, fail-closed behavior with no hidden side effects
+4. no mutation/apply/take/cue authority
+5. no tabfield writes, socket execution, or Trio action execution
+6. no WP-20 preview payload mutation or semantic reinterpretation
+7. no viewer truth-surface expansion
+
+Default implementation scope for this class:
+
+- docs/onair governance/workflow artifacts
+- non-runtime tooling surfaces
+- bounded `.vbs` read-only advisory logic that:
+
+  - does NOT call apply/take/cue
+  - does NOT write tabfields
+  - does NOT modify runtime payloads
+  - does NOT trigger socket execution
+  - does NOT alter SmartStat output semantics
+
+This allows advisory-only logic to exist inside runtime context
+without granting execution authority.
+
+Authorization rule:
+
+- Codex may proceed with bounded implementation work inside
+  `RUNTIME_ADVISORY_SAFE_CLASS` without requiring a new runtime re-entry
+  envelope every time, only when all class boundaries are explicitly satisfied.
+- If any boundary is ambiguous, or if any forbidden surface may be touched,
+  Codex must halt and require an explicit bounded envelope.
+
 ---
 
 ## Code Delivery Rules

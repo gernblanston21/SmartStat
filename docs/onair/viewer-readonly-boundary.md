@@ -54,6 +54,27 @@ Reference:
 
 1. `docs/viz-trio/environment_constraints.md`
 
+## Advisory Awareness Surface Clarification
+
+An advisory-only awareness display may exist only when all of the following are
+true:
+
+1. it does not create or redefine a viewer truth surface
+2. it does not expand adapter/viewer truth contracts
+3. it has zero execution authority
+4. it is explicitly labeled advisory-only and non-authorizing
+5. it fails closed to a safe unavailable/no-signal state
+
+Distinction:
+
+- `Advisory Awareness Surface`:
+  - secondary operator awareness only
+  - no truth-surface authority
+  - no execution authority
+- `Viewer Truth Surface Expansion`:
+  - any new/changed truth contract or semantics in viewer outputs
+  - remains forbidden unless separately authorized
+
 ## Non-Authorizing Statement
 
 This boundary file is governance for tooling behavior only.  
