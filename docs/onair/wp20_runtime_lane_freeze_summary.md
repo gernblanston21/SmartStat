@@ -93,12 +93,13 @@ true:
   - `docs/ai/SMARTSTAT_RUNTIME_MAP.md`
   - `docs/ai/SMARTSTAT_AI_BOOTSTRAP.md`
 - Slice-02 validation and evidence pack:
-  - `tests/_scratch/runtime-slice-02-readonly-plan-bridge/validation_matrix.md`
-  - `tests/_scratch/runtime-slice-02-readonly-plan-bridge/validation_artifact_index.md`
-  - `tests/_scratch/runtime-slice-02-readonly-plan-bridge/tools/check_slice2_traceability_drift.ps1`
+  - `docs/onair/wp20-runtime-slice-02/archive/validation_matrix.md`
+  - `docs/onair/wp20-runtime-slice-02/archive/validation_artifact_index.md`
+  - `tools/onair/wp20-runtime-slice-02/check_slice2_traceability_drift.ps1`
   - `tests/_scratch/runtime-slice-02-readonly-plan-bridge/runs/traceability_subtree_equivalence_report.json`
 
 ## Explicit Non-Authorizing Boundary
 
 This summary is archival and non-authorizing. It does not reopen the WP-20
 runtime lane and does not authorize runtime mutation/apply implementation.
+

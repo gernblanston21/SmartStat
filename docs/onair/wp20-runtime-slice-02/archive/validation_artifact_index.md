@@ -2,9 +2,9 @@
 
 | File Path | Artifact Purpose | Relevance to Closeout |
 |---|---|---|
-| `tests/_scratch/runtime-slice-02-readonly-plan-bridge/validation_matrix.md` | Consolidated validation outcomes and hashes | Primary closeout status reference |
-| `tests/_scratch/runtime-slice-02-readonly-plan-bridge/tools/run_slice2_fixture.ps1` | Fixture execution helper for slice-02 gate | Reproducible validation command path |
-| `tests/_scratch/runtime-slice-02-readonly-plan-bridge/tools/check_slice2_traceability_drift.ps1` | Explicit duplicated-traceability drift detector for positive projection runs | Hardens evidence against silent builder-surface drift |
+| `docs/onair/wp20-runtime-slice-02/archive/validation_matrix.md` | Consolidated validation outcomes and hashes | Primary closeout status reference |
+| `tools/onair/wp20-runtime-slice-02/run_slice2_fixture.ps1` | Fixture execution helper for slice-02 gate | Reproducible validation command path |
+| `tools/onair/wp20-runtime-slice-02/check_slice2_traceability_drift.ps1` | Explicit duplicated-traceability drift detector for positive projection runs | Hardens evidence against silent builder-surface drift |
 | `tests/_scratch/runtime-slice-02-readonly-plan-bridge/fixtures/plan_bridge_case01.fixture` | Positive deterministic preview input | Gate-ON success/determinism evidence input |
 | `tests/_scratch/runtime-slice-02-readonly-plan-bridge/fixtures/neg_missing_tabfield_list.fixture` | Missing required command negative input | Fail-closed coverage (`FIXTURE_COMMAND_MISSING`) |
 | `tests/_scratch/runtime-slice-02-readonly-plan-bridge/fixtures/neg_duplicate_tabfields.fixture` | Duplicate tabfield ambiguity negative input | Fail-closed coverage (`AMBIGUOUS_TABFIELD_LIST`) |
@@ -17,3 +17,4 @@
 | `tests/_scratch/runtime-slice-02-readonly-plan-bridge/runs/neg_unsupported_surface.json` | Negative output: unsupported surface | Fail-closed evidence |
 | `tests/_scratch/runtime-slice-02-readonly-plan-bridge/runs/mutation_boundary_report.txt` | Mutation call scan report | Read-only boundary evidence (`TOTAL_MUTATION_CALLS=0`) |
 | `SmartStat_v4.1.0.vbs` | Runtime slice-02 gated scaffold surface under validation | Confirms bounded validated runtime surface |
+

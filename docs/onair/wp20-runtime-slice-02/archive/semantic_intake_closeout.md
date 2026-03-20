@@ -1,16 +1,16 @@
-# Runtime Slice-02B Projection Intake Closeout
+# Runtime Slice-02C Semantic Interpretation Intake Closeout
 
 ## Role Summary
-Runtime lane closeout engineer for `WP20_RUNTIME_SLICE_02B_READONLY_PLAN_BRIDGE_PROJECTION_INTAKE`.
+Runtime lane closeout engineer for `WP20_RUNTIME_SLICE_02C_READONLY_PLAN_BRIDGE_SEMANTIC_INTERPRETATION_INTAKE`.
 
 ## Scope
-This closeout applies only to the current validated scope of `WP20_RUNTIME_SLICE_02B_READONLY_PLAN_BRIDGE_PROJECTION_INTAKE`:
-- slice-02 read-only plan-bridge projection intake
+This closeout applies only to the current validated scope of `WP20_RUNTIME_SLICE_02C_READONLY_PLAN_BRIDGE_SEMANTIC_INTERPRETATION_INTAKE`:
+- slice-02 read-only plan-bridge semantic-interpretation intake
 - gate-OFF parity verification
-- slice-02A carry-forward positive verification
-- slice-02A carry-forward negative verification
-- projection-intake deterministic positive verification
-- projection-intake negative verification
+- slice-02A carry-forward verification
+- slice-02B carry-forward verification
+- semantic-intake deterministic positive verification
+- semantic-intake negative verification
 - mutation-boundary verification
 
 Out of scope:
@@ -20,8 +20,8 @@ Out of scope:
 - broader runtime approval
 
 ## Evidence Reviewed
-- `tests/_scratch/runtime-slice-02-readonly-plan-bridge/validation_matrix.md`
-- `tests/_scratch/runtime-slice-02-readonly-plan-bridge/tools/run_slice2_fixture.ps1`
+- `docs/onair/wp20-runtime-slice-02/archive/validation_matrix.md`
+- `tools/onair/wp20-runtime-slice-02/run_slice2_fixture.ps1`
 - `tests/_scratch/runtime-slice-02-readonly-plan-bridge/fixtures/plan_bridge_case01.fixture`
 - `tests/_scratch/runtime-slice-02-readonly-plan-bridge/fixtures/neg_missing_tabfield_list.fixture`
 - `tests/_scratch/runtime-slice-02-readonly-plan-bridge/fixtures/neg_duplicate_tabfields.fixture`
@@ -31,6 +31,8 @@ Out of scope:
 - `tests/wp-19/target-03/fixtures/projection_refuse_case.json`
 - `tests/_scratch/runtime-slice-02-readonly-plan-bridge/fixtures/projection_unsupported_contract.json`
 - `tests/_scratch/runtime-slice-02-readonly-plan-bridge/fixtures/projection_malformed_missing_status.json`
+- `tests/_scratch/runtime-slice-02-readonly-plan-bridge/fixtures/projection_malformed_missing_semantic_scope.json`
+- `tests/_scratch/runtime-slice-02-readonly-plan-bridge/fixtures/projection_malformed_empty_semantic_evidence_source.json`
 - `tests/_scratch/runtime-slice-02-readonly-plan-bridge/runs/pos_plan_bridge_run1.json`
 - `tests/_scratch/runtime-slice-02-readonly-plan-bridge/runs/pos_plan_bridge_run2.json`
 - `tests/_scratch/runtime-slice-02-readonly-plan-bridge/runs/neg_missing_tabfield_list.json`
@@ -43,27 +45,30 @@ Out of scope:
 - `tests/_scratch/runtime-slice-02-readonly-plan-bridge/runs/neg_projection_unsupported_contract.json`
 - `tests/_scratch/runtime-slice-02-readonly-plan-bridge/runs/neg_projection_malformed_missing_status.json`
 - `tests/_scratch/runtime-slice-02-readonly-plan-bridge/runs/neg_projection_not_runtime_eligible.json`
+- `tests/_scratch/runtime-slice-02-readonly-plan-bridge/runs/neg_projection_malformed_missing_semantic_scope.json`
+- `tests/_scratch/runtime-slice-02-readonly-plan-bridge/runs/neg_projection_malformed_empty_semantic_evidence_source.json`
 - `tests/_scratch/runtime-slice-02-readonly-plan-bridge/runs/mutation_boundary_report.txt`
 - `SmartStat_v4.1.0.vbs` (slice-02 gated runtime surface under validation)
 
 ## Result Summary
 - Gate-OFF parity result: PASS.
-- Slice-02A carry-forward positive result: PASS.
-- Slice-02A carry-forward negative result: PASS.
-- Projection-intake deterministic positive result: PASS (`96924D6C0964AAD8EC5267DFD838E917A49673DCB4ECAE510EA91BA7EA8ADB1E` matched across run 1 and run 2).
-- Projection-intake negative result set: PASS (`SLICE2_PROJECTION_ARTIFACT_MISSING`, `SLICE2_PROJECTION_CONTRACT_UNSUPPORTED`, `SLICE2_PROJECTION_ARTIFACT_MALFORMED`, `SLICE2_PROJECTION_NOT_RUNTIME_ELIGIBLE`).
+- Slice-02A carry-forward result: PASS.
+- Slice-02B carry-forward result: PASS (existing projection-intake positives and negatives preserved except for the authorized semantic block addition in the joined preview).
+- Semantic-intake deterministic positive result: PASS (`A0050A8CAC7309ACBB744029B89D4C7059F21B4CCC14DB873E0A9440C5F20652` matched across run 1 and run 2).
+- Semantic-intake negative result set: PASS (`SLICE2_PROJECTION_ARTIFACT_MALFORMED` for missing `scope_resolution` and empty `evidence_source`).
 - Mutation-boundary preservation result: PASS (`TOTAL_MUTATION_CALLS=0`; forbidden mutation patterns absent in slice-02 region).
-- Current projection-intake step accepted as complete for current scope: YES.
+- Current semantic-intake step accepted as complete for current scope: YES.
 
 ## Acceptance Boundary
-Accepted for current projection-intake scope only.
+Accepted for current semantic-intake scope only.
 
 Mandatory boundary statement:
-- Validation applies only to the current scope of `WP20_RUNTIME_SLICE_02B_READONLY_PLAN_BRIDGE_PROJECTION_INTAKE`.
+- Validation applies only to the current scope of `WP20_RUNTIME_SLICE_02C_READONLY_PLAN_BRIDGE_SEMANTIC_INTERPRETATION_INTAKE`.
 - It does NOT authorize apply behavior.
 - It does NOT authorize Trio mutation behavior.
 - It does NOT authorize socket mutation behavior.
-- Future slice-02B expansion requires a new authorized lane step and independent validation.
+- Future slice-02C expansion requires a new authorized lane step and independent validation.
 
 ## Final Closeout Recommendation
-Closeout recommendation: ACCEPTED for the current slice-02B projection-intake scope only.
+Closeout recommendation: ACCEPTED for the current slice-02C semantic-intake scope only.
+

@@ -21,8 +21,8 @@ Out of scope:
 - broader runtime approval
 
 ## Evidence Reviewed
-- `tests/_scratch/runtime-slice-02-readonly-plan-bridge/validation_matrix.md`
-- `tests/_scratch/runtime-slice-02-readonly-plan-bridge/tools/run_slice2_fixture.ps1`
+- `docs/onair/wp20-runtime-slice-02/archive/validation_matrix.md`
+- `tools/onair/wp20-runtime-slice-02/run_slice2_fixture.ps1`
 - `tests/_scratch/runtime-slice-02-readonly-plan-bridge/fixtures/plan_bridge_case01.fixture`
 - `tests/_scratch/runtime-slice-02-readonly-plan-bridge/fixtures/neg_missing_tabfield_list.fixture`
 - `tests/_scratch/runtime-slice-02-readonly-plan-bridge/fixtures/neg_duplicate_tabfields.fixture`
@@ -77,3 +77,4 @@ Mandatory boundary statement:
 
 ## Final Closeout Recommendation
 Closeout recommendation: ACCEPTED for the current slice-02D issues-summary scope only.
+
