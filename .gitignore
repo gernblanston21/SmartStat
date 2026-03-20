@@ -37,3 +37,5 @@ tools/runtime-preview-inspector/npm-debug.log*
 tools/runtime-preview-inspector/.DS_Store
 # TypeScript build cache
 *.tsbuildinfo
+# RepoMix generated files
+repomix*.xml
