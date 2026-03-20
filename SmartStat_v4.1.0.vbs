@@ -7915,7 +7915,7 @@ Function Slice2PlanBridge_BuildOutcomeJson(ByRef outcome)
 End Function
 
 Function Slice2PlanBridge_BuildPreviewPayloadJson(ByVal tabfieldRecords, ByVal previewKind, ByRef outcome)
-  Dim keys, payload
+  Dim keys, payload, ruleSummaryJson
 
   keys = tabfieldRecords.Keys
   If tabfieldRecords.Count > 0 Then keys = Slice1Ingress_SortTextBinary(keys)
@@ -7933,9 +7933,11 @@ Function Slice2PlanBridge_BuildPreviewPayloadJson(ByVal tabfieldRecords, ByVal p
     If Slice2PlanBridge_IsNotEligibleProjectionOutcome(outcome) Then
       payload = payload & "    ""ineligible_evidence_preview"": " & Slice2PlanBridge_BuildIneligibleEvidencePreviewJson(outcome) & vbCrLf
     Else
+      ruleSummaryJson = Slice2PlanBridge_BuildRuleEvaluationSummaryPreviewJson(outcome)
       payload = payload & "    ""projection_metadata"": " & Slice2PlanBridge_BuildProjectionMetadataJson(outcome) & "," & vbCrLf
       payload = payload & "    ""resolution_preview"": " & Slice2PlanBridge_BuildResolutionPreviewJson(outcome) & "," & vbCrLf
-      payload = payload & "    ""rule_evaluation_summary_preview"": " & Slice2PlanBridge_BuildRuleEvaluationSummaryPreviewJson(outcome) & "," & vbCrLf
+      payload = payload & "    ""rule_evaluation_summary"": " & CStr(ruleSummaryJson) & "," & vbCrLf
+      payload = payload & "    ""rule_evaluation_summary_preview"": " & CStr(ruleSummaryJson) & "," & vbCrLf
       payload = payload & "    ""rule_evaluation_trace_preview"": " & Slice2PlanBridge_BuildRuleEvaluationTracePreviewJson(outcome) & vbCrLf
     End If
   Else
