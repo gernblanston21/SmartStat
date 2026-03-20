@@ -216,6 +216,22 @@
       "presentation": { "reveal": "always", "panel": "dedicated", "clear": true }
     },
     {
+      "label": "Repomix: Build SmartStat Data Pack",
+      "type": "shell",
+      "command": "repomix",
+      "args": [
+        "--include",
+        "AGENTS.md,SESSION.md,ROADMAP.md,docs/ai/repomix-smartstat-instructions.md,.agents/**/*.md,.agents/**/*.ps1,governance/**/*.md,docs/**/*.md",
+        "-o",
+        "repomix-smartstat-data.xml"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated", "clear": true }
+    },
+    {
       "label": "Repomix: Build SmartStat Delta Pack",
       "type": "shell",
       "command": "repomix",
