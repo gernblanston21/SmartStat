@@ -36,6 +36,20 @@ Allowed uses are limited to bounded advisory awareness work such as:
 3. non-runtime tooling that reads existing approved artifacts and emits
    advisory-only output
 4. workflow/process integration artifacts that improve operator decision clarity
+5. bounded `.vbs` read-only advisory logic only when all class constraints are
+   satisfied
+
+## Bounded `.vbs` Read-Only Advisory Scope
+
+Allowed `.vbs` advisory logic in this class must remain:
+
+1. read-only and advisory-only
+2. deterministic and fail-closed
+3. non-authoritative (never execution permission)
+4. isolated from apply/take/cue paths
+5. isolated from tabfield write paths
+6. isolated from socket execution paths
+7. non-mutating to runtime payloads and output semantics
 
 ## Forbidden Uses
 
@@ -48,6 +62,8 @@ The following are always forbidden inside this class:
 5. any implicit or explicit execution permission
 6. viewer truth-surface expansion
 7. semantic reinterpretation of runtime truth surfaces
+8. any `.vbs` advisory logic that changes SmartStat output semantics
+9. any `.vbs` advisory logic that can trigger execution behavior indirectly
 
 ## Safety Rule: Never Execution Permission
 
@@ -59,7 +75,7 @@ to execute operator actions. Operator judgment remains the final authority.
 This class does not:
 
 1. authorize broad WP-20 runtime re-entry
-2. authorize `.vbs` runtime implementation by itself
+2. authorize broad `.vbs` runtime implementation by itself
 3. authorize mutation/apply execution paths
 
 WP-20 freeze/gate protections remain fully in force.
@@ -72,6 +88,12 @@ satisfied.
 
 If any boundary is ambiguous, or any forbidden surface may be touched, work must
 halt and move to a separate explicit bounded authorization envelope.
+
+For `.vbs` scope specifically:
+
+- only bounded read-only advisory logic is in class scope
+- any uncertainty about execution coupling requires fail-closed halt and
+  envelope escalation
 
 ## References
 

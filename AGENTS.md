@@ -2,18 +2,21 @@
 
 ## Project Scope
 
-SmartStat Core Engine (VBScript + INI system)
+SmartStat controlled platform governance (runtime + contracts + advisory-safe tooling)
 
 Includes:
-- `SmartStat_v4.0.0_beta.vbs`
+- `SmartStat_v4.x.x.vbs` files when explicitly in scope for a bounded pass
 - all `SmartStat_Mappings*.ini` variants
 - `SmartStat_StaticOverrides.ini`
 - `SmartStat_TemplateConfig.ini`
+- approved `docs/onair` governance artifacts
+- approved `tools/onair` tooling artifacts
+- bounded WP-20 / WP-21 work when explicitly in scope and authorized
 
 Excludes:
 - naming convention changes
 - Viz Trio tabfield redesign
-- external tool schema changes
+- external tool schema breaking changes
 
 ---
 
@@ -246,8 +249,17 @@ All changes must:
 ## Branch / Lane Separation (Mandatory)
 
 - Single active lane is `feature/semantic-layer`
-  for semantic architecture/tooling only.
-- Do not mix runtime execution work with semantic architecture/tooling work.
+  for semantic architecture/tooling plus bounded `RUNTIME_ADVISORY_SAFE_CLASS`
+  work.
+- Do not mix broad runtime execution work with semantic architecture/tooling or
+  advisory-safe-class work.
+- Broad runtime execution / mutation / apply work remains blocked unless
+  explicitly authorized by a bounded runtime envelope.
+- `RUNTIME_ADVISORY_SAFE_CLASS` work may proceed only when all class boundaries
+  are explicitly satisfied.
+- If advisory work risks crossing into execution authority (apply/take/cue,
+  tabfield writes, socket execution, payload mutation, or viewer truth-surface
+  expansion), halt and require an explicit bounded envelope.
 - Runtime bridge/execution proposals require explicit approval
   before implementation.
 - Runtime bridge implementation may require a separate dedicated branch.

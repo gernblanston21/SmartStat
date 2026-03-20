@@ -79,6 +79,8 @@ non-execution class for bounded advisory-only work that remains:
 - read-only
 - non-authoritative
 - non-mutating
+- may include bounded `.vbs` read-only advisory logic only when it remains
+  non-executing and non-mutating
 - outside apply/take/tabfield/socket execution paths
 - outside viewer truth-surface expansion
 
