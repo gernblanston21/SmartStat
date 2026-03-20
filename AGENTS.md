@@ -384,8 +384,9 @@ Fail closed if data is incomplete.
 - WP-18 CLOSED (validation layer).
 - WP-19 CLOSED (viewer contracts).
 - WP-20 governance package CLOSED / ACCEPTED.
-- WP-20 read-only runtime slice chain is implemented and validated through `WP20_RUNTIME_SLICE_02G_READONLY_PLAN_BRIDGE_RULE_EVALUATION_TRACE_PREVIEW`.
-- Current post-02G runtime-lane posture: `NO DISTINCT NEXT SLICE / HOLD`.
+- WP-20 read-only runtime slice chain is implemented and validated through `WP20_RUNTIME_SLICE_02H_READONLY_PLAN_BRIDGE_INELIGIBLE_EVIDENCE_PREVIEW`.
+- Runtime continuation hardening chain `RUNTIME_CONTINUATION_PASS_01` through `RUNTIME_CONTINUATION_PASS_08` is implemented/validated/closed on existing Slice-01 through 02G surfaces.
+- Current post-02H runtime-lane posture: `HOLD / GATED` (no active runtime implementation pass).
 - Broader WP-20 runtime mutation/apply implementation remains NOT STARTED / NOT AUTHORIZED.
 
 WP-20 allowed upstream inputs:

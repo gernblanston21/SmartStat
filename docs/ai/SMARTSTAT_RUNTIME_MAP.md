@@ -89,16 +89,22 @@ Slice 02D -> Issues summary intake
 Slice 02E -> Resolution preview
 Slice 02F -> Rule evaluation summary intake
 Slice 02G -> Rule evaluation trace preview
+Slice 02H -> Ineligible evidence preview
 ```
 
-All implemented slices through 02G in this map are read-only, deterministic,
+All implemented slices through 02H in this map are read-only, deterministic,
 fail-closed, and mutation-blocked.
 
-No distinct Slice 02H is currently justified in repo truth because the bounded
-deterministic-identity metadata is already exposed by `projection_metadata` and
-the validated `rule_evaluation_trace_preview` surface. The runtime bridge
-sequence is therefore on hold pending a future non-redundant bounded slice
-definition.
+Runtime continuation hardening passes `RUNTIME_CONTINUATION_PASS_01` through
+`RUNTIME_CONTINUATION_PASS_08` are recorded as completed stabilization passes on
+existing Slice-01 through 02G surfaces.
+
+Current runtime bridge posture is hold/gated after 02H pending a future
+non-redundant bounded step with separate explicit authorization.
+
+Note: an earlier 02H deterministic-identity preview proposal was rejected as
+redundant; the implemented 02H scope is the separate ineligible-evidence
+preview slice.
 
 ---
 

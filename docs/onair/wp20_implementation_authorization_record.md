@@ -138,6 +138,22 @@ Use the section names exactly as listed:
 This Target-05 pass defines authorization governance artifacts only.  
 It does not, by itself, authorize runtime-bridge code implementation.
 
+## Historical Artifact Interpretation Clarification
+
+Artifact instances under:
+
+- `tests/wp-20/target-05/`
+- `tests/wp-20/target-13/`
+- `tests/wp-20/target-14/`
+- `tests/wp-20/target-15/`
+- `tests/wp-20/target-16/`
+
+are slice-scoped historical authorization evidence records. They are not
+blanket forward authorization for future runtime implementation work.
+
+Any new runtime step still requires a separate explicit bounded authorization
+decision under current governance controls.
+
 ## Target-05 Outcome
 
 Implementation-authorization record template is defined.  
