@@ -17,6 +17,8 @@ Const SMARTSTAT_DEBUG_FILE     = "SmartStat_Debug.txt"
 Const DIAG_MAX_FILE_SIZE_BYTES = "5242880"
 Const SMARTSTAT_VERSION = "4.1.0"
 Const SMARTSTAT_RUNTIME_LINE = "SmartStat_v4.1.0.vbs"
+Const WP21_ADVISORY_DECISION_ARG = "wp21_decision_artifact"
+Const WP21_ADVISORY_DEFAULT_ARTIFACT = "E:\EDRIVE\UNIVERSAL\SmartStat\DiagLogs\wp21_decision_surface.json"
 
 ' ================================
 ' v4.0 Phase 3: Harness + Integrity
@@ -473,6 +475,16 @@ End Sub
 ' --- Global league tag for name adjustments ---
 Dim G_SPORT_TAG: G_SPORT_TAG = "MLB"
 
+' WP21 advisory-safe internal state (read-only, non-authoritative)
+Dim G_WP21_ADVISORY_AVAILABLE
+Dim G_WP21_ADVISORY_STATUS
+Dim G_WP21_ADVISORY_REASON
+Dim G_WP21_ADVISORY_MESSAGE
+Dim G_WP21_ADVISORY_ACTION
+Dim G_WP21_ADVISORY_SOURCE_PATH
+Dim G_WP21_ADVISORY_UNAVAILABLE_CODE
+Dim G_WP21_ADVISORY_UNAVAILABLE_DETAIL
+
 ' Precompiled regex for trimming redundant season chaining segments
 Dim G_REGEX_SEASON_TRAILING_SEGMENT
 Set G_REGEX_SEASON_TRAILING_SEGMENT = Nothing
@@ -529,6 +541,10 @@ Sub Main()
 
   ' v4.0 Phase 2: ambiguity & confidence context
   Call EnsureAmbiguityContextEx(True, "Main")
+
+  ' WP21 advisory-safe ingest (internal state only; never execution authority)
+  Call WP21Advisory_ResetUnavailable("NOT_LOADED", "advisory ingest not yet attempted")
+  Call WP21Advisory_LoadAndNormalize()
 
   ' ================================
   ' v4.0 Phase 3: Harness bootstrap
@@ -850,6 +866,281 @@ Sub FinalizeAndRefresh(logFile, startT)
   On Error GoTo 0
   Call SmartStat_RefreshSocketData()
 End Sub
+
+' ==========================================
+' WP21 advisory-safe artifact ingest (read-only)
+' ==========================================
+Sub WP21Advisory_LoadAndNormalize()
+  Dim artifactPath
+  Dim artifactJson
+  Dim readErrDetail
+  Dim normalizeErrDetail
+
+  artifactPath = WP21Advisory_ResolveArtifactPath()
+  G_WP21_ADVISORY_SOURCE_PATH = CStr(artifactPath)
+
+  If Len(Trim(CStr(artifactPath))) = 0 Then
+    Call WP21Advisory_ResetUnavailable("ARTIFACT_PATH_MISSING", "wp21 advisory artifact path empty")
+    If CBool(DIAG_MODE) Then Call Diag_WriteLine("WP21_ADVISORY_INGEST unavailable code=ARTIFACT_PATH_MISSING detail=path_empty")
+    Exit Sub
+  End If
+
+  If Not WP21Advisory_ReadArtifactText(CStr(artifactPath), artifactJson, readErrDetail) Then
+    Call WP21Advisory_ResetUnavailable("ARTIFACT_UNAVAILABLE", CStr(readErrDetail))
+    If CBool(DIAG_MODE) Then Call Diag_WriteLine("WP21_ADVISORY_INGEST unavailable code=ARTIFACT_UNAVAILABLE path=" & CStr(artifactPath) & " detail=" & CStr(readErrDetail))
+    Exit Sub
+  End If
+
+  If Not WP21Advisory_NormalizeFromJson(CStr(artifactJson), normalizeErrDetail) Then
+    Call WP21Advisory_ResetUnavailable("ARTIFACT_INVALID", CStr(normalizeErrDetail))
+    If CBool(DIAG_MODE) Then Call Diag_WriteLine("WP21_ADVISORY_INGEST unavailable code=ARTIFACT_INVALID path=" & CStr(artifactPath) & " detail=" & CStr(normalizeErrDetail))
+    Exit Sub
+  End If
+
+  If CBool(DIAG_MODE) Then
+    Call Diag_WriteLine("WP21_ADVISORY_INGEST success available=True path=" & CStr(artifactPath) & " status=" & CStr(G_WP21_ADVISORY_STATUS) & " reason=" & CStr(G_WP21_ADVISORY_REASON) & " action=" & CStr(G_WP21_ADVISORY_ACTION))
+  End If
+End Sub
+
+Function WP21Advisory_ResolveArtifactPath()
+  WP21Advisory_ResolveArtifactPath = Trim(CStr(Slice1Ingress_GetNamedArg(WP21_ADVISORY_DECISION_ARG, WP21_ADVISORY_DEFAULT_ARTIFACT)))
+End Function
+
+Function WP21Advisory_ReadArtifactText(ByVal artifactPath, ByRef bodyOut, ByRef errDetailOut)
+  Dim fso, ts
+  Dim errNumRead, errDescRead
+  Dim trimmedPath
+
+  WP21Advisory_ReadArtifactText = False
+  bodyOut = ""
+  errDetailOut = ""
+  trimmedPath = Trim(CStr(artifactPath))
+
+  If Len(trimmedPath) = 0 Then
+    errDetailOut = "artifact path empty"
+    Exit Function
+  End If
+
+  Set fso = CreateObject("Scripting.FileSystemObject")
+  If Not fso.FileExists(trimmedPath) Then
+    errDetailOut = "artifact missing: " & trimmedPath
+    Exit Function
+  End If
+
+  errNumRead = 0
+  errDescRead = ""
+  On Error Resume Next
+  Set ts = fso.OpenTextFile(trimmedPath, 1, False)
+  bodyOut = CStr(ts.ReadAll)
+  If Not ts Is Nothing Then ts.Close
+  errNumRead = Err.Number
+  errDescRead = CStr(Err.Description)
+  Err.Clear
+  On Error GoTo 0
+
+  If CLng(errNumRead) <> 0 Then
+    errDetailOut = "artifact read failed err_number=" & CStr(errNumRead) & " err_description=" & CStr(errDescRead)
+    Exit Function
+  End If
+  If Len(Trim(CStr(bodyOut))) = 0 Then
+    errDetailOut = "artifact empty"
+    Exit Function
+  End If
+
+  WP21Advisory_ReadArtifactText = True
+End Function
+
+Function WP21Advisory_NormalizeFromJson(ByVal artifactJson, ByRef errDetailOut)
+  Dim compactJson
+  Dim decisionStatus, decisionReason, operatorMessage, recommendedAction
+  Dim expectedMessage, expectedAction, expectedStatus
+
+  WP21Advisory_NormalizeFromJson = False
+  errDetailOut = ""
+
+  compactJson = Slice2PlanBridge_JsonCompact(CStr(artifactJson))
+  If Len(compactJson) < 2 Then
+    errDetailOut = "artifact malformed: empty compact json"
+    Exit Function
+  End If
+  If Mid(compactJson, 1, 1) <> "{" Or Mid(compactJson, Len(compactJson), 1) <> "}" Then
+    errDetailOut = "artifact malformed: expected top-level object"
+    Exit Function
+  End If
+
+  If Not Slice2PlanBridge_JsonReadString(compactJson, "decision_status", decisionStatus) Then
+    errDetailOut = "artifact malformed: decision_status missing"
+    Exit Function
+  End If
+  If Not Slice2PlanBridge_JsonReadString(compactJson, "decision_reason", decisionReason) Then
+    errDetailOut = "artifact malformed: decision_reason missing"
+    Exit Function
+  End If
+  If Not Slice2PlanBridge_JsonReadString(compactJson, "operator_message", operatorMessage) Then
+    errDetailOut = "artifact malformed: operator_message missing"
+    Exit Function
+  End If
+  If Not Slice2PlanBridge_JsonReadString(compactJson, "recommended_action", recommendedAction) Then
+    errDetailOut = "artifact malformed: recommended_action missing"
+    Exit Function
+  End If
+
+  decisionStatus = Trim(CStr(decisionStatus))
+  decisionReason = Trim(CStr(decisionReason))
+  operatorMessage = Trim(CStr(operatorMessage))
+  recommendedAction = Trim(CStr(recommendedAction))
+
+  If Not WP21Advisory_IsAllowedDecisionStatus(decisionStatus) Then
+    errDetailOut = "artifact malformed: decision_status unsupported"
+    Exit Function
+  End If
+  If Not WP21Advisory_IsAllowedDecisionReason(decisionReason) Then
+    errDetailOut = "artifact malformed: decision_reason unsupported"
+    Exit Function
+  End If
+  If Not WP21Advisory_IsAllowedRecommendedAction(recommendedAction) Then
+    errDetailOut = "artifact malformed: recommended_action unsupported"
+    Exit Function
+  End If
+  If Len(operatorMessage) = 0 Then
+    errDetailOut = "artifact malformed: operator_message empty"
+    Exit Function
+  End If
+
+  expectedStatus = WP21Advisory_ExpectedStatusForReason(decisionReason)
+  If Len(expectedStatus) = 0 Then
+    errDetailOut = "artifact malformed: decision_reason status mapping unsupported"
+    Exit Function
+  End If
+  If decisionStatus <> expectedStatus Then
+    errDetailOut = "artifact malformed: decision_status mismatch for decision_reason"
+    Exit Function
+  End If
+
+  expectedMessage = WP21Advisory_ExpectedMessageForReason(decisionReason)
+  If Len(expectedMessage) = 0 Then
+    errDetailOut = "artifact malformed: decision_reason mapping unsupported"
+    Exit Function
+  End If
+  If operatorMessage <> expectedMessage Then
+    errDetailOut = "artifact malformed: operator_message mismatch for decision_reason"
+    Exit Function
+  End If
+
+  expectedAction = WP21Advisory_ExpectedActionForStatus(decisionStatus)
+  If Len(expectedAction) = 0 Then
+    errDetailOut = "artifact malformed: decision_status mapping unsupported"
+    Exit Function
+  End If
+  If recommendedAction <> expectedAction Then
+    errDetailOut = "artifact malformed: recommended_action mismatch for decision_status"
+    Exit Function
+  End If
+
+  Call WP21Advisory_SetAvailable(decisionStatus, decisionReason, operatorMessage, recommendedAction)
+  WP21Advisory_NormalizeFromJson = True
+End Function
+
+Sub WP21Advisory_SetAvailable(ByVal decisionStatus, ByVal decisionReason, ByVal operatorMessage, ByVal recommendedAction)
+  G_WP21_ADVISORY_AVAILABLE = True
+  G_WP21_ADVISORY_STATUS = CStr(decisionStatus)
+  G_WP21_ADVISORY_REASON = CStr(decisionReason)
+  G_WP21_ADVISORY_MESSAGE = CStr(operatorMessage)
+  G_WP21_ADVISORY_ACTION = CStr(recommendedAction)
+  G_WP21_ADVISORY_UNAVAILABLE_CODE = ""
+  G_WP21_ADVISORY_UNAVAILABLE_DETAIL = ""
+End Sub
+
+Sub WP21Advisory_ResetUnavailable(ByVal unavailableCode, ByVal unavailableDetail)
+  G_WP21_ADVISORY_AVAILABLE = False
+  G_WP21_ADVISORY_STATUS = ""
+  G_WP21_ADVISORY_REASON = ""
+  G_WP21_ADVISORY_MESSAGE = ""
+  G_WP21_ADVISORY_ACTION = ""
+  G_WP21_ADVISORY_UNAVAILABLE_CODE = Trim(CStr(unavailableCode))
+  G_WP21_ADVISORY_UNAVAILABLE_DETAIL = Trim(CStr(unavailableDetail))
+End Sub
+
+Function WP21Advisory_IsAllowedDecisionStatus(ByVal statusToken)
+  WP21Advisory_IsAllowedDecisionStatus = False
+  Select Case CStr(statusToken)
+    Case "AUTO_SAFE", "REVIEW_REQUIRED", "BLOCKED"
+      WP21Advisory_IsAllowedDecisionStatus = True
+  End Select
+End Function
+
+Function WP21Advisory_IsAllowedDecisionReason(ByVal reasonToken)
+  WP21Advisory_IsAllowedDecisionReason = False
+  Select Case CStr(reasonToken)
+    Case "INELIGIBLE_EVIDENCE_PRESENT", _
+         "ERRORS_PRESENT", _
+         "REQUIRED_INPUT_MISSING_OR_MALFORMED", _
+         "AMBIGUOUS_INPUT_SHAPE", _
+         "WARNINGS_PRESENT", _
+         "NON_PASS_RULE_OUTCOME_PRESENT", _
+         "NO_BLOCKERS_OR_REVIEW_SIGNALS"
+      WP21Advisory_IsAllowedDecisionReason = True
+  End Select
+End Function
+
+Function WP21Advisory_IsAllowedRecommendedAction(ByVal actionToken)
+  WP21Advisory_IsAllowedRecommendedAction = False
+  Select Case CStr(actionToken)
+    Case "PROCEED_WITH_OPERATOR_FLOW", "REVIEW_PREVIEW_EVIDENCE", "DO_NOT_PROCEED_ESCALATE"
+      WP21Advisory_IsAllowedRecommendedAction = True
+  End Select
+End Function
+
+Function WP21Advisory_ExpectedActionForStatus(ByVal statusToken)
+  Select Case CStr(statusToken)
+    Case "BLOCKED"
+      WP21Advisory_ExpectedActionForStatus = "DO_NOT_PROCEED_ESCALATE"
+    Case "REVIEW_REQUIRED"
+      WP21Advisory_ExpectedActionForStatus = "REVIEW_PREVIEW_EVIDENCE"
+    Case "AUTO_SAFE"
+      WP21Advisory_ExpectedActionForStatus = "PROCEED_WITH_OPERATOR_FLOW"
+    Case Else
+      WP21Advisory_ExpectedActionForStatus = ""
+  End Select
+End Function
+
+Function WP21Advisory_ExpectedStatusForReason(ByVal reasonToken)
+  Select Case CStr(reasonToken)
+    Case "INELIGIBLE_EVIDENCE_PRESENT", _
+         "ERRORS_PRESENT", _
+         "REQUIRED_INPUT_MISSING_OR_MALFORMED", _
+         "AMBIGUOUS_INPUT_SHAPE"
+      WP21Advisory_ExpectedStatusForReason = "BLOCKED"
+    Case "WARNINGS_PRESENT", _
+         "NON_PASS_RULE_OUTCOME_PRESENT"
+      WP21Advisory_ExpectedStatusForReason = "REVIEW_REQUIRED"
+    Case "NO_BLOCKERS_OR_REVIEW_SIGNALS"
+      WP21Advisory_ExpectedStatusForReason = "AUTO_SAFE"
+    Case Else
+      WP21Advisory_ExpectedStatusForReason = ""
+  End Select
+End Function
+
+Function WP21Advisory_ExpectedMessageForReason(ByVal reasonToken)
+  Select Case CStr(reasonToken)
+    Case "INELIGIBLE_EVIDENCE_PRESENT"
+      WP21Advisory_ExpectedMessageForReason = "Preview is not runtime-eligible. Do not proceed."
+    Case "ERRORS_PRESENT"
+      WP21Advisory_ExpectedMessageForReason = "Blocking errors are present in preview evidence."
+    Case "REQUIRED_INPUT_MISSING_OR_MALFORMED"
+      WP21Advisory_ExpectedMessageForReason = "Required preview evidence is missing or malformed."
+    Case "AMBIGUOUS_INPUT_SHAPE"
+      WP21Advisory_ExpectedMessageForReason = "Preview input shape is ambiguous and cannot be classified safely."
+    Case "WARNINGS_PRESENT"
+      WP21Advisory_ExpectedMessageForReason = "Warnings are present. Review preview evidence before proceeding."
+    Case "NON_PASS_RULE_OUTCOME_PRESENT"
+      WP21Advisory_ExpectedMessageForReason = "One or more rule outcomes are not PASS. Review evidence."
+    Case "NO_BLOCKERS_OR_REVIEW_SIGNALS"
+      WP21Advisory_ExpectedMessageForReason = "No blockers or review signals detected in preview evidence."
+    Case Else
+      WP21Advisory_ExpectedMessageForReason = ""
+  End Select
+End Function
 
 ' ==========================================
 ' v4.0 Stage 4 ï¿½ Structural Validation Gate
