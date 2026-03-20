@@ -808,6 +808,28 @@ Strategic sequencing note:
 - WP-18 closeout does not activate WP-20 and does not imply runtime bridge behavior
 - WP-19 closeout does not activate WP-20 and does not imply runtime bridge behavior
 
+## WP-21 (`v4.2.0+`): Decision Layer
+
+Status: DIRECTION ACCEPTED; PASS_01 IMPLEMENTED (downstream non-runtime, advisory-only decision surface).
+
+### Scope
+
+- downstream non-runtime decision surface only (`tools/onair/wp21-decision-layer/Build-Wp21DecisionSurface.ps1`)
+- consumes existing WP-20 preview outputs only and emits bounded WP-21 decision output
+- advisory-only classification (`AUTO_SAFE | REVIEW_REQUIRED | BLOCKED`) with no mutation/apply behavior
+
+### Boundary
+
+- no WP-20 preview payload changes
+- no `.vbs` runtime changes; WP-20 runtime re-entry remains `NOT AUTHORIZED`
+- no viewer truth-surface expansion
+- future WP-21 implementation remains separately bounded and separately authorized
+
+References:
+- `docs/onair/wp21_decision_layer_definition.md`
+- `docs/onair/wp21_decision_surface_contract_01.md`
+- `docs/onair/wp21_decision_surface_adoption_guide_01.md`
+
 ---
 
 # Long-Term (`v4.2+ / v5.0`)
