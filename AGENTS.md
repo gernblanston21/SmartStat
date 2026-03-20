@@ -279,6 +279,11 @@ Without this:
 - Runtime work is NOT authorized
 - Codex must halt and request scope confirmation
 
+Current mandatory re-entry contract:
+
+- `docs/onair/wp20_runtime_reentry_authorization_envelope_01.md`
+- Status: `NOT AUTHORIZED` (runtime implementation must remain blocked unless a future superseding envelope explicitly authorizes one bounded objective).
+
 ---
 
 ## Code Delivery Rules
