@@ -545,6 +545,7 @@ Sub Main()
   ' WP21 advisory-safe ingest (internal state only; never execution authority)
   Call WP21Advisory_ResetUnavailable("NOT_LOADED", "advisory ingest not yet attempted")
   Call WP21Advisory_LoadAndNormalize()
+  Call WP21Advisory_EmitStatusSurface()
 
   ' ================================
   ' v4.0 Phase 3: Harness bootstrap
@@ -881,25 +882,56 @@ Sub WP21Advisory_LoadAndNormalize()
 
   If Len(Trim(CStr(artifactPath))) = 0 Then
     Call WP21Advisory_ResetUnavailable("ARTIFACT_PATH_MISSING", "wp21 advisory artifact path empty")
-    If CBool(DIAG_MODE) Then Call Diag_WriteLine("WP21_ADVISORY_INGEST unavailable code=ARTIFACT_PATH_MISSING detail=path_empty")
     Exit Sub
   End If
 
   If Not WP21Advisory_ReadArtifactText(CStr(artifactPath), artifactJson, readErrDetail) Then
     Call WP21Advisory_ResetUnavailable("ARTIFACT_UNAVAILABLE", CStr(readErrDetail))
-    If CBool(DIAG_MODE) Then Call Diag_WriteLine("WP21_ADVISORY_INGEST unavailable code=ARTIFACT_UNAVAILABLE path=" & CStr(artifactPath) & " detail=" & CStr(readErrDetail))
     Exit Sub
   End If
 
   If Not WP21Advisory_NormalizeFromJson(CStr(artifactJson), normalizeErrDetail) Then
     Call WP21Advisory_ResetUnavailable("ARTIFACT_INVALID", CStr(normalizeErrDetail))
-    If CBool(DIAG_MODE) Then Call Diag_WriteLine("WP21_ADVISORY_INGEST unavailable code=ARTIFACT_INVALID path=" & CStr(artifactPath) & " detail=" & CStr(normalizeErrDetail))
     Exit Sub
   End If
+End Sub
 
-  If CBool(DIAG_MODE) Then
-    Call Diag_WriteLine("WP21_ADVISORY_INGEST success available=True path=" & CStr(artifactPath) & " status=" & CStr(G_WP21_ADVISORY_STATUS) & " reason=" & CStr(G_WP21_ADVISORY_REASON) & " action=" & CStr(G_WP21_ADVISORY_ACTION))
+Sub WP21Advisory_EmitStatusSurface()
+  Dim statusTxt
+  Dim reasonTxt
+  Dim actionTxt
+  Dim messageTxt
+  Dim unavailableCode
+  Dim unavailableDetail
+  Dim lineTxt
+
+  If Not CBool(DIAG_MODE) Then Exit Sub
+
+  If CBool(G_WP21_ADVISORY_AVAILABLE) Then
+    statusTxt = Trim(CStr(G_WP21_ADVISORY_STATUS))
+    reasonTxt = Trim(CStr(G_WP21_ADVISORY_REASON))
+    actionTxt = Trim(CStr(G_WP21_ADVISORY_ACTION))
+    messageTxt = Ambiguity_SafeTruncate(Trim(CStr(G_WP21_ADVISORY_MESSAGE)), 180)
+
+    Select Case statusTxt
+      Case "AUTO_SAFE", "REVIEW_REQUIRED", "BLOCKED"
+        lineTxt = "WP21_ADVISORY_STATUS_SURFACE status=" & statusTxt & _
+                  " reason=" & reasonTxt & _
+                  " action=" & actionTxt & _
+                  " message=[" & messageTxt & "]" & _
+                  " advisory_only=True non_authoritative=True execution_permission=False non_blocking=True"
+      Case Else
+        lineTxt = "WP21_ADVISORY_STATUS_SURFACE status=UNAVAILABLE fail_closed=True code=STATUS_INVALID detail=[unsupported_status_" & Ambiguity_SafeTruncate(statusTxt, 64) & "] advisory_only=True non_authoritative=True execution_permission=False non_blocking=True"
+    End Select
+  Else
+    unavailableCode = Trim(CStr(G_WP21_ADVISORY_UNAVAILABLE_CODE))
+    unavailableDetail = Ambiguity_SafeTruncate(Trim(CStr(G_WP21_ADVISORY_UNAVAILABLE_DETAIL)), 180)
+    If Len(unavailableCode) = 0 Then unavailableCode = "UNAVAILABLE_STATE_UNSPECIFIED"
+    lineTxt = "WP21_ADVISORY_STATUS_SURFACE status=UNAVAILABLE fail_closed=True code=" & unavailableCode & _
+              " detail=[" & unavailableDetail & "] advisory_only=True non_authoritative=True execution_permission=False non_blocking=True"
   End If
+
+  Call Diag_WriteLine(lineTxt)
 End Sub
 
 Function WP21Advisory_ResolveArtifactPath()
