@@ -1,0 +1,241 @@
+{
+  "source_file": "docs/onair/source/MLB_Network_26.json",
+  "extraction_pass": "ONAIR_PROFILE_EXTRACTION_MLB_PASS_02_FULL_INDEX",
+  "extraction_scope": "full",
+  "total_rows": 28,
+  "row_schema": [
+    "bucket",
+    "id",
+    "name",
+    "filter",
+    "jsonOutputType",
+    "type"
+  ],
+  "rows": [
+    [
+      "playerTimes",
+      "0",
+      "Season",
+      "season",
+      "string",
+      "player_time"
+    ],
+    [
+      "playerTimes",
+      "1",
+      "Last Season",
+      "season(prev1)",
+      "string",
+      "player_time"
+    ],
+    [
+      "playerTimes",
+      "2",
+      "Postseason",
+      "postseason",
+      "string",
+      "player_time"
+    ],
+    [
+      "playerTimes",
+      "3",
+      "Last Postseason",
+      "postseason(prev1)",
+      "string",
+      "player_time"
+    ],
+    [
+      "playerTimes",
+      "4",
+      "This Month",
+      "month",
+      "string",
+      "player_time"
+    ],
+    [
+      "playerTimes",
+      "5",
+      "Last Month",
+      "month(prev1)",
+      "string",
+      "player_time"
+    ],
+    [
+      "playerTimes",
+      "6",
+      "Series",
+      "series",
+      "string",
+      "player_time"
+    ],
+    [
+      "playerSplits",
+      "0",
+      "Total",
+      "total",
+      "string",
+      "player_split"
+    ],
+    [
+      "playerSplits",
+      "1",
+      "Home",
+      "location(home)",
+      "string",
+      "player_split"
+    ],
+    [
+      "playerSplits",
+      "2",
+      "Away",
+      "location(away)",
+      "string",
+      "player_split"
+    ],
+    [
+      "playerSplits",
+      "3",
+      "Inter Division",
+      "division",
+      "string",
+      "player_split"
+    ],
+    [
+      "playerSplits",
+      "4",
+      "vs Division",
+      "division(opp)",
+      "string",
+      "player_split"
+    ],
+    [
+      "playerSplits",
+      "5",
+      "Inter Conference",
+      "conference",
+      "string",
+      "player_split"
+    ],
+    [
+      "playerSplits",
+      "6",
+      "vs Conference",
+      "conference(opp)",
+      "string",
+      "player_split"
+    ],
+    [
+      "teamTimes",
+      "0",
+      "Season",
+      "season",
+      "string",
+      "team_time"
+    ],
+    [
+      "teamTimes",
+      "1",
+      "Last Season",
+      "season(prev1)",
+      "string",
+      "team_time"
+    ],
+    [
+      "teamTimes",
+      "2",
+      "Postseason",
+      "postseason",
+      "string",
+      "team_time"
+    ],
+    [
+      "teamTimes",
+      "3",
+      "Last Postseason",
+      "postseason(prev1)",
+      "string",
+      "team_time"
+    ],
+    [
+      "teamTimes",
+      "4",
+      "This Month",
+      "month",
+      "string",
+      "team_time"
+    ],
+    [
+      "teamTimes",
+      "5",
+      "Last Month",
+      "month(prev1)",
+      "string",
+      "team_time"
+    ],
+    [
+      "teamTimes",
+      "6",
+      "Series",
+      "series",
+      "string",
+      "team_time"
+    ],
+    [
+      "teamSplits",
+      "0",
+      "Total",
+      "total",
+      "string",
+      "team_split"
+    ],
+    [
+      "teamSplits",
+      "1",
+      "Home",
+      "location(home)",
+      "string",
+      "team_split"
+    ],
+    [
+      "teamSplits",
+      "2",
+      "Away",
+      "location(away)",
+      "string",
+      "team_split"
+    ],
+    [
+      "teamSplits",
+      "3",
+      "Inter Division",
+      "division",
+      "string",
+      "team_split"
+    ],
+    [
+      "teamSplits",
+      "4",
+      "vs Division",
+      "division(opp)",
+      "string",
+      "team_split"
+    ],
+    [
+      "teamSplits",
+      "5",
+      "Inter Conference",
+      "conference",
+      "string",
+      "team_split"
+    ],
+    [
+      "teamSplits",
+      "6",
+      "vs Conference",
+      "conference(opp)",
+      "string",
+      "team_split"
+    ]
+  ],
+  "boundary_note": "Read-only semantic/reference extract only. Not runtime authority and not INI governance replacement."
+}

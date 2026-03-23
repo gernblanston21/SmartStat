@@ -1,0 +1,1513 @@
+{
+  "source_file": "docs/onair/source/MLB_Network_26.json",
+  "extraction_pass": "ONAIR_PROFILE_EXTRACTION_MLB_PASS_02_FULL_INDEX",
+  "extraction_scope": "full",
+  "total_rows": 187,
+  "row_schema": [
+    "source_index",
+    "name",
+    "value",
+    "groupName",
+    "normalized_name",
+    "normalized_value"
+  ],
+  "rows": [
+    [
+      0,
+      "leaders_fieldingpct",
+      "FIELDING PCT",
+      "LEADERBOARD - FIELDING",
+      "leaders_fieldingpct",
+      "fielding pct"
+    ],
+    [
+      1,
+      "leaders_errors",
+      "ERRORS",
+      "LEADERBOARD - FIELDING",
+      "leaders_errors",
+      "errors"
+    ],
+    [
+      2,
+      "leaders_doubleplays",
+      "DOUBLE PLAYS",
+      "LEADERBOARD - FIELDING",
+      "leaders_doubleplays",
+      "double plays"
+    ],
+    [
+      3,
+      "leaders_highfieldpct",
+      "HIGHEST FIELDING PCT",
+      "LEADERBOARD - FIELDING",
+      "leaders_highfieldpct",
+      "highest fielding pct"
+    ],
+    [
+      4,
+      "leaders_fputouts",
+      "PUTOUTS",
+      "LEADERBOARD - FIELDING",
+      "leaders_fputouts",
+      "putouts"
+    ],
+    [
+      5,
+      "leaders_ferrors",
+      "ERRORS",
+      "LEADERBOARD - FIELDING",
+      "leaders_ferrors",
+      "errors"
+    ],
+    [
+      6,
+      "leaders_fassists",
+      "ASSISTS",
+      "LEADERBOARD - FIELDING",
+      "leaders_fassists",
+      "assists"
+    ],
+    [
+      7,
+      "leaders_lowfieldpct",
+      "LOWEST FIELDING PCT",
+      "LEADERBOARD - FIELDING",
+      "leaders_lowfieldpct",
+      "lowest fielding pct"
+    ],
+    [
+      8,
+      "leaders_passedballs",
+      "PASSED BALLS",
+      "LEADERBOARD - FIELDING",
+      "leaders_passedballs",
+      "passed balls"
+    ],
+    [
+      9,
+      "header_pbbk1",
+      "STRIKEOUTS",
+      "L3 - HITTING",
+      "header_pbbk1",
+      "strikeouts"
+    ],
+    [
+      10,
+      "header_pbbk2",
+      "WALKS",
+      "L3 - HITTING",
+      "header_pbbk2",
+      "walks"
+    ],
+    [
+      11,
+      "leaders_twar",
+      "TOTAL WAR",
+      "L3 - HITTING",
+      "leaders_twar",
+      "total war"
+    ],
+    [
+      12,
+      "header_walks",
+      "BB",
+      "L3 - HITTING",
+      "header_walks",
+      "bb"
+    ],
+    [
+      13,
+      "header_kbbratio",
+      "RATIO",
+      "L3 - HITTING",
+      "header_kbbratio",
+      "ratio"
+    ],
+    [
+      14,
+      "header_caughtstealing",
+      "CAUGHT",
+      "L3 - RUNNING",
+      "header_caughtstealing",
+      "caught"
+    ],
+    [
+      15,
+      "header_pa",
+      "PA",
+      "L3 - HITTING",
+      "header_pa",
+      "pa"
+    ],
+    [
+      16,
+      "header_hab",
+      "H/AB",
+      "L3 - HITTING",
+      "header_hab",
+      "h/ab"
+    ],
+    [
+      17,
+      "header_sacbunts",
+      "SAC BUNTS",
+      "L3 - HITTING",
+      "header_sacbunts",
+      "sac bunts"
+    ],
+    [
+      18,
+      "header_runs",
+      "RUNS",
+      "L3 - HITTING",
+      "header_runs",
+      "runs"
+    ],
+    [
+      19,
+      "header_games",
+      "GMS",
+      "L3 - HITTING",
+      "header_games",
+      "gms"
+    ],
+    [
+      20,
+      "header_swings",
+      "SWINGS",
+      "L3 - HITTING",
+      "header_swings",
+      "swings"
+    ],
+    [
+      21,
+      "header_pitchesfaced",
+      "PITCHES",
+      "L3 - HITTING",
+      "header_pitchesfaced",
+      "pitches"
+    ],
+    [
+      22,
+      "header_avg",
+      "AVG",
+      "L3 - HITTING",
+      "header_avg",
+      "avg"
+    ],
+    [
+      23,
+      "header_hr",
+      "HR",
+      "L3 - HITTING",
+      "header_hr",
+      "hr"
+    ],
+    [
+      24,
+      "header_rbi",
+      "RBI",
+      "L3 - HITTING",
+      "header_rbi",
+      "rbi"
+    ],
+    [
+      25,
+      "header_hits",
+      "HITS",
+      "L3 - HITTING",
+      "header_hits",
+      "hits"
+    ],
+    [
+      26,
+      "header_ab",
+      "AB",
+      "L3 - HITTING",
+      "header_ab",
+      "ab"
+    ],
+    [
+      27,
+      "header_steals",
+      "STEALS",
+      "L3 - RUNNING",
+      "header_steals",
+      "steals"
+    ],
+    [
+      28,
+      "header_sbattempts",
+      "ATTEMPTS",
+      "L3 - RUNNING",
+      "header_sbattempts",
+      "attempts"
+    ],
+    [
+      29,
+      "header_sbpct",
+      "SB PCT",
+      "L3 - RUNNING",
+      "header_sbpct",
+      "sb pct"
+    ],
+    [
+      30,
+      "header_obp",
+      "OBP",
+      "L3 - HITTING",
+      "header_obp",
+      "obp"
+    ],
+    [
+      31,
+      "header_slg",
+      "SLG",
+      "L3 - HITTING",
+      "header_slg",
+      "slg"
+    ],
+    [
+      32,
+      "header_pickedoff",
+      "PICKED OFF",
+      "L3 - RUNNING",
+      "header_pickedoff",
+      "picked off"
+    ],
+    [
+      33,
+      "header_sacrifice",
+      "SACRIFICE",
+      "L3 - HITTING",
+      "header_sacrifice",
+      "sacrifice"
+    ],
+    [
+      34,
+      "header_ops",
+      "OPS",
+      "L3 - HITTING",
+      "header_ops",
+      "ops"
+    ],
+    [
+      35,
+      "header_strikeouts",
+      "K",
+      "L3 - HITTING",
+      "header_strikeouts",
+      "k"
+    ],
+    [
+      36,
+      "header_doubleplays",
+      "GIDP",
+      "L3 - HITTING",
+      "header_doubleplays",
+      "gidp"
+    ],
+    [
+      37,
+      "header_errors",
+      "ERRORS",
+      "L3 - FIELDING",
+      "header_errors",
+      "errors"
+    ],
+    [
+      38,
+      "header_chances",
+      "CHANCES",
+      "L3 - FIELDING",
+      "header_chances",
+      "chances"
+    ],
+    [
+      39,
+      "header_fielddp",
+      "DP",
+      "L3 - FIELDING",
+      "header_fielddp",
+      "dp"
+    ],
+    [
+      40,
+      "header_putouts",
+      "PUTOUTS",
+      "L3 - FIELDING",
+      "header_putouts",
+      "putouts"
+    ],
+    [
+      41,
+      "header_assists",
+      "ASSISTS",
+      "L3 - FIELDING",
+      "header_assists",
+      "assists"
+    ],
+    [
+      42,
+      "leaders_highconf",
+      "HIGHEST IN {{info.conference.alias}} - {{info.time.season}}",
+      "LEADERBOARD - SUBTITLES",
+      "leaders_highconf",
+      "highest in {{info.conference.alias}} - {{info.time.season}}"
+    ],
+    [
+      43,
+      "leaders_lowconf",
+      "LOWEST IN {{info.conference.alias}} - {{info.time.season}}",
+      "LEADERBOARD - SUBTITLES",
+      "leaders_lowconf",
+      "lowest in {{info.conference.alias}} - {{info.time.season}}"
+    ],
+    [
+      44,
+      "leaders_mostconf",
+      "MOST IN {{info.conference.alias}} - {{info.time.season}}",
+      "LEADERBOARD - SUBTITLES",
+      "leaders_mostconf",
+      "most in {{info.conference.alias}} - {{info.time.season}}"
+    ],
+    [
+      45,
+      "leaders_fewconf",
+      "FEWEST IN {{info.conference.alias}} - {{info.time.season}}",
+      "LEADERBOARD - SUBTITLES",
+      "leaders_fewconf",
+      "fewest in {{info.conference.alias}} - {{info.time.season}}"
+    ],
+    [
+      46,
+      "leaders_highmlb",
+      "HIGHEST IN MLB - {{info.time.season}}",
+      "LEADERBOARD - SUBTITLES",
+      "leaders_highmlb",
+      "highest in mlb - {{info.time.season}}"
+    ],
+    [
+      47,
+      "leaders_lowmlb",
+      "LOWEST IN MLB - {{info.time.season}}",
+      "LEADERBOARD - SUBTITLES",
+      "leaders_lowmlb",
+      "lowest in mlb - {{info.time.season}}"
+    ],
+    [
+      48,
+      "leaders_mostmlb",
+      "MOST IN MLB - {{info.time.season}}",
+      "LEADERBOARD - SUBTITLES",
+      "leaders_mostmlb",
+      "most in mlb - {{info.time.season}}"
+    ],
+    [
+      49,
+      "leaders_fewmlb",
+      "FEWEST IN MLB - {{info.time.season}}",
+      "LEADERBOARD - SUBTITLES",
+      "leaders_fewmlb",
+      "fewest in mlb - {{info.time.season}}"
+    ],
+    [
+      50,
+      "conf_leaders",
+      "{{info.conference.alias}} LEADERS - {{info.time.season}}",
+      "LEADERBOARD - SUBTITLES",
+      "conf_leaders",
+      "{{info.conference.alias}} leaders - {{info.time.season}}"
+    ],
+    [
+      51,
+      "league_leaders",
+      "MLB LEADERS - {{info.time.season}}",
+      "LEADERBOARD - SUBTITLES",
+      "league_leaders",
+      "mlb leaders - {{info.time.season}}"
+    ],
+    [
+      52,
+      "leaders_worstconf",
+      "WORST IN {{info.conference.alias}} {{info.time.season}}",
+      "LEADERBOARD - SUBTITLES",
+      "leaders_worstconf",
+      "worst in {{info.conference.alias}} {{info.time.season}}"
+    ],
+    [
+      53,
+      "leaders_alltime",
+      "ALL-TIME LEADERS",
+      "LEADERBOARD - SUBTITLES",
+      "leaders_alltime",
+      "all-time leaders"
+    ],
+    [
+      54,
+      "leaders_active",
+      "ACTIVE LEADERS",
+      "LEADERBOARD - SUBTITLES",
+      "leaders_active",
+      "active leaders"
+    ],
+    [
+      55,
+      "leaders_poppops",
+      "OPP OPS",
+      "LEADERBOARD - SUBTITLES",
+      "leaders_poppops",
+      "opp ops"
+    ],
+    [
+      56,
+      "leaders_worstmlb",
+      "WORST IN MLB",
+      "LEADERBOARD - SUBTITLES",
+      "leaders_worstmlb",
+      "worst in mlb"
+    ],
+    [
+      57,
+      "leaders_mostactive",
+      "MOST AMONG ACTIVE PLAYERS",
+      "LEADERBOARD - SUBTITLES",
+      "leaders_mostactive",
+      "most among active players"
+    ],
+    [
+      58,
+      "leaders_highactive",
+      "HIGHEST AMONG ACTIVE PLAYERS",
+      "LEADERBOARD - SUBTITLES",
+      "leaders_highactive",
+      "highest among active players"
+    ],
+    [
+      59,
+      "leaders_lowactive",
+      "LOWEST AMONG ACTIVE PLAYERS",
+      "LEADERBOARD - SUBTITLES",
+      "leaders_lowactive",
+      "lowest among active players"
+    ],
+    [
+      60,
+      "leaders_mostalltime",
+      "MOST ALL-TIME",
+      "LEADERBOARD - SUBTITLES",
+      "leaders_mostalltime",
+      "most all-time"
+    ],
+    [
+      61,
+      "leaders_highalltime",
+      "HIGHEST ALL-TIME",
+      "LEADERBOARD - SUBTITLES",
+      "leaders_highalltime",
+      "highest all-time"
+    ],
+    [
+      62,
+      "leaders_lowalltime",
+      "LOWEST ALL-TIME",
+      "LEADERBOARD - SUBTITLES",
+      "leaders_lowalltime",
+      "lowest all-time"
+    ],
+    [
+      63,
+      "leaders_gpit",
+      "GAMES PITCHED",
+      "LEADERBOARD - PITCHING",
+      "leaders_gpit",
+      "games pitched"
+    ],
+    [
+      64,
+      "leaders_gs",
+      "GAMES STARTED",
+      "LEADERBOARD - PITCHING",
+      "leaders_gs",
+      "games started"
+    ],
+    [
+      65,
+      "leaders_era",
+      "ERA",
+      "LEADERBOARD - PITCHING",
+      "leaders_era",
+      "era"
+    ],
+    [
+      66,
+      "leaders_pwins",
+      "WINS",
+      "LEADERBOARD - PITCHING",
+      "leaders_pwins",
+      "wins"
+    ],
+    [
+      67,
+      "leaders_plosses",
+      "LOSSES",
+      "LEADERBOARD - PITCHING",
+      "leaders_plosses",
+      "losses"
+    ],
+    [
+      68,
+      "leaders_saves",
+      "SAVES",
+      "LEADERBOARD - PITCHING",
+      "leaders_saves",
+      "saves"
+    ],
+    [
+      69,
+      "leaders_bs",
+      "BLOWN SAVES",
+      "LEADERBOARD - PITCHING",
+      "leaders_bs",
+      "blown saves"
+    ],
+    [
+      70,
+      "leaders_holds",
+      "HOLDS",
+      "LEADERBOARD - PITCHING",
+      "leaders_holds",
+      "holds"
+    ],
+    [
+      71,
+      "leaders_bbkratio",
+      "WALK/STRIKEOUT RATIO",
+      "LEADERBOARD - PITCHING",
+      "leaders_bbkratio",
+      "walk/strikeout ratio"
+    ],
+    [
+      72,
+      "leaders_hb",
+      "HIT BATTERS",
+      "LEADERBOARD - PITCHING",
+      "leaders_hb",
+      "hit batters"
+    ],
+    [
+      73,
+      "leaders_pdp",
+      "DP INDUCED",
+      "LEADERBOARD - PITCHING",
+      "leaders_pdp",
+      "dp induced"
+    ],
+    [
+      74,
+      "leaders_phr9",
+      "HR/9 INNINGS",
+      "LEADERBOARD - PITCHING",
+      "leaders_phr9",
+      "hr/9 innings"
+    ],
+    [
+      75,
+      "leaders_pk9",
+      "K/9 INNINGS",
+      "LEADERBOARD - PITCHING",
+      "leaders_pk9",
+      "k/9 innings"
+    ],
+    [
+      76,
+      "leaders_rs9",
+      "RUN SUPPORT/9 INNINGS",
+      "LEADERBOARD - PITCHING",
+      "leaders_rs9",
+      "run support/9 innings"
+    ],
+    [
+      77,
+      "leaders_oppavg",
+      "OPP. BATTING AVG",
+      "LEADERBOARD - PITCHING",
+      "leaders_oppavg",
+      "opp. batting avg"
+    ],
+    [
+      78,
+      "leaders_bf",
+      "BATTERS FACED",
+      "LEADERBOARD - PITCHING",
+      "leaders_bf",
+      "batters faced"
+    ],
+    [
+      79,
+      "leaders_pit",
+      "PITCHES THROWN",
+      "LEADERBOARD - PITCHING",
+      "leaders_pit",
+      "pitches thrown"
+    ],
+    [
+      80,
+      "leaders_ph9",
+      "HITS PER 9 INNINGS",
+      "LEADERBOARD - PITCHING",
+      "leaders_ph9",
+      "hits per 9 innings"
+    ],
+    [
+      81,
+      "leaders_ip",
+      "INNINGS PITCHED",
+      "LEADERBOARD - PITCHING",
+      "leaders_ip",
+      "innings pitched"
+    ],
+    [
+      82,
+      "leaders_pwinpct",
+      "WIN PCT",
+      "LEADERBOARD - PITCHING",
+      "leaders_pwinpct",
+      "win pct"
+    ],
+    [
+      83,
+      "leaders_pcg",
+      "COMPLETE GAMES",
+      "LEADERBOARD - PITCHING",
+      "leaders_pcg",
+      "complete games"
+    ],
+    [
+      84,
+      "leaders_pso",
+      "SHUTOUTS",
+      "LEADERBOARD - PITCHING",
+      "leaders_pso",
+      "shutouts"
+    ],
+    [
+      85,
+      "leaders_phit",
+      "HITS ALLOWED",
+      "LEADERBOARD - PITCHING",
+      "leaders_phit",
+      "hits allowed"
+    ],
+    [
+      86,
+      "leaders_phr",
+      "HR ALLOWED",
+      "LEADERBOARD - PITCHING",
+      "leaders_phr",
+      "hr allowed"
+    ],
+    [
+      87,
+      "leaders_pxbh",
+      "EXTRA BASE HITS ALLOWED",
+      "LEADERBOARD - PITCHING",
+      "leaders_pxbh",
+      "extra base hits allowed"
+    ],
+    [
+      88,
+      "leaders_p2b",
+      "DOUBLES ALLOWED",
+      "LEADERBOARD - PITCHING",
+      "leaders_p2b",
+      "doubles allowed"
+    ],
+    [
+      89,
+      "leaders_p3b",
+      "TRIPLES ALLOWED",
+      "LEADERBOARD - PITCHING",
+      "leaders_p3b",
+      "triples allowed"
+    ],
+    [
+      90,
+      "leaders_pgb",
+      "GROUND BALLS",
+      "LEADERBOARD - PITCHING",
+      "leaders_pgb",
+      "ground balls"
+    ],
+    [
+      91,
+      "leaders_pfb",
+      "FLY BALLS",
+      "LEADERBOARD - PITCHING",
+      "leaders_pfb",
+      "fly balls"
+    ],
+    [
+      92,
+      "leaders_psba",
+      "SB ALLOWED",
+      "LEADERBOARD - PITCHING",
+      "leaders_psba",
+      "sb allowed"
+    ],
+    [
+      93,
+      "leaders_pcs",
+      "OPP. RUNNERS CAUGHT STEALING",
+      "LEADERBOARD - PITCHING",
+      "leaders_pcs",
+      "opp. runners caught stealing"
+    ],
+    [
+      94,
+      "leaders_pickoffs",
+      "PICKOFFS",
+      "LEADERBOARD - PITCHING",
+      "leaders_pickoffs",
+      "pickoffs"
+    ],
+    [
+      95,
+      "leaders_balks",
+      "BALKS",
+      "LEADERBOARD - PITCHING",
+      "leaders_balks",
+      "balks"
+    ],
+    [
+      96,
+      "leaders_pwp",
+      "WILD PITCHES",
+      "LEADERBOARD - PITCHING",
+      "leaders_pwp",
+      "wild pitches"
+    ],
+    [
+      97,
+      "leaders_pkbbratio",
+      "K/BB RATIO",
+      "LEADERBOARD - PITCHING",
+      "leaders_pkbbratio",
+      "k/bb ratio"
+    ],
+    [
+      98,
+      "leaders_poppavg",
+      "OPP AVG",
+      "LEADERBOARD - PITCHING",
+      "leaders_poppavg",
+      "opp avg"
+    ],
+    [
+      99,
+      "leaders_poppslg",
+      "OPP SLG PCT",
+      "LEADERBOARD - PITCHING",
+      "leaders_poppslg",
+      "opp slg pct"
+    ],
+    [
+      100,
+      "leaders_poppobp",
+      "OPP OBP",
+      "LEADERBOARD - PITCHING",
+      "leaders_poppobp",
+      "opp obp"
+    ],
+    [
+      101,
+      "leaders_pirscorepct",
+      "IR SCORED PCT",
+      "LEADERBOARD - PITCHING",
+      "leaders_pirscorepct",
+      "ir scored pct"
+    ],
+    [
+      102,
+      "leaders_pwar",
+      "PITCHING WAR",
+      "LEADERBOARD - PITCHING",
+      "leaders_pwar",
+      "pitching war"
+    ],
+    [
+      103,
+      "leaders_pbb9",
+      "BB/9 INNINGS",
+      "LEADERBOARD - PITCHING",
+      "leaders_pbb9",
+      "bb/9 innings"
+    ],
+    [
+      104,
+      "leaders_extrabasehits",
+      "EXTRA-BASE HITS",
+      "LEADERBOARD - HITTING",
+      "leaders_extrabasehits",
+      "extra-base hits"
+    ],
+    [
+      105,
+      "leaders_ifhits",
+      "INFIELD HITS",
+      "LEADERBOARD - HITTING",
+      "leaders_ifhits",
+      "infield hits"
+    ],
+    [
+      106,
+      "leaders_intodp",
+      "GROUNDED INTO DP",
+      "LEADERBOARD - HITTING",
+      "leaders_intodp",
+      "grounded into dp"
+    ],
+    [
+      107,
+      "leaders_garbi",
+      "GO-AHEAD RBI",
+      "LEADERBOARD - HITTING",
+      "leaders_garbi",
+      "go-ahead rbi"
+    ],
+    [
+      108,
+      "leaders_ab",
+      "AT BATS",
+      "LEADERBOARD - HITTING",
+      "leaders_ab",
+      "at bats"
+    ],
+    [
+      109,
+      "leaders_phapps",
+      "PINCH-HIT APPEARANCES",
+      "LEADERBOARD - HITTING",
+      "leaders_phapps",
+      "pinch-hit appearances"
+    ],
+    [
+      110,
+      "leaders_prapps",
+      "PINCH-RUN APPEARANCES",
+      "LEADERBOARD - HITTING",
+      "leaders_prapps",
+      "pinch-run appearances"
+    ],
+    [
+      111,
+      "leaders_hrrate",
+      "AB PER HR",
+      "LEADERBOARD - HITTING",
+      "leaders_hrrate",
+      "ab per hr"
+    ],
+    [
+      112,
+      "leaders_bbrate",
+      "AB PER WALK",
+      "LEADERBOARD - HITTING",
+      "leaders_bbrate",
+      "ab per walk"
+    ],
+    [
+      113,
+      "leaders_krate",
+      "AB PER STRIKEOUT",
+      "LEADERBOARD - HITTING",
+      "leaders_krate",
+      "ab per strikeout"
+    ],
+    [
+      114,
+      "leaders_sbpct",
+      "STOLEN BASE PCT",
+      "LEADERBOARD - HITTING",
+      "leaders_sbpct",
+      "stolen base pct"
+    ],
+    [
+      115,
+      "leaders_garbi7",
+      "GO-AHEAD RBI 7th INNING OR LATER",
+      "LEADERBOARD - HITTING",
+      "leaders_garbi7",
+      "go-ahead rbi 7th inning or later"
+    ],
+    [
+      116,
+      "leaders_bwar",
+      "HITTING WAR",
+      "LEADERBOARD - HITTING",
+      "leaders_bwar",
+      "hitting war"
+    ],
+    [
+      117,
+      "leaders_avg",
+      "BATTING AVG",
+      "LEADERBOARD - HITTING",
+      "leaders_avg",
+      "batting avg"
+    ],
+    [
+      118,
+      "leaders_tob",
+      "REACHED BASE",
+      "LEADERBOARD - HITTING",
+      "leaders_tob",
+      "reached base"
+    ],
+    [
+      119,
+      "leaders_gwrbi",
+      "GAME WINNING RBI",
+      "LEADERBOARD - HITTING",
+      "leaders_gwrbi",
+      "game winning rbi"
+    ],
+    [
+      120,
+      "leaders_sacfly",
+      "SAC FLIES",
+      "LEADERBOARD - HITTING",
+      "leaders_sacfly",
+      "sac flies"
+    ],
+    [
+      121,
+      "leaders_sacbunt",
+      "SAC BUNTS",
+      "LEADERBOARD - HITTING",
+      "leaders_sacbunt",
+      "sac bunts"
+    ],
+    [
+      122,
+      "leaders_sb",
+      "STOLEN BASES",
+      "LEADERBOARD - HITTING",
+      "leaders_sb",
+      "stolen bases"
+    ],
+    [
+      123,
+      "leaders_cs",
+      "CAUGHT STEALING",
+      "LEADERBOARD - HITTING",
+      "leaders_cs",
+      "caught stealing"
+    ],
+    [
+      124,
+      "leaders_bb",
+      "WALKS",
+      "LEADERBOARD - HITTING",
+      "leaders_bb",
+      "walks"
+    ],
+    [
+      125,
+      "leaders_ibb",
+      "INTENTIONAL WALKS",
+      "LEADERBOARD - HITTING",
+      "leaders_ibb",
+      "intentional walks"
+    ],
+    [
+      126,
+      "leaders_hbp",
+      "HIT BY PITCH",
+      "LEADERBOARD - HITTING",
+      "leaders_hbp",
+      "hit by pitch"
+    ],
+    [
+      127,
+      "leaders_k",
+      "STRIKEOUTS",
+      "LEADERBOARD - HITTING",
+      "leaders_k",
+      "strikeouts"
+    ],
+    [
+      128,
+      "leaders_pseen",
+      "PITCHES SEEN",
+      "LEADERBOARD - HITTING",
+      "leaders_pseen",
+      "pitches seen"
+    ],
+    [
+      129,
+      "leaders_pa",
+      "PLATE APPEARANCES",
+      "LEADERBOARD - HITTING",
+      "leaders_pa",
+      "plate appearances"
+    ],
+    [
+      130,
+      "leaders_slg",
+      "SLUGGING PCT",
+      "LEADERBOARD - HITTING",
+      "leaders_slg",
+      "slugging pct"
+    ],
+    [
+      131,
+      "leaders_obp",
+      "ON BASE PCT",
+      "LEADERBOARD - HITTING",
+      "leaders_obp",
+      "on base pct"
+    ],
+    [
+      132,
+      "leaders_ops",
+      "OPS",
+      "LEADERBOARD - HITTING",
+      "leaders_ops",
+      "ops"
+    ],
+    [
+      133,
+      "leaders_hr",
+      "HOME RUNS",
+      "LEADERBOARD - HITTING",
+      "leaders_hr",
+      "home runs"
+    ],
+    [
+      134,
+      "leaders_gp",
+      "GAMES PLAYED",
+      "LEADERBOARD - HITTING",
+      "leaders_gp",
+      "games played"
+    ],
+    [
+      135,
+      "leaders_rbi",
+      "RUNS BATTED IN",
+      "LEADERBOARD - HITTING",
+      "leaders_rbi",
+      "runs batted in"
+    ],
+    [
+      136,
+      "leaders_runs",
+      "RUNS SCORED",
+      "LEADERBOARD - HITTING",
+      "leaders_runs",
+      "runs scored"
+    ],
+    [
+      137,
+      "leaders_hits",
+      "HITS",
+      "LEADERBOARD - HITTING",
+      "leaders_hits",
+      "hits"
+    ],
+    [
+      138,
+      "leaders_1b",
+      "SINGLES",
+      "LEADERBOARD - HITTING",
+      "leaders_1b",
+      "singles"
+    ],
+    [
+      139,
+      "leaders_2b",
+      "DOUBLES",
+      "LEADERBOARD - HITTING",
+      "leaders_2b",
+      "doubles"
+    ],
+    [
+      140,
+      "leaders_3b",
+      "TRIPLES",
+      "LEADERBOARD - HITTING",
+      "leaders_3b",
+      "triples"
+    ],
+    [
+      141,
+      "leaders_tb",
+      "TOTAL BASES",
+      "LEADERBOARD - HITTING",
+      "leaders_tb",
+      "total bases"
+    ],
+    [
+      142,
+      "leaders_rbishort",
+      "RBI",
+      "LEADERBOARD - HITTING",
+      "leaders_rbishort",
+      "rbi"
+    ],
+    [
+      143,
+      "leaders_pashort",
+      "PA",
+      "LEADERBOARD - HITTING",
+      "leaders_pashort",
+      "pa"
+    ],
+    [
+      144,
+      "player_hs",
+      "E:/EDRIVE/MLB/HEADSHOTS/{{info.team.alias}}/{{info.team.alias}}_{{info.player.last_name | file_path}}_{{info.player.first_name | file_path}}_960.png",
+      "HEADSHOTS",
+      "player_hs",
+      "e:/edrive/mlb/headshots/{{info.team.alias}}/{{info.team.alias}}_{{info.player.last_name | file_path}}_{{info.player.first_name | file_path}}_960.png"
+    ],
+    [
+      145,
+      "pstat_bb_k",
+      "{{stats.player.season.pitcher_strikeouts}}/{{stats.player.season.pitcher_walks}}",
+      "L3 - PITCHING",
+      "pstat_bb_k",
+      "{{stats.player.season.pitcher_strikeouts}}/{{stats.player.season.pitcher_walks}}"
+    ],
+    [
+      146,
+      "header_gstart",
+      "STARTS",
+      "L3 - PITCHING",
+      "header_gstart",
+      "starts"
+    ],
+    [
+      147,
+      "header_gpitch",
+      "GAMES",
+      "L3 - PITCHING",
+      "header_gpitch",
+      "games"
+    ],
+    [
+      148,
+      "header_era",
+      "ERA",
+      "L3 - PITCHING",
+      "header_era",
+      "era"
+    ],
+    [
+      149,
+      "header_holds",
+      "HOLDS",
+      "L3 - PITCHING",
+      "header_holds",
+      "holds"
+    ],
+    [
+      150,
+      "header_bbk",
+      "K/BB",
+      "L3 - PITCHING",
+      "header_bbk",
+      "k/bb"
+    ],
+    [
+      151,
+      "header_oppavg",
+      "OPP. AVG",
+      "L3 - PITCHING",
+      "header_oppavg",
+      "opp. avg"
+    ],
+    [
+      152,
+      "header_opphr",
+      "HR ALLOWED",
+      "L3 - PITCHING",
+      "header_opphr",
+      "hr allowed"
+    ],
+    [
+      153,
+      "header_saves",
+      "SAVES",
+      "L3 - PITCHING",
+      "header_saves",
+      "saves"
+    ],
+    [
+      154,
+      "header_whip",
+      "WHIP",
+      "L3 - PITCHING",
+      "header_whip",
+      "whip"
+    ],
+    [
+      155,
+      "header_ip",
+      "INNINGS",
+      "L3 - PITCHING",
+      "header_ip",
+      "innings"
+    ],
+    [
+      156,
+      "header_pitchrec",
+      "RECORD",
+      "L3 - PITCHING",
+      "header_pitchrec",
+      "record"
+    ],
+    [
+      157,
+      "header_ir_irs",
+      "IR STRANDED",
+      "L3 - PITCHING",
+      "header_ir_irs",
+      "ir stranded"
+    ],
+    [
+      158,
+      "header_oppavg_lhb",
+      "AVG vs LHB",
+      "L3 - PITCHING",
+      "header_oppavg_lhb",
+      "avg vs lhb"
+    ],
+    [
+      159,
+      "header_oppavg_rhb",
+      "AVG vs RHB",
+      "L3 - PITCHING",
+      "header_oppavg_rhb",
+      "avg vs rhb"
+    ],
+    [
+      160,
+      "header_sv_opp",
+      "SV/OPP",
+      "L3 - PITCHING",
+      "header_sv_opp",
+      "sv/opp"
+    ],
+    [
+      161,
+      "header_phits",
+      "HITS",
+      "L3 - PITCHING",
+      "header_phits",
+      "hits"
+    ],
+    [
+      162,
+      "header_ipstart",
+      "IP/START",
+      "L3 - PITCHING",
+      "header_ipstart",
+      "ip/start"
+    ],
+    [
+      163,
+      "header_pwalks",
+      "BB",
+      "L3 - PITCHING",
+      "header_pwalks",
+      "bb"
+    ],
+    [
+      164,
+      "header_pstrikeouts",
+      "K",
+      "L3 - PITCHING",
+      "header_pstrikeouts",
+      "k"
+    ],
+    [
+      165,
+      "header_prer",
+      "R/ER",
+      "L3 - PITCHING",
+      "header_prer",
+      "r/er"
+    ],
+    [
+      166,
+      "header_pruns",
+      "RUNS",
+      "L3 - PITCHING",
+      "header_pruns",
+      "runs"
+    ],
+    [
+      167,
+      "header_pcg",
+      "CG",
+      "L3 - PITCHING",
+      "header_pcg",
+      "cg"
+    ],
+    [
+      168,
+      "header_ppitches",
+      "PITCHES",
+      "L3 - PITCHING",
+      "header_ppitches",
+      "pitches"
+    ],
+    [
+      169,
+      "header_oppops_lhb",
+      "OPS vs LHB",
+      "L3 - PITCHING",
+      "header_oppops_lhb",
+      "ops vs lhb"
+    ],
+    [
+      170,
+      "header_oppops_rhb",
+      "OPS vs RHB",
+      "L3 - PITCHING",
+      "header_oppops_rhb",
+      "ops vs rhb"
+    ],
+    [
+      171,
+      "header_pbb9",
+      "BB/9 IP",
+      "L3 - PITCHING",
+      "header_pbb9",
+      "bb/9 ip"
+    ],
+    [
+      172,
+      "header_pk9",
+      "K/9 IP",
+      "L3 - PITCHING",
+      "header_pk9",
+      "k/9 ip"
+    ],
+    [
+      173,
+      "header_phr9",
+      "HR/9 IP",
+      "L3 - PITCHING",
+      "header_phr9",
+      "hr/9 ip"
+    ],
+    [
+      174,
+      "header_pso",
+      "SHUTOUTS",
+      "L3 - PITCHING",
+      "header_pso",
+      "shutouts"
+    ],
+    [
+      175,
+      "header_svopps",
+      "SV OPP",
+      "L3 - PITCHING",
+      "header_svopps",
+      "sv opp"
+    ],
+    [
+      176,
+      "header_svpct",
+      "SV PCT",
+      "L3 - PITCHING",
+      "header_svpct",
+      "sv pct"
+    ],
+    [
+      177,
+      "header_per",
+      "ER",
+      "L3 - PITCHING",
+      "header_per",
+      "er"
+    ],
+    [
+      178,
+      "header_prun",
+      "R",
+      "L3 - PITCHING",
+      "header_prun",
+      "r"
+    ],
+    [
+      179,
+      "header_oppops",
+      "OPP. OPS",
+      "L3 - PITCHING",
+      "header_oppops",
+      "opp. ops"
+    ],
+    [
+      180,
+      "header_psteals",
+      "SB",
+      "L3 - PITCHING",
+      "header_psteals",
+      "sb"
+    ],
+    [
+      181,
+      "header_pcs",
+      "CS",
+      "L3 - PITCHING",
+      "header_pcs",
+      "cs"
+    ],
+    [
+      182,
+      "header_pcspct",
+      "CS PCT",
+      "L3 - PITCHING",
+      "header_pcspct",
+      "cs pct"
+    ],
+    [
+      183,
+      "header_pickoffs",
+      "PICKOFFS",
+      "L3 - PITCHING",
+      "header_pickoffs",
+      "pickoffs"
+    ],
+    [
+      184,
+      "header_psbatt",
+      "SB ATTEMPTS",
+      "L3 - PITCHING",
+      "header_psbatt",
+      "sb attempts"
+    ],
+    [
+      185,
+      "stat_pbbk1",
+      "{{stats.player.season.pitcher_strikeouts}}",
+      "L3 - PITCHING",
+      "stat_pbbk1",
+      "{{stats.player.season.pitcher_strikeouts}}"
+    ],
+    [
+      186,
+      "stat_pbbk2",
+      "{{stats.player.season.pitcher_walks}}",
+      "L3 - PITCHING",
+      "stat_pbbk2",
+      "{{stats.player.season.pitcher_walks}}"
+    ]
+  ],
+  "boundary_note": "Read-only semantic/reference extract only. Not runtime authority and not INI governance replacement."
+}

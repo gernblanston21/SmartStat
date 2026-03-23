@@ -1,0 +1,7458 @@
+{
+  "source_file": "docs/onair/source/MLB_Network_26.json",
+  "extraction_pass": "ONAIR_PROFILE_EXTRACTION_MLB_PASS_02_FULL_INDEX",
+  "extraction_scope": "full_normalized_corpus",
+  "corpus_mode_note": "Deterministic normalized full-coverage corpus over all template-bearing tabs (no sampling/truncation).",
+  "total_playbook_entries": 1862,
+  "total_template_tabs": 33130,
+  "unique_raw_templates": 13433,
+  "normalized_pattern_count": 437,
+  "row_schema": [
+    "normalized_pattern",
+    "occurrence_count",
+    "playbook_source_index",
+    "playbook_name",
+    "grouping",
+    "category",
+    "basePage",
+    "writeToPattern",
+    "tab_order",
+    "raw_template",
+    "token_count",
+    "classification",
+    "classification_set"
+  ],
+  "rows": [
+    [
+      "*AYTEAM AVG: {{TOKEN}}",
+      1,
+      1835,
+      "Player - Season Runner on 3rd - Less than 2 Outs",
+      "Players - Batting - This Season",
+      "Player",
+      "97007",
+      "T00PP30",
+      7,
+      "*AYTEAM AVG: {{ stats.team.season.runner3rd_lessthan2out_pct }}",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "*AY{{TOKEN}} STRIKEOUTS",
+      1,
+      682,
+      "Player - Season Batting Hitless Streak",
+      "Players - Batting - This Season",
+      "Player",
+      "97007",
+      "T10PP06",
+      7,
+      "*AY{{streak(hits, <1).player.season.equal(games_played, 1).strikeouts}} STRIKEOUTS",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "1-RUN GAMES",
+      2,
+      696,
+      "Team - Record in 1-Run Games",
+      "Team - Record When",
+      "Team",
+      "97012",
+      "T049756",
+      3,
+      "1-RUN GAMES",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "10",
+      1,
+      762,
+      "Pitcher Slab - W-L, ERA, IP, SV/OPP, HITS, BB, K, OPP AVG, LHB AVG, RHB AVG",
+      "Players - Pitching - This Season",
+      "Player",
+      "97034",
+      "T02PP37",
+      31,
+      "10",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "12",
+      1,
+      763,
+      "Pitcher Slab - G, S, W-L, ERA, IP, H, BB, K, WHIP, HR, OPP AVG, IP/START",
+      "Players - Pitching - This Season",
+      "Player",
+      "97034",
+      "T02PP38",
+      31,
+      "12",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "1B",
+      1,
+      53,
+      "Player - Nub 1B",
+      "Players - Misc",
+      "Player",
+      "97005",
+      "T01PP93",
+      2,
+      "1B",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "1st",
+      1,
+      1609,
+      "Pitcher L3 - Thru Lineup",
+      "Players - Pitching - Career",
+      "Player",
+      "97000",
+      "T03PP81",
+      6,
+      "1st",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "1st HALF",
+      3,
+      42,
+      "Player - Career Batting Pre / Post All-Star Break",
+      "Players - Batting - Career",
+      "Player",
+      "97008",
+      "T01PP18",
+      6,
+      "1st HALF",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "1st HALF ({{TOKEN}} GAMES)",
+      1,
+      8,
+      "Player - Season Batting Pre / Post All-Star Break",
+      "Players - Batting - This Season",
+      "Player",
+      "97008",
+      "T00PP18",
+      6,
+      "1st HALF ({{stats.player.season.all_star_break(before).games_played}} GAMES)",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "1st TIME:",
+      1,
+      796,
+      "Pitcher L3 - Thru Lineup",
+      "Players - Pitching - This Season",
+      "Player",
+      "97100",
+      "T02PP81",
+      6,
+      "1st TIME:",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "1st-3rd",
+      1,
+      791,
+      "Pitcher L3 - ERA by Inning",
+      "Players - Pitching - This Season",
+      "Player",
+      "97000",
+      "T02PP75",
+      6,
+      "1st-3rd",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "2B",
+      1,
+      44,
+      "Player - Nub 2B",
+      "Players - Misc",
+      "Player",
+      "97005",
+      "T01PP84",
+      2,
+      "2B",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "2nd",
+      1,
+      1609,
+      "Pitcher L3 - Thru Lineup",
+      "Players - Pitching - Career",
+      "Player",
+      "97000",
+      "T03PP81",
+      8,
+      "2nd",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "2nd HALF",
+      3,
+      42,
+      "Player - Career Batting Pre / Post All-Star Break",
+      "Players - Batting - Career",
+      "Player",
+      "97008",
+      "T01PP18",
+      10,
+      "2nd HALF",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "2nd HALF ({{TOKEN}} GAMES)",
+      1,
+      8,
+      "Player - Season Batting Pre / Post All-Star Break",
+      "Players - Batting - This Season",
+      "Player",
+      "97008",
+      "T00PP18",
+      10,
+      "2nd HALF ({{stats.player.season.all_star_break(after).games_played}} GAMES)",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "2nd TIME:",
+      1,
+      796,
+      "Pitcher L3 - Thru Lineup",
+      "Players - Pitching - This Season",
+      "Player",
+      "97100",
+      "T02PP81",
+      8,
+      "2nd TIME:",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "3",
+      1,
+      30,
+      "Player - Batting Last 3 Months AVG/HR/RBI",
+      "Players - Batting - This Season",
+      "Player",
+      "97035",
+      "T00PP60",
+      33,
+      "3",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "3B",
+      1,
+      45,
+      "Player - Nub 3B",
+      "Players - Misc",
+      "Player",
+      "97005",
+      "T01PP85",
+      2,
+      "3B",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "3rd",
+      1,
+      1609,
+      "Pitcher L3 - Thru Lineup",
+      "Players - Pitching - Career",
+      "Player",
+      "97000",
+      "T03PP81",
+      10,
+      "3rd",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "3rd TIME:",
+      1,
+      796,
+      "Pitcher L3 - Thru Lineup",
+      "Players - Pitching - This Season",
+      "Player",
+      "97100",
+      "T02PP81",
+      10,
+      "3rd TIME:",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "4",
+      3,
+      31,
+      "Player - Batting Last 4 Months AVG/HR/RBI",
+      "Players - Batting - This Season",
+      "Player",
+      "97035",
+      "T00PP61",
+      33,
+      "4",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "4-SEAM FASTBALL - {{TOKEN}}",
+      1,
+      1850,
+      "Pitcher L3 - Usage, AVG, SLG, Whiff (4-SEAM)",
+      "Players - Pitching - This Season By Pitch Type",
+      "Player",
+      "97100",
+      "T04PP00",
+      5,
+      "4-SEAM FASTBALL - {{info.time.season}}",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "4th-6th",
+      1,
+      791,
+      "Pitcher L3 - ERA by Inning",
+      "Players - Pitching - This Season",
+      "Player",
+      "97000",
+      "T02PP75",
+      8,
+      "4th-6th",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "5",
+      1,
+      32,
+      "Player - Batting Last 5 Months AVG/HR/RBI",
+      "Players - Batting - This Season",
+      "Player",
+      "97035",
+      "T00PP62",
+      33,
+      "5",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "6",
+      2,
+      33,
+      "Player - Batting Last 6 Months AVG/HR/RBI",
+      "Players - Batting - This Season",
+      "Player",
+      "97035",
+      "T00PP63",
+      33,
+      "6",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "7",
+      5,
+      758,
+      "Pitcher Slab - GP, W-L, ERA, IP, K/BB, HR, IR/IRS",
+      "Players - Pitching - This Season",
+      "Player",
+      "97034",
+      "T02PP33",
+      31,
+      "7",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "7th INNING OR LATER",
+      1,
+      1612,
+      "SLAB - League Batting -  Go Ahead RBI 7th Inning or Later",
+      "League - Ind Leaders - Batting",
+      "League",
+      "97024",
+      "5006021",
+      3,
+      "7th INNING OR LATER",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "7th INNING OR LATER {{TOKEN}}",
+      1,
+      91,
+      "Player - Season Batting 7th Inning or Later",
+      "Players - Batting - This Season",
+      "Player",
+      "97006",
+      "T00PP32",
+      5,
+      "7th INNING OR LATER {{info.time.season}}",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "7th+",
+      1,
+      791,
+      "Pitcher L3 - ERA by Inning",
+      "Players - Pitching - This Season",
+      "Player",
+      "97000",
+      "T02PP75",
+      10,
+      "7th+",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "8",
+      10,
+      757,
+      "Pitcher Slab - GS, W-L, ERA, IP, K/BB, OPP AVG, WHIP, HR",
+      "Players - Pitching - This Season",
+      "Player",
+      "97034",
+      "T02PP32",
+      31,
+      "8",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "9",
+      7,
+      761,
+      "Pitcher Slab - W-L, ERA, IP, HITS, BB, K, OPP AVG, LHB AVG, RHB AVG",
+      "Players - Pitching - This Season",
+      "Player",
+      "97034",
+      "T02PP36",
+      31,
+      "9",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "ACTIVE LEADERS",
+      1,
+      1283,
+      "FS - Active Pitching - Shutouts",
+      "League - Active - Pitching Leaders",
+      "League",
+      "97020",
+      "3004305",
+      2,
+      "ACTIVE LEADERS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "AFTER 7TH INNING IN CLOSE GAMES",
+      8,
+      200,
+      "FS - League Batting After 7th Close Game - Highest AVG",
+      "League - Ind Leaders - Batting",
+      "League",
+      "97023",
+      "3006194",
+      2,
+      "AFTER 7TH INNING IN CLOSE GAMES",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "AGE",
+      1,
+      60,
+      "Player - Bio Basic",
+      "Players - Bio",
+      "Player",
+      "97030",
+      "T00PP83",
+      11,
+      "AGE",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "AHEAD IN COUNT",
+      2,
+      120,
+      "Player - Career Batting Ahead/Behind in Count",
+      "Players - Batting - Career",
+      "Player",
+      "97008",
+      "T01PP31",
+      6,
+      "AHEAD IN COUNT",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "AHEAD IN COUNT ({{TOKEN}} AB)",
+      2,
+      16,
+      "Player - Season Batting Ahead/Behind in Count",
+      "Players - Batting - This Season",
+      "Player",
+      "97008",
+      "T00PP31",
+      6,
+      "AHEAD IN COUNT ({{stats.player.season.count_advantage(hitter).at_bats}} AB)",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "APR",
+      1,
+      59,
+      "Player - Season Batting By Month Full",
+      "Players - Batting - This Season",
+      "Player",
+      "97037",
+      "T01PP53",
+      6,
+      "APR",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "AT HOME",
+      1,
+      820,
+      "Pitcher L3 - Home/Road",
+      "Players - Pitching - This Season",
+      "Player",
+      "97008",
+      "T02PP66",
+      6,
+      "AT HOME",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "AT HOME ({{TOKEN}} GAMES)",
+      1,
+      1608,
+      "Player - Season Batting At Home / On Road",
+      "Players - Batting - This Season",
+      "Player",
+      "97008",
+      "T00PP22",
+      6,
+      "AT HOME ({{stats.player.season.location(home).games_played}} GAMES)",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "AT HOME {{TOKEN}}",
+      2,
+      9,
+      "Player - Season Batting At Home",
+      "Players - Batting - This Season",
+      "Player",
+      "97000",
+      "T00PP20",
+      5,
+      "AT HOME {{info.time.season}}",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "AUG",
+      1,
+      59,
+      "Player - Season Batting By Month Full",
+      "Players - Batting - This Season",
+      "Player",
+      "97037",
+      "T01PP53",
+      26,
+      "AUG",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "AVG STARTER: {{TOKEN}}/GAME",
+      1,
+      777,
+      "Pitcher L3 - 1st Inning Runs",
+      "Players - Pitching - This Season",
+      "Player",
+      "97007",
+      "T02PP59",
+      7,
+      "AVG STARTER: {{stats.league(player).season.innings(1).pos_primary(sp).runs_allowed_per_game}}/GAME",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "AWAY TEAM WIN PCT",
+      1,
+      697,
+      "League - Home/Road One-Run Comparison",
+      "Team - Record When",
+      "Team",
+      "97000",
+      "T049758",
+      6,
+      "AWAY TEAM WIN PCT",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "AWAY TEAMS WIN PCT",
+      1,
+      698,
+      "League - Home/Road Extra Inning Comparison",
+      "Team - Record When",
+      "Team",
+      "97000",
+      "T049759",
+      6,
+      "AWAY TEAMS WIN PCT",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "After 0-1: {{TOKEN}} AVG, {{TOKEN}} HR",
+      1,
+      1623,
+      "Player - Season Pitching 0-1 vs 1-0",
+      "Players - Pitching - This Season",
+      "Player",
+      "97007",
+      "T02PP00",
+      6,
+      "After 0-1: {{stats.player.season.count_after(0-1).pitcher_opponent_batting_average}} AVG, {{stats.player.season.count_after(0-1).pitcher_home_runs_allowed}} HR",
+      2,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "After 0-1: {{TOKEN}} OBP, {{TOKEN}} HR",
+      1,
+      1626,
+      "Player - Season Pitching 0-1 vs 1-0 - OBP",
+      "Players - Pitching - This Season",
+      "Player",
+      "97007",
+      "T02PP01",
+      6,
+      "After 0-1: {{stats.player.season.count_after(0-1).pitcher_on_base_percentage_against}} OBP, {{stats.player.season.count_after(0-1).pitcher_home_runs_allowed}} HR",
+      2,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "After 0-2: {{TOKEN}} AVG, {{TOKEN}} HR",
+      1,
+      1624,
+      "Player - Season Pitching 0-2 vs 2-0",
+      "Players - Pitching - This Season",
+      "Player",
+      "97007",
+      "T02PP02",
+      6,
+      "After 0-2: {{stats.player.season.count_after(0-2).pitcher_opponent_batting_average}} AVG, {{stats.player.season.count_after(0-2).pitcher_home_runs_allowed}} HR",
+      2,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "After 0-2: {{TOKEN}} OBP, {{TOKEN}} HR",
+      1,
+      1627,
+      "Player - Season Pitching 0-2 vs 2-0 - OBP",
+      "Players - Pitching - This Season",
+      "Player",
+      "97007",
+      "T02PP03",
+      6,
+      "After 0-2: {{stats.player.season.count_after(0-2).pitcher_on_base_percentage_against}} OBP, {{stats.player.season.count_after(0-2).pitcher_home_runs_allowed}} HR",
+      2,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "After 1-0: {{TOKEN}} AVG, {{TOKEN}} HR",
+      1,
+      1623,
+      "Player - Season Pitching 0-1 vs 1-0",
+      "Players - Pitching - This Season",
+      "Player",
+      "97007",
+      "T02PP00",
+      7,
+      "After 1-0: {{stats.player.season.count_after(1-0).pitcher_opponent_batting_average}} AVG, {{stats.player.season.count_after(1-0).pitcher_home_runs_allowed}} HR",
+      2,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "After 1-0: {{TOKEN}} OBP, {{TOKEN}} HR",
+      1,
+      1626,
+      "Player - Season Pitching 0-1 vs 1-0 - OBP",
+      "Players - Pitching - This Season",
+      "Player",
+      "97007",
+      "T02PP01",
+      7,
+      "After 1-0: {{stats.player.season.count_after(1-0).pitcher_on_base_percentage_against}} OBP, {{stats.player.season.count_after(1-0).pitcher_home_runs_allowed}} HR",
+      2,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "After 1-2: {{TOKEN}} AVG, {{TOKEN}} HR",
+      1,
+      1625,
+      "Player - Season Pitching 1-2 vs 2-1",
+      "Players - Pitching - This Season",
+      "Player",
+      "97007",
+      "T02PP04",
+      6,
+      "After 1-2: {{stats.player.season.count_after(1-2).pitcher_opponent_batting_average}} AVG, {{stats.player.season.count_after(1-2).pitcher_home_runs_allowed}} HR",
+      2,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "After 1-2: {{TOKEN}} OBP, {{TOKEN}} HR",
+      1,
+      1628,
+      "Player - Season Pitching 1-2 vs 2-1 - OBP",
+      "Players - Pitching - This Season",
+      "Player",
+      "97007",
+      "T02PP05",
+      6,
+      "After 1-2: {{stats.player.season.count_after(1-2).pitcher_on_base_percentage_against}} OBP, {{stats.player.season.count_after(1-2).pitcher_home_runs_allowed}} HR",
+      2,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "After 2-0: {{TOKEN}} AVG, {{TOKEN}} HR",
+      1,
+      1624,
+      "Player - Season Pitching 0-2 vs 2-0",
+      "Players - Pitching - This Season",
+      "Player",
+      "97007",
+      "T02PP02",
+      7,
+      "After 2-0: {{stats.player.season.count_after(2-0).pitcher_opponent_batting_average}} AVG, {{stats.player.season.count_after(2-0).pitcher_home_runs_allowed}} HR",
+      2,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "After 2-0: {{TOKEN}} OBP, {{TOKEN}} HR",
+      1,
+      1627,
+      "Player - Season Pitching 0-2 vs 2-0 - OBP",
+      "Players - Pitching - This Season",
+      "Player",
+      "97007",
+      "T02PP03",
+      7,
+      "After 2-0: {{stats.player.season.count_after(2-0).pitcher_on_base_percentage_against}} OBP, {{stats.player.season.count_after(2-0).pitcher_home_runs_allowed}} HR",
+      2,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "After 2-1: {{TOKEN}} AVG, {{TOKEN}} HR",
+      1,
+      1625,
+      "Player - Season Pitching 1-2 vs 2-1",
+      "Players - Pitching - This Season",
+      "Player",
+      "97007",
+      "T02PP04",
+      7,
+      "After 2-1: {{stats.player.season.count_after(2-1).pitcher_opponent_batting_average}} AVG, {{stats.player.season.count_after(2-1).pitcher_home_runs_allowed}} HR",
+      2,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "After 2-1: {{TOKEN}} OBP, {{TOKEN}} HR",
+      1,
+      1628,
+      "Player - Season Pitching 1-2 vs 2-1 - OBP",
+      "Players - Pitching - This Season",
+      "Player",
+      "97007",
+      "T02PP05",
+      7,
+      "After 2-1: {{stats.player.season.count_after(2-1).pitcher_on_base_percentage_against}} OBP, {{stats.player.season.count_after(2-1).pitcher_home_runs_allowed}} HR",
+      2,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "BASES EMPTY",
+      1,
+      824,
+      "Pitcher L3 - Runners On/Bases Empty",
+      "Players - Pitching - Career",
+      "Player",
+      "97008",
+      "T03PP70",
+      10,
+      "BASES EMPTY",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "BASES EMPTY ({{TOKEN}} AB)",
+      2,
+      43,
+      "Player - Season Batting Runners On/Bases Empty",
+      "Players - Batting - This Season",
+      "Player",
+      "97008",
+      "T00PP26",
+      10,
+      "BASES EMPTY ({{stats.player.season.runners_on(no).at_bats}} AB)",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "BB",
+      4,
+      778,
+      "Pitcher L3 - Last Outing - IP, H, R/ER, BB, K, PITCHES",
+      "Players - Pitching - Previous Outings",
+      "Player",
+      "97000",
+      "T02PP56",
+      14,
+      "BB",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "BEHIND IN COUNT",
+      2,
+      120,
+      "Player - Career Batting Ahead/Behind in Count",
+      "Players - Batting - Career",
+      "Player",
+      "97008",
+      "T01PP31",
+      10,
+      "BEHIND IN COUNT",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "BEHIND IN COUNT ({{TOKEN}} AB)",
+      2,
+      16,
+      "Player - Season Batting Ahead/Behind in Count",
+      "Players - Batting - This Season",
+      "Player",
+      "97008",
+      "T00PP31",
+      10,
+      "BEHIND IN COUNT ({{stats.player.season.count_advantage(pitcher).at_bats}} AB)",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "BREAKING BALL",
+      3,
+      112,
+      "Player - Season Batting AVG vs Pitch Type",
+      "Players - Batting - This Season",
+      "Player",
+      "97036",
+      "T01PP04",
+      9,
+      "BREAKING BALL",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "BULLPEN ERA",
+      8,
+      1379,
+      "SLAB - Conference Leaders - Team Pitching - Relievers ERA",
+      "Conference - Team Leaders - Pitching",
+      "Conference",
+      "97026",
+      "500C883",
+      1,
+      "BULLPEN ERA",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "BUNTING {{TOKEN}}",
+      1,
+      17,
+      "Player - Season Bunting",
+      "Players - Batting - This Season",
+      "Player",
+      "97000",
+      "T00PP40",
+      5,
+      "BUNTING {{info.time.season}}",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "C",
+      1,
+      52,
+      "Player - Nub C",
+      "Players - Misc",
+      "Player",
+      "97005",
+      "T01PP92",
+      2,
+      "C",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "CAREER",
+      3,
+      40,
+      "Player - Career Stolen Bases",
+      "Players - Baserunning",
+      "Player",
+      "97000",
+      "T01PP13",
+      5,
+      "CAREER",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "CAREER ({{TOKEN}} GAMES)",
+      2,
+      826,
+      "Pitcher L3 - IP, ERA, SV/OPP",
+      "Players - Pitching - Career",
+      "Player",
+      "97000",
+      "T03PP71",
+      5,
+      "CAREER ({{stats.player.career.games_pitched}} GAMES)",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "CAREER ({{TOKEN}} SEASON)",
+      20,
+      3,
+      "Player - Career Batting AVG/HR/RBI",
+      "Players - Batting - Career",
+      "Player",
+      "97000",
+      "T00PP11",
+      5,
+      "CAREER ({{info.player.experience | ordinal}} SEASON)",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "CAREER ({{TOKEN}} SEASON) - TIMES THRU LINEUP",
+      1,
+      1609,
+      "Pitcher L3 - Thru Lineup",
+      "Players - Pitching - Career",
+      "Player",
+      "97000",
+      "T03PP81",
+      5,
+      "CAREER ({{info.player.experience|ordinal}} SEASON) - TIMES THRU LINEUP",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "CAREER AT HOME",
+      1,
+      55,
+      "Player - Career Batting At Home",
+      "Players - Batting - Career",
+      "Player",
+      "97000",
+      "T01PP20",
+      5,
+      "CAREER AT HOME",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "CAREER AT {{TOKEN}} ({{TOKEN}} GAMES)",
+      1,
+      117,
+      "Player - Career Batting at Today's Ballpark",
+      "Players - Batting - Career",
+      "Player",
+      "97030",
+      "T01PP10",
+      5,
+      "CAREER AT {{info.home.venue_name}} ({{stats.player.career.venue.games_played}} GAMES)",
+      2,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "CAREER IN 7th INNING OR LATER",
+      1,
+      121,
+      "Player - Career Batting 7th Inning or Later",
+      "Players - Batting - Career",
+      "Player",
+      "97006",
+      "T01PP32",
+      5,
+      "CAREER IN 7th INNING OR LATER",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "CAREER IN EXTRA INNING GAMES",
+      1,
+      688,
+      "Manager - Career in Extra Inning Games",
+      "Team - Managers",
+      "Team",
+      "97012",
+      "T049705",
+      3,
+      "CAREER IN EXTRA INNING GAMES",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "CAREER IN EXTRA INNINGS ({{TOKEN}} PA)",
+      1,
+      123,
+      "Player - Career Batting Extra Innings",
+      "Players - Batting - Career",
+      "Player",
+      "97006",
+      "T01PP75",
+      5,
+      "CAREER IN EXTRA INNINGS ({{stats.player.innings(10-25).plate_appearances}} PA)",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "CAREER IN ONE-RUN GAMES",
+      1,
+      687,
+      "Manager - Career in 1-Run Games",
+      "Team - Managers",
+      "Team",
+      "97012",
+      "T049704",
+      3,
+      "CAREER IN ONE-RUN GAMES",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "CAREER ON THE ROAD",
+      1,
+      56,
+      "Player - Career Batting On Road",
+      "Players - Batting - Career",
+      "Player",
+      "97000",
+      "T01PP21",
+      5,
+      "CAREER ON THE ROAD",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "CAREER PINCH HITTING ({{TOKEN}} PA)",
+      1,
+      82,
+      "Player - Career Batting as Pinch Hitter",
+      "Players - Batting - Career",
+      "Player",
+      "97006",
+      "T00PP16",
+      5,
+      "CAREER PINCH HITTING ({{stats.player.as_pos(ph).plate_appearances}} PA)",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "CAREER WITH BASES LOADED ({{TOKEN}} AB)",
+      1,
+      87,
+      "Player - Career Batting Bases Loaded",
+      "Players - Batting - Career",
+      "Player",
+      "97007",
+      "T00PP29",
+      5,
+      "CAREER WITH BASES LOADED ({{stats.player.runners(loaded).at_bats}} AB)",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "CAREER WITH RISP ({{TOKEN}} SEASON)",
+      1,
+      118,
+      "Player - Career Batting with RISP",
+      "Players - Batting - Career",
+      "Player",
+      "97006",
+      "T01PP27",
+      5,
+      "CAREER WITH RISP ({{info.player.experience|ordinal}} SEASON)",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "CAREER WITH {{TOKEN}} ({{TOKEN}} GAMES)",
+      1,
+      37,
+      "Player - Career Batting Current Team AVG/HR/RBI",
+      "Players - Batting - Career",
+      "Player",
+      "97000",
+      "T00PP67",
+      5,
+      "CAREER WITH {{info.team.name}} ({{stats.player.career.on_team.games_played}} GAMES)",
+      2,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "CAREER at {{TOKEN}}",
+      4,
+      768,
+      "Pitcher L3 - S, W-L, ERA (at Ballpark)",
+      "Players - Pitching - Career",
+      "Player",
+      "97000",
+      "T02PP46",
+      5,
+      "CAREER at {{info.game.venue_name}}",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "CAREER at {{TOKEN}} ({{TOKEN}} GAMES)",
+      1,
+      1820,
+      "Batter - Career at Ballpark",
+      "Players - Batting - Career",
+      "Player",
+      "97006",
+      "T01PP10",
+      5,
+      "CAREER at {{info.game.venue_name}} ({{stats.player.career.venue.games_played}} GAMES)",
+      2,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "CAREER vs BASES LOADED ({{TOKEN}} AB)",
+      1,
+      1816,
+      "Pitcher - Career vs Bases Loaded",
+      "Players - TEMP PAGES",
+      "Player",
+      "97006",
+      "T03PP29",
+      5,
+      "CAREER vs BASES LOADED ({{stats.player.career.runners(loaded).batters_faced}} AB)",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "CAREER vs {{TOKEN}}",
+      7,
+      685,
+      "Manager - Career vs Oppoenent",
+      "Team - Managers",
+      "Team",
+      "97012",
+      "T049702",
+      3,
+      "CAREER vs {{info.team(opp).name}}",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "CAREER vs {{TOKEN}} ({{TOKEN}} GAMES)",
+      2,
+      116,
+      "Player - Career Batting vs Opponent",
+      "Players - Batting - Career",
+      "Player",
+      "97006",
+      "T01PP08",
+      5,
+      "CAREER vs {{info.team(opp).name}} ({{stats.player.vs.games_played}} GAMES)",
+      2,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "CAREER w/ 2 OUTS & RISP ({{TOKEN}} SEASON)",
+      1,
+      119,
+      "Player - Career Batting with RISP + 2 Outs",
+      "Players - Batting - Career",
+      "Player",
+      "97006",
+      "T01PP28",
+      5,
+      "CAREER w/ 2 OUTS & RISP ({{info.player.experience|ordinal}} SEASON)",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "CENTER",
+      2,
+      18,
+      "Player - L3 Season Hits By Direction",
+      "Players - Batting - By Direction",
+      "Player",
+      "97000",
+      "T01PP41",
+      8,
+      "CENTER",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "CENTER FIELD ({{TOKEN}} GAMES)",
+      1,
+      97,
+      "Player - Season Fielding CF",
+      "Players - Fielding - This Season",
+      "Player",
+      "97030",
+      "T00PP88",
+      5,
+      "CENTER FIELD ({{stats.player.season.as_pos(cf).games_played}} GAMES)",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "CF",
+      1,
+      48,
+      "Player - Nub CF",
+      "Players - Misc",
+      "Player",
+      "97005",
+      "T01PP88",
+      2,
+      "CF",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "CHANGEUP - {{TOKEN}}",
+      1,
+      1849,
+      "Pitcher L3 - Usage, AVG, SLG, Whiff (Changeup)",
+      "Players - Pitching - This Season By Pitch Type",
+      "Player",
+      "97100",
+      "T04PP01",
+      5,
+      "CHANGEUP - {{info.time.season}}",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "COMEBACK WINS",
+      8,
+      1409,
+      "SLAB - Conference Team Best Record - Comeback Wins",
+      "Conference - Team Leaders - Record",
+      "Conference",
+      "97026",
+      "500C898",
+      1,
+      "COMEBACK WINS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "CURRENT HOMESTAND ({{TOKEN}} GAMES)",
+      1,
+      83,
+      "Player - Batting Current Homestand",
+      "Players - Batting - This Season",
+      "Player",
+      "97006",
+      "T00PP24",
+      5,
+      "CURRENT HOMESTAND ({{stats.player.season.homestand.games_played}} GAMES)",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "CURRENT ROADTRIP ({{TOKEN}} GAMES)",
+      1,
+      84,
+      "Player - Batting Current Roadtrip",
+      "Players - Batting - This Season",
+      "Player",
+      "97006",
+      "T10PP24",
+      5,
+      "CURRENT ROADTRIP ({{stats.player.season.roadtrip.games_played}} GAMES)",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "CURVEBALL - {{TOKEN}}",
+      1,
+      1854,
+      "Pitcher L3 - Usage, AVG, SLG, Whiff (Curveball)",
+      "Players - Pitching - This Season By Pitch Type",
+      "Player",
+      "97100",
+      "T04PP05",
+      5,
+      "CURVEBALL - {{info.time.season}}",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "CUTTER - {{TOKEN}}",
+      1,
+      1851,
+      "Pitcher L3 - Usage, AVG, SLG, Whiff (Cutter)",
+      "Players - Pitching - This Season By Pitch Type",
+      "Player",
+      "97100",
+      "T04PP02",
+      5,
+      "CUTTER - {{info.time.season}}",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "DAY GAMES ({{TOKEN}})",
+      1,
+      13,
+      "Player - Season Batting Day / Night Games",
+      "Players - Batting - This Season",
+      "Player",
+      "97008",
+      "T01PP23",
+      6,
+      "DAY GAMES ({{stats.player.season.game_start(day).games_played}})",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "DOUBLE PLAYS - {{TOKEN}}",
+      1,
+      680,
+      "Player - Season Batting Hit Into Double Plays",
+      "Players - Batting - This Season",
+      "Player",
+      "97000",
+      "T00PP59",
+      5,
+      "DOUBLE PLAYS - {{info.time.season}}",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "DOUBLE PLAYS {{TOKEN}}",
+      1,
+      794,
+      "Pitcher L3 - Double Plays",
+      "Players - Pitching - This Season",
+      "Player",
+      "97006",
+      "T02PP78",
+      5,
+      "DOUBLE PLAYS {{info.time.season}}",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "DROVE IN RUNNER [{{TOKEN}}] OF THE TIME",
+      1,
+      1835,
+      "Player - Season Runner on 3rd - Less than 2 Outs",
+      "Players - Batting - This Season",
+      "Player",
+      "97007",
+      "T00PP30",
+      6,
+      "DROVE IN RUNNER [{{ stats.player.season.runner3rd_lessthan2out_pct }}] OF THE TIME",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "EEPHUS - {{TOKEN}}",
+      1,
+      1860,
+      "Pitcher L3 - Usage, AVG, SLG, Whiff (Eephus)",
+      "Players - Pitching - This Season By Pitch Type",
+      "Player",
+      "97100",
+      "T04PP11",
+      5,
+      "EEPHUS - {{info.time.season}}",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "ER",
+      5,
+      779,
+      "Pitcher L3 - Last Outing - IP, H, R, ER, BB, K, PITCHES",
+      "Players - Pitching - Previous Outings",
+      "Player",
+      "97030",
+      "T02PP57",
+      13,
+      "ER",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "ERA BY INNING {{TOKEN}}",
+      1,
+      791,
+      "Pitcher L3 - ERA by Inning",
+      "Players - Pitching - This Season",
+      "Player",
+      "97000",
+      "T02PP75",
+      5,
+      "ERA BY INNING {{info.time.season}}",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "EXTRA INNING GAMES",
+      1,
+      695,
+      "Team - Record in Extra Inning Games",
+      "Team - Record When",
+      "Team",
+      "97012",
+      "T049757",
+      3,
+      "EXTRA INNING GAMES",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "EXTRA-INNINGS GAMES",
+      1,
+      698,
+      "League - Home/Road Extra Inning Comparison",
+      "Team - Record When",
+      "Team",
+      "97000",
+      "T049759",
+      5,
+      "EXTRA-INNINGS GAMES",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "FASTBALL",
+      3,
+      112,
+      "Player - Season Batting AVG vs Pitch Type",
+      "Players - Batting - This Season",
+      "Player",
+      "97036",
+      "T01PP04",
+      6,
+      "FASTBALL",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "FEWEST IN {{TOKEN}}",
+      1,
+      523,
+      "SLAB - Conference Trailers - Team Batting - Total Bases",
+      "Conference - Team Trailers - Batting",
+      "Conference",
+      "97026",
+      "500C912",
+      2,
+      "FEWEST IN {{info.conference.alias}}",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "FIRST BASE ({{TOKEN}} GAMES)",
+      1,
+      100,
+      "Player - Season Fielding 1B",
+      "Players - Fielding - This Season",
+      "Player",
+      "97030",
+      "T00PP93",
+      5,
+      "FIRST BASE ({{stats.player.season.as_pos(1b).games_played}} GAMES)",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "FLYBALLS",
+      2,
+      793,
+      "Pitcher L3 - Groundball/Flyball Ratio",
+      "Players - Pitching - This Season",
+      "Player",
+      "97000",
+      "T02PP77",
+      8,
+      "FLYBALLS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "FORKBALL - {{TOKEN}}",
+      1,
+      1857,
+      "Pitcher L3 - Usage, AVG, SLG, Whiff (Forkball)",
+      "Players - Pitching - This Season By Pitch Type",
+      "Player",
+      "97100",
+      "T04PP08",
+      5,
+      "FORKBALL - {{info.time.season}}",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "GROUNDBALLS",
+      2,
+      793,
+      "Pitcher L3 - Groundball/Flyball Ratio",
+      "Players - Pitching - This Season",
+      "Player",
+      "97000",
+      "T02PP77",
+      6,
+      "GROUNDBALLS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "H",
+      4,
+      778,
+      "Pitcher L3 - Last Outing - IP, H, R/ER, BB, K, PITCHES",
+      "Players - Pitching - Previous Outings",
+      "Player",
+      "97000",
+      "T02PP56",
+      8,
+      "H",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "HIGHEST IN MLB - LAST 10 DAYS",
+      1,
+      235,
+      "SLAB - League Batting Last 10 Days - Highest AVG",
+      "League - Ind Leaders - Batting",
+      "League",
+      "97024",
+      "5006100",
+      2,
+      "HIGHEST IN MLB - LAST 10 DAYS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "HIGHEST IN {{TOKEN}} - LAST 10 DAYS",
+      3,
+      160,
+      "FS - League Batting Last 10 Days - Highest AVG",
+      "League - Ind Leaders - Batting",
+      "League",
+      "97023",
+      "3006100",
+      2,
+      "HIGHEST IN {{info.league.alias}} - LAST 10 DAYS",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "HIGHEST IN {{TOKEN}} - {{TOKEN}}",
+      8,
+      164,
+      "FS - League Batting This Month - Highest AVG",
+      "League - Ind Leaders - Batting",
+      "League",
+      "97023",
+      "3006110",
+      2,
+      "HIGHEST IN {{info.league.alias}} - {{info.time.month}}",
+      2,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "HIGHEST {{TOKEN}} IN {{TOKEN}}",
+      4,
+      200,
+      "FS - League Batting After 7th Close Game - Highest AVG",
+      "League - Ind Leaders - Batting",
+      "League",
+      "97023",
+      "3006194",
+      1,
+      "HIGHEST {{custom.leaders_avg}} IN {{info.league.alias}}",
+      2,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "HITS",
+      2,
+      811,
+      "Pitcher L3 - Last 3 Outings - IP, H, ER, BB/K",
+      "Players - Pitching - Previous Outings",
+      "Player",
+      "97133",
+      "T03PP56",
+      37,
+      "HITS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "HITS BY DIRECTION",
+      3,
+      18,
+      "Player - L3 Season Hits By Direction",
+      "Players - Batting - By Direction",
+      "Player",
+      "97000",
+      "T01PP41",
+      5,
+      "HITS BY DIRECTION",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "HOME GAMES",
+      1,
+      821,
+      "Pitcher L3 - Home/Road ",
+      "Players - Pitching - Career",
+      "Player",
+      "97008",
+      "T03PP66",
+      6,
+      "HOME GAMES",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "HOME GAMES ({{TOKEN}} AB)",
+      1,
+      57,
+      "Player - Career Batting At Home / On Road",
+      "Players - Batting - Career",
+      "Player",
+      "97008",
+      "T01PP22",
+      6,
+      "HOME GAMES ({{stats.player.location(home).at_bats}} AB)",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "HOME RUNS BY DIRECTION",
+      3,
+      19,
+      "Player - L3 Season HR By Direction",
+      "Players - Batting - By Direction",
+      "Player",
+      "97000",
+      "T01PP42",
+      5,
+      "HOME RUNS BY DIRECTION",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "HOME TEAM WIN PCT",
+      2,
+      697,
+      "League - Home/Road One-Run Comparison",
+      "Team - Record When",
+      "Team",
+      "97000",
+      "T049758",
+      8,
+      "HOME TEAM WIN PCT",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "HOME {{TOKEN}}",
+      8,
+      929,
+      "FS - Conference Pitching - Wins - Home Games",
+      "Conference - Ind Pitching Leaders",
+      "Conference",
+      "97023",
+      "300C412",
+      1,
+      "HOME {{custom.leaders_pwins}}",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "HOMETOWN: {{TOKEN}}",
+      1,
+      60,
+      "Player - Bio Basic",
+      "Players - Bio",
+      "Player",
+      "97030",
+      "T00PP83",
+      6,
+      "HOMETOWN: {{info.player.hometown}}",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "HT",
+      1,
+      60,
+      "Player - Bio Basic",
+      "Players - Bio",
+      "Player",
+      "97030",
+      "T00PP83",
+      7,
+      "HT",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "IN LOSSES",
+      1,
+      38,
+      "Player - Season Batting In Wins/Losses",
+      "Players - Batting - This Season",
+      "Player",
+      "97033",
+      "T00PP75",
+      11,
+      "IN LOSSES",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "IN WINS",
+      1,
+      38,
+      "Player - Season Batting In Wins/Losses",
+      "Players - Batting - This Season",
+      "Player",
+      "97033",
+      "T00PP75",
+      6,
+      "IN WINS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "INTERLEAGUE CAREER",
+      2,
+      827,
+      "Pitcher L3 - GS, W-L, ERA, K/BB, OPP AVG (interleague)",
+      "Players - Pitching - Career",
+      "Player",
+      "97000",
+      "T03PP74",
+      5,
+      "INTERLEAGUE CAREER",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "INTERLEAGUE CAREER ({{TOKEN}} GAMES)",
+      1,
+      28,
+      "Player - Career Batting Interleague AVG/HR/RBI",
+      "Players - Batting - Career",
+      "Player",
+      "97000",
+      "T00PP55",
+      5,
+      "INTERLEAGUE CAREER ({{stats.player.career.vs_league(inter).games_played}} GAMES)",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "INTERLEAGUE {{TOKEN}} ({{TOKEN}} GAMES)",
+      1,
+      92,
+      "Player - Season Batting Interleague",
+      "Players - Batting - This Season",
+      "Player",
+      "97006",
+      "T00PP56",
+      5,
+      "INTERLEAGUE {{info.time.season}} ({{stats.player.season.vs_league(inter).games_played}} GAMES)",
+      2,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "IP",
+      6,
+      778,
+      "Pitcher L3 - Last Outing - IP, H, R/ER, BB, K, PITCHES",
+      "Players - Pitching - Previous Outings",
+      "Player",
+      "97000",
+      "T02PP56",
+      6,
+      "IP",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "JULY",
+      1,
+      59,
+      "Player - Season Batting By Month Full",
+      "Players - Batting - This Season",
+      "Player",
+      "97037",
+      "T01PP53",
+      21,
+      "JULY",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "JUNE",
+      1,
+      59,
+      "Player - Season Batting By Month Full",
+      "Players - Batting - This Season",
+      "Player",
+      "97037",
+      "T01PP53",
+      16,
+      "JUNE",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "K",
+      4,
+      778,
+      "Pitcher L3 - Last Outing - IP, H, R/ER, BB, K, PITCHES",
+      "Players - Pitching - Previous Outings",
+      "Player",
+      "97000",
+      "T02PP56",
+      12,
+      "K",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "K/BB",
+      2,
+      811,
+      "Pitcher L3 - Last 3 Outings - IP, H, ER, BB/K",
+      "Players - Pitching - Previous Outings",
+      "Player",
+      "97133",
+      "T03PP56",
+      39,
+      "K/BB",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "KNUCKLE BALL - {{TOKEN}}",
+      1,
+      1856,
+      "Pitcher L3 - Usage, AVG, SLG, Whiff (Knuckle Ball)",
+      "Players - Pitching - This Season By Pitch Type",
+      "Player",
+      "97100",
+      "T04PP07",
+      5,
+      "KNUCKLE BALL - {{info.time.season}}",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "KNUCKLE CURVE - {{TOKEN}}",
+      1,
+      1861,
+      "Pitcher L3 - Usage, AVG, SLG, Whiff (Knuckle Curve)",
+      "Players - Pitching - This Season By Pitch Type",
+      "Player",
+      "97100",
+      "T04PP12",
+      5,
+      "KNUCKLE CURVE - {{info.time.season}}",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "LAST 10 DAYS",
+      8,
+      464,
+      "FS - Conference Leaders - Team Batting - AVG Last 10 Days",
+      "Conference - Team Leaders - Batting",
+      "Conference",
+      "97025",
+      "300C820",
+      2,
+      "LAST 10 DAYS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "LAST 10 GAMES",
+      1,
+      76,
+      "Player - Batting Last 10 Games",
+      "Players - Batting - This Season",
+      "Player",
+      "97006",
+      "T00PP03",
+      5,
+      "LAST 10 GAMES",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "LAST 10 SEASONS",
+      20,
+      414,
+      "FS - League Batting Last 10 Seasons - AVG",
+      "League - Last X Seasons Leaders - Batting",
+      "League",
+      "97020",
+      "3004900",
+      2,
+      "LAST 10 SEASONS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "LAST 12+ INNING GAME",
+      1,
+      1620,
+      "Team - Last Time Played 12+ Innings",
+      "Team - Last Times",
+      "Team",
+      "97012",
+      "T049777",
+      3,
+      "LAST 12+ INNING GAME",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "LAST 15+ INNING GAME",
+      1,
+      1621,
+      "Team - Last Time Played 15+ Innings",
+      "Team - Last Times",
+      "Team",
+      "97012",
+      "T049778",
+      3,
+      "LAST 15+ INNING GAME",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "LAST 2 OUTINGS",
+      1,
+      833,
+      "Pitcher L3 - Last 2 Outings - IP, H, R, ER, BB, K, PITCHES",
+      "Players - Pitching - Previous Outings",
+      "Player",
+      "97038",
+      "T03PP83",
+      5,
+      "LAST 2 OUTINGS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "LAST 2 SEASONS",
+      19,
+      384,
+      "FS - League Batting Last 2 Seasons - AVG",
+      "League - Last X Seasons Leaders - Batting",
+      "League",
+      "97020",
+      "3004820",
+      2,
+      "LAST 2 SEASONS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "LAST 2 YEARS",
+      1,
+      1341,
+      "FS - Last 2 Years Pitching - Losses",
+      "League - Last X Seasons Leaders - Pitching",
+      "League",
+      "97020",
+      "3004827",
+      2,
+      "LAST 2 YEARS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "LAST 2-HR GAME",
+      1,
+      704,
+      "Team - Last Player had a 2-HR Game",
+      "Team - Last Times",
+      "Team",
+      "97013",
+      "T049780",
+      3,
+      "LAST 2-HR GAME",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "LAST 20+ INNING GAME",
+      1,
+      1622,
+      "Team - Last Time Played 20+ Innings",
+      "Team - Last Times",
+      "Team",
+      "97012",
+      "T049779",
+      3,
+      "LAST 20+ INNING GAME",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "LAST 3 MONTHS ({{TOKEN}} GAMES)",
+      1,
+      62,
+      "Player - Batting Last 3 Months AVG/HR/RBI",
+      "Players - Batting - This Season",
+      "Player",
+      "97000",
+      "T01PP50",
+      5,
+      "LAST 3 MONTHS ({{stats.player.season.month(last3).games_played}} GAMES)",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "LAST 3 OUTINGS",
+      2,
+      811,
+      "Pitcher L3 - Last 3 Outings - IP, H, ER, BB/K",
+      "Players - Pitching - Previous Outings",
+      "Player",
+      "97133",
+      "T03PP56",
+      5,
+      "LAST 3 OUTINGS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "LAST 3 OUTINGS vs {{TOKEN}}",
+      1,
+      813,
+      "Pitcher L3 - Last 3 Outings (vs Opp) - IP, H, ER, BB/K",
+      "Players - Pitching - Previous Outings",
+      "Player",
+      "97133",
+      "T03PP57",
+      5,
+      "LAST 3 OUTINGS vs {{info.team(opp).name}}",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "LAST 3 SEASONS",
+      20,
+      394,
+      "FS - League Batting Last 3 Seasons - AVG",
+      "League - Last X Seasons Leaders - Batting",
+      "League",
+      "97020",
+      "3004830",
+      2,
+      "LAST 3 SEASONS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "LAST 3-HR GAME:",
+      1,
+      705,
+      "Team - Last Player had a 3-HR Game",
+      "Team - Last Times",
+      "Team",
+      "97013",
+      "T049781",
+      3,
+      "LAST 3-HR GAME:",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "LAST 4 MONTHS ({{TOKEN}} GAMES)",
+      1,
+      63,
+      "Player - Batting Last 4 Months AVG/HR/RBI",
+      "Players - Batting - This Season",
+      "Player",
+      "97000",
+      "T01PP51",
+      5,
+      "LAST 4 MONTHS ({{stats.player.season.month(last4).games_played}} GAMES)",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "LAST 4-HR GAME",
+      1,
+      1602,
+      "Team - Last Player with 4-HR Game",
+      "Team - Last Times",
+      "Team",
+      "97013",
+      "T049790",
+      3,
+      "LAST 4-HR GAME",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "LAST 4-OUT SAVE",
+      1,
+      1605,
+      "Team - Last Player with 4-Out Save",
+      "Team - Last Times",
+      "Team",
+      "97013",
+      "T049793",
+      3,
+      "LAST 4-OUT SAVE",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "LAST 5 GAMES",
+      1,
+      1599,
+      "Player - Batting Last 5 Games",
+      "Players - Batting - This Season",
+      "Player",
+      "97006",
+      "T00PP05",
+      5,
+      "LAST 5 GAMES",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "LAST 5 MONTHS ({{TOKEN}} GAMES)",
+      1,
+      64,
+      "Player - Batting Last 5 Months AVG/HR/RBI",
+      "Players - Batting - This Season",
+      "Player",
+      "97000",
+      "T01PP52",
+      5,
+      "LAST 5 MONTHS ({{stats.player.season.month(last5).games_played}} GAMES)",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "LAST 5 SEASONS",
+      20,
+      404,
+      "FS - League Batting Last 5 Seasons - AVG",
+      "League - Last X Seasons Leaders - Batting",
+      "League",
+      "97020",
+      "3004850",
+      2,
+      "LAST 5 SEASONS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "LAST 5-HIT GAME",
+      2,
+      709,
+      "Team - Last 5 Hit Game",
+      "Team - Last Times",
+      "Team",
+      "97013",
+      "T049785",
+      3,
+      "LAST 5-HIT GAME",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "LAST CG NO HITTER",
+      1,
+      711,
+      "Team - Last No-Hitter",
+      "Team - Last Times",
+      "Team",
+      "97013",
+      "T049787",
+      3,
+      "LAST CG NO HITTER",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "LAST CG ONE-HITTER",
+      1,
+      1604,
+      "Team - Last Player with 1-Hitter",
+      "Team - Last Times",
+      "Team",
+      "97013",
+      "T049792",
+      3,
+      "LAST CG ONE-HITTER",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "LAST CYCLE",
+      1,
+      710,
+      "Team - Last Cycle",
+      "Team - Last Times",
+      "Team",
+      "97013",
+      "T049786",
+      3,
+      "LAST CYCLE",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "LAST GAME ALLOWING 10+ RUNS",
+      1,
+      700,
+      "Team - Last Time Allowing 10+ Runs",
+      "Team - Last Times",
+      "Team",
+      "97012",
+      "T049773",
+      3,
+      "LAST GAME ALLOWING 10+ RUNS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "LAST GAME ALLOWING 15+ RUNS",
+      1,
+      701,
+      "Team - Last Time Allowing 15+ Runs",
+      "Team - Last Times",
+      "Team",
+      "97012",
+      "T049774",
+      3,
+      "LAST GAME ALLOWING 15+ RUNS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "LAST GAME ALLOWING 18+ RUNS",
+      1,
+      702,
+      "Team - Last Time Allowing 18+ Runs",
+      "Team - Last Times",
+      "Team",
+      "97012",
+      "T049775",
+      3,
+      "LAST GAME ALLOWING 18+ RUNS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "LAST GAME SCORING 10+ RUNS",
+      1,
+      699,
+      "Team - Last Time Scoring 10+ Runs",
+      "Team - Last Times",
+      "Team",
+      "97012",
+      "T049770",
+      3,
+      "LAST GAME SCORING 10+ RUNS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "LAST GAME SCORING 15+ RUNS",
+      1,
+      846,
+      "Team - Last Time Scoring 15+ Runs",
+      "Team - Last Times",
+      "Team",
+      "97012",
+      "T049771",
+      3,
+      "LAST GAME SCORING 15+ RUNS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "LAST GAME SCORING 18+ RUNS",
+      1,
+      847,
+      "Team - Last Time Scoring 18+ Runs",
+      "Team - Last Times",
+      "Team",
+      "97012",
+      "T049772",
+      3,
+      "LAST GAME SCORING 18+ RUNS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "LAST GAME WITH 20+ HITS",
+      1,
+      703,
+      "Team - Last Time With 20+ Hits",
+      "Team - Last Times",
+      "Team",
+      "97012",
+      "T049776",
+      3,
+      "LAST GAME WITH 20+ HITS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "LAST GRAND SLAM",
+      1,
+      706,
+      "Team - Last Player with a Grand Slam",
+      "Team - Last Times",
+      "Team",
+      "97013",
+      "T049782",
+      3,
+      "LAST GRAND SLAM",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "LAST HOMESTAND ({{TOKEN}} GAMES)",
+      1,
+      108,
+      "Player - Batting Last Homestand",
+      "Players - Batting - This Season",
+      "Player",
+      "97006",
+      "T00PP46",
+      5,
+      "LAST HOMESTAND ({{stats.player.season.homestand(prev1).games_played}} GAMES)",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "LAST HR BY A PITCHER",
+      1,
+      708,
+      "Team - Last Pitcher with a HR",
+      "Team - Last Times",
+      "Team",
+      "97013",
+      "T049784",
+      3,
+      "LAST HR BY A PITCHER",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "LAST PINCH HIT HR",
+      1,
+      707,
+      "Team - Last Player with a Pinch Hit HR",
+      "Team - Last Times",
+      "Team",
+      "97013",
+      "T049783",
+      3,
+      "LAST PINCH HIT HR",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "LAST ROADTRIP ({{TOKEN}} GAMES)",
+      1,
+      109,
+      "Player - Batting Last Roadtrip",
+      "Players - Batting - This Season",
+      "Player",
+      "97006",
+      "T00PP47",
+      5,
+      "LAST ROADTRIP ({{stats.player.season.roadtrip(prev1).games_played}} GAMES)",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "LAST TEAM ONE-HITTER",
+      1,
+      712,
+      "Team - Last Team 1-Hitter",
+      "Team - Last Times",
+      "Team",
+      "97012",
+      "T049788",
+      3,
+      "LAST TEAM ONE-HITTER",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "LAST WALKOFF HR",
+      1,
+      1603,
+      "Team - Last Walkoff HR",
+      "Team - Last Times",
+      "Team",
+      "97013",
+      "T049791",
+      3,
+      "LAST WALKOFF HR",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "LAST: {{TOKEN}} ON {{TOKEN}} vs {{TOKEN}}",
+      1,
+      1656,
+      "Player - Career Walkoff HRs",
+      "Players - Batting - Career",
+      "Player",
+      "97007",
+      "T00PP53",
+      7,
+      "LAST: {{previous.player.minimum(walkoff_home_runs, 1).ab_result}} ON {{previous.player.minimum(walkoff_home_runs, 1).game_date | flex_short}} vs {{previous.player.minimum(walkoff_home_runs, 1).opp_name}}",
+      3,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "LAST: {{TOKEN}} ON {{TOKEN}} {{TOKEN}} {{TOKEN}}",
+      1,
+      26,
+      "Player - Career Batting Walk-Off Hits",
+      "Players - Batting - Career",
+      "Player",
+      "97007",
+      "T00PP54",
+      7,
+      "LAST: {{previous.player.minimum(walkoff_hits, 1).ab_result}} ON {{previous.player.minimum(walkoff_hits, 1).game_date | flex_short}} {{previous.player.minimum(walkoff_hits, 1).game_vs}} {{previous.player.minimum(walkoff_hits, 1).opp_name}}",
+      4,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "LAST: {{TOKEN}} vs {{TOKEN}}",
+      2,
+      815,
+      "Pitcher L3 - XXth Career Shutouts",
+      "Players - Pitching - Career",
+      "Player",
+      "97007",
+      "T03PP60",
+      7,
+      "LAST: {{previous.player.equal(pitcher_shutouts, 1).game_date|flex_long}} vs {{previous.player.equal(pitcher_shutouts, 1).opp_name}}",
+      2,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "LAST: {{TOKEN}} vs {{TOKEN}} ({{TOKEN}} HR)",
+      1,
+      383,
+      "Player - Career Batting Multi-HR Games",
+      "Players - Batting - Career",
+      "Player",
+      "97007",
+      "T00PP52",
+      7,
+      "LAST: {{previous.player.minimum(home_runs, 2).game_date | flex_short}} vs {{previous.player.minimum(home_runs, 2).opp_name}} ({{previous.player.minimum(home_runs, 2).home_runs}} HR)",
+      3,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "LEAD/TRAIL BY LESS THAN 3 RUNS",
+      8,
+      200,
+      "FS - League Batting After 7th Close Game - Highest AVG",
+      "League - Ind Leaders - Batting",
+      "League",
+      "97023",
+      "3006194",
+      3,
+      "LEAD/TRAIL BY LESS THAN 3 RUNS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "LEFT",
+      2,
+      18,
+      "Player - L3 Season Hits By Direction",
+      "Players - Batting - By Direction",
+      "Player",
+      "97000",
+      "T01PP41",
+      6,
+      "LEFT",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "LEFT FIELD ({{TOKEN}} GAMES)",
+      1,
+      96,
+      "Player - Season Fielding LF",
+      "Players - Fielding - This Season",
+      "Player",
+      "97030",
+      "T00PP87",
+      5,
+      "LEFT FIELD ({{stats.player.season.as_pos(lf).games_played}} GAMES)",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "LF",
+      1,
+      47,
+      "Player - Nub LF",
+      "Players - Misc",
+      "Player",
+      "97005",
+      "T01PP87",
+      2,
+      "LF",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "LOWEST IN {{TOKEN}} - LAST 10 DAYS",
+      4,
+      161,
+      "FS - League Batting Last 10 Days - Lowest AVG",
+      "League - Ind Leaders - Batting",
+      "League",
+      "97023",
+      "3006101",
+      2,
+      "LOWEST IN {{info.league.alias}} - LAST 10 DAYS",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "LOWEST IN {{TOKEN}} - {{TOKEN}}",
+      4,
+      165,
+      "FS - League Batting This Month - Lowest AVG",
+      "League - Ind Leaders - Batting",
+      "League",
+      "97023",
+      "3006111",
+      2,
+      "LOWEST IN {{info.league.alias}} - {{info.time.month}}",
+      2,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "LOWEST {{TOKEN}} IN {{TOKEN}}",
+      4,
+      201,
+      "FS - League Batting After 7th Close Game - Lowest AVG",
+      "League - Ind Leaders - Batting",
+      "League",
+      "97023",
+      "3006195",
+      1,
+      "LOWEST {{custom.leaders_avg}} IN {{info.league.alias}}",
+      2,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "MAY",
+      1,
+      59,
+      "Player - Season Batting By Month Full",
+      "Players - Batting - This Season",
+      "Player",
+      "97037",
+      "T01PP53",
+      11,
+      "MAY",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "MINIMUM 1 IP / TEAM GAME",
+      60,
+      839,
+      "FS - Conference Pitching - ERA",
+      "Conference - Ind Pitching Leaders",
+      "Conference",
+      "97023",
+      "300C303",
+      3,
+      "MINIMUM 1 IP / TEAM GAME",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "MINIMUM 1 IP PER TEAM GAME",
+      8,
+      738,
+      "FS - Team Leaders - ERA",
+      "Team - Leaders - Pitching",
+      "Team",
+      "97020",
+      "T049827",
+      3,
+      "MINIMUM 1 IP PER TEAM GAME",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "MINIMUM 1,200 AT BATS",
+      2,
+      404,
+      "FS - League Batting Last 5 Seasons - AVG",
+      "League - Last X Seasons Leaders - Batting",
+      "League",
+      "97020",
+      "3004850",
+      3,
+      "MINIMUM 1,200 AT BATS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "MINIMUM 1,500 K",
+      2,
+      1295,
+      "FS - Active Pitching - K/BB Ratio",
+      "League - Active - Pitching Leaders",
+      "League",
+      "97020",
+      "3004335",
+      3,
+      "MINIMUM 1,500 K",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "MINIMUM 10 DECISIONS",
+      4,
+      838,
+      "FS - Conference Pitching - Win PCT",
+      "Conference - Ind Pitching Leaders",
+      "Conference",
+      "97023",
+      "300C302",
+      3,
+      "MINIMUM 10 DECISIONS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "MINIMUM 10 GAMES STARTED",
+      8,
+      920,
+      "FS - Conference Pitching - Best Run Support",
+      "Conference - Ind Pitching Leaders",
+      "Conference",
+      "97023",
+      "300C350",
+      3,
+      "MINIMUM 10 GAMES STARTED",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "MINIMUM 10 GP AS DH",
+      8,
+      192,
+      "FS - League Batting DH - Highest AVG",
+      "League - Ind Leaders - Batting",
+      "League",
+      "97023",
+      "3006180",
+      3,
+      "MINIMUM 10 GP AS DH",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "MINIMUM 100 AT-BATS",
+      2,
+      290,
+      "FS - League Active Batting - AVG with RISP & 2 OUTS",
+      "League - Active - Batting Leaders",
+      "League",
+      "97020",
+      "3004230",
+      3,
+      "MINIMUM 100 AT-BATS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "MINIMUM 100 DECISIONS",
+      4,
+      1242,
+      "SLAB - All-Time Pitching - Winning Pct",
+      "League - All-Time - Pitching Leaders",
+      "League",
+      "97022",
+      "5005302",
+      3,
+      "MINIMUM 100 DECISIONS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "MINIMUM 100 PH AT-BATS",
+      1,
+      287,
+      "SLAB - League Active Batting - Pinch Hitter AVG",
+      "League - Active - Batting Leaders",
+      "League",
+      "97022",
+      "5004100",
+      3,
+      "MINIMUM 100 PH AT-BATS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "MINIMUM 100 PINCH-HIT AT-BATS",
+      1,
+      286,
+      "FS - League Active Batting - Pinch Hitter AVG",
+      "League - Active - Batting Leaders",
+      "League",
+      "97020",
+      "3004100",
+      3,
+      "MINIMUM 100 PINCH-HIT AT-BATS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "MINIMUM 1000 IP",
+      2,
+      1334,
+      "SLAB - Last 10 Years Pitching - ERA",
+      "League - Last X Seasons Leaders - Pitching",
+      "League",
+      "97022",
+      "5004895",
+      3,
+      "MINIMUM 1000 IP",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "MINIMUM 15 ATTEMPTS",
+      4,
+      159,
+      "FS - League Batting -  Stolen Base PCT",
+      "League - Ind Leaders - Batting",
+      "League",
+      "97023",
+      "3006043",
+      3,
+      "MINIMUM 15 ATTEMPTS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "MINIMUM 15 INHERITED RUNNERS",
+      4,
+      919,
+      "FS - Conference Pitching - IRScored Pct",
+      "Conference - Ind Pitching Leaders",
+      "Conference",
+      "97023",
+      "300C339",
+      3,
+      "MINIMUM 15 INHERITED RUNNERS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "MINIMUM 150 CHANCES",
+      24,
+      962,
+      "FS - Conference Fielding - Lowest Field Pct - 2B",
+      "Conference - Ind Fielding Leaders",
+      "Conference",
+      "97023",
+      "300C641",
+      3,
+      "MINIMUM 150 CHANCES",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "MINIMUM 150 IP",
+      2,
+      1320,
+      "SLAB - Last 2 Years Pitching - ERA",
+      "League - Last X Seasons Leaders - Pitching",
+      "League",
+      "97022",
+      "5004825",
+      3,
+      "MINIMUM 150 IP",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "MINIMUM 18 IP",
+      20,
+      937,
+      "FS - Conference Pitching - Lowest ERA - Relievers",
+      "Conference - Ind Pitching Leaders",
+      "Conference",
+      "97023",
+      "300C430",
+      3,
+      "MINIMUM 18 IP",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "MINIMUM 2,000 IP",
+      4,
+      1243,
+      "SLAB - All-Time Pitching - ERA",
+      "League - All-Time - Pitching Leaders",
+      "League",
+      "97022",
+      "5005303",
+      3,
+      "MINIMUM 2,000 IP",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "MINIMUM 2,000 K",
+      2,
+      1257,
+      "SLAB - All-Time Pitching - K/BB Ratio",
+      "League - All-Time - Pitching Leaders",
+      "League",
+      "97022",
+      "5005335",
+      3,
+      "MINIMUM 2,000 K",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "MINIMUM 2,000 PA",
+      1,
+      285,
+      "SLAB - League Active Batting - Home Run Rate",
+      "League - Active - Batting Leaders",
+      "League",
+      "97022",
+      "5004040",
+      3,
+      "MINIMUM 2,000 PA",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "MINIMUM 2,000 PLATE APPEARANCES",
+      1,
+      284,
+      "FS - League Active Batting - Home Run Rate",
+      "League - Active - Batting Leaders",
+      "League",
+      "97020",
+      "3004040",
+      3,
+      "MINIMUM 2,000 PLATE APPEARANCES",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "MINIMUM 2,200 AT BATS",
+      2,
+      414,
+      "FS - League Batting Last 10 Seasons - AVG",
+      "League - Last X Seasons Leaders - Batting",
+      "League",
+      "97020",
+      "3004900",
+      3,
+      "MINIMUM 2,200 AT BATS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "MINIMUM 200 CHANCES",
+      16,
+      952,
+      "FS - Conference Fielding - Highest Field Pct - OF",
+      "Conference - Ind Fielding Leaders",
+      "Conference",
+      "97023",
+      "300C600",
+      3,
+      "MINIMUM 200 CHANCES",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "MINIMUM 200 IP",
+      2,
+      1324,
+      "SLAB - Last 3 Years Pitching - ERA",
+      "League - Last X Seasons Leaders - Pitching",
+      "League",
+      "97022",
+      "5004835",
+      3,
+      "MINIMUM 200 IP",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "MINIMUM 25 CHANCES",
+      8,
+      958,
+      "FS - Conference Fielding - Highest Field Pct - P",
+      "Conference - Ind Fielding Leaders",
+      "Conference",
+      "97023",
+      "300C610",
+      3,
+      "MINIMUM 25 CHANCES",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "MINIMUM 3,000 PA",
+      3,
+      279,
+      "SLAB - League Active Batting - AVG",
+      "League - Active - Batting Leaders",
+      "League",
+      "97022",
+      "5004000",
+      3,
+      "MINIMUM 3,000 PA",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "MINIMUM 3,000 PLATE APPEARANCES",
+      3,
+      277,
+      "FS - League Active Batting - AVG",
+      "League - Active - Batting Leaders",
+      "League",
+      "97020",
+      "3004000",
+      3,
+      "MINIMUM 3,000 PLATE APPEARANCES",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "MINIMUM 3.1 PA / TEAM GAME",
+      88,
+      127,
+      "FS - League Batting - AVG",
+      "League - Ind Leaders - Batting",
+      "League",
+      "97023",
+      "3006000",
+      3,
+      "MINIMUM 3.1 PA / TEAM GAME",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "MINIMUM 3.1 PA PER TEAM GAME",
+      8,
+      714,
+      "FS - Team Leaders - Batting Average",
+      "Team - Leaders - Batting",
+      "Team",
+      "97020",
+      "T049801",
+      3,
+      "MINIMUM 3.1 PA PER TEAM GAME",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "MINIMUM 400 IP",
+      2,
+      1329,
+      "SLAB - Last 5 Years Pitching - ERA",
+      "League - Last X Seasons Leaders - Pitching",
+      "League",
+      "97022",
+      "5004855",
+      3,
+      "MINIMUM 400 IP",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "MINIMUM 5 PLATE APPEARANCES",
+      8,
+      184,
+      "FS - League Batting Pinch Hitter - Highest AVG",
+      "League - Ind Leaders - Batting",
+      "League",
+      "97023",
+      "3006160",
+      3,
+      "MINIMUM 5 PLATE APPEARANCES",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "MINIMUM 5,000 BATTERS FACED",
+      8,
+      1296,
+      "FS - Active Pitching - Opp Avg",
+      "League - Active - Pitching Leaders",
+      "League",
+      "97020",
+      "3004336",
+      3,
+      "MINIMUM 5,000 BATTERS FACED",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "MINIMUM 5,000 PLATE APP.",
+      3,
+      294,
+      "SLAB - League All-Time Batting - AVG",
+      "League - All-Time - Batting Leaders",
+      "League",
+      "97022",
+      "5005000",
+      3,
+      "MINIMUM 5,000 PLATE APP.",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "MINIMUM 5,000 PLATE APPEARANCES",
+      3,
+      278,
+      "FS - League All-Time Batting - AVG",
+      "League - All-Time - Batting Leaders",
+      "League",
+      "97020",
+      "3005000",
+      3,
+      "MINIMUM 5,000 PLATE APPEARANCES",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "MINIMUM 50 BATTERS FACED",
+      2,
+      756,
+      "FS - Team Leaders - Pitcher Opponent Average",
+      "Team - Leaders - Pitching",
+      "Team",
+      "97020",
+      "T049846",
+      3,
+      "MINIMUM 50 BATTERS FACED",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "MINIMUM 50 IP",
+      8,
+      947,
+      "FS - Conference Pitching - Lowest ERA - Rookie",
+      "Conference - Ind Pitching Leaders",
+      "Conference",
+      "97023",
+      "300C440",
+      3,
+      "MINIMUM 50 IP",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "MINIMUM 500 AT BATS",
+      2,
+      384,
+      "FS - League Batting Last 2 Seasons - AVG",
+      "League - Last X Seasons Leaders - Batting",
+      "League",
+      "97020",
+      "3004820",
+      3,
+      "MINIMUM 500 AT BATS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "MINIMUM 500 AT-BATS",
+      2,
+      288,
+      "FS - League Active Batting - AVG with RISP",
+      "League - Active - Batting Leaders",
+      "League",
+      "97020",
+      "3004220",
+      3,
+      "MINIMUM 500 AT-BATS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "MINIMUM 7 STARTS",
+      2,
+      755,
+      "FS - Team Leaders - Pitcher Run Support",
+      "Team - Leaders - Pitching",
+      "Team",
+      "97020",
+      "T049845",
+      3,
+      "MINIMUM 7 STARTS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "MINIMUM 700 AT BATS",
+      2,
+      394,
+      "FS - League Batting Last 3 Seasons - AVG",
+      "League - Last X Seasons Leaders - Batting",
+      "League",
+      "97020",
+      "3004830",
+      3,
+      "MINIMUM 700 AT BATS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "MLB AVERAGE OPS: {{TOKEN}}",
+      1,
+      20,
+      "Player - Season Batting OBP/SLG/OPS",
+      "Players - Batting - This Season",
+      "Player",
+      "97030",
+      "T00PP48",
+      6,
+      "MLB AVERAGE OPS: {{stats.league(player).season.on_base_plus_slugging}}",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "MLB AVERAGE SB PCT: {{TOKEN}}",
+      1,
+      27,
+      "Player - Season SB/CS/PCT/PICKEDOFF",
+      "Players - Baserunning",
+      "Player",
+      "97030",
+      "T00PP57",
+      6,
+      "MLB AVERAGE SB PCT: {{stats.league(player).season.steals_percentage}}",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "MLB AVERAGE: {{TOKEN}}",
+      1,
+      21,
+      "Player - Season Batting BB/K/RATIO",
+      "Players - Batting - This Season",
+      "Player",
+      "97030",
+      "T00PP49",
+      6,
+      "MLB AVERAGE: {{stats.league(player).season.strikeouts_to_walk_ratio}}",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "MLB AVG",
+      1,
+      29,
+      "Player - Season Batting Pitches/PA",
+      "Players - Batting - This Season",
+      "Player",
+      "97000",
+      "T00PP58",
+      8,
+      "MLB AVG",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "MLB AVG: {{TOKEN}}",
+      12,
+      65,
+      "Player - Season Batting 0-0 Count",
+      "Players - Batting - This Season",
+      "Player",
+      "97030",
+      "T01PP60",
+      6,
+      "MLB AVG: {{stats.league(player).season.count(0-0).batting_average}}",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "MONTH OF {{TOKEN}}",
+      2,
+      79,
+      "Player - Batting This Month Summary",
+      "Players - Batting - This Season",
+      "Player",
+      "97006",
+      "T00PP04",
+      5,
+      "MONTH OF {{info.time.month}}",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "MOST IN {{TOKEN}} - {{TOKEN}}",
+      8,
+      925,
+      "FS - Conference Pitching - Losses - Month",
+      "Conference - Ind Pitching Leaders",
+      "Conference",
+      "97023",
+      "300C403",
+      2,
+      "MOST IN {{info.conference.alias}} - {{info.time.month}}",
+      2,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "NIGHT GAMES ({{TOKEN}})",
+      1,
+      13,
+      "Player - Season Batting Day / Night Games",
+      "Players - Batting - This Season",
+      "Player",
+      "97008",
+      "T01PP23",
+      10,
+      "NIGHT GAMES ({{stats.player.season.game_start(night).games_played}})",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "OF",
+      1,
+      51,
+      "Player - Nub OF",
+      "Players - Misc",
+      "Player",
+      "97005",
+      "T01PP90",
+      2,
+      "OF",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "OFFSPEED",
+      3,
+      112,
+      "Player - Season Batting AVG vs Pitch Type",
+      "Players - Batting - This Season",
+      "Player",
+      "97036",
+      "T01PP04",
+      12,
+      "OFFSPEED",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "ON THE ROAD",
+      1,
+      820,
+      "Pitcher L3 - Home/Road",
+      "Players - Pitching - This Season",
+      "Player",
+      "97008",
+      "T02PP66",
+      10,
+      "ON THE ROAD",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "ON THE ROAD ({{TOKEN}} GAMES)",
+      1,
+      1608,
+      "Player - Season Batting At Home / On Road",
+      "Players - Batting - This Season",
+      "Player",
+      "97008",
+      "T00PP22",
+      10,
+      "ON THE ROAD ({{stats.player.season.location(away).games_played}} GAMES)",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "ON THE ROAD {{TOKEN}}",
+      2,
+      10,
+      "Player - Season Batting On Road",
+      "Players - Batting - This Season",
+      "Player",
+      "97000",
+      "T00PP21",
+      5,
+      "ON THE ROAD {{info.time.season}}",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "OPP. AVG",
+      13,
+      1849,
+      "Pitcher L3 - Usage, AVG, SLG, Whiff (Changeup)",
+      "Players - Pitching - This Season By Pitch Type",
+      "Player",
+      "97100",
+      "T04PP01",
+      8,
+      "OPP. AVG",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "OPP. AVG {{TOKEN}} THRU LINEUP",
+      1,
+      796,
+      "Pitcher L3 - Thru Lineup",
+      "Players - Pitching - This Season",
+      "Player",
+      "97100",
+      "T02PP81",
+      5,
+      "OPP. AVG {{info.time.season}} THRU LINEUP",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "OPP. RUNNERS {{TOKEN}}",
+      1,
+      804,
+      "Pitcher Slab - Baserunners",
+      "Players - Pitching - This Season",
+      "Player",
+      "97034",
+      "T03PP48",
+      5,
+      "OPP. RUNNERS {{info.time.season}}",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "OPP. SLG",
+      13,
+      1849,
+      "Pitcher L3 - Usage, AVG, SLG, Whiff (Changeup)",
+      "Players - Pitching - This Season By Pitch Type",
+      "Player",
+      "97100",
+      "T04PP01",
+      10,
+      "OPP. SLG",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "OPPOSING BASE STEALERS",
+      1,
+      101,
+      "Player - Season Fielding C",
+      "Players - Fielding - This Season",
+      "Player",
+      "97000",
+      "T00PP92",
+      5,
+      "OPPOSING BASE STEALERS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "OPPOSING RUNNERS {{TOKEN}}",
+      1,
+      790,
+      "Pitcher L3 - Baserunners",
+      "Players - Pitching - This Season",
+      "Player",
+      "97007",
+      "T02PP71",
+      5,
+      "OPPOSING RUNNERS {{info.time.season}}",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "OTHER TEAMS: {{TOKEN}}",
+      1,
+      683,
+      "Manager - Career and Different Teams",
+      "Team - Managers",
+      "Team",
+      "97013",
+      "T049700",
+      5,
+      "OTHER TEAMS: {{info.coach.other_team_name_list}}",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "OUTFIELD ({{TOKEN}} GAMES)",
+      1,
+      111,
+      "Player - Season Fielding OF",
+      "Players - Fielding - This Season",
+      "Player",
+      "97030",
+      "T00PP90",
+      5,
+      "OUTFIELD ({{stats.player.season.as_pos(lf, cf, rf).games_played}} GAMES)",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "P",
+      1,
+      50,
+      "Player - Nub P",
+      "Players - Misc",
+      "Player",
+      "97005",
+      "T01PP91",
+      2,
+      "P",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "PCT",
+      1,
+      107,
+      "Player - Season Batting First Pitch",
+      "Players - Batting - This Season",
+      "Player",
+      "97030",
+      "T00PP45",
+      11,
+      "PCT",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "PCT OF PITCHES FACED BY TYPE",
+      1,
+      114,
+      "Player - Season Batting PCT Pitch Type Faced",
+      "Players - Batting - This Season",
+      "Player",
+      "97036",
+      "T01PP06",
+      5,
+      "PCT OF PITCHES FACED BY TYPE",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "PINCH HITTING {{TOKEN}}",
+      1,
+      81,
+      "Player - Season Batting as Pinch Hitter",
+      "Players - Batting - This Season",
+      "Player",
+      "97006",
+      "T00PP15",
+      5,
+      "PINCH HITTING {{info.time.season}}",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "PITCHER ({{TOKEN}} GAMES)",
+      1,
+      98,
+      "Player - Season Fielding P",
+      "Players - Fielding - This Season",
+      "Player",
+      "97030",
+      "T00PP91",
+      5,
+      "PITCHER ({{stats.player.season.as_pos(p).games_played}} GAMES)",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "PITCHES",
+      2,
+      29,
+      "Player - Season Batting Pitches/PA",
+      "Players - Batting - This Season",
+      "Player",
+      "97000",
+      "T00PP58",
+      6,
+      "PITCHES",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "PITCHES 1-75",
+      2,
+      795,
+      "Pitcher L3 - Fatigue",
+      "Players - Pitching - This Season",
+      "Player",
+      "97008",
+      "T02PP80",
+      6,
+      "PITCHES 1-75",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "PITCHES 76+",
+      2,
+      795,
+      "Pitcher L3 - Fatigue",
+      "Players - Pitching - This Season",
+      "Player",
+      "97008",
+      "T02PP80",
+      10,
+      "PITCHES 76+",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "PITCHES/PA - {{TOKEN}}",
+      1,
+      29,
+      "Player - Season Batting Pitches/PA",
+      "Players - Batting - This Season",
+      "Player",
+      "97000",
+      "T00PP58",
+      5,
+      "PITCHES/PA - {{info.time.season}}",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "POSTSEASON CAREER",
+      2,
+      834,
+      "Pitcher L3 - GS, W-L, ERA, IP, BB-K, OPP AVG (Postseason)",
+      "Players - Pitching - Career",
+      "Player",
+      "97000",
+      "T03PP84",
+      5,
+      "POSTSEASON CAREER",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "POSTSEASON CAREER ({{TOKEN}} GAMES)",
+      1,
+      58,
+      "Player - Career Postseason Batting AVG/HR/RBI",
+      "Players - Batting - Career",
+      "Player",
+      "97000",
+      "T01PP34",
+      5,
+      "POSTSEASON CAREER ({{stats.player.career(post).games_played}} GAMES)",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "R",
+      3,
+      779,
+      "Pitcher L3 - Last Outing - IP, H, R, ER, BB, K, PITCHES",
+      "Players - Pitching - Previous Outings",
+      "Player",
+      "97030",
+      "T02PP57",
+      11,
+      "R",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "R/ER",
+      1,
+      778,
+      "Pitcher L3 - Last Outing - IP, H, R/ER, BB, K, PITCHES",
+      "Players - Pitching - Previous Outings",
+      "Player",
+      "97000",
+      "T02PP56",
+      10,
+      "R/ER",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "RATIO",
+      4,
+      792,
+      "Pitcher L3 - K/BB Ratio",
+      "Players - Pitching - This Season",
+      "Player",
+      "97000",
+      "T02PP76",
+      10,
+      "RATIO",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "RECORD IN 1-RUN GAMES",
+      8,
+      1401,
+      "SLAB - Conference Team Best Record - 1-Run Games",
+      "Conference - Team Leaders - Record",
+      "Conference",
+      "97026",
+      "500C890",
+      1,
+      "RECORD IN 1-RUN GAMES",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "RECORD WHEN LEADING AFTER 6 INNINGS",
+      4,
+      1420,
+      "FS - Conference Team Worst Record - Leading After 6",
+      "Conference - Team Trailers - Record",
+      "Conference",
+      "97025",
+      "300C991",
+      1,
+      "RECORD WHEN LEADING AFTER 6 INNINGS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "RECORD WHEN LEADING AFTER 7 INNINGS",
+      4,
+      1421,
+      "FS - Conference Team Worst Record - Leading After 7",
+      "Conference - Team Trailers - Record",
+      "Conference",
+      "97025",
+      "300C992",
+      1,
+      "RECORD WHEN LEADING AFTER 7 INNINGS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "RECORD WHEN LEADING AFTER 8 INNINGS",
+      4,
+      1422,
+      "FS - Conference Team Worst Record - Leading After 8",
+      "Conference - Team Trailers - Record",
+      "Conference",
+      "97025",
+      "300C993",
+      1,
+      "RECORD WHEN LEADING AFTER 8 INNINGS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "RECORD WHEN TRAILING AFTER 6 INNINGS",
+      4,
+      1423,
+      "FS - Conference Team Worst Record - Trailing After 6",
+      "Conference - Team Trailers - Record",
+      "Conference",
+      "97025",
+      "300C994",
+      1,
+      "RECORD WHEN TRAILING AFTER 6 INNINGS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "RECORD WHEN TRAILING AFTER 7 INNINGS",
+      4,
+      1424,
+      "FS - Conference Team Worst Record - Trailing After 7",
+      "Conference - Team Trailers - Record",
+      "Conference",
+      "97025",
+      "300C995",
+      1,
+      "RECORD WHEN TRAILING AFTER 7 INNINGS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "RECORD WHEN TRAILING AFTER 8 INNINGS",
+      4,
+      1425,
+      "FS - Conference Team Worst Record - Trailing After 8",
+      "Conference - Team Trailers - Record",
+      "Conference",
+      "97025",
+      "300C996",
+      1,
+      "RECORD WHEN TRAILING AFTER 8 INNINGS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "RECORD: {{TOKEN}} ({{TOKEN}})",
+      4,
+      685,
+      "Manager - Career vs Oppoenent",
+      "Team - Managers",
+      "Team",
+      "97012",
+      "T049702",
+      4,
+      "RECORD: {{stats.coach.career.vs.team_record}} ({{stats.coach.career.vs.team_win_percentage}})",
+      2,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "REG. + POSTSEASON",
+      2,
+      1830,
+      "L3 - Career Batter vs Pitcher (Including Postseason)",
+      "Players - Batter vs Pitcher",
+      "BatterVsPitcher",
+      "97106",
+      "T70BBPP",
+      7,
+      "REG. + POSTSEASON",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "RELIEF APPEARANCES",
+      4,
+      946,
+      "FS - Conference Pitching - Appearances - Relievers",
+      "Conference - Ind Pitching Leaders",
+      "Conference",
+      "97023",
+      "300C439",
+      1,
+      "RELIEF APPEARANCES",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "RELIEF LOSSES",
+      8,
+      1377,
+      "SLAB - Conference Leaders - Team Pitching - Relievers Losses",
+      "Conference - Team Leaders - Pitching",
+      "Conference",
+      "97026",
+      "500C881",
+      1,
+      "RELIEF LOSSES",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "RELIEF WINS",
+      8,
+      1376,
+      "SLAB - Conference Leaders - Team Pitching - Relievers Wins",
+      "Conference - Team Leaders - Pitching",
+      "Conference",
+      "97026",
+      "500C880",
+      1,
+      "RELIEF WINS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "RELIEF {{TOKEN}}",
+      4,
+      1400,
+      "SLAB - Conference Trailers - Team Pitching - Relievers HR",
+      "Conference - Team Trailers - Pitching",
+      "Conference",
+      "97026",
+      "500C986",
+      1,
+      "RELIEF {{custom.leaders_phr}}",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "RELIEF {{TOKEN}} IN RELIEF",
+      1,
+      1478,
+      "FS - Conference Leaders - Team Pitching - Relievers HR",
+      "Conference - Team Leaders - Pitching",
+      "Conference",
+      "97025",
+      "300C886",
+      1,
+      "RELIEF {{custom.leaders_phr}} IN RELIEF",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "RF",
+      1,
+      49,
+      "Player - Nub RF",
+      "Players - Misc",
+      "Player",
+      "97005",
+      "T01PP89",
+      2,
+      "RF",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "RIGHT",
+      2,
+      18,
+      "Player - L3 Season Hits By Direction",
+      "Players - Batting - By Direction",
+      "Player",
+      "97000",
+      "T01PP41",
+      10,
+      "RIGHT",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "RIGHT FIELD ({{TOKEN}} GAMES)",
+      1,
+      99,
+      "Player - Season Fielding RF",
+      "Players - Fielding - This Season",
+      "Player",
+      "97030",
+      "T00PP89",
+      5,
+      "RIGHT FIELD ({{stats.player.season.as_pos(rf).games_played}} GAMES)",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "ROAD GAMES",
+      1,
+      821,
+      "Pitcher L3 - Home/Road ",
+      "Players - Pitching - Career",
+      "Player",
+      "97008",
+      "T03PP66",
+      10,
+      "ROAD GAMES",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "ROAD GAMES ({{TOKEN}} AB)",
+      1,
+      57,
+      "Player - Career Batting At Home / On Road",
+      "Players - Batting - Career",
+      "Player",
+      "97008",
+      "T01PP22",
+      10,
+      "ROAD GAMES ({{stats.player.location(away).at_bats}} AB)",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "ROAD {{TOKEN}}",
+      8,
+      934,
+      "FS - Conference Pitching - Wins - Road Games",
+      "Conference - Ind Pitching Leaders",
+      "Conference",
+      "97023",
+      "300C422",
+      1,
+      "ROAD {{custom.leaders_pwins}}",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "RUN SUPPORT",
+      8,
+      920,
+      "FS - Conference Pitching - Best Run Support",
+      "Conference - Ind Pitching Leaders",
+      "Conference",
+      "97023",
+      "300C350",
+      1,
+      "RUN SUPPORT",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "RUNNERS ON",
+      1,
+      824,
+      "Pitcher L3 - Runners On/Bases Empty",
+      "Players - Pitching - Career",
+      "Player",
+      "97008",
+      "T03PP70",
+      6,
+      "RUNNERS ON",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "RUNNERS ON ({{TOKEN}} AB)",
+      2,
+      43,
+      "Player - Season Batting Runners On/Bases Empty",
+      "Players - Batting - This Season",
+      "Player",
+      "97008",
+      "T00PP26",
+      6,
+      "RUNNERS ON ({{stats.player.season.runners_on(yes).at_bats}} AB)",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "SB/ATT",
+      1,
+      54,
+      "Player - Season Batting AVG/OBP/RUNS/SB-CS",
+      "Players - Batting - This Season",
+      "Player",
+      "97000",
+      "T00PP51",
+      12,
+      "SB/ATT",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "SCREWBALL - {{TOKEN}}",
+      1,
+      1859,
+      "Pitcher L3 - Usage, AVG, SLG, Whiff (Screwball)",
+      "Players - Pitching - This Season By Pitch Type",
+      "Player",
+      "97100",
+      "T04PP10",
+      5,
+      "SCREWBALL - {{info.time.season}}",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "SEASON vs {{TOKEN}} ({{TOKEN}} GAMES)",
+      1,
+      1631,
+      "Pitcher L3 - S, W-L, ERA, SV (vs Opp)",
+      "Players - Pitching - This Season",
+      "Player",
+      "97000",
+      "T02PP55",
+      5,
+      "SEASON vs {{info.team(opp).name}} ({{stats.player.season.vs.games_pitched}} GAMES)",
+      2,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "SEASON vs {{TOKEN}} ({{TOKEN}} STARTS)",
+      1,
+      775,
+      "Pitcher L3 - S, W-L, ERA (vs Opp)",
+      "Players - Pitching - This Season",
+      "Player",
+      "97000",
+      "T02PP54",
+      5,
+      "SEASON vs {{info.team(opp).name}} ({{stats.player.season.vs.games_started}} STARTS)",
+      2,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "SECOND BASE ({{TOKEN}} GAMES)",
+      1,
+      93,
+      "Player - Season Fielding 2B",
+      "Players - Fielding - This Season",
+      "Player",
+      "97030",
+      "T00PP84",
+      5,
+      "SECOND BASE ({{stats.player.season.as_pos(2b).games_played}} GAMES)",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "SEPT",
+      1,
+      59,
+      "Player - Season Batting By Month Full",
+      "Players - Batting - This Season",
+      "Player",
+      "97037",
+      "T01PP53",
+      31,
+      "SEPT",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "SHORTSTOP ({{TOKEN}} GAMES)",
+      1,
+      95,
+      "Player - Season Fielding SS",
+      "Players - Fielding - This Season",
+      "Player",
+      "97030",
+      "T00PP86",
+      5,
+      "SHORTSTOP ({{stats.player.season.as_pos(ss).games_played}} GAMES)",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "SINCE 1909",
+      2,
+      1255,
+      "SLAB - All-Time Pitching - Hit Batters",
+      "League - All-Time - Pitching Leaders",
+      "League",
+      "97022",
+      "5005325",
+      3,
+      "SINCE 1909",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "SINCE 1916 - MINIMUM 5,000 BATTERS FACED",
+      2,
+      1258,
+      "SLAB - All-Time Pitching - Opp Avg",
+      "League - All-Time - Pitching Leaders",
+      "League",
+      "97022",
+      "5005336",
+      3,
+      "SINCE 1916 - MINIMUM 5,000 BATTERS FACED",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "SINCE 1921",
+      2,
+      1256,
+      "SLAB - All-Time Pitching - IBB",
+      "League - All-Time - Pitching Leaders",
+      "League",
+      "97022",
+      "5005326",
+      3,
+      "SINCE 1921",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "SINCE 1940",
+      2,
+      371,
+      "FS - League All-Time Batting - Grounded Into DP",
+      "League - All-Time - Batting Leaders",
+      "League",
+      "97020",
+      "3005017",
+      3,
+      "SINCE 1940",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "SINCE 1955",
+      2,
+      367,
+      "FS - League All-Time Batting - Intentional Walks",
+      "League - All-Time - Batting Leaders",
+      "League",
+      "97020",
+      "3005015",
+      3,
+      "SINCE 1955",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "SINCE 2009",
+      2,
+      309,
+      "FS - League Active Batting - Infield Hits",
+      "League - Active - Batting Leaders",
+      "League",
+      "97020",
+      "3004009",
+      3,
+      "SINCE 2009",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "SLIDER - {{TOKEN}}",
+      1,
+      1852,
+      "Pitcher L3 - Usage, AVG, SLG, Whiff (Slider)",
+      "Players - Pitching - This Season By Pitch Type",
+      "Player",
+      "97100",
+      "T04PP03",
+      5,
+      "SLIDER - {{info.time.season}}",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "SLURVE - {{TOKEN}}",
+      1,
+      1853,
+      "Pitcher L3 - Usage, AVG, SLG, Whiff (Slurve)",
+      "Players - Pitching - This Season By Pitch Type",
+      "Player",
+      "97100",
+      "T04PP04",
+      5,
+      "SLURVE - {{info.time.season}}",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "SPLITTER - {{TOKEN}}",
+      1,
+      1858,
+      "Pitcher L3 - Usage, AVG, SLG, Whiff (Splitter)",
+      "Players - Pitching - This Season By Pitch Type",
+      "Player",
+      "97100",
+      "T04PP09",
+      5,
+      "SPLITTER - {{info.time.season}}",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "SS",
+      1,
+      46,
+      "Player - Nub SS",
+      "Players - Misc",
+      "Player",
+      "97005",
+      "T01PP86",
+      2,
+      "SS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "SWEEPER - {{TOKEN}}",
+      1,
+      1855,
+      "Pitcher L3 - Usage, AVG, SLG, Whiff (Sweeper)",
+      "Players - Pitching - This Season By Pitch Type",
+      "Player",
+      "97100",
+      "T04PP06",
+      5,
+      "SWEEPER - {{info.time.season}}",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "SWINGING AT FIRST PITCH - {{TOKEN}}",
+      1,
+      107,
+      "Player - Season Batting First Pitch",
+      "Players - Batting - This Season",
+      "Player",
+      "97030",
+      "T00PP45",
+      5,
+      "SWINGING AT FIRST PITCH - {{info.time.season}}",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "THIRD BASE ({{TOKEN}} GAMES)",
+      1,
+      94,
+      "Player - Season Fielding 3B",
+      "Players - Fielding - This Season",
+      "Player",
+      "97030",
+      "T00PP85",
+      5,
+      "THIRD BASE ({{stats.player.season.as_pos(3b).games_played}} GAMES)",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "THIS MONTH",
+      8,
+      466,
+      "FS - Conference Leaders - Team Batting - AVG This Month",
+      "Conference - Team Leaders - Batting",
+      "Conference",
+      "97025",
+      "300C821",
+      2,
+      "THIS MONTH",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "THIS POSTSEASON",
+      1,
+      61,
+      "Player - This Postseason Batting AVG/HR/RBI",
+      "Players - Batting - This Season",
+      "Player",
+      "97030",
+      "T01PP37",
+      5,
+      "THIS POSTSEASON",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "THIS SEASON OVERALL",
+      1,
+      34,
+      "Player - Season Batting AVG/HR/RBI (After Trade)",
+      "Players - Batting - This Season",
+      "Player",
+      "97030",
+      "T00PP70",
+      5,
+      "THIS SEASON OVERALL",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "THIS SERIES",
+      1,
+      115,
+      "Player - Batting This Series",
+      "Players - Batting - This Season",
+      "Player",
+      "97006",
+      "T01PP07",
+      5,
+      "THIS SERIES",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "THIS SERIES: {{TOKEN}}",
+      2,
+      88,
+      "Player - Season Batting + Series AVG/HR/RBI ",
+      "Players - Batting - This Season",
+      "Player",
+      "97030",
+      "T00PP02",
+      6,
+      "THIS SERIES: {{stats.player.season.series.batting_summary_abb}}",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "THROUGH {{TOKEN}}",
+      1,
+      89,
+      "Player - Batting Last Season / This Season Thru Date",
+      "Players - Batting - This Season",
+      "Player",
+      "97008",
+      "T00PP07",
+      5,
+      "THROUGH {{info.time.date | short_noyear}}",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "USAGE",
+      13,
+      1849,
+      "Pitcher L3 - Usage, AVG, SLG, Whiff (Changeup)",
+      "Players - Pitching - This Season By Pitch Type",
+      "Player",
+      "97100",
+      "T04PP01",
+      6,
+      "USAGE",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "WALKOFF LOSSES",
+      4,
+      1417,
+      "SLAB - Conference Team - Walkoff Losses",
+      "Conference - Team Trailers - Record",
+      "Conference",
+      "97026",
+      "500C997",
+      1,
+      "WALKOFF LOSSES",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "WALKOFF WINS",
+      4,
+      1408,
+      "SLAB - Conference Team Best Record - Walkoff Wins",
+      "Conference - Team Leaders - Record",
+      "Conference",
+      "97026",
+      "500C897",
+      1,
+      "WALKOFF WINS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "WHEN LEADING AFTER 6 INNINGS",
+      4,
+      1402,
+      "SLAB - Conference Team Best Record - Leading After 6",
+      "Conference - Team Leaders - Record",
+      "Conference",
+      "97026",
+      "500C891",
+      1,
+      "WHEN LEADING AFTER 6 INNINGS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "WHEN LEADING AFTER 6th INNING",
+      1,
+      689,
+      "Team - Record When Leading After 6 Innings",
+      "Team - Record When",
+      "Team",
+      "97012",
+      "T049750",
+      3,
+      "WHEN LEADING AFTER 6th INNING",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "WHEN LEADING AFTER 7 INNINGS",
+      4,
+      1403,
+      "SLAB - Conference Team Best Record - Leading After 7",
+      "Conference - Team Leaders - Record",
+      "Conference",
+      "97026",
+      "500C892",
+      1,
+      "WHEN LEADING AFTER 7 INNINGS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "WHEN LEADING AFTER 7th INNING",
+      1,
+      691,
+      "Team - Record When Leading After 7 Innings",
+      "Team - Record When",
+      "Team",
+      "97012",
+      "T049752",
+      3,
+      "WHEN LEADING AFTER 7th INNING",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "WHEN LEADING AFTER 8 INNINGS",
+      4,
+      1404,
+      "SLAB - Conference Team Best Record - Leading After 8",
+      "Conference - Team Leaders - Record",
+      "Conference",
+      "97026",
+      "500C893",
+      1,
+      "WHEN LEADING AFTER 8 INNINGS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "WHEN LEADING AFTER 8th INNING",
+      1,
+      693,
+      "Team - Record When Leading After 8 Innings",
+      "Team - Record When",
+      "Team",
+      "97012",
+      "T049754",
+      3,
+      "WHEN LEADING AFTER 8th INNING",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "WHEN TRAILING AFTER 6 INNINGS",
+      4,
+      1405,
+      "SLAB - Conference Team Best Record - Trailing After 6",
+      "Conference - Team Leaders - Record",
+      "Conference",
+      "97026",
+      "500C894",
+      1,
+      "WHEN TRAILING AFTER 6 INNINGS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "WHEN TRAILING AFTER 6th INNING",
+      1,
+      690,
+      "Team - Record When Trailing After 6 Innings",
+      "Team - Record When",
+      "Team",
+      "97012",
+      "T049751",
+      3,
+      "WHEN TRAILING AFTER 6th INNING",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "WHEN TRAILING AFTER 7 INNINGS",
+      4,
+      1406,
+      "SLAB - Conference Team Best Record - Trailing After 7",
+      "Conference - Team Leaders - Record",
+      "Conference",
+      "97026",
+      "500C895",
+      1,
+      "WHEN TRAILING AFTER 7 INNINGS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "WHEN TRAILING AFTER 7th INNING",
+      1,
+      692,
+      "Team - Record When Trailing After 7 Innings",
+      "Team - Record When",
+      "Team",
+      "97012",
+      "T049753",
+      3,
+      "WHEN TRAILING AFTER 7th INNING",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "WHEN TRAILING AFTER 8 INNINGS",
+      4,
+      1407,
+      "SLAB - Conference Team Best Record - Trailing After 8",
+      "Conference - Team Leaders - Record",
+      "Conference",
+      "97026",
+      "500C896",
+      1,
+      "WHEN TRAILING AFTER 8 INNINGS",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "WHEN TRAILING AFTER 8th INNING",
+      1,
+      694,
+      "Team - Record When Trailing After 8 Innings",
+      "Team - Record When",
+      "Team",
+      "97012",
+      "T049755",
+      3,
+      "WHEN TRAILING AFTER 8th INNING",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "WHIFF",
+      13,
+      1849,
+      "Pitcher L3 - Usage, AVG, SLG, Whiff (Changeup)",
+      "Players - Pitching - This Season By Pitch Type",
+      "Player",
+      "97100",
+      "T04PP01",
+      12,
+      "WHIFF",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "WITH {{TOKEN}}: {{TOKEN}} {{TOKEN}}, {{TOKEN}}, {{TOKEN}} ERA",
+      1,
+      1630,
+      "Player - Reliever GP/W-L/ERA (After Trade)",
+      "Players - Pitching - This Season",
+      "Player",
+      "97030",
+      "T02PP88",
+      6,
+      "WITH {{info.team.name}}: {{stats.player.season.on_team.games_pitched}} {{custom.header_gpitch}}, {{stats.player.season.on_team.pitcher_record}}, {{stats.player.season.on_team.pitcher_era}} ERA",
+      5,
+      "custom_header_placeholder",
+      [
+        "custom_header_placeholder"
+      ]
+    ],
+    [
+      "WITH {{TOKEN}}: {{TOKEN}} {{TOKEN}}, {{TOKEN}}, {{TOKEN}} {{TOKEN}}",
+      1,
+      1629,
+      "Player - Starter GS/W-L/ERA (After Trade)",
+      "Players - Pitching - This Season",
+      "Player",
+      "97030",
+      "T02PP87",
+      6,
+      "WITH {{info.team.name}}: {{stats.player.season.on_team.games_started}} {{custom.header_gstart}}, {{stats.player.season.on_team.pitcher_record}}, {{stats.player.season.on_team.pitcher_era}} {{custom.header_era}}",
+      6,
+      "custom_header_placeholder",
+      [
+        "custom_header_placeholder"
+      ]
+    ],
+    [
+      "WITH {{TOKEN}}: {{TOKEN}}, {{TOKEN}} {{TOKEN}}, {{TOKEN}} {{TOKEN}}",
+      1,
+      34,
+      "Player - Season Batting AVG/HR/RBI (After Trade)",
+      "Players - Batting - This Season",
+      "Player",
+      "97030",
+      "T00PP70",
+      6,
+      "WITH {{info.team.name}}: {{stats.player.season.on_team.batting_average}}, {{stats.player.season.on_team.home_runs}} {{custom.header_hr}}, {{stats.player.season.on_team.rbis}} {{custom.header_rbi}}",
+      6,
+      "custom_header_placeholder",
+      [
+        "custom_header_placeholder"
+      ]
+    ],
+    [
+      "WT",
+      1,
+      60,
+      "Player - Bio Basic",
+      "Players - Bio",
+      "Player",
+      "97030",
+      "T00PP83",
+      9,
+      "WT",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "[REGULAR SEASON: {{TOKEN}}, {{TOKEN}} {{TOKEN}}, {{TOKEN}} {{TOKEN}}",
+      1,
+      61,
+      "Player - This Postseason Batting AVG/HR/RBI",
+      "Players - Batting - This Season",
+      "Player",
+      "97030",
+      "T01PP37",
+      6,
+      "[REGULAR SEASON: {{stats.player.season.batting_average}}, {{stats.player.season.home_runs}} {{custom.header_hr}}, {{stats.player.season.rbis}} {{custom.header_rbi}}",
+      5,
+      "custom_header_placeholder",
+      [
+        "custom_header_placeholder"
+      ]
+    ],
+    [
+      "[{{TOKEN}}] FOR [{{TOKEN}}] OVER LAST [{{TOKEN}}] GAMES",
+      1,
+      682,
+      "Player - Season Batting Hitless Streak",
+      "Players - Batting - This Season",
+      "Player",
+      "97007",
+      "T10PP06",
+      6,
+      "[{{streak(hits, <1).player.season.equal(games_played, 1).hits}}] FOR [{{streak(hits, <1).player.season.equal(games_played, 1).at_bats}}] OVER LAST [{{streak(hits, <1).player.season.equal(games_played, 1).games_played}}] GAMES",
+      3,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "vs LEFTIES",
+      1,
+      822,
+      "Pitcher L3 - vs LHB/RHB",
+      "Players - Pitching - Career",
+      "Player",
+      "97008",
+      "T03PP67",
+      6,
+      "vs LEFTIES",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "vs LHP ({{TOKEN}} AB)",
+      2,
+      1817,
+      "Batter - Season vs LHP/RHP",
+      "Players - TEMP PAGES",
+      "Player",
+      "97008",
+      "T00PP25",
+      6,
+      "vs LHP ({{stats.player.season.vsLHP.at_bats}} AB)",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "vs Lefties ({{TOKEN}} AB)",
+      1,
+      786,
+      "Pitcher L3 - vs LHB/RHB",
+      "Players - Pitching - This Season",
+      "Player",
+      "97008",
+      "T02PP67",
+      6,
+      "vs Lefties ({{stats.player.season.vsLHB.pitcher_at_bats_against}} AB)",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "vs RHP ({{TOKEN}} AB)",
+      2,
+      1817,
+      "Batter - Season vs LHP/RHP",
+      "Players - TEMP PAGES",
+      "Player",
+      "97008",
+      "T00PP25",
+      10,
+      "vs RHP ({{stats.player.season.vsRHP.at_bats}} AB)",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "vs RIGHTIES",
+      1,
+      822,
+      "Pitcher L3 - vs LHB/RHB",
+      "Players - Pitching - Career",
+      "Player",
+      "97008",
+      "T03PP67",
+      10,
+      "vs RIGHTIES",
+      0,
+      "literal_text_only",
+      [
+        "literal_text_only"
+      ]
+    ],
+    [
+      "vs Righties ({{TOKEN}} AB)",
+      1,
+      786,
+      "Pitcher L3 - vs LHB/RHB",
+      "Players - Pitching - This Season",
+      "Player",
+      "97008",
+      "T02PP67",
+      10,
+      "vs Righties ({{stats.player.season.vsRHB.pitcher_at_bats_against}} AB)",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "vs {{TOKEN}} - REG. + POSTSEASON",
+      1,
+      1831,
+      "CG_TickerPlayerStats - Career Batter vs Pitcher (Including Postseason)",
+      "Players - Batter vs Pitcher",
+      "BatterVsPitcher",
+      "97105",
+      "T71BBPP",
+      5,
+      "vs {{info.pitcher.full_name}} - REG. + POSTSEASON",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}}",
+      30932,
+      0,
+      "Player - Season Batting AVG/HR/RBI",
+      "Players - Batting - This Season",
+      "Player",
+      "97000",
+      "T00PP00",
+      0,
+      "{{info.team.alias}}",
+      1,
+      "custom_header_placeholder",
+      [
+        "custom_header_placeholder",
+        "single_token"
+      ]
+    ],
+    [
+      "{{TOKEN}} ({{TOKEN}} AB)",
+      2,
+      7,
+      "Player - Batting This Month / Last Month",
+      "Players - Batting - This Season",
+      "Player",
+      "97008",
+      "T00PP17",
+      6,
+      "{{info.time.month}} ({{stats.player.season.month.at_bats}} AB)",
+      2,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} ({{TOKEN}} GAMES)",
+      23,
+      0,
+      "Player - Season Batting AVG/HR/RBI",
+      "Players - Batting - This Season",
+      "Player",
+      "97000",
+      "T00PP00",
+      5,
+      "{{info.time.season}} ({{stats.player.season.games_played}} GAMES)",
+      2,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} ({{TOKEN}})",
+      2,
+      683,
+      "Manager - Career and Different Teams",
+      "Team - Managers",
+      "Team",
+      "97013",
+      "T049700",
+      4,
+      "{{stats.coach.career.team_record}} ({{stats.coach.career. team_win_percentage}})",
+      2,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} AMONG RELIEVERS",
+      36,
+      937,
+      "FS - Conference Pitching - Lowest ERA - Relievers",
+      "Conference - Ind Pitching Leaders",
+      "Conference",
+      "97023",
+      "300C430",
+      1,
+      "{{custom.leaders_era}} AMONG RELIEVERS",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} AMONG ROOKIES",
+      36,
+      188,
+      "FS - League Batting Rookies - Highest AVG",
+      "League - Ind Leaders - Batting",
+      "League",
+      "97023",
+      "3006170",
+      1,
+      "{{custom.leaders_avg}} AMONG ROOKIES",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} AS DH",
+      16,
+      192,
+      "FS - League Batting DH - Highest AVG",
+      "League - Ind Leaders - Batting",
+      "League",
+      "97023",
+      "3006180",
+      1,
+      "{{custom.leaders_avg}} AS DH",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} AS PINCH HITTER",
+      32,
+      184,
+      "FS - League Batting Pinch Hitter - Highest AVG",
+      "League - Ind Leaders - Batting",
+      "League",
+      "97023",
+      "3006160",
+      1,
+      "{{custom.leaders_avg}} AS PINCH HITTER",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} AT HOME",
+      36,
+      176,
+      "FS - League Batting Home Games - Highest AVG",
+      "League - Ind Leaders - Batting",
+      "League",
+      "97023",
+      "3006140",
+      1,
+      "{{custom.leaders_avg}} AT HOME",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} AT {{TOKEN}}",
+      1,
+      78,
+      "Player - Season Batting at Today's Ballpark",
+      "Players - Batting - This Season",
+      "Player",
+      "97006",
+      "T00PP10",
+      5,
+      "{{info.time.season}} AT {{info.home.venue_name}}",
+      2,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} AVG",
+      3,
+      112,
+      "Player - Season Batting AVG vs Pitch Type",
+      "Players - Batting - This Season",
+      "Player",
+      "97036",
+      "T01PP04",
+      15,
+      "{{info.league.alias}} AVG",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} AVG, {{TOKEN}} GRAND SLAMS",
+      1,
+      87,
+      "Player - Career Batting Bases Loaded",
+      "Players - Batting - Career",
+      "Player",
+      "97007",
+      "T00PP29",
+      6,
+      "{{stats.player.runners(loaded).batting_average}} AVG, {{stats.player.runners(loaded).home_runs}} GRAND SLAMS",
+      2,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} AVG, {{TOKEN}} HR, {{TOKEN}} RBI",
+      2,
+      106,
+      "Player - Season Batting Full Count",
+      "Players - Batting - This Season",
+      "Player",
+      "97030",
+      "T00PP44",
+      6,
+      "{{stats.player.season.count(3-2).batting_average}} AVG,  {{stats.player.season.count(3-2).home_runs}} HR,  {{stats.player.season.count(3-2).rbis}} RBI",
+      3,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} CAREER COMPLETE GAME",
+      1,
+      816,
+      "Pitcher L3 - XXth Career Complete Game",
+      "Players - Pitching - Career",
+      "Player",
+      "97007",
+      "T03PP61",
+      6,
+      "{{stats.player.career.pitcher_complete_games + 1 |ordinal}} CAREER COMPLETE GAME",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} CAREER CYCLES",
+      1,
+      1657,
+      "Player - Career Cycles",
+      "Players - Batting - Career",
+      "Player",
+      "97007",
+      "T00PP64",
+      6,
+      "{{games_with.player.minimum(home_runs, 1).minimum(triples, 1).minimum(doubles, 1).minimum(singles, 1).games_played}} CAREER CYCLES",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} CAREER MULTI-HR GAMES",
+      1,
+      383,
+      "Player - Career Batting Multi-HR Games",
+      "Players - Batting - Career",
+      "Player",
+      "97007",
+      "T00PP52",
+      6,
+      "{{games_with.player.minimum(home_runs, 2).games_played}} CAREER MULTI-HR GAMES",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} CAREER SAVE",
+      1,
+      1634,
+      "Pitcher L3 - XXth Career Save",
+      "Players - Pitching - Career",
+      "Player",
+      "97006",
+      "T03PP90",
+      6,
+      "{{stats.player.career.pitcher_saves + 1 |ordinal}} CAREER SAVE",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} CAREER SHUTOUT",
+      1,
+      815,
+      "Pitcher L3 - XXth Career Shutouts",
+      "Players - Pitching - Career",
+      "Player",
+      "97007",
+      "T03PP60",
+      6,
+      "{{stats.player.career.pitcher_shutouts +1 |ordinal}} CAREER SHUTOUT",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} CAREER WALKOFF HITS",
+      1,
+      26,
+      "Player - Career Batting Walk-Off Hits",
+      "Players - Batting - Career",
+      "Player",
+      "97007",
+      "T00PP54",
+      6,
+      "{{stats.player.walkoff_hits}} CAREER WALKOFF HITS",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} CAREER WALKOFF HOME RUNS",
+      1,
+      1656,
+      "Player - Career Walkoff HRs",
+      "Players - Batting - Career",
+      "Player",
+      "97007",
+      "T00PP53",
+      6,
+      "{{stats.player.walkoff_home_runs}} CAREER WALKOFF HOME RUNS",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} CAREER WIN",
+      1,
+      1633,
+      "Pitcher L3 - XXth Career Win",
+      "Players - Pitching - Career",
+      "Player",
+      "97006",
+      "T03PP89",
+      6,
+      "{{stats.player.career.pitcher_wins + 1 |ordinal}} CAREER WIN",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} CATCHERS",
+      4,
+      972,
+      "FS - Conference Fielding - Passed Balls - C",
+      "Conference - Ind Fielding Leaders",
+      "Conference",
+      "97023",
+      "300C620",
+      2,
+      "{{info.conference.alias}} CATCHERS",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} DOUBLE THIS SEASON",
+      1,
+      1825,
+      "Player - Next Double",
+      "Players - Next Pages",
+      "Player",
+      "97006",
+      "T00PP36",
+      6,
+      "{{stats.player.season.doubles +1 | ordinal}} DOUBLE THIS SEASON",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} ERROR THIS SEASON",
+      2,
+      90,
+      "Player - Season Fielding Next Error",
+      "Players - Fielding - This Season",
+      "Player",
+      "97006",
+      "T00PP34",
+      6,
+      "{{stats.player.season.errors_total + 1 | ordinal}} ERROR THIS SEASON",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} FIELDING PERCENTAGE",
+      9,
+      93,
+      "Player - Season Fielding 2B",
+      "Players - Fielding - This Season",
+      "Player",
+      "97030",
+      "T00PP84",
+      6,
+      "{{stats.player.season.as_pos(2b).fielding_percentage}} FIELDING PERCENTAGE",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} FIRST BASEMEN",
+      12,
+      960,
+      "FS - Conference Fielding - Highest Field Pct - 1B",
+      "Conference - Ind Fielding Leaders",
+      "Conference",
+      "97023",
+      "300C630",
+      2,
+      "{{info.conference.alias}} FIRST BASEMEN",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} FORCED IN {{TOKEN}} OPPORTUNITIES",
+      1,
+      794,
+      "Pitcher L3 - Double Plays",
+      "Players - Pitching - This Season",
+      "Player",
+      "97006",
+      "T02PP78",
+      6,
+      "{{stats.player.season.outs(0, 1).pitcher_groundball_double_plays}} FORCED IN {{stats.player.season.runners(1b, 1b-2b, 1b-3b, loaded).outs(0, 1).batters_faced}} OPPORTUNITIES",
+      2,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} HIGHEST {{TOKEN}}",
+      8,
+      464,
+      "FS - Conference Leaders - Team Batting - AVG Last 10 Days",
+      "Conference - Team Leaders - Batting",
+      "Conference",
+      "97025",
+      "300C820",
+      1,
+      "{{info.conference.alias}} HIGHEST {{custom.leaders_avg}}",
+      2,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} HOME RUN THIS SEASON",
+      1,
+      1827,
+      "Player - Next Home Run",
+      "Players - Next Pages",
+      "Player",
+      "97006",
+      "T00PP38",
+      6,
+      "{{stats.player.season.home_runs +1 | ordinal}} HOME RUN THIS SEASON",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} IN EXTRA INNINGS",
+      1,
+      122,
+      "Player - Season Batting Extra Innings",
+      "Players - Batting - This Season",
+      "Player",
+      "97006",
+      "T00PP73",
+      5,
+      "{{info.time.season}} IN EXTRA INNINGS",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} IN RELIEF",
+      3,
+      1378,
+      "SLAB - Conference Leaders - Team Pitching - Relievers HR",
+      "Conference - Team Leaders - Pitching",
+      "Conference",
+      "97026",
+      "500C886",
+      1,
+      "{{custom.leaders_phr}} IN RELIEF",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} LEADERS - LAST 10 DAYS",
+      8,
+      162,
+      "FS - League Batting Last 10 Days - HR",
+      "League - Ind Leaders - Batting",
+      "League",
+      "97023",
+      "3006102",
+      2,
+      "{{info.league.alias}} LEADERS - LAST 10 DAYS",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} LEADERS - RELIEVERS",
+      1,
+      1056,
+      "SLAB - Conference Pitching - Appearances - Relievers",
+      "Conference - Ind Pitching Leaders",
+      "Conference",
+      "97024",
+      "500C439",
+      2,
+      "{{info.conference.alias}} LEADERS - RELIEVERS",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} LEADERS - {{TOKEN}}",
+      19,
+      166,
+      "FS - League Batting This Month - HR",
+      "League - Ind Leaders - Batting",
+      "League",
+      "97023",
+      "3006112",
+      2,
+      "{{info.league.alias}} LEADERS - {{info.time.month}}",
+      2,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} LEADERS {{TOKEN}}",
+      14,
+      1479,
+      "SLAB - League Team Best Record - 1-Run Games",
+      "League - Team Leaders - Record",
+      "League",
+      "97026",
+      "5002790",
+      2,
+      "{{info.league.alias}} LEADERS {{info.time.season}}",
+      2,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} LOWEST {{TOKEN}}",
+      8,
+      502,
+      "FS - Conference Trailers - Team Batting - AVG Last 10 Days",
+      "Conference - Team Trailers - Batting",
+      "Conference",
+      "97025",
+      "300C920",
+      1,
+      "{{info.conference.alias}} LOWEST {{custom.leaders_avg}}",
+      2,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} ON FIRST PITCH",
+      1,
+      65,
+      "Player - Season Batting 0-0 Count",
+      "Players - Batting - This Season",
+      "Player",
+      "97030",
+      "T01PP60",
+      5,
+      "{{info.time.season}} ON FIRST PITCH",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} ON ROAD",
+      8,
+      1763,
+      "FS - Conference Batting Road Games - Highest AVG",
+      "Conference - Ind Leaders Batting",
+      "Conference",
+      "97023",
+      "300C150",
+      1,
+      "{{custom.leaders_avg}} ON ROAD",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} ON THE ROAD",
+      28,
+      180,
+      "FS - League Batting Road Games - Highest AVG",
+      "League - Ind Leaders - Batting",
+      "League",
+      "97023",
+      "3006150",
+      1,
+      "{{custom.leaders_avg}} ON THE ROAD",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} OPP AVG, {{TOKEN}} GRAND SLAMS ALLOWED",
+      2,
+      1815,
+      "Pitcher - Season vs Bases Loaded",
+      "Players - TEMP PAGES",
+      "Player",
+      "97006",
+      "T02PP29",
+      6,
+      "{{stats.player.season.runners(loaded).pitcher_opponent_batting_average}} OPP AVG, {{stats.player.season.pitcher_grand_slams_allowed}} GRAND SLAMS ALLOWED",
+      2,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} OPP AVG, {{TOKEN}} HR, {{TOKEN}} K",
+      1,
+      788,
+      "Pitcher L3 - w/ Two Strikes",
+      "Players - Pitching - This Season",
+      "Player",
+      "97006",
+      "T02PP69",
+      6,
+      "{{stats.player.season.strikes(2).pitcher_opponent_batting_average}} OPP AVG, {{stats.player.season.strikes(2).pitcher_home_runs_allowed}} HR, {{stats.player.season.strikes(2).pitcher_strikeouts}} K",
+      3,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} OUTFIELDERS",
+      20,
+      952,
+      "FS - Conference Fielding - Highest Field Pct - OF",
+      "Conference - Ind Fielding Leaders",
+      "Conference",
+      "97023",
+      "300C600",
+      2,
+      "{{info.conference.alias}} OUTFIELDERS",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} OVERALL",
+      2,
+      1629,
+      "Player - Starter GS/W-L/ERA (After Trade)",
+      "Players - Pitching - This Season",
+      "Player",
+      "97030",
+      "T02PP87",
+      5,
+      "{{info.time.season}} OVERALL",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} PICKOFFS",
+      1,
+      790,
+      "Pitcher L3 - Baserunners",
+      "Players - Pitching - This Season",
+      "Player",
+      "97007",
+      "T02PP71",
+      7,
+      "{{stats.player.season.p_pko}} PICKOFFS",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} PITCHERS",
+      12,
+      957,
+      "FS - Conference Fielding - Errors - P",
+      "Conference - Ind Fielding Leaders",
+      "Conference",
+      "97023",
+      "300C612",
+      2,
+      "{{info.conference.alias}} PITCHERS",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} PITCHES",
+      2,
+      779,
+      "Pitcher L3 - Last Outing - IP, H, R, ER, BB, K, PITCHES",
+      "Players - Pitching - Previous Outings",
+      "Player",
+      "97030",
+      "T02PP57",
+      6,
+      "{{previous.player.season(last2).equal(games_pitched, 1).pitches_thrown}} PITCHES",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} RECORD {{TOKEN}}",
+      8,
+      689,
+      "Team - Record When Leading After 6 Innings",
+      "Team - Record When",
+      "Team",
+      "97012",
+      "T049750",
+      4,
+      "{{stats.team.season.after_inning(lead).innings(6).team_record}} RECORD {{info.time.season}}",
+      2,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} RUNS ALLOWED IN 1st INNING ({{TOKEN}} STARTS)",
+      1,
+      777,
+      "Pitcher L3 - 1st Inning Runs",
+      "Players - Pitching - This Season",
+      "Player",
+      "97007",
+      "T02PP59",
+      6,
+      "{{stats.player.season.season.runs_allowed_first_inning}} RUNS ALLOWED IN 1st INNING ({{stats.player.season.games_started}} STARTS)",
+      2,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} SEASON",
+      1,
+      60,
+      "Player - Bio Basic",
+      "Players - Bio",
+      "Player",
+      "97030",
+      "T00PP83",
+      5,
+      "{{info.player.experience|ordinal}} SEASON",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} SEASON AS MANAGER",
+      1,
+      683,
+      "Manager - Career and Different Teams",
+      "Team - Managers",
+      "Team",
+      "97013",
+      "T049700",
+      3,
+      "{{stats.coach.career.seasons|ordinal}} SEASON AS MANAGER",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} SEASON AS {{TOKEN}} MANAGER",
+      1,
+      684,
+      "Manager - Career with Team",
+      "Team - Managers",
+      "Team",
+      "97012",
+      "T049701",
+      3,
+      "{{stats.coach.career.on_team.seasons|ordinal}} SEASON AS {{info.team.name}} MANAGER",
+      2,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} SECOND BASEMEN",
+      12,
+      962,
+      "FS - Conference Fielding - Lowest Field Pct - 2B",
+      "Conference - Ind Fielding Leaders",
+      "Conference",
+      "97023",
+      "300C641",
+      2,
+      "{{info.conference.alias}} SECOND BASEMEN",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} SHORTSTOPS",
+      12,
+      966,
+      "FS - Conference Fielding - Highest Field Pct - SS",
+      "Conference - Ind Fielding Leaders",
+      "Conference",
+      "97023",
+      "300C660",
+      2,
+      "{{info.conference.alias}} SHORTSTOPS",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} STOLEN BASE THIS SEASON",
+      1,
+      1824,
+      "Player - Next Stolen Base",
+      "Players - Next Pages",
+      "Player",
+      "97006",
+      "T00PP35",
+      6,
+      "{{stats.player.season.steals +1 | ordinal}} STOLEN BASE THIS SEASON",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} STRAIGHT QUALITY STARTS ({{TOKEN}}-{{TOKEN}}, {{TOKEN}} IP)",
+      1,
+      1606,
+      "Pitcher L3 - Starter Quality Start Streak",
+      "Players - Pitching - This Season",
+      "Player",
+      "97006",
+      "T03PP87",
+      6,
+      "{{streak(quality_starts, =1).player.season.equal(games_started, 1).games_played}} STRAIGHT QUALITY STARTS ({{streak(quality_starts, =1).player.season.equal(games_started, 1).pitcher_wins}}-{{streak(quality_starts, =1).player.season.equal(games_started, 1).pitcher_losses}}, {{streak(quality_starts, =1).player.season.equal(games_started, 1).pitcher_innings_pitched}} IP)",
+      4,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} STRAIGHT SCORELESS APPEARANCES ({{TOKEN}} IP)",
+      1,
+      1607,
+      "Pitcher L3 - Reliever Scoreless Appearances Streak",
+      "Players - Pitching - This Season",
+      "Player",
+      "97006",
+      "T03PP88",
+      6,
+      "{{streak(runs_allowed, =0).player.season.equal(games_pitched, 1).games_played}} STRAIGHT SCORELESS APPEARANCES ({{streak(runs_allowed, =0).player.season.equal(games_pitched, 1).pitcher_innings_pitched}} IP)",
+      2,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} THIRD BASEMEN",
+      12,
+      964,
+      "FS - Conference Fielding - Highest Field Pct - 3B",
+      "Conference - Ind Fielding Leaders",
+      "Conference",
+      "97023",
+      "300C650",
+      2,
+      "{{info.conference.alias}} THIRD BASEMEN",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} TRIPLE THIS SEASON",
+      1,
+      1826,
+      "Player - Next Triple",
+      "Players - Next Pages",
+      "Player",
+      "97006",
+      "T00PP37",
+      6,
+      "{{stats.player.season.triples +1 | ordinal}} TRIPLE THIS SEASON",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} VS PITCH TYPE",
+      2,
+      112,
+      "Player - Season Batting AVG vs Pitch Type",
+      "Players - Batting - This Season",
+      "Player",
+      "97036",
+      "T01PP04",
+      5,
+      "{{custom.header_avg}} VS PITCH TYPE",
+      1,
+      "custom_header_placeholder",
+      [
+        "custom_header_placeholder"
+      ]
+    ],
+    [
+      "{{TOKEN}} WITH 0-1 COUNT",
+      1,
+      66,
+      "Player - Season Batting 0-1 Count",
+      "Players - Batting - This Season",
+      "Player",
+      "97030",
+      "T01PP61",
+      5,
+      "{{info.time.season}} WITH 0-1 COUNT",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} WITH 0-2 COUNT",
+      1,
+      67,
+      "Player - Season Batting 0-2 Count",
+      "Players - Batting - This Season",
+      "Player",
+      "97030",
+      "T01PP62",
+      5,
+      "{{info.time.season}} WITH 0-2 COUNT",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} WITH 1-0 COUNT",
+      1,
+      68,
+      "Player - Season Batting 1-0 Count",
+      "Players - Batting - This Season",
+      "Player",
+      "97030",
+      "T01PP63",
+      5,
+      "{{info.time.season}} WITH 1-0 COUNT",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} WITH 1-1 COUNT",
+      1,
+      70,
+      "Player - Season Batting 1-1 Count",
+      "Players - Batting - This Season",
+      "Player",
+      "97030",
+      "T01PP64",
+      5,
+      "{{info.time.season}} WITH 1-1 COUNT",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} WITH 1-2 COUNT",
+      1,
+      71,
+      "Player - Season Batting 1-2 Count",
+      "Players - Batting - This Season",
+      "Player",
+      "97030",
+      "T01PP65",
+      5,
+      "{{info.time.season}} WITH 1-2 COUNT",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} WITH 2 OUTS & RISP",
+      18,
+      198,
+      "FS - League Batting with RISP & 2 Outs - Highest AVG",
+      "League - Ind Leaders - Batting",
+      "League",
+      "97023",
+      "3006192",
+      1,
+      "{{custom.leaders_avg}} WITH 2 OUTS & RISP",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} WITH 2 STRIKES",
+      1,
+      788,
+      "Pitcher L3 - w/ Two Strikes",
+      "Players - Pitching - This Season",
+      "Player",
+      "97006",
+      "T02PP69",
+      5,
+      "{{info.time.season}} WITH 2 STRIKES",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} WITH 2 STRIKES ({{TOKEN}} AB)",
+      2,
+      105,
+      "Player - Season Batting 2 Strikes",
+      "Players - Batting - This Season",
+      "Player",
+      "97000",
+      "T00PP43",
+      5,
+      "{{info.time.season}} WITH 2 STRIKES ({{stats.player.season.count(0-2, 1-2, 2-2, 3-2).at_bats}} AB)",
+      2,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} WITH 2-0 COUNT",
+      1,
+      69,
+      "Player - Season Batting 2-0 Count",
+      "Players - Batting - This Season",
+      "Player",
+      "97030",
+      "T01PP66",
+      5,
+      "{{info.time.season}} WITH 2-0 COUNT",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} WITH 2-1 COUNT",
+      1,
+      72,
+      "Player - Season Batting 2-1 Count",
+      "Players - Batting - This Season",
+      "Player",
+      "97030",
+      "T01PP67",
+      5,
+      "{{info.time.season}} WITH 2-1 COUNT",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} WITH 2-2 COUNT",
+      1,
+      73,
+      "Player - Season Batting 2-2 Count",
+      "Players - Batting - This Season",
+      "Player",
+      "97030",
+      "T01PP68",
+      5,
+      "{{info.time.season}} WITH 2-2 COUNT",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} WITH 3-0 COUNT",
+      1,
+      74,
+      "Player - Season Batting 3-0 Count",
+      "Players - Batting - This Season",
+      "Player",
+      "97030",
+      "T01PP69",
+      5,
+      "{{info.time.season}} WITH 3-0 COUNT",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} WITH 3-1 COUNT",
+      1,
+      1643,
+      "Player - Season Batting 3-1 Count",
+      "Players - Batting - This Season",
+      "Player",
+      "97030",
+      "T01PP70",
+      5,
+      "{{info.time.season}} WITH 3-1 COUNT",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} WITH FULL COUNT",
+      2,
+      75,
+      "Player - Season Batting Full Count",
+      "Players - Batting - This Season",
+      "Player",
+      "97030",
+      "T01PP71",
+      5,
+      "{{info.time.season}} WITH FULL COUNT",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} WITH RISP",
+      18,
+      196,
+      "FS - League Batting with RISP - Highest AVG",
+      "League - Ind Leaders - Batting",
+      "League",
+      "97023",
+      "3006190",
+      1,
+      "{{custom.leaders_avg}} WITH RISP",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} at {{TOKEN}}",
+      1,
+      1819,
+      "Batter - Season at Ballpark",
+      "Players - Batting - This Season",
+      "Player",
+      "97006",
+      "T00PP10",
+      5,
+      "{{info.time.season}} at {{info.game.venue_name}}",
+      2,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} for {{TOKEN}}",
+      2,
+      1832,
+      "CG_Ticker_BattervsPitcher - Career Batter vs Pitcher",
+      "Players - Batter vs Pitcher",
+      "BatterVsPitcher",
+      "97505",
+      "T62BBPP",
+      10,
+      "{{stats.batter.career.vs_pitcher.hits}} for {{stats.batter.career.vs_pitcher.at_bats}}",
+      2,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} vs BASES LOADED ({{TOKEN}} AB)",
+      1,
+      1815,
+      "Pitcher - Season vs Bases Loaded",
+      "Players - TEMP PAGES",
+      "Player",
+      "97006",
+      "T02PP29",
+      5,
+      "{{info.time.season}} vs BASES LOADED ({{stats.player.season.runners(loaded).batters_faced}} AB)",
+      2,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} vs LHP",
+      24,
+      168,
+      "FS - League Batting vs LHP - Highest AVG",
+      "League - Ind Leaders - Batting",
+      "League",
+      "97023",
+      "3006120",
+      1,
+      "{{custom.leaders_avg}} vs LHP",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} vs RHP",
+      24,
+      172,
+      "FS - League Batting vs RHP - Highest AVG",
+      "League - Ind Leaders - Batting",
+      "League",
+      "97023",
+      "3006130",
+      1,
+      "{{custom.leaders_avg}} vs RHP",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} vs {{TOKEN}} ({{TOKEN}} GAMES)",
+      1,
+      77,
+      "Player - Batting Season vs Opponent",
+      "Players - Batting - This Season",
+      "Player",
+      "97006",
+      "T00PP08",
+      5,
+      "{{info.time.season}} vs {{info.team(opp).name}} ({{stats.player.season.vs.games_played}} GAMES)",
+      3,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} w/ 2 OUTS & RISP",
+      1,
+      86,
+      "Player - Season Batting RISP & 2 Outs",
+      "Players - Batting - This Season",
+      "Player",
+      "97006",
+      "T00PP28",
+      5,
+      "{{info.time.season}} w/ 2 OUTS & RISP",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} w/ RISP",
+      1,
+      85,
+      "Player - Season Batting RISP",
+      "Players - Batting - This Season",
+      "Player",
+      "97006",
+      "T00PP27",
+      5,
+      "{{info.time.season}} w/ RISP",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} w/ RUNNER ON 3rd & LESS THAN 2 OUTS",
+      1,
+      1835,
+      "Player - Season Runner on 3rd - Less than 2 Outs",
+      "Players - Batting - This Season",
+      "Player",
+      "97007",
+      "T00PP30",
+      5,
+      "{{info.time.season}} w/ RUNNER ON 3rd & LESS THAN 2 OUTS",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} {{TOKEN}}",
+      322,
+      713,
+      "FS - Team Leaders - Games Played",
+      "Team - Leaders - Batting",
+      "Team",
+      "97020",
+      "T049800",
+      2,
+      "{{info.team.name}} {{info.time.season}}",
+      2,
+      "multi_token",
+      [
+        "multi_token"
+      ]
+    ],
+    [
+      "{{TOKEN}} {{TOKEN}} ({{TOKEN}} GMS)",
+      2,
+      125,
+      "Player - Season Batting Hot Zone AVG",
+      "Players - Batting - Hot/Cold Zones",
+      "Player",
+      "97039",
+      "T01PP35",
+      5,
+      "{{custom.leaders_avg}} {{info.time.season}} ({{stats.player.season.games_played}} GMS)",
+      3,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} {{TOKEN}} {{TOKEN}}",
+      14,
+      704,
+      "Team - Last Player had a 2-HR Game",
+      "Team - Last Times",
+      "Team",
+      "97013",
+      "T049780",
+      5,
+      "{{previous.team_player.minimum(home_runs, 2).full_name}} {{previous.team_player.minimum(home_runs, 2).game_vs}} {{previous.team_player.minimum(home_runs, 2).opp_name}}",
+      3,
+      "multi_token",
+      [
+        "multi_token"
+      ]
+    ],
+    [
+      "{{TOKEN}} {{TOKEN}} {{TOKEN}} ({{TOKEN}} INNINGS)",
+      2,
+      1620,
+      "Team - Last Time Played 12+ Innings",
+      "Team - Last Times",
+      "Team",
+      "97012",
+      "T049777",
+      4,
+      "{{previous.team.length_of_game(=>12).game_date|flex_short}} {{previous.team.length_of_game(=>12).game_vs}} {{previous.team.length_of_game(=>12).opp_name}} ({{previous.team.length_of_game(=>12).pitcher_innings_pitched}} INNINGS)",
+      4,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} {{TOKEN}} {{TOKEN}} ({{TOKEN}} IP)",
+      1,
+      1622,
+      "Team - Last Time Played 20+ Innings",
+      "Team - Last Times",
+      "Team",
+      "97012",
+      "T049779",
+      4,
+      "{{previous.team.all_time(REG, 1906).length_of_game(=>20).game_date|flex_short}} {{previous.team.all_time(REG, 1906).length_of_game(=>20).game_vs}} {{previous.team.all_time(REG, 1906).length_of_game(=>20).opp_name}} ({{previous.team.all_time(REG, 1906).length_of_game(=>20).pitcher_innings_pitched}} IP)",
+      4,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}} {{TOKEN}} {{TOKEN}} ({{TOKEN}})",
+      20,
+      699,
+      "Team - Last Time Scoring 10+ Runs",
+      "Team - Last Times",
+      "Team",
+      "97012",
+      "T049770",
+      4,
+      "{{previous.team.minimum(runs, 10).game_date|flex_short}} {{previous.team.minimum(runs, 10).game_vs}} {{previous.team.minimum(runs, 10).opp_name}} ({{previous.team.minimum(runs, 10).runs}})",
+      4,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}}, {{TOKEN}}-{{TOKEN}}",
+      210,
+      1834,
+      "Team - Calendar - 4 Week (Week Start 1)",
+      "Team - Calendars",
+      "Team",
+      "97150",
+      "T049741",
+      4,
+      "{{calendar(1, sun).team.game_result}}, {{calendar(1, sun).team.runs}}-{{calendar(1, sun).team.runs_allowed}}",
+      3,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}}-GAME HITTING STREAK",
+      1,
+      681,
+      "Player - Season Batting Hitting Streak AVG/HR/RBI",
+      "Players - Batting - This Season",
+      "Player",
+      "97000",
+      "T00PP06",
+      5,
+      "{{streak(hits, =>1).player.season.equal(games_played, 1).games_played}}-GAME HITTING STREAK",
+      1,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}}/CG",
+      1,
+      770,
+      "Pitcher Slab - S/CG, W-L, ERA, IP, BB, K, HR, OPPAVG",
+      "Players - Pitching - Last Season",
+      "Player",
+      "97034",
+      "T02PP48",
+      7,
+      "{{custom.header_gstart}}/CG",
+      1,
+      "custom_header_placeholder",
+      [
+        "custom_header_placeholder"
+      ]
+    ],
+    [
+      "{{TOKEN}}/{{TOKEN}}",
+      32,
+      41,
+      "Player - Season Batting H/AB/AVG/SACB/K",
+      "Players - Batting - This Season",
+      "Player",
+      "97000",
+      "T01PP16",
+      7,
+      "{{stats.player.season.hits}}/{{stats.player.season.at_bats}}",
+      2,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}}/{{TOKEN}} ({{TOKEN}})",
+      1,
+      828,
+      "Pitcher L3 - GP, W-L, ERA, K/BB, SV/OPP (interleague)",
+      "Players - Pitching - Career",
+      "Player",
+      "97000",
+      "T03PP75",
+      15,
+      "{{stats.player.career.vs_league(inter).pitcher_saves}}/{{stats.player.career.vs_league(inter).pitcher_saves_opportunities}} ({{stats.player.career.vs_league(inter).pitcher_saves_percentage}})",
+      3,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}}/{{TOKEN}} STOLEN BASES",
+      1,
+      790,
+      "Pitcher L3 - Baserunners",
+      "Players - Pitching - This Season",
+      "Player",
+      "97007",
+      "T02PP71",
+      6,
+      "{{stats.player.season.pitcher_steals}}/{{stats.player.season. pitcher_steals_attempts_against}} STOLEN BASES",
+      2,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}}: {{TOKEN}}",
+      2,
+      87,
+      "Player - Career Batting Bases Loaded",
+      "Players - Batting - Career",
+      "Player",
+      "97007",
+      "T00PP29",
+      7,
+      "{{info.time.season}}: {{stats.player.season.runners(loaded).batting_summary_abb}}",
+      2,
+      "text_token_hybrid",
+      [
+        "text_token_hybrid"
+      ]
+    ],
+    [
+      "{{TOKEN}}: {{TOKEN}}, {{TOKEN}} {{TOKEN}}, {{TOKEN}} {{TOKEN}}",
+      1,
+      2,
+      "Player - Season Batting Manual Today 0-for ",
+      "Players - Batting - This Season",
+      "Player",
+      "97007",
+      "T00PP01",
+      7,
+      "{{info.time.season}}: {{stats.player.season.batting_average}}, {{stats.player.season.home_runs}} {{custom.header_hr}}, {{stats.player.season.rbis}} {{custom.header_rbi}}",
+      6,
+      "custom_header_placeholder",
+      [
+        "custom_header_placeholder"
+      ]
+    ]
+  ],
+  "boundary_note": "Read-only semantic/reference extract only. Not runtime authority and not INI governance replacement."
+}
