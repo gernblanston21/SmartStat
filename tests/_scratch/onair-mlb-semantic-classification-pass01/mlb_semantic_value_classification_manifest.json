@@ -1,0 +1,69 @@
+{
+  "pass_name": "MLB_ONAIR_SEMANTIC_VALUE_CLASSIFICATION_PASS_01",
+  "output_directory": "tests/_scratch/onair-mlb-semantic-classification-pass01",
+  "generated_at_utc": "2026-03-23T20:29:30Z",
+  "path_substitution": {
+    "used": true,
+    "details": "Primary directory tests/_scratch/onair-mlb-pass02-full-index/ not found; used docs/onair PASS_02 full extraction artifacts."
+  },
+  "counts": {
+    "total_candidates_classified": 4583,
+    "classification_distribution": [
+      {
+        "classification": "runtime_mapping_candidate",
+        "count": 12,
+        "percent": 0.26
+      },
+      {
+        "classification": "alias_candidate",
+        "count": 3,
+        "percent": 0.07
+      },
+      {
+        "classification": "composite_candidate",
+        "count": 633,
+        "percent": 13.81
+      },
+      {
+        "classification": "semantic_layer_candidate",
+        "count": 1890,
+        "percent": 41.24
+      },
+      {
+        "classification": "tooling_only",
+        "count": 499,
+        "percent": 10.89
+      },
+      {
+        "classification": "ambiguous",
+        "count": 1546,
+        "percent": 33.73
+      }
+    ],
+    "source_group_counts": {
+      "pass02": 3285,
+      "pass04": 1290,
+      "pass09": 8
+    }
+  },
+  "artifacts": [
+    {
+      "path": "tests/_scratch/onair-mlb-semantic-classification-pass01/mlb_semantic_value_classification.json",
+      "size_bytes": 3888112,
+      "sha256": "9841F25F53A78A3DC492EF0CB8137BB3BCDCB2BE03BBF401A696AEADD0D2E920"
+    },
+    {
+      "path": "tests/_scratch/onair-mlb-semantic-classification-pass01/mlb_semantic_value_classification_summary.md",
+      "size_bytes": 3107,
+      "sha256": "99EC8247EBD3350F8EAC0CED6DFD3F8C3FD2BF792483A833EC6049B503117D23"
+    },
+    {
+      "path": "tests/_scratch/onair-mlb-semantic-classification-pass01/mlb_semantic_value_classification_manifest.json",
+      "size_bytes": 2166,
+      "sha256": "N/A_SELF_REFERENTIAL"
+    }
+  ],
+  "notes": [
+    "Manifest self-hash is intentionally omitted to avoid self-referential hash instability; compute externally during validation."
+  ]
+}
