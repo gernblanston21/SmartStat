@@ -1,0 +1,69 @@
+{
+  "pass_name": "MLB_ONAIR_SEMANTIC_LAYER_LANE_DEFINITION_PASS_02",
+  "output_directory": "tests/_scratch/onair-mlb-semantic-lane-definition-pass02",
+  "generated_at_utc": "2026-03-23T20:40:32Z",
+  "source_inputs": {
+    "primary": [
+      "tests/_scratch/onair-mlb-semantic-classification-pass01/mlb_semantic_value_classification.json",
+      "tests/_scratch/onair-mlb-semantic-classification-pass01/mlb_semantic_value_classification_summary.md",
+      "tests/_scratch/onair-mlb-semantic-classification-pass01/mlb_semantic_value_classification_manifest.json"
+    ],
+    "supporting": [
+      "tests/_scratch/onair-mlb-pass09-patch-review-signoff/mlb_learn_layer_patch_signoff_summary.md",
+      "tests/_scratch/onair-mlb-pass12-post-promotion-validation/mlb_runtime_mapping_post_promotion_validation_summary.md"
+    ],
+    "path_substitution": {
+      "used": false,
+      "details": "None"
+    }
+  },
+  "counts": {
+    "total_candidates_from_pass01": 4583,
+    "lane_distribution": [
+      {
+        "lane": "runtime_ini_lane",
+        "count": 15,
+        "percent": 0.33
+      },
+      {
+        "lane": "composite_expression_lane",
+        "count": 633,
+        "percent": 13.81
+      },
+      {
+        "lane": "semantic_resolver_lane",
+        "count": 1890,
+        "percent": 41.24
+      },
+      {
+        "lane": "tooling_operator_assist_lane",
+        "count": 499,
+        "percent": 10.89
+      },
+      {
+        "lane": "unresolved_or_ambiguous_lane",
+        "count": 1546,
+        "percent": 33.73
+      }
+    ],
+    "approved_runtime_lines_evidence_count": 4
+  },
+  "artifacts": [
+    {
+      "path": "tests/_scratch/onair-mlb-semantic-lane-definition-pass02/mlb_semantic_lane_definition.json",
+      "size_bytes": 24065,
+      "sha256": "0C5B856363D95DC6AD35E76E158868B178EAB3405F160DECB3A3D7F520F17604"
+    },
+    {
+      "path": "tests/_scratch/onair-mlb-semantic-lane-definition-pass02/mlb_semantic_lane_definition_report.md",
+      "size_bytes": 7192,
+      "sha256": "81B5AD0A12FFF41010A48F02FC9DC09D62CED7BF2532949F05DA3A5930F66FED"
+    },
+    {
+      "path": "tests/_scratch/onair-mlb-semantic-lane-definition-pass02/mlb_semantic_lane_definition_manifest.json",
+      "size_bytes": 2465,
+      "sha256": "N/A_SELF_REFERENTIAL"
+    }
+  ],
+  "boundary_note": "PASS_02 is read-only lane-definition analysis. No SmartStat runtime/config mutation authorized or performed."
+}

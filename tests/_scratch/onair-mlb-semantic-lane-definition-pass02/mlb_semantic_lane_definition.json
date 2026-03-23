@@ -1,0 +1,620 @@
+{
+  "pass_name": "MLB_ONAIR_SEMANTIC_LAYER_LANE_DEFINITION_PASS_02",
+  "mode": "read_only_lane_definition_analysis",
+  "generated_at_utc": "2026-03-23T20:40:32Z",
+  "scope_boundary": "No runtime mutation, no INI mutation, no resolver/composite implementation.",
+  "source_trace": {
+    "primary": {
+      "classification_json": "tests/_scratch/onair-mlb-semantic-classification-pass01/mlb_semantic_value_classification.json",
+      "classification_summary": "tests/_scratch/onair-mlb-semantic-classification-pass01/mlb_semantic_value_classification_summary.md",
+      "classification_manifest": "tests/_scratch/onair-mlb-semantic-classification-pass01/mlb_semantic_value_classification_manifest.json"
+    },
+    "supporting": {
+      "pass09_signoff_summary": "tests/_scratch/onair-mlb-pass09-patch-review-signoff/mlb_learn_layer_patch_signoff_summary.md",
+      "pass12_validation_summary": "tests/_scratch/onair-mlb-pass12-post-promotion-validation/mlb_runtime_mapping_post_promotion_validation_summary.md"
+    },
+    "governance": [
+      "AGENTS.md",
+      "SESSION.md",
+      "ROADMAP.md"
+    ],
+    "path_substitution": {
+      "used": false,
+      "details": "None"
+    }
+  },
+  "pass01_recap": {
+    "total_candidates": 4583,
+    "classification_distribution": [
+      {
+        "classification": "runtime_mapping_candidate",
+        "count": 12,
+        "percent": 0.26
+      },
+      {
+        "classification": "alias_candidate",
+        "count": 3,
+        "percent": 0.07
+      },
+      {
+        "classification": "composite_candidate",
+        "count": 633,
+        "percent": 13.81
+      },
+      {
+        "classification": "semantic_layer_candidate",
+        "count": 1890,
+        "percent": 41.24
+      },
+      {
+        "classification": "tooling_only",
+        "count": 499,
+        "percent": 10.89
+      },
+      {
+        "classification": "ambiguous",
+        "count": 1546,
+        "percent": 33.73
+      }
+    ]
+  },
+  "lane_model": {
+    "runtime_ini_lane": {
+      "meaning": "Direct one-to-one runtime mappings and simple aliases compatible with governed INI sections.",
+      "belongs": [
+        "one-to-one category->measure mappings",
+        "alias redirects to canonical runtime keys",
+        "high-confidence deterministic keys already aligned to CATEGORY_TO_MEASURE model"
+      ],
+      "does_not_belong": [
+        "multi-measure expressions",
+        "grammar/context disambiguation",
+        "operator-assist-only reference phrases",
+        "ambiguous candidates without canonical confidence"
+      ],
+      "likely_artifacts": [
+        "SmartStat_Mappings.ini [CATEGORY_TO_MEASURE]",
+        "SmartStat_Mappings.ini [CATEGORY_TO_MEASURE_ALIASES]",
+        "SmartStat_Mappings.learn.ini staging equivalents"
+      ],
+      "authority_class": "runtime-authoritative"
+    },
+    "composite_expression_lane": {
+      "meaning": "Derived/multi-measure expression handling for ratios, splits, and text+token composition.",
+      "belongs": [
+        "ratio expressions (K/BB, BB/K class)",
+        "slash-line structures",
+        "text-token hybrid templates",
+        "multi-token assembled outputs"
+      ],
+      "does_not_belong": [
+        "single canonical mapping lines",
+        "simple aliases",
+        "runtime INI direct one-to-one entries"
+      ],
+      "likely_artifacts": [
+        "future composite expression contract artifacts",
+        "playbook syntax corpora",
+        "read-only analysis harness artifacts"
+      ],
+      "authority_class": "future-architecture (non-runtime-authoritative today)"
+    },
+    "semantic_resolver_lane": {
+      "meaning": "Grammar-aware semantic interpretation and contextual intent resolution.",
+      "belongs": [
+        "filter/qualifier grammar entries",
+        "playbook/query-aware semantic intent",
+        "context-dependent phrase disambiguation"
+      ],
+      "does_not_belong": [
+        "direct static key->measure lines",
+        "pure operator UI help text only",
+        "uncertain phrases lacking deterministic interpretation"
+      ],
+      "likely_artifacts": [
+        "future semantic resolver grammar definitions",
+        "semantic contract docs",
+        "deterministic interpretation validation harnesses"
+      ],
+      "authority_class": "future-architecture (non-runtime-authoritative today)"
+    },
+    "tooling_operator_assist_lane": {
+      "meaning": "Reference/search/operator assistance and advisory surfaces without runtime authority.",
+      "belongs": [
+        "operator phrase help",
+        "candidate browsing/exploration",
+        "documentation and advisory UX surfaces"
+      ],
+      "does_not_belong": [
+        "runtime mapping authority",
+        "automatic resolver decisions",
+        "mutation or execution behavior"
+      ],
+      "likely_artifacts": [
+        "docs/onair reference artifacts",
+        "tools/semantic-source-view",
+        "read-only operator aid surfaces"
+      ],
+      "authority_class": "tooling-only/advisory"
+    },
+    "unresolved_or_ambiguous_lane": {
+      "meaning": "Candidates with insufficient confidence or conflicting interpretations.",
+      "belongs": [
+        "manual-review-needed terms",
+        "conflicting semantic interpretations",
+        "low-confidence or context-fragile entries"
+      ],
+      "does_not_belong": [
+        "automatic promotion",
+        "runtime mapping insertion",
+        "alias creation without clarity"
+      ],
+      "likely_artifacts": [
+        "manual review queues",
+        "governance signoff artifacts",
+        "bounded review pass outputs"
+      ],
+      "authority_class": "blocked/pending manual review"
+    }
+  },
+  "bucket_to_lane_mapping": [
+    {
+      "pass01_bucket": "runtime_mapping_candidate",
+      "target_lane": "runtime_ini_lane",
+      "rationale": "Direct one-to-one mapping aligns with governed INI runtime mapping model.",
+      "implied_capability_class": "runtime-authoritative"
+    },
+    {
+      "pass01_bucket": "alias_candidate",
+      "target_lane": "runtime_ini_lane",
+      "rationale": "Alternate phrasing belongs to alias indirection over canonical runtime keys.",
+      "implied_capability_class": "runtime-authoritative indirection"
+    },
+    {
+      "pass01_bucket": "composite_candidate",
+      "target_lane": "composite_expression_lane",
+      "rationale": "Requires composition/assembly beyond one-line static INI mapping.",
+      "implied_capability_class": "future composite architecture"
+    },
+    {
+      "pass01_bucket": "semantic_layer_candidate",
+      "target_lane": "semantic_resolver_lane",
+      "rationale": "Requires grammar/context interpretation beyond static mapping tables.",
+      "implied_capability_class": "future semantic resolver architecture"
+    },
+    {
+      "pass01_bucket": "tooling_only",
+      "target_lane": "tooling_operator_assist_lane",
+      "rationale": "Useful for operator/search/documentation support, not runtime authority.",
+      "implied_capability_class": "tooling/advisory"
+    },
+    {
+      "pass01_bucket": "ambiguous",
+      "target_lane": "unresolved_or_ambiguous_lane",
+      "rationale": "Unsafe for promotion due to unresolved interpretation ambiguity.",
+      "implied_capability_class": "manual review / blocked"
+    }
+  ],
+  "lane_distribution": [
+    {
+      "lane": "runtime_ini_lane",
+      "count": 15,
+      "percent": 0.33,
+      "source_bucket_breakdown": [
+        {
+          "pass01_bucket": "alias_candidate",
+          "count": 3,
+          "percent": 0.07
+        },
+        {
+          "pass01_bucket": "runtime_mapping_candidate",
+          "count": 12,
+          "percent": 0.26
+        }
+      ]
+    },
+    {
+      "lane": "composite_expression_lane",
+      "count": 633,
+      "percent": 13.81,
+      "source_bucket_breakdown": [
+        {
+          "pass01_bucket": "composite_candidate",
+          "count": 633,
+          "percent": 13.81
+        }
+      ]
+    },
+    {
+      "lane": "semantic_resolver_lane",
+      "count": 1890,
+      "percent": 41.24,
+      "source_bucket_breakdown": [
+        {
+          "pass01_bucket": "semantic_layer_candidate",
+          "count": 1890,
+          "percent": 41.24
+        }
+      ]
+    },
+    {
+      "lane": "tooling_operator_assist_lane",
+      "count": 499,
+      "percent": 10.89,
+      "source_bucket_breakdown": [
+        {
+          "pass01_bucket": "tooling_only",
+          "count": 499,
+          "percent": 10.89
+        }
+      ]
+    },
+    {
+      "lane": "unresolved_or_ambiguous_lane",
+      "count": 1546,
+      "percent": 33.73,
+      "source_bucket_breakdown": [
+        {
+          "pass01_bucket": "ambiguous",
+          "count": 1546,
+          "percent": 33.73
+        }
+      ]
+    }
+  ],
+  "high_value_candidate_clusters": {
+    "runtime_ini_lane": {
+      "count": 15,
+      "high_confidence_not_yet_promoted_count": 0,
+      "strong_alias_expansion_count": 0,
+      "promoted_line_set_confirmed": [
+        "GAME WINNING RBI=game_winning_rbi",
+        "GO AHEAD RBI=go_ahead_rbi",
+        "SINGLES=singles",
+        "GO-AHEAD RBI=GO AHEAD RBI"
+      ],
+      "representative_examples": [
+        {
+          "candidate_uid": "pass02:measure_catalog_full:measure_0062",
+          "raw_value": "singles",
+          "normalized_value": "singles",
+          "source_collection": "measure_catalog_full",
+          "classification_reason": "PASS_09 approve_for_future_patch"
+        },
+        {
+          "candidate_uid": "pass02:measure_catalog_full:measure_0762",
+          "raw_value": "game_winning_rbi",
+          "normalized_value": "game winning rbi",
+          "source_collection": "measure_catalog_full",
+          "classification_reason": "PASS_09 approve_for_future_patch"
+        },
+        {
+          "candidate_uid": "pass02:measure_catalog_full:measure_0769",
+          "raw_value": "go_ahead_rbi",
+          "normalized_value": "go ahead rbi",
+          "source_collection": "measure_catalog_full",
+          "classification_reason": "PASS_09 approve_for_future_patch"
+        },
+        {
+          "candidate_uid": "pass02:user_dictionary_full:user_0107",
+          "raw_value": "GO-AHEAD RBI",
+          "normalized_value": "go-ahead rbi",
+          "source_collection": "user_dictionary_full",
+          "classification_reason": "PASS_09 approve_for_future_patch"
+        },
+        {
+          "candidate_uid": "pass09:patch_signoff:review_003",
+          "raw_value": "GAME WINNING RBI=game_winning_rbi",
+          "normalized_value": "game winning rbi=game winning rbi",
+          "source_collection": "patch_signoff",
+          "classification_reason": "PASS_09 approve_for_future_patch"
+        },
+        {
+          "candidate_uid": "pass09:patch_signoff:review_004",
+          "raw_value": "GO AHEAD RBI=go_ahead_rbi",
+          "normalized_value": "go ahead rbi=go ahead rbi",
+          "source_collection": "patch_signoff",
+          "classification_reason": "PASS_09 approve_for_future_patch"
+        }
+      ]
+    },
+    "composite_expression_lane": {
+      "count": 633,
+      "repeated_patterns": {
+        "other_composite_pattern": 291,
+        "text_token_hybrid_pattern": 295,
+        "custom_header_placeholder_pattern": 14,
+        "vs_split_pattern": 63,
+        "ratio_or_slash_pattern": 59
+      },
+      "representative_examples": [
+        {
+          "candidate_uid": "pass02:measure_catalog_full:measure_0000",
+          "raw_value": "called_strike",
+          "normalized_value": "called strike",
+          "source_collection": "measure_catalog_full",
+          "classification_reason": "PASS_05 composite_defer"
+        },
+        {
+          "candidate_uid": "pass02:measure_catalog_full:measure_0010",
+          "raw_value": "batter_home_run_to_fly_ball_percentage",
+          "normalized_value": "batter home run to fly ball percentage",
+          "source_collection": "measure_catalog_full",
+          "classification_reason": "PASS_05 composite_defer"
+        },
+        {
+          "candidate_uid": "pass02:measure_catalog_full:measure_0024",
+          "raw_value": "at_bats_per_home_run",
+          "normalized_value": "at bats per home run",
+          "source_collection": "measure_catalog_full",
+          "classification_reason": "PASS_05 composite_defer"
+        },
+        {
+          "candidate_uid": "pass02:measure_catalog_full:measure_0025",
+          "raw_value": "at_bats_per_strikeout",
+          "normalized_value": "at bats per strikeout",
+          "source_collection": "measure_catalog_full",
+          "classification_reason": "PASS_05 composite_defer"
+        },
+        {
+          "candidate_uid": "pass02:measure_catalog_full:measure_0026",
+          "raw_value": "at_bats_per_rbi",
+          "normalized_value": "at bats per rbi",
+          "source_collection": "measure_catalog_full",
+          "classification_reason": "PASS_05 composite_defer"
+        },
+        {
+          "candidate_uid": "pass02:measure_catalog_full:measure_0031",
+          "raw_value": "batting_average_balls_in_play",
+          "normalized_value": "batting average balls in play",
+          "source_collection": "measure_catalog_full",
+          "classification_reason": "PASS_05 composite_defer"
+        }
+      ]
+    },
+    "semantic_resolver_lane": {
+      "count": 1890,
+      "clusters": {
+        "filter_grammar_cluster": 28,
+        "playbook_metadata_cluster": 1862
+      },
+      "representative_examples": [
+        {
+          "candidate_uid": "pass02:gameplan_filters_full:playersplits_filter_0",
+          "raw_value": "Total",
+          "normalized_value": "total",
+          "source_collection": "gameplan_filters_full",
+          "classification_reason": "Filter grammar entry belongs to semantic/qualifier layer"
+        },
+        {
+          "candidate_uid": "pass02:gameplan_filters_full:playersplits_filter_1",
+          "raw_value": "Home",
+          "normalized_value": "home",
+          "source_collection": "gameplan_filters_full",
+          "classification_reason": "Filter grammar entry belongs to semantic/qualifier layer"
+        },
+        {
+          "candidate_uid": "pass02:gameplan_filters_full:playersplits_filter_2",
+          "raw_value": "Away",
+          "normalized_value": "away",
+          "source_collection": "gameplan_filters_full",
+          "classification_reason": "Filter grammar entry belongs to semantic/qualifier layer"
+        },
+        {
+          "candidate_uid": "pass02:gameplan_filters_full:playersplits_filter_3",
+          "raw_value": "Inter Division",
+          "normalized_value": "inter division",
+          "source_collection": "gameplan_filters_full",
+          "classification_reason": "Filter grammar entry belongs to semantic/qualifier layer"
+        },
+        {
+          "candidate_uid": "pass02:gameplan_filters_full:playersplits_filter_4",
+          "raw_value": "vs Division",
+          "normalized_value": "vs division",
+          "source_collection": "gameplan_filters_full",
+          "classification_reason": "Filter grammar entry belongs to semantic/qualifier layer"
+        },
+        {
+          "candidate_uid": "pass02:gameplan_filters_full:playersplits_filter_5",
+          "raw_value": "Inter Conference",
+          "normalized_value": "inter conference",
+          "source_collection": "gameplan_filters_full",
+          "classification_reason": "Filter grammar entry belongs to semantic/qualifier layer"
+        }
+      ]
+    },
+    "tooling_operator_assist_lane": {
+      "count": 499,
+      "representative_examples": [
+        {
+          "candidate_uid": "pass02:measure_catalog_full:measure_0007",
+          "raw_value": "batter_chase_percentage",
+          "source_collection": "measure_catalog_full",
+          "reason": "PASS_05 rejected"
+        },
+        {
+          "candidate_uid": "pass02:measure_catalog_full:measure_0008",
+          "raw_value": "batter_contact_percentage",
+          "source_collection": "measure_catalog_full",
+          "reason": "PASS_05 rejected"
+        },
+        {
+          "candidate_uid": "pass02:measure_catalog_full:measure_0016",
+          "raw_value": "batter_swing_percentage",
+          "source_collection": "measure_catalog_full",
+          "reason": "PASS_05 rejected"
+        },
+        {
+          "candidate_uid": "pass02:measure_catalog_full:measure_0017",
+          "raw_value": "batter_swings",
+          "source_collection": "measure_catalog_full",
+          "reason": "PASS_05 rejected"
+        },
+        {
+          "candidate_uid": "pass02:measure_catalog_full:measure_0020",
+          "raw_value": "batter_whiff_percentage",
+          "source_collection": "measure_catalog_full",
+          "reason": "PASS_05 rejected"
+        },
+        {
+          "candidate_uid": "pass02:measure_catalog_full:measure_0033",
+          "raw_value": "batting_average",
+          "source_collection": "measure_catalog_full",
+          "reason": "PASS_05 rejected"
+        },
+        {
+          "candidate_uid": "pass02:measure_catalog_full:measure_0043",
+          "raw_value": "walks",
+          "source_collection": "measure_catalog_full",
+          "reason": "PASS_05 rejected"
+        },
+        {
+          "candidate_uid": "pass02:measure_catalog_full:measure_0061",
+          "raw_value": "hits",
+          "source_collection": "measure_catalog_full",
+          "reason": "PASS_05 rejected"
+        },
+        {
+          "candidate_uid": "pass02:measure_catalog_full:measure_0064",
+          "raw_value": "doubles",
+          "source_collection": "measure_catalog_full",
+          "reason": "PASS_05 rejected"
+        },
+        {
+          "candidate_uid": "pass02:measure_catalog_full:measure_0066",
+          "raw_value": "triples",
+          "source_collection": "measure_catalog_full",
+          "reason": "PASS_05 rejected"
+        }
+      ],
+      "record_examples": [
+        {
+          "candidate_uid": "pass02:measure_catalog_full:measure_0007",
+          "raw_value": "batter_chase_percentage",
+          "normalized_value": "batter chase percentage",
+          "source_collection": "measure_catalog_full",
+          "classification_reason": "PASS_05 rejected"
+        },
+        {
+          "candidate_uid": "pass02:measure_catalog_full:measure_0008",
+          "raw_value": "batter_contact_percentage",
+          "normalized_value": "batter contact percentage",
+          "source_collection": "measure_catalog_full",
+          "classification_reason": "PASS_05 rejected"
+        },
+        {
+          "candidate_uid": "pass02:measure_catalog_full:measure_0016",
+          "raw_value": "batter_swing_percentage",
+          "normalized_value": "batter swing percentage",
+          "source_collection": "measure_catalog_full",
+          "classification_reason": "PASS_05 rejected"
+        },
+        {
+          "candidate_uid": "pass02:measure_catalog_full:measure_0017",
+          "raw_value": "batter_swings",
+          "normalized_value": "batter swings",
+          "source_collection": "measure_catalog_full",
+          "classification_reason": "PASS_05 rejected"
+        },
+        {
+          "candidate_uid": "pass02:measure_catalog_full:measure_0020",
+          "raw_value": "batter_whiff_percentage",
+          "normalized_value": "batter whiff percentage",
+          "source_collection": "measure_catalog_full",
+          "classification_reason": "PASS_05 rejected"
+        },
+        {
+          "candidate_uid": "pass02:measure_catalog_full:measure_0033",
+          "raw_value": "batting_average",
+          "normalized_value": "batting average",
+          "source_collection": "measure_catalog_full",
+          "classification_reason": "PASS_05 rejected"
+        }
+      ]
+    },
+    "unresolved_or_ambiguous_lane": {
+      "count": 1546,
+      "representative_examples": [
+        {
+          "candidate_uid": "pass02:measure_catalog_full:measure_0001",
+          "raw_value": "rbi_opponent",
+          "normalized_value": "rbi opponent",
+          "source_collection": "measure_catalog_full",
+          "classification_reason": "PASS_05 rejected"
+        },
+        {
+          "candidate_uid": "pass02:measure_catalog_full:measure_0002",
+          "raw_value": "at_bats_bases_empty",
+          "normalized_value": "at bats bases empty",
+          "source_collection": "measure_catalog_full",
+          "classification_reason": "PASS_05 manual_review_required"
+        },
+        {
+          "candidate_uid": "pass02:measure_catalog_full:measure_0003",
+          "raw_value": "at_bats_bases_loaded",
+          "normalized_value": "at bats bases loaded",
+          "source_collection": "measure_catalog_full",
+          "classification_reason": "PASS_05 manual_review_required"
+        },
+        {
+          "candidate_uid": "pass02:measure_catalog_full:measure_0004",
+          "raw_value": "at_bats_runners",
+          "normalized_value": "at bats runners",
+          "source_collection": "measure_catalog_full",
+          "classification_reason": "PASS_05 manual_review_required"
+        },
+        {
+          "candidate_uid": "pass02:measure_catalog_full:measure_0005",
+          "raw_value": "at_bats_runners_in_scoring_position_two_outs",
+          "normalized_value": "at bats runners in scoring position two outs",
+          "source_collection": "measure_catalog_full",
+          "classification_reason": "PASS_05 manual_review_required"
+        },
+        {
+          "candidate_uid": "pass02:measure_catalog_full:measure_0006",
+          "raw_value": "total_distance_average",
+          "normalized_value": "total distance average",
+          "source_collection": "measure_catalog_full",
+          "classification_reason": "PASS_05 rejected"
+        }
+      ]
+    }
+  },
+  "why_only_4_promoted": {
+    "approved_runtime_lines": [
+      "GAME WINNING RBI=game_winning_rbi",
+      "GO AHEAD RBI=go_ahead_rbi",
+      "SINGLES=singles",
+      "GO-AHEAD RBI=GO AHEAD RBI"
+    ],
+    "evidence": {
+      "pass09_approved_count": 4,
+      "pass12_presence_validated": true,
+      "pass12_collision_check_passed": true,
+      "pass12_held_lines_still_excluded": true
+    },
+    "classification_grounding": {
+      "total_candidates": 4583,
+      "runtime_plus_alias_candidates": 15,
+      "runtime_plus_alias_percent": 0.33,
+      "composite_candidates": 633,
+      "semantic_layer_candidates": 1890,
+      "tooling_only_candidates": 499,
+      "ambiguous_candidates": 1546
+    },
+    "explanation": [
+      "Not lack of value: 4568 of 4583 entries remain useful in non-runtime lanes or pending review.",
+      "Mismatch with current INI model: most entries are not one-line canonical mapping shapes.",
+      "Already-covered concepts: no additional high-confidence runtime mappings or aliases remained beyond the promoted set.",
+      "Composite-only value: ratios/splits/text-token hybrids belong in composite-expression handling, not direct INI lines.",
+      "Semantic-layer value: filter/playbook-context semantics require resolver grammar/context lanes.",
+      "Tooling/reference value: many entries are operator-assist/reference helpful but non-authoritative for runtime mapping.",
+      "Ambiguity: unresolved/conflicting semantics remain fail-closed pending manual review."
+    ]
+  },
+  "recommended_next_pass": {
+    "name": "MLB_ONAIR_COMPOSITE_EXPRESSION_CLUSTER_DEFINITION_PASS_03",
+    "mode": "read_only_analysis",
+    "bounded_objective": "Define deterministic composite-expression cluster taxonomy and contract candidates from PASS_01 composite lane without runtime/INI mutation."
+  }
+}
