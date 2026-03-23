@@ -1,0 +1,364 @@
+{
+  "pass_name": "MLB_LEARN_LAYER_CONTROLLED_PROPOSAL_PASS_06",
+  "input_artifacts": {
+    "proposal": "tests/_scratch/onair-mlb-pass05-learn-layer-staging/mlb_learn_layer_staging_proposal.json",
+    "safe": "tests/_scratch/onair-mlb-pass05-learn-layer-staging/mlb_learn_layer_safe_to_stage.json",
+    "manual": "tests/_scratch/onair-mlb-pass05-learn-layer-staging/mlb_learn_layer_manual_review.json",
+    "composite": "tests/_scratch/onair-mlb-pass05-learn-layer-staging/mlb_learn_layer_composite_defer.json",
+    "rejected": "tests/_scratch/onair-mlb-pass05-learn-layer-staging/mlb_learn_layer_rejected_or_deferred.json",
+    "summary": "tests/_scratch/onair-mlb-pass05-learn-layer-staging/mlb_learn_layer_staging_summary.md"
+  },
+  "fallback_substitution_used": false,
+  "learn_file_structure_findings": {
+    "reference_file": "SmartStat_Mappings.learn.ini",
+    "observed_pending_sections_in_order": [
+      "PENDING",
+      "PENDING_ALIASES",
+      "PENDING_QUALIFIER_ALIASES",
+      "PENDING_QUALIFIER",
+      "PENDING_ALIASES_PITCHER"
+    ],
+    "formatting_conventions": {
+      "section_header_style": "[UPPERCASE_SECTION_NAME]",
+      "entry_style": "KEY=VALUE (no spaces around equals)",
+      "comment_prefix": ";",
+      "pending_sections_empty_in_reference": true
+    }
+  },
+  "promotion_policy": {
+    "source_bucket_required": "safe_to_stage",
+    "excluded_buckets": [
+      "manual_review_required",
+      "composite_defer",
+      "rejected_or_not_yet_useful"
+    ],
+    "concrete_value_required": true,
+    "placeholder_values_forbidden": [
+      "TBD_CANONICAL_TARGET",
+      "*TBD*"
+    ],
+    "key_style_normalization": "uppercase for proposal alias readability; raw source preserved in trace"
+  },
+  "counts": {
+    "safe_input_count": 27,
+    "promoted_count": 2,
+    "dropped_from_safe_count": 25,
+    "manual_review_count": 280,
+    "composite_defer_count": 238,
+    "rejected_count": 480
+  },
+  "promoted_entries": [
+    {
+      "proposal_id": "proposal_measure_277",
+      "proposed_section": "PENDING_ALIASES",
+      "proposed_key": "GS",
+      "proposed_value": "GS",
+      "source_candidate_id": "measure_277",
+      "source_raw_value": "gs",
+      "source_normalized_candidate": "gs",
+      "rationale": "High-confidence alias alignment to existing MLB SmartStat concept without context-split ambiguity.",
+      "confidence": "high",
+      "exclusion_check": {
+        "source_bucket": "safe_to_stage",
+        "manual_review_included": false,
+        "composite_defer_included": false,
+        "rejected_included": false,
+        "passed": true
+      },
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 277,
+        "query_engine_key": "gs"
+      }
+    },
+    {
+      "proposal_id": "proposal_measure_156",
+      "proposed_section": "PENDING_ALIASES",
+      "proposed_key": "STEALS",
+      "proposed_value": "STEALS",
+      "source_candidate_id": "measure_156",
+      "source_raw_value": "steals",
+      "source_normalized_candidate": "steals",
+      "rationale": "High-confidence alias alignment to existing MLB SmartStat concept without context-split ambiguity.",
+      "confidence": "high",
+      "exclusion_check": {
+        "source_bucket": "safe_to_stage",
+        "manual_review_included": false,
+        "composite_defer_included": false,
+        "rejected_included": false,
+        "passed": true
+      },
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 156,
+        "query_engine_key": "b_sb"
+      }
+    }
+  ],
+  "dropped_safe_entries": [
+    {
+      "candidate_id": "measure_140",
+      "raw_source_value": "pickoffs",
+      "drop_reason": "Candidate lacks concrete deterministic value for INI-shaped proposal entry.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 140,
+        "query_engine_key": "b_pko"
+      }
+    },
+    {
+      "candidate_id": "measure_214",
+      "raw_source_value": "fielding_assists",
+      "drop_reason": "Candidate lacks concrete deterministic value for INI-shaped proposal entry.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 214,
+        "query_engine_key": "f_a"
+      }
+    },
+    {
+      "candidate_id": "measure_216",
+      "raw_source_value": "fielding_caught_stealing",
+      "drop_reason": "Candidate lacks concrete deterministic value for INI-shaped proposal entry.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 216,
+        "query_engine_key": "f_cs"
+      }
+    },
+    {
+      "candidate_id": "measure_217",
+      "raw_source_value": "fielding_double_plays",
+      "drop_reason": "Candidate lacks concrete deterministic value for INI-shaped proposal entry.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 217,
+        "query_engine_key": "f_dp"
+      }
+    },
+    {
+      "candidate_id": "measure_226",
+      "raw_source_value": "fielding_putouts",
+      "drop_reason": "Candidate lacks concrete deterministic value for INI-shaped proposal entry.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 226,
+        "query_engine_key": "f_po"
+      }
+    },
+    {
+      "candidate_id": "measure_437",
+      "raw_source_value": "balks",
+      "drop_reason": "Candidate lacks concrete deterministic value for INI-shaped proposal entry.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 437,
+        "query_engine_key": "p_balk"
+      }
+    },
+    {
+      "candidate_id": "measure_449",
+      "raw_source_value": "pitcher_blown_saves",
+      "drop_reason": "Candidate lacks concrete deterministic value for INI-shaped proposal entry.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 449,
+        "query_engine_key": "p_bsv"
+      }
+    },
+    {
+      "candidate_id": "measure_451",
+      "raw_source_value": "pitcher_caught_stealing",
+      "drop_reason": "Candidate lacks concrete deterministic value for INI-shaped proposal entry.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 451,
+        "query_engine_key": "p_cs"
+      }
+    },
+    {
+      "candidate_id": "measure_49",
+      "raw_source_value": "caught_stealing",
+      "drop_reason": "Candidate lacks concrete deterministic value for INI-shaped proposal entry.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 49,
+        "query_engine_key": "b_cs"
+      }
+    },
+    {
+      "candidate_id": "measure_62",
+      "raw_source_value": "singles",
+      "drop_reason": "Candidate lacks concrete deterministic value for INI-shaped proposal entry.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 62,
+        "query_engine_key": "b_h1b"
+      }
+    },
+    {
+      "candidate_id": "measure_762",
+      "raw_source_value": "game_winning_rbi",
+      "drop_reason": "Candidate lacks concrete deterministic value for INI-shaped proposal entry.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 762,
+        "query_engine_key": "game_winning_rbi"
+      }
+    },
+    {
+      "candidate_id": "measure_769",
+      "raw_source_value": "go_ahead_rbi",
+      "drop_reason": "Candidate lacks concrete deterministic value for INI-shaped proposal entry.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 769,
+        "query_engine_key": "go_ahead_rbi"
+      }
+    },
+    {
+      "candidate_id": "user_107",
+      "raw_source_value": "GO-AHEAD RBI",
+      "drop_reason": "Candidate lacks concrete deterministic value for INI-shaped proposal entry.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 107,
+        "group_name": "LEADERBOARD - HITTING",
+        "name": "leaders_garbi"
+      }
+    },
+    {
+      "candidate_id": "user_119",
+      "raw_source_value": "GAME WINNING RBI",
+      "drop_reason": "Candidate lacks concrete deterministic value for INI-shaped proposal entry.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 119,
+        "group_name": "LEADERBOARD - HITTING",
+        "name": "leaders_gwrbi"
+      }
+    },
+    {
+      "candidate_id": "user_123",
+      "raw_source_value": "CAUGHT STEALING",
+      "drop_reason": "Candidate lacks concrete deterministic value for INI-shaped proposal entry.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 123,
+        "group_name": "LEADERBOARD - HITTING",
+        "name": "leaders_cs"
+      }
+    },
+    {
+      "candidate_id": "user_138",
+      "raw_source_value": "SINGLES",
+      "drop_reason": "Candidate lacks concrete deterministic value for INI-shaped proposal entry.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 138,
+        "group_name": "LEADERBOARD - HITTING",
+        "name": "leaders_1b"
+      }
+    },
+    {
+      "candidate_id": "user_183",
+      "raw_source_value": "PICKOFFS",
+      "drop_reason": "Candidate lacks concrete deterministic value for INI-shaped proposal entry.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 183,
+        "group_name": "L3 - PITCHING",
+        "name": "header_pickoffs"
+      }
+    },
+    {
+      "candidate_id": "user_2",
+      "raw_source_value": "DOUBLE PLAYS",
+      "drop_reason": "Candidate lacks concrete deterministic value for INI-shaped proposal entry.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 2,
+        "group_name": "LEADERBOARD - FIELDING",
+        "name": "leaders_doubleplays"
+      }
+    },
+    {
+      "candidate_id": "user_4",
+      "raw_source_value": "PUTOUTS",
+      "drop_reason": "Candidate lacks concrete deterministic value for INI-shaped proposal entry.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 4,
+        "group_name": "LEADERBOARD - FIELDING",
+        "name": "leaders_fputouts"
+      }
+    },
+    {
+      "candidate_id": "user_40",
+      "raw_source_value": "PUTOUTS",
+      "drop_reason": "Candidate lacks concrete deterministic value for INI-shaped proposal entry.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 40,
+        "group_name": "L3 - FIELDING",
+        "name": "header_putouts"
+      }
+    },
+    {
+      "candidate_id": "user_41",
+      "raw_source_value": "ASSISTS",
+      "drop_reason": "Candidate lacks concrete deterministic value for INI-shaped proposal entry.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 41,
+        "group_name": "L3 - FIELDING",
+        "name": "header_assists"
+      }
+    },
+    {
+      "candidate_id": "user_6",
+      "raw_source_value": "ASSISTS",
+      "drop_reason": "Candidate lacks concrete deterministic value for INI-shaped proposal entry.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 6,
+        "group_name": "LEADERBOARD - FIELDING",
+        "name": "leaders_fassists"
+      }
+    },
+    {
+      "candidate_id": "user_69",
+      "raw_source_value": "BLOWN SAVES",
+      "drop_reason": "Candidate lacks concrete deterministic value for INI-shaped proposal entry.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 69,
+        "group_name": "LEADERBOARD - PITCHING",
+        "name": "leaders_bs"
+      }
+    },
+    {
+      "candidate_id": "user_94",
+      "raw_source_value": "PICKOFFS",
+      "drop_reason": "Candidate lacks concrete deterministic value for INI-shaped proposal entry.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 94,
+        "group_name": "LEADERBOARD - PITCHING",
+        "name": "leaders_pickoffs"
+      }
+    },
+    {
+      "candidate_id": "user_95",
+      "raw_source_value": "BALKS",
+      "drop_reason": "Candidate lacks concrete deterministic value for INI-shaped proposal entry.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 95,
+        "group_name": "LEADERBOARD - PITCHING",
+        "name": "leaders_balks"
+      }
+    }
+  ],
+  "boundary_note": "Proposal-only trace artifact. No SmartStat file mutation performed."
+}

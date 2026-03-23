@@ -1,0 +1,559 @@
+{
+  "pass_name": "MLB_LEARN_LAYER_CANONICAL_MODEL_REBASELINE_PASS_07",
+  "scope": "read_only_canonical_model_rebaseline",
+  "total_rows": 27,
+  "rows": [
+    {
+      "proposal_id": "trace_user_2",
+      "source_candidate_id": "user_2",
+      "raw_source_value": "DOUBLE PLAYS",
+      "prior_pass05_bucket": "safe_to_stage",
+      "corrected_classification": "reject",
+      "proposed_section": null,
+      "proposed_key": null,
+      "proposed_value": null,
+      "canonical_dependency": {
+        "measure_candidate_id": "measure_217",
+        "canonical_key": "DOUBLE PLAYS",
+        "canonical_value": "fielding_double_plays",
+        "canonical_section": "CATEGORY_TO_MEASURE"
+      },
+      "rationale": "User phrase equals proposed canonical key; alias entry would be redundant.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 2,
+        "group_name": "LEADERBOARD - FIELDING",
+        "name": "leaders_doubleplays"
+      }
+    },
+    {
+      "proposal_id": "trace_user_4",
+      "source_candidate_id": "user_4",
+      "raw_source_value": "PUTOUTS",
+      "prior_pass05_bucket": "safe_to_stage",
+      "corrected_classification": "reject",
+      "proposed_section": null,
+      "proposed_key": null,
+      "proposed_value": null,
+      "canonical_dependency": {
+        "measure_candidate_id": "measure_226",
+        "canonical_key": "PUTOUTS",
+        "canonical_value": "fielding_putouts",
+        "canonical_section": "CATEGORY_TO_MEASURE"
+      },
+      "rationale": "User phrase equals proposed canonical key; alias entry would be redundant.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 4,
+        "group_name": "LEADERBOARD - FIELDING",
+        "name": "leaders_fputouts"
+      }
+    },
+    {
+      "proposal_id": "trace_user_6",
+      "source_candidate_id": "user_6",
+      "raw_source_value": "ASSISTS",
+      "prior_pass05_bucket": "safe_to_stage",
+      "corrected_classification": "reject",
+      "proposed_section": null,
+      "proposed_key": null,
+      "proposed_value": null,
+      "canonical_dependency": {
+        "measure_candidate_id": "measure_214",
+        "canonical_key": "ASSISTS",
+        "canonical_value": "fielding_assists",
+        "canonical_section": "CATEGORY_TO_MEASURE"
+      },
+      "rationale": "User phrase equals proposed canonical key; alias entry would be redundant.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 6,
+        "group_name": "LEADERBOARD - FIELDING",
+        "name": "leaders_fassists"
+      }
+    },
+    {
+      "proposal_id": "trace_user_40",
+      "source_candidate_id": "user_40",
+      "raw_source_value": "PUTOUTS",
+      "prior_pass05_bucket": "safe_to_stage",
+      "corrected_classification": "reject",
+      "proposed_section": null,
+      "proposed_key": null,
+      "proposed_value": null,
+      "canonical_dependency": null,
+      "rationale": "Duplicate user phrase evidence; first occurrence retained for modeling.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 40,
+        "group_name": "L3 - FIELDING",
+        "name": "header_putouts"
+      }
+    },
+    {
+      "proposal_id": "trace_user_41",
+      "source_candidate_id": "user_41",
+      "raw_source_value": "ASSISTS",
+      "prior_pass05_bucket": "safe_to_stage",
+      "corrected_classification": "reject",
+      "proposed_section": null,
+      "proposed_key": null,
+      "proposed_value": null,
+      "canonical_dependency": null,
+      "rationale": "Duplicate user phrase evidence; first occurrence retained for modeling.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 41,
+        "group_name": "L3 - FIELDING",
+        "name": "header_assists"
+      }
+    },
+    {
+      "proposal_id": "trace_measure_49",
+      "source_candidate_id": "measure_49",
+      "raw_source_value": "caught_stealing",
+      "prior_pass05_bucket": "safe_to_stage",
+      "corrected_classification": "manual_review_required",
+      "proposed_section": null,
+      "proposed_key": null,
+      "proposed_value": null,
+      "canonical_dependency": null,
+      "rationale": "Concept collides across runner/fielding/pitcher semantics; canonical destination is not singular.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 49,
+        "query_engine_key": "b_cs"
+      }
+    },
+    {
+      "proposal_id": "trace_measure_62",
+      "source_candidate_id": "measure_62",
+      "raw_source_value": "singles",
+      "prior_pass05_bucket": "safe_to_stage",
+      "corrected_classification": "new_canonical_category_measure",
+      "proposed_section": "CATEGORY_TO_MEASURE",
+      "proposed_key": "SINGLES",
+      "proposed_value": "singles",
+      "canonical_dependency": null,
+      "rationale": "Direct MLB measure concept; aligns with CATEGORY_TO_MEASURE key->measure_value direction.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 62,
+        "query_engine_key": "b_h1b"
+      }
+    },
+    {
+      "proposal_id": "trace_user_69",
+      "source_candidate_id": "user_69",
+      "raw_source_value": "BLOWN SAVES",
+      "prior_pass05_bucket": "safe_to_stage",
+      "corrected_classification": "reject",
+      "proposed_section": null,
+      "proposed_key": null,
+      "proposed_value": null,
+      "canonical_dependency": {
+        "measure_candidate_id": "measure_449",
+        "canonical_key": "BLOWN SAVES",
+        "canonical_value": "pitcher_blown_saves",
+        "canonical_section": "CATEGORY_TO_MEASURE_PITCHER"
+      },
+      "rationale": "User phrase equals proposed canonical key; alias entry would be redundant.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 69,
+        "group_name": "LEADERBOARD - PITCHING",
+        "name": "leaders_bs"
+      }
+    },
+    {
+      "proposal_id": "trace_user_94",
+      "source_candidate_id": "user_94",
+      "raw_source_value": "PICKOFFS",
+      "prior_pass05_bucket": "safe_to_stage",
+      "corrected_classification": "manual_review_required",
+      "proposed_section": null,
+      "proposed_key": null,
+      "proposed_value": null,
+      "canonical_dependency": null,
+      "rationale": "Dependent measure concept is manual-review gated; alias cannot be safely promoted.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 94,
+        "group_name": "LEADERBOARD - PITCHING",
+        "name": "leaders_pickoffs"
+      }
+    },
+    {
+      "proposal_id": "trace_user_95",
+      "source_candidate_id": "user_95",
+      "raw_source_value": "BALKS",
+      "prior_pass05_bucket": "safe_to_stage",
+      "corrected_classification": "manual_review_required",
+      "proposed_section": null,
+      "proposed_key": null,
+      "proposed_value": null,
+      "canonical_dependency": null,
+      "rationale": "Dependent measure concept is manual-review gated; alias cannot be safely promoted.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 95,
+        "group_name": "LEADERBOARD - PITCHING",
+        "name": "leaders_balks"
+      }
+    },
+    {
+      "proposal_id": "trace_user_107",
+      "source_candidate_id": "user_107",
+      "raw_source_value": "GO-AHEAD RBI",
+      "prior_pass05_bucket": "safe_to_stage",
+      "corrected_classification": "alias_to_existing_canonical",
+      "proposed_section": "CATEGORY_TO_MEASURE_ALIASES",
+      "proposed_key": "GO-AHEAD RBI",
+      "proposed_value": "GO AHEAD RBI",
+      "canonical_dependency": {
+        "measure_candidate_id": "measure_769",
+        "canonical_key": "GO AHEAD RBI",
+        "canonical_value": "go_ahead_rbi",
+        "canonical_section": "CATEGORY_TO_MEASURE"
+      },
+      "rationale": "User phrase is a variant that can safely map to proposed canonical key.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 107,
+        "group_name": "LEADERBOARD - HITTING",
+        "name": "leaders_garbi"
+      }
+    },
+    {
+      "proposal_id": "trace_user_119",
+      "source_candidate_id": "user_119",
+      "raw_source_value": "GAME WINNING RBI",
+      "prior_pass05_bucket": "safe_to_stage",
+      "corrected_classification": "reject",
+      "proposed_section": null,
+      "proposed_key": null,
+      "proposed_value": null,
+      "canonical_dependency": {
+        "measure_candidate_id": "measure_762",
+        "canonical_key": "GAME WINNING RBI",
+        "canonical_value": "game_winning_rbi",
+        "canonical_section": "CATEGORY_TO_MEASURE"
+      },
+      "rationale": "User phrase equals proposed canonical key; alias entry would be redundant.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 119,
+        "group_name": "LEADERBOARD - HITTING",
+        "name": "leaders_gwrbi"
+      }
+    },
+    {
+      "proposal_id": "trace_user_123",
+      "source_candidate_id": "user_123",
+      "raw_source_value": "CAUGHT STEALING",
+      "prior_pass05_bucket": "safe_to_stage",
+      "corrected_classification": "manual_review_required",
+      "proposed_section": null,
+      "proposed_key": null,
+      "proposed_value": null,
+      "canonical_dependency": null,
+      "rationale": "User phrase maps to multiple candidate measure concepts; canonical dependency is ambiguous.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 123,
+        "group_name": "LEADERBOARD - HITTING",
+        "name": "leaders_cs"
+      }
+    },
+    {
+      "proposal_id": "trace_user_138",
+      "source_candidate_id": "user_138",
+      "raw_source_value": "SINGLES",
+      "prior_pass05_bucket": "safe_to_stage",
+      "corrected_classification": "reject",
+      "proposed_section": null,
+      "proposed_key": null,
+      "proposed_value": null,
+      "canonical_dependency": {
+        "measure_candidate_id": "measure_62",
+        "canonical_key": "SINGLES",
+        "canonical_value": "singles",
+        "canonical_section": "CATEGORY_TO_MEASURE"
+      },
+      "rationale": "User phrase equals proposed canonical key; alias entry would be redundant.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 138,
+        "group_name": "LEADERBOARD - HITTING",
+        "name": "leaders_1b"
+      }
+    },
+    {
+      "proposal_id": "trace_measure_140",
+      "source_candidate_id": "measure_140",
+      "raw_source_value": "pickoffs",
+      "prior_pass05_bucket": "safe_to_stage",
+      "corrected_classification": "manual_review_required",
+      "proposed_section": null,
+      "proposed_key": null,
+      "proposed_value": null,
+      "canonical_dependency": null,
+      "rationale": "Concept role ambiguity (runner vs pitcher context) prevents deterministic canonical placement.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 140,
+        "query_engine_key": "b_pko"
+      }
+    },
+    {
+      "proposal_id": "trace_measure_156",
+      "source_candidate_id": "measure_156",
+      "raw_source_value": "steals",
+      "prior_pass05_bucket": "safe_to_stage",
+      "corrected_classification": "reject",
+      "proposed_section": null,
+      "proposed_key": null,
+      "proposed_value": null,
+      "canonical_dependency": null,
+      "rationale": "Alias key already exists in alias sections; no new semantic addition required.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 156,
+        "query_engine_key": "b_sb"
+      }
+    },
+    {
+      "proposal_id": "trace_user_183",
+      "source_candidate_id": "user_183",
+      "raw_source_value": "PICKOFFS",
+      "prior_pass05_bucket": "safe_to_stage",
+      "corrected_classification": "reject",
+      "proposed_section": null,
+      "proposed_key": null,
+      "proposed_value": null,
+      "canonical_dependency": null,
+      "rationale": "Duplicate user phrase evidence; first occurrence retained for modeling.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 183,
+        "group_name": "L3 - PITCHING",
+        "name": "header_pickoffs"
+      }
+    },
+    {
+      "proposal_id": "trace_measure_214",
+      "source_candidate_id": "measure_214",
+      "raw_source_value": "fielding_assists",
+      "prior_pass05_bucket": "safe_to_stage",
+      "corrected_classification": "new_canonical_category_measure",
+      "proposed_section": "CATEGORY_TO_MEASURE",
+      "proposed_key": "ASSISTS",
+      "proposed_value": "fielding_assists",
+      "canonical_dependency": null,
+      "rationale": "Fielding-prefixed measure with supporting user phrase; category canonical destination is viable.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 214,
+        "query_engine_key": "f_a"
+      }
+    },
+    {
+      "proposal_id": "trace_measure_216",
+      "source_candidate_id": "measure_216",
+      "raw_source_value": "fielding_caught_stealing",
+      "prior_pass05_bucket": "safe_to_stage",
+      "corrected_classification": "manual_review_required",
+      "proposed_section": null,
+      "proposed_key": null,
+      "proposed_value": null,
+      "canonical_dependency": null,
+      "rationale": "Concept overlaps with caught_stealing and pitcher_caught_stealing; canonical destination requires manual decision.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 216,
+        "query_engine_key": "f_cs"
+      }
+    },
+    {
+      "proposal_id": "trace_measure_217",
+      "source_candidate_id": "measure_217",
+      "raw_source_value": "fielding_double_plays",
+      "prior_pass05_bucket": "safe_to_stage",
+      "corrected_classification": "new_canonical_category_measure",
+      "proposed_section": "CATEGORY_TO_MEASURE",
+      "proposed_key": "DOUBLE PLAYS",
+      "proposed_value": "fielding_double_plays",
+      "canonical_dependency": null,
+      "rationale": "Fielding-prefixed measure with supporting user phrase; category canonical destination is viable.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 217,
+        "query_engine_key": "f_dp"
+      }
+    },
+    {
+      "proposal_id": "trace_measure_226",
+      "source_candidate_id": "measure_226",
+      "raw_source_value": "fielding_putouts",
+      "prior_pass05_bucket": "safe_to_stage",
+      "corrected_classification": "new_canonical_category_measure",
+      "proposed_section": "CATEGORY_TO_MEASURE",
+      "proposed_key": "PUTOUTS",
+      "proposed_value": "fielding_putouts",
+      "canonical_dependency": null,
+      "rationale": "Fielding-prefixed measure with supporting user phrase; category canonical destination is viable.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 226,
+        "query_engine_key": "f_po"
+      }
+    },
+    {
+      "proposal_id": "trace_measure_277",
+      "source_candidate_id": "measure_277",
+      "raw_source_value": "gs",
+      "prior_pass05_bucket": "safe_to_stage",
+      "corrected_classification": "reject",
+      "proposed_section": null,
+      "proposed_key": null,
+      "proposed_value": null,
+      "canonical_dependency": null,
+      "rationale": "Canonical key already exists; alias self-reference would be structurally invalid.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 277,
+        "query_engine_key": "gs"
+      }
+    },
+    {
+      "proposal_id": "trace_measure_437",
+      "source_candidate_id": "measure_437",
+      "raw_source_value": "balks",
+      "prior_pass05_bucket": "safe_to_stage",
+      "corrected_classification": "manual_review_required",
+      "proposed_section": null,
+      "proposed_key": null,
+      "proposed_value": null,
+      "canonical_dependency": null,
+      "rationale": "Measure value lacks pitcher prefix while likely pitcher-domain; canonical destination needs manual confirmation.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 437,
+        "query_engine_key": "p_balk"
+      }
+    },
+    {
+      "proposal_id": "trace_measure_449",
+      "source_candidate_id": "measure_449",
+      "raw_source_value": "pitcher_blown_saves",
+      "prior_pass05_bucket": "safe_to_stage",
+      "corrected_classification": "new_canonical_pitcher_category_measure",
+      "proposed_section": "CATEGORY_TO_MEASURE_PITCHER",
+      "proposed_key": "BLOWN SAVES",
+      "proposed_value": "pitcher_blown_saves",
+      "canonical_dependency": null,
+      "rationale": "Pitcher-prefixed measure clearly belongs in pitcher canonical section.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 449,
+        "query_engine_key": "p_bsv"
+      }
+    },
+    {
+      "proposal_id": "trace_measure_451",
+      "source_candidate_id": "measure_451",
+      "raw_source_value": "pitcher_caught_stealing",
+      "prior_pass05_bucket": "safe_to_stage",
+      "corrected_classification": "manual_review_required",
+      "proposed_section": null,
+      "proposed_key": null,
+      "proposed_value": null,
+      "canonical_dependency": null,
+      "rationale": "Concept overlaps with fielding/non-pitcher caught stealing; canonical destination requires manual decision.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 451,
+        "query_engine_key": "p_cs"
+      }
+    },
+    {
+      "proposal_id": "trace_measure_762",
+      "source_candidate_id": "measure_762",
+      "raw_source_value": "game_winning_rbi",
+      "prior_pass05_bucket": "safe_to_stage",
+      "corrected_classification": "new_canonical_category_measure",
+      "proposed_section": "CATEGORY_TO_MEASURE",
+      "proposed_key": "GAME WINNING RBI",
+      "proposed_value": "game_winning_rbi",
+      "canonical_dependency": null,
+      "rationale": "Direct MLB batting outcome concept; canonical category destination is clear.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 762,
+        "query_engine_key": "game_winning_rbi"
+      }
+    },
+    {
+      "proposal_id": "trace_measure_769",
+      "source_candidate_id": "measure_769",
+      "raw_source_value": "go_ahead_rbi",
+      "prior_pass05_bucket": "safe_to_stage",
+      "corrected_classification": "new_canonical_category_measure",
+      "proposed_section": "CATEGORY_TO_MEASURE",
+      "proposed_key": "GO AHEAD RBI",
+      "proposed_value": "go_ahead_rbi",
+      "canonical_dependency": null,
+      "rationale": "Direct MLB batting outcome concept; canonical category destination is clear.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 769,
+        "query_engine_key": "go_ahead_rbi"
+      }
+    }
+  ],
+  "structural_error_findings": [
+    {
+      "error_code": "SELF_REFERENTIAL_ALIAS",
+      "example": "GS=GS",
+      "why_invalid": "Alias sections should map alternate keys to canonical keys; self-referential aliasing adds no indirection and is structurally unsound for mutation planning."
+    },
+    {
+      "error_code": "SELF_REFERENTIAL_ALIAS",
+      "example": "STEALS=STEALS",
+      "why_invalid": "Alias must resolve to canonical key (e.g., STEALS=SB); self-reference bypasses canonical model."
+    },
+    {
+      "error_code": "STAGING_SECTION_AS_SEMANTIC_DESTINATION",
+      "example": "Treating PENDING_ALIASES as final semantic target without canonical dependency modeling",
+      "why_invalid": "PENDING sections are staging surfaces, not semantic authority; canonical/alias destination sections must be modeled first."
+    }
+  ],
+  "boundary_note": "Traceability artifact for corrected reclassification and proposal modeling only."
+}
