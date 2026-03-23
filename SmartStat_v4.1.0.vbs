@@ -1044,16 +1044,15 @@ Sub WP21Advisory_AddReasonCode(ByRef reasonCodes, ByRef reasonCount, ByVal codeT
   reasonCount = CLng(reasonCount) + 1
 End Sub
 
-Function WP21Advisory_BuildOperatorHintDetailJson(ByVal previewKind, ByVal operatorHintSurface)
+Function WP21Advisory_BuildOperatorHintDetailState(ByVal previewKind, ByVal operatorHintSurface)
   Dim hintCode
   Dim hasAdvisory
   Dim hasRunId, hasTemplate, hasArtifact, hasPreviewKind
   Dim explicitMismatchCode
+  Dim operatorHintDetail
   Dim reasonCodes()
   Dim reasonCount
-  Dim reasonCodesJson
   Dim i
-  Dim outTxt
 
   hintCode = "NO_ADVISORY"
   If IsObject(operatorHintSurface) Then
@@ -1106,10 +1105,66 @@ Function WP21Advisory_BuildOperatorHintDetailJson(ByVal previewKind, ByVal opera
     End If
   End If
 
+  Set operatorHintDetail = CreateObject("Scripting.Dictionary")
+  operatorHintDetail.Add "reason_count", CLng(reasonCount)
+  For i = 0 To CLng(reasonCount) - 1
+    operatorHintDetail.Add "reason_code_" & CStr(i), CStr(reasonCodes(i))
+  Next
+
+  Set WP21Advisory_BuildOperatorHintDetailState = operatorHintDetail
+End Function
+
+Function WP21Advisory_GetDetailReasonCode(ByVal operatorHintDetail, ByVal indexNum)
+  Dim k
+  WP21Advisory_GetDetailReasonCode = ""
+  k = "reason_code_" & CStr(CLng(indexNum))
+  If IsObject(operatorHintDetail) Then
+    If Not (operatorHintDetail Is Nothing) Then
+      If operatorHintDetail.Exists(k) Then WP21Advisory_GetDetailReasonCode = CStr(operatorHintDetail(k))
+    End If
+  End If
+End Function
+
+Function WP21Advisory_DetailHasReasonCode(ByVal operatorHintDetail, ByVal targetCode)
+  Dim reasonCount
+  Dim i
+  Dim codeTxt
+
+  WP21Advisory_DetailHasReasonCode = False
+  reasonCount = 0
+  If IsObject(operatorHintDetail) Then
+    If Not (operatorHintDetail Is Nothing) Then
+      If operatorHintDetail.Exists("reason_count") Then reasonCount = CLng(operatorHintDetail("reason_count"))
+    End If
+  End If
+  For i = 0 To CLng(reasonCount) - 1
+    codeTxt = WP21Advisory_GetDetailReasonCode(operatorHintDetail, i)
+    If UCase(CStr(codeTxt)) = UCase(CStr(targetCode)) Then
+      WP21Advisory_DetailHasReasonCode = True
+      Exit Function
+    End If
+  Next
+End Function
+
+Function WP21Advisory_BuildOperatorHintDetailJson(ByVal operatorHintDetail)
+  Dim reasonCount
+  Dim reasonCodesJson
+  Dim i
+  Dim reasonCode
+  Dim outTxt
+
+  reasonCount = 0
+  If IsObject(operatorHintDetail) Then
+    If Not (operatorHintDetail Is Nothing) Then
+      If operatorHintDetail.Exists("reason_count") Then reasonCount = CLng(operatorHintDetail("reason_count"))
+    End If
+  End If
+
   reasonCodesJson = "["
   For i = 0 To CLng(reasonCount) - 1
+    reasonCode = WP21Advisory_GetDetailReasonCode(operatorHintDetail, i)
     If i > 0 Then reasonCodesJson = reasonCodesJson & ","
-    reasonCodesJson = reasonCodesJson & """" & Slice1Ingress_JsonEscape(CStr(reasonCodes(i))) & """"
+    reasonCodesJson = reasonCodesJson & """" & Slice1Ingress_JsonEscape(CStr(reasonCode)) & """"
   Next
   reasonCodesJson = reasonCodesJson & "]"
 
@@ -1118,6 +1173,77 @@ Function WP21Advisory_BuildOperatorHintDetailJson(ByVal previewKind, ByVal opera
   outTxt = outTxt & "      ""reason_codes"": " & reasonCodesJson & vbCrLf
   outTxt = outTxt & "    }"
   WP21Advisory_BuildOperatorHintDetailJson = outTxt
+End Function
+
+Function WP21Advisory_BuildOperatorHintSummary(ByVal operatorHintSurface, ByVal operatorHintDetail)
+  Dim hintLevel, hintCode
+  Dim reasonCount
+  Dim i
+  Dim codeTxt
+  Dim parenthetical
+  Dim outTxt
+
+  hintLevel = "none"
+  hintCode = "NO_ADVISORY"
+  If IsObject(operatorHintSurface) Then
+    If Not (operatorHintSurface Is Nothing) Then
+      If operatorHintSurface.Exists("hint_level") Then hintLevel = Trim(CStr(operatorHintSurface("hint_level")))
+      If operatorHintSurface.Exists("hint_code") Then hintCode = Trim(CStr(operatorHintSurface("hint_code")))
+    End If
+  End If
+
+  reasonCount = 0
+  If IsObject(operatorHintDetail) Then
+    If Not (operatorHintDetail Is Nothing) Then
+      If operatorHintDetail.Exists("reason_count") Then reasonCount = CLng(operatorHintDetail("reason_count"))
+    End If
+  End If
+
+  Select Case UCase(CStr(hintCode))
+    Case "NO_ADVISORY"
+      outTxt = "No advisory data"
+    Case "ADVISORY_ALIGNED"
+      outTxt = "Advisory aligned with current context"
+    Case "ADVISORY_PARTIAL"
+      outTxt = "Advisory partially matched"
+      parenthetical = ""
+      If WP21Advisory_DetailHasReasonCode(operatorHintDetail, "RUN_ID_MISSING") Then
+        parenthetical = "run id missing"
+      ElseIf WP21Advisory_DetailHasReasonCode(operatorHintDetail, "TEMPLATE_MISSING") Then
+        parenthetical = "template missing"
+      ElseIf WP21Advisory_DetailHasReasonCode(operatorHintDetail, "ARTIFACT_PATH_MISSING") Then
+        parenthetical = "artifact path missing"
+      ElseIf WP21Advisory_DetailHasReasonCode(operatorHintDetail, "PREVIEW_KIND_MISSING") Then
+        parenthetical = "preview kind missing"
+      End If
+      If Len(parenthetical) > 0 Then outTxt = outTxt & " (" & parenthetical & ")"
+    Case "ADVISORY_CONFLICT"
+      outTxt = "Advisory conflict detected"
+      parenthetical = ""
+      For i = 0 To CLng(reasonCount) - 1
+        codeTxt = Trim(CStr(WP21Advisory_GetDetailReasonCode(operatorHintDetail, i)))
+        If Len(codeTxt) > 0 Then
+          If UCase(codeTxt) <> "ADVISORY_PRESENT" And UCase(codeTxt) <> "EXPLICIT_CONFLICT_MARKER" Then
+            parenthetical = codeTxt
+            Exit For
+          End If
+        End If
+      Next
+      If Len(parenthetical) > 0 Then outTxt = outTxt & " (" & parenthetical & ")"
+    Case Else
+      Select Case UCase(CStr(hintLevel))
+        Case "NONE"
+          outTxt = "No advisory data"
+        Case "INFO"
+          outTxt = "Advisory aligned with current context"
+        Case "RISK"
+          outTxt = "Advisory conflict detected"
+        Case Else
+          outTxt = "Advisory partially matched"
+      End Select
+  End Select
+
+  WP21Advisory_BuildOperatorHintSummary = outTxt
 End Function
 
 Function WP21Advisory_ResolveArtifactPath()
@@ -8425,13 +8551,17 @@ End Function
 
 Function Slice2PlanBridge_BuildPreviewPayloadJson(ByVal tabfieldRecords, ByVal previewKind, ByRef outcome)
   Dim keys, payload, ruleSummaryJson
-  Dim operatorHintSurface, operatorHintSurfaceJson, operatorHintDetailJson
+  Dim operatorHintSurface, operatorHintSurfaceJson
+  Dim operatorHintDetail, operatorHintDetailJson
+  Dim operatorHintSummary
 
   keys = tabfieldRecords.Keys
   If tabfieldRecords.Count > 0 Then keys = Slice1Ingress_SortTextBinary(keys)
   Set operatorHintSurface = WP21Advisory_BuildOperatorHintSurface(previewKind, outcome)
   operatorHintSurfaceJson = WP21Advisory_BuildOperatorHintSurfaceJson(operatorHintSurface)
-  operatorHintDetailJson = WP21Advisory_BuildOperatorHintDetailJson(previewKind, operatorHintSurface)
+  Set operatorHintDetail = WP21Advisory_BuildOperatorHintDetailState(previewKind, operatorHintSurface)
+  operatorHintDetailJson = WP21Advisory_BuildOperatorHintDetailJson(operatorHintDetail)
+  operatorHintSummary = WP21Advisory_BuildOperatorHintSummary(operatorHintSurface, operatorHintDetail)
 
   payload = ""
   payload = payload & "{" & vbCrLf
@@ -8458,7 +8588,8 @@ Function Slice2PlanBridge_BuildPreviewPayloadJson(ByVal tabfieldRecords, ByVal p
   End If
   payload = payload & "," & vbCrLf
   payload = payload & "    ""operator_hint_surface"": " & CStr(operatorHintSurfaceJson) & "," & vbCrLf
-  payload = payload & "    ""operator_hint_detail"": " & CStr(operatorHintDetailJson) & vbCrLf
+  payload = payload & "    ""operator_hint_detail"": " & CStr(operatorHintDetailJson) & "," & vbCrLf
+  payload = payload & "    ""operator_hint_summary"": """ & Slice1Ingress_JsonEscape(CStr(operatorHintSummary)) & """" & vbCrLf
   payload = payload & "  }"
 
   Slice2PlanBridge_BuildPreviewPayloadJson = payload
