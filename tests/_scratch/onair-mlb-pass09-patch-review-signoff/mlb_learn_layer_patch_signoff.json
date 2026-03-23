@@ -1,0 +1,141 @@
+{
+  "pass_name": "MLB_LEARN_LAYER_CANONICAL_PATCH_REVIEW_SIGNOFF_PASS_09",
+  "scope": "closed_pass08_patch_ready_review_only",
+  "source_artifacts": {
+    "pass08_patch_packet_md": "tests/_scratch/onair-mlb-pass08-canonical-patch-packet/mlb_learn_layer_canonical_patch_packet.md",
+    "pass08_patch_packet_ini": "tests/_scratch/onair-mlb-pass08-canonical-patch-packet/mlb_learn_layer_canonical_patch_packet.ini",
+    "pass08_patch_trace_json": "tests/_scratch/onair-mlb-pass08-canonical-patch-packet/mlb_learn_layer_canonical_patch_trace.json",
+    "pass08_patch_summary_md": "tests/_scratch/onair-mlb-pass08-canonical-patch-packet/mlb_learn_layer_canonical_patch_summary.md"
+  },
+  "decision_labels": [
+    "approve_for_future_patch",
+    "reject_from_patch",
+    "hold_for_manual_review"
+  ],
+  "closed_set_total": 8,
+  "signoff_counts": {
+    "approve_for_future_patch": 4,
+    "reject_from_patch": 0,
+    "hold_for_manual_review": 4
+  },
+  "reviewed_lines": [
+    {
+      "review_id": "review_001",
+      "patch_id": "patch_measure_214",
+      "exact_proposed_line": "ASSISTS=fielding_assists",
+      "target_file": "SmartStat_Mappings.learn.ini",
+      "target_section": "CATEGORY_TO_MEASURE",
+      "prior_pass07_classification": "new_canonical_category_measure",
+      "pass08_patch_status": "patch_ready",
+      "signoff_decision": "hold_for_manual_review",
+      "rationale": "Structurally valid but semantically sensitive; 'ASSISTS' may require explicit fielding-domain convention confirmation before promotion.",
+      "confidence": "medium",
+      "dependency_notes": "none"
+    },
+    {
+      "review_id": "review_002",
+      "patch_id": "patch_measure_217",
+      "exact_proposed_line": "DOUBLE PLAYS=fielding_double_plays",
+      "target_file": "SmartStat_Mappings.learn.ini",
+      "target_section": "CATEGORY_TO_MEASURE",
+      "prior_pass07_classification": "new_canonical_category_measure",
+      "pass08_patch_status": "patch_ready",
+      "signoff_decision": "hold_for_manual_review",
+      "rationale": "Structurally valid but semantically sensitive; 'DOUBLE PLAYS' can collide with multiple baseball interpretations and needs manual semantic finalization.",
+      "confidence": "medium",
+      "dependency_notes": "none"
+    },
+    {
+      "review_id": "review_003",
+      "patch_id": "patch_measure_762",
+      "exact_proposed_line": "GAME WINNING RBI=game_winning_rbi",
+      "target_file": "SmartStat_Mappings.learn.ini",
+      "target_section": "CATEGORY_TO_MEASURE",
+      "prior_pass07_classification": "new_canonical_category_measure",
+      "pass08_patch_status": "patch_ready",
+      "signoff_decision": "approve_for_future_patch",
+      "rationale": "Canonical batting outcome mapping is semantically clear and aligned with existing CATEGORY_TO_MEASURE key->measure direction.",
+      "confidence": "high",
+      "dependency_notes": "none"
+    },
+    {
+      "review_id": "review_004",
+      "patch_id": "patch_measure_769",
+      "exact_proposed_line": "GO AHEAD RBI=go_ahead_rbi",
+      "target_file": "SmartStat_Mappings.learn.ini",
+      "target_section": "CATEGORY_TO_MEASURE",
+      "prior_pass07_classification": "new_canonical_category_measure",
+      "pass08_patch_status": "patch_ready",
+      "signoff_decision": "approve_for_future_patch",
+      "rationale": "Canonical batting outcome mapping is semantically clear and supports direct operator phrasing.",
+      "confidence": "high",
+      "dependency_notes": "must precede alias line GO-AHEAD RBI=GO AHEAD RBI"
+    },
+    {
+      "review_id": "review_005",
+      "patch_id": "patch_measure_226",
+      "exact_proposed_line": "PUTOUTS=fielding_putouts",
+      "target_file": "SmartStat_Mappings.learn.ini",
+      "target_section": "CATEGORY_TO_MEASURE",
+      "prior_pass07_classification": "new_canonical_category_measure",
+      "pass08_patch_status": "patch_ready",
+      "signoff_decision": "hold_for_manual_review",
+      "rationale": "Structurally valid but semantically sensitive; defensive-stat placement should be manually confirmed before patching.",
+      "confidence": "medium",
+      "dependency_notes": "none"
+    },
+    {
+      "review_id": "review_006",
+      "patch_id": "patch_measure_62",
+      "exact_proposed_line": "SINGLES=singles",
+      "target_file": "SmartStat_Mappings.learn.ini",
+      "target_section": "CATEGORY_TO_MEASURE",
+      "prior_pass07_classification": "new_canonical_category_measure",
+      "pass08_patch_status": "patch_ready",
+      "signoff_decision": "approve_for_future_patch",
+      "rationale": "Semantically clear non-composite batting stat with direct canonical key/value mapping.",
+      "confidence": "high",
+      "dependency_notes": "none"
+    },
+    {
+      "review_id": "review_007",
+      "patch_id": "patch_user_107",
+      "exact_proposed_line": "GO-AHEAD RBI=GO AHEAD RBI",
+      "target_file": "SmartStat_Mappings.learn.ini",
+      "target_section": "CATEGORY_TO_MEASURE_ALIASES",
+      "prior_pass07_classification": "alias_to_existing_canonical",
+      "pass08_patch_status": "patch_ready",
+      "signoff_decision": "approve_for_future_patch",
+      "rationale": "Valid alias indirection from hyphenated operator phrase to approved canonical key.",
+      "confidence": "high",
+      "dependency_notes": "requires approved canonical line GO AHEAD RBI=go_ahead_rbi earlier in patch order"
+    },
+    {
+      "review_id": "review_008",
+      "patch_id": "patch_measure_449",
+      "exact_proposed_line": "BLOWN SAVES=pitcher_blown_saves",
+      "target_file": "SmartStat_Mappings.learn.ini",
+      "target_section": "CATEGORY_TO_MEASURE_PITCHER",
+      "prior_pass07_classification": "new_canonical_pitcher_category_measure",
+      "pass08_patch_status": "patch_ready",
+      "signoff_decision": "hold_for_manual_review",
+      "rationale": "Structurally valid but semantically sensitive; requires manual confirmation of pitcher-only intent and naming consistency before promotion.",
+      "confidence": "medium",
+      "dependency_notes": "none"
+    }
+  ],
+  "dependency_findings": {
+    "alias_requires_canonical": true,
+    "validated_alias_dependencies": [
+      {
+        "alias_line": "GO-AHEAD RBI=GO AHEAD RBI",
+        "required_canonical_line": "GO AHEAD RBI=go_ahead_rbi",
+        "dependency_status": "satisfied_within_approved_set"
+      }
+    ],
+    "ordering_requirements": [
+      "Apply CATEGORY_TO_MEASURE canonical additions before CATEGORY_TO_MEASURE_ALIASES additions."
+    ]
+  },
+  "boundary_note": "Signoff classification only. No SmartStat file mutation performed."
+}
