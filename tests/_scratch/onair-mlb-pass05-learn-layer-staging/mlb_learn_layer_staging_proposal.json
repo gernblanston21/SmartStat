@@ -1,0 +1,32 @@
+{
+  "pass_name": "MLB_LEARN_LAYER_STAGING_PASS_05",
+  "scope": "MLB_ONLY_LEARN_LAYER_STAGING",
+  "input_artifacts": [
+    "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+    "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+    "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+    "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_missing_high_confidence_candidates.json",
+    "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_crosswalk_summary.md"
+  ],
+  "fallback_substitution_used": false,
+  "classification_buckets": [
+    "safe_to_stage",
+    "manual_review_required",
+    "composite_defer",
+    "rejected_or_not_yet_useful"
+  ],
+  "bucket_counts": {
+    "safe_to_stage": 27,
+    "manual_review_required": 280,
+    "composite_defer": 238,
+    "rejected_or_not_yet_useful": 480
+  },
+  "classification_rules_version": "pass05_v1_deterministic",
+  "determinism_notes": [
+    "stable source iteration order",
+    "stable rule-order bucket assignment",
+    "fail-closed assignment on uncertainty",
+    "no random sampling or truncation"
+  ],
+  "boundary_note": "Read-only staging proposal. No runtime or INI mutation performed or authorized."
+}

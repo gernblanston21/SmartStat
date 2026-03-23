@@ -1,0 +1,3908 @@
+{
+  "pass_name": "MLB_LEARN_LAYER_STAGING_PASS_05",
+  "bucket": "composite_defer",
+  "total_rows": 238,
+  "rows": [
+    {
+      "candidate_id": "user_13",
+      "raw_source_value_or_expression": "RATIO",
+      "composite_type": "operator_phrase_composite",
+      "component_candidates": [
+        "RATIO"
+      ],
+      "operator_format": "{{NUMERATOR}}/{{DENOMINATOR}}",
+      "deferral_reason": "Phrase encodes composite relationship and should be deferred.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 13,
+        "group_name": "L3 - HITTING",
+        "name": "header_kbbratio"
+      }
+    },
+    {
+      "candidate_id": "user_111",
+      "raw_source_value_or_expression": "AB PER HR",
+      "composite_type": "operator_phrase_composite",
+      "component_candidates": [
+        "AB PER HR"
+      ],
+      "operator_format": "{{NUMERATOR}}/{{DENOMINATOR}}",
+      "deferral_reason": "Phrase encodes composite relationship and should be deferred.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 111,
+        "group_name": "LEADERBOARD - HITTING",
+        "name": "leaders_hrrate"
+      }
+    },
+    {
+      "candidate_id": "user_112",
+      "raw_source_value_or_expression": "AB PER WALK",
+      "composite_type": "operator_phrase_composite",
+      "component_candidates": [
+        "AB PER WALK"
+      ],
+      "operator_format": "{{NUMERATOR}}/{{DENOMINATOR}}",
+      "deferral_reason": "Phrase encodes composite relationship and should be deferred.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 112,
+        "group_name": "LEADERBOARD - HITTING",
+        "name": "leaders_bbrate"
+      }
+    },
+    {
+      "candidate_id": "user_113",
+      "raw_source_value_or_expression": "AB PER STRIKEOUT",
+      "composite_type": "operator_phrase_composite",
+      "component_candidates": [
+        "AB PER STRIKEOUT"
+      ],
+      "operator_format": "{{NUMERATOR}}/{{DENOMINATOR}}",
+      "deferral_reason": "Phrase encodes composite relationship and should be deferred.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 113,
+        "group_name": "LEADERBOARD - HITTING",
+        "name": "leaders_krate"
+      }
+    },
+    {
+      "candidate_id": "composite_syntax_2_7",
+      "raw_source_value_or_expression": "{{info.time.season}}: {{stats.player.season.batting_average}}, {{stats.player.season.home_runs}} {{custom.header_hr}}, {{stats.player.season.rbis}} {{custom.header_rbi}}",
+      "composite_type": "playbook_syntax_composite",
+      "component_candidates": [
+        "{{info.time.season}}",
+        "{{stats.player.season.batting_average}}",
+        "{{stats.player.season.home_runs}}",
+        "{{custom.header_hr}}",
+        "{{stats.player.season.rbis}}",
+        "{{custom.header_rbi}}"
+      ],
+      "operator_format": "{{TOKEN}} {{TOKEN}} {{TOKEN}}",
+      "deferral_reason": "Custom header placeholder requires composed operator formatting context.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 2,
+        "source_type": "playbook_syntax",
+        "playbook_name": "Player - Season Batting Manual Today 0-for "
+      }
+    },
+    {
+      "candidate_id": "composite_syntax_29_5",
+      "raw_source_value_or_expression": "PITCHES/PA - {{info.time.season}}",
+      "composite_type": "playbook_syntax_composite",
+      "component_candidates": [
+        "{{info.time.season}}"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Text-token hybrid contains explicit slash/vs composition marker.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 29,
+        "source_type": "playbook_syntax",
+        "playbook_name": "Player - Season Batting Pitches/PA"
+      }
+    },
+    {
+      "candidate_id": "composite_syntax_34_6",
+      "raw_source_value_or_expression": "WITH {{info.team.name}}: {{stats.player.season.on_team.batting_average}}, {{stats.player.season.on_team.home_runs}} {{custom.header_hr}}, {{stats.player.season.on_team.rbis}} {{custom.header_rbi}}",
+      "composite_type": "playbook_syntax_composite",
+      "component_candidates": [
+        "{{info.team.name}}",
+        "{{stats.player.season.on_team.batting_average}}",
+        "{{stats.player.season.on_team.home_runs}}",
+        "{{custom.header_hr}}",
+        "{{stats.player.season.on_team.rbis}}",
+        "{{custom.header_rbi}}"
+      ],
+      "operator_format": "{{TOKEN}} {{TOKEN}} {{TOKEN}}",
+      "deferral_reason": "Custom header placeholder requires composed operator formatting context.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 34,
+        "source_type": "playbook_syntax",
+        "playbook_name": "Player - Season Batting AVG/HR/RBI (After Trade)"
+      }
+    },
+    {
+      "candidate_id": "composite_syntax_41_7",
+      "raw_source_value_or_expression": "{{stats.player.season.hits}}/{{stats.player.season.at_bats}}",
+      "composite_type": "playbook_syntax_composite",
+      "component_candidates": [
+        "{{stats.player.season.hits}}",
+        "{{stats.player.season.at_bats}}"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Text-token hybrid contains explicit slash/vs composition marker.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 41,
+        "source_type": "playbook_syntax",
+        "playbook_name": "Player - Season Batting H/AB/AVG/SACB/K"
+      }
+    },
+    {
+      "candidate_id": "composite_syntax_61_6",
+      "raw_source_value_or_expression": "[REGULAR SEASON: {{stats.player.season.batting_average}}, {{stats.player.season.home_runs}} {{custom.header_hr}}, {{stats.player.season.rbis}} {{custom.header_rbi}}",
+      "composite_type": "playbook_syntax_composite",
+      "component_candidates": [
+        "{{stats.player.season.batting_average}}",
+        "{{stats.player.season.home_runs}}",
+        "{{custom.header_hr}}",
+        "{{stats.player.season.rbis}}",
+        "{{custom.header_rbi}}"
+      ],
+      "operator_format": "{{TOKEN}} {{TOKEN}} {{TOKEN}}",
+      "deferral_reason": "Custom header placeholder requires composed operator formatting context.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 61,
+        "source_type": "playbook_syntax",
+        "playbook_name": "Player - This Postseason Batting AVG/HR/RBI"
+      }
+    },
+    {
+      "candidate_id": "composite_syntax_77_5",
+      "raw_source_value_or_expression": "{{info.time.season}} vs {{info.team(opp).name}} ({{stats.player.season.vs.games_played}} GAMES)",
+      "composite_type": "playbook_syntax_composite",
+      "component_candidates": [
+        "{{info.time.season}}",
+        "{{info.team(opp).name}}",
+        "{{stats.player.season.vs.games_played}}"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "deferral_reason": "Text-token hybrid contains explicit slash/vs composition marker.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 77,
+        "source_type": "playbook_syntax",
+        "playbook_name": "Player - Batting Season vs Opponent"
+      }
+    },
+    {
+      "candidate_id": "composite_syntax_85_5",
+      "raw_source_value_or_expression": "{{info.time.season}} w/ RISP",
+      "composite_type": "playbook_syntax_composite",
+      "component_candidates": [
+        "{{info.time.season}}"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Text-token hybrid contains explicit slash/vs composition marker.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 85,
+        "source_type": "playbook_syntax",
+        "playbook_name": "Player - Season Batting RISP"
+      }
+    },
+    {
+      "candidate_id": "composite_syntax_86_5",
+      "raw_source_value_or_expression": "{{info.time.season}} w/ 2 OUTS & RISP",
+      "composite_type": "playbook_syntax_composite",
+      "component_candidates": [
+        "{{info.time.season}}"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Text-token hybrid contains explicit slash/vs composition marker.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 86,
+        "source_type": "playbook_syntax",
+        "playbook_name": "Player - Season Batting RISP & 2 Outs"
+      }
+    },
+    {
+      "candidate_id": "composite_syntax_112_5",
+      "raw_source_value_or_expression": "{{custom.header_avg}} VS PITCH TYPE",
+      "composite_type": "playbook_syntax_composite",
+      "component_candidates": [
+        "{{custom.header_avg}}"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "deferral_reason": "Custom header placeholder requires composed operator formatting context.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 112,
+        "source_type": "playbook_syntax",
+        "playbook_name": "Player - Season Batting AVG vs Pitch Type"
+      }
+    },
+    {
+      "candidate_id": "composite_syntax_116_5",
+      "raw_source_value_or_expression": "CAREER vs {{info.team(opp).name}} ({{stats.player.vs.games_played}} GAMES)",
+      "composite_type": "playbook_syntax_composite",
+      "component_candidates": [
+        "{{info.team(opp).name}}",
+        "{{stats.player.vs.games_played}}"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "deferral_reason": "Text-token hybrid contains explicit slash/vs composition marker.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 116,
+        "source_type": "playbook_syntax",
+        "playbook_name": "Player - Career Batting vs Opponent"
+      }
+    },
+    {
+      "candidate_id": "composite_syntax_119_5",
+      "raw_source_value_or_expression": "CAREER w/ 2 OUTS & RISP ({{info.player.experience|ordinal}} SEASON)",
+      "composite_type": "playbook_syntax_composite",
+      "component_candidates": [
+        "{{info.player.experience|ordinal}}"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Text-token hybrid contains explicit slash/vs composition marker.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 119,
+        "source_type": "playbook_syntax",
+        "playbook_name": "Player - Career Batting with RISP + 2 Outs"
+      }
+    },
+    {
+      "candidate_id": "composite_syntax_168_1",
+      "raw_source_value_or_expression": "{{custom.leaders_avg}} vs LHP",
+      "composite_type": "playbook_syntax_composite",
+      "component_candidates": [
+        "{{custom.leaders_avg}}"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "deferral_reason": "Text-token hybrid contains explicit slash/vs composition marker.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 168,
+        "source_type": "playbook_syntax",
+        "playbook_name": "FS - League Batting vs LHP - Highest AVG"
+      }
+    },
+    {
+      "candidate_id": "composite_syntax_172_1",
+      "raw_source_value_or_expression": "{{custom.leaders_avg}} vs RHP",
+      "composite_type": "playbook_syntax_composite",
+      "component_candidates": [
+        "{{custom.leaders_avg}}"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "deferral_reason": "Text-token hybrid contains explicit slash/vs composition marker.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 172,
+        "source_type": "playbook_syntax",
+        "playbook_name": "FS - League Batting vs RHP - Highest AVG"
+      }
+    },
+    {
+      "candidate_id": "composite_syntax_383_7",
+      "raw_source_value_or_expression": "LAST: {{previous.player.minimum(home_runs, 2).game_date | flex_short}} vs {{previous.player.minimum(home_runs, 2).opp_name}} ({{previous.player.minimum(home_runs, 2).home_runs}} HR)",
+      "composite_type": "playbook_syntax_composite",
+      "component_candidates": [
+        "{{previous.player.minimum(home_runs, 2).game_date | flex_short}}",
+        "{{previous.player.minimum(home_runs, 2).opp_name}}",
+        "{{previous.player.minimum(home_runs, 2).home_runs}}"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "deferral_reason": "Text-token hybrid contains explicit slash/vs composition marker.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 383,
+        "source_type": "playbook_syntax",
+        "playbook_name": "Player - Career Batting Multi-HR Games"
+      }
+    },
+    {
+      "candidate_id": "composite_syntax_685_3",
+      "raw_source_value_or_expression": "CAREER vs {{info.team(opp).name}}",
+      "composite_type": "playbook_syntax_composite",
+      "component_candidates": [
+        "{{info.team(opp).name}}"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "deferral_reason": "Text-token hybrid contains explicit slash/vs composition marker.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 685,
+        "source_type": "playbook_syntax",
+        "playbook_name": "Manager - Career vs Oppoenent"
+      }
+    },
+    {
+      "candidate_id": "composite_syntax_685_4",
+      "raw_source_value_or_expression": "RECORD: {{stats.coach.career.vs.team_record}} ({{stats.coach.career.vs.team_win_percentage}})",
+      "composite_type": "playbook_syntax_composite",
+      "component_candidates": [
+        "{{stats.coach.career.vs.team_record}}",
+        "{{stats.coach.career.vs.team_win_percentage}}"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "deferral_reason": "Text-token hybrid contains explicit slash/vs composition marker.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 685,
+        "source_type": "playbook_syntax",
+        "playbook_name": "Manager - Career vs Oppoenent"
+      }
+    },
+    {
+      "candidate_id": "composite_syntax_704_5",
+      "raw_source_value_or_expression": "{{previous.team_player.minimum(home_runs, 2).full_name}} {{previous.team_player.minimum(home_runs, 2).game_vs}} {{previous.team_player.minimum(home_runs, 2).opp_name}}",
+      "composite_type": "playbook_syntax_composite",
+      "component_candidates": [
+        "{{previous.team_player.minimum(home_runs, 2).full_name}}",
+        "{{previous.team_player.minimum(home_runs, 2).game_vs}}",
+        "{{previous.team_player.minimum(home_runs, 2).opp_name}}"
+      ],
+      "operator_format": "{{TOKEN}} {{TOKEN}} {{TOKEN}}",
+      "deferral_reason": "OnAir syntax classification is multi_token.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 704,
+        "source_type": "playbook_syntax",
+        "playbook_name": "Team - Last Player had a 2-HR Game"
+      }
+    },
+    {
+      "candidate_id": "composite_syntax_713_2",
+      "raw_source_value_or_expression": "{{info.team.name}} {{info.time.season}}",
+      "composite_type": "playbook_syntax_composite",
+      "component_candidates": [
+        "{{info.team.name}}",
+        "{{info.time.season}}"
+      ],
+      "operator_format": "{{TOKEN}} {{TOKEN}}",
+      "deferral_reason": "OnAir syntax classification is multi_token.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 713,
+        "source_type": "playbook_syntax",
+        "playbook_name": "FS - Team Leaders - Games Played"
+      }
+    },
+    {
+      "candidate_id": "composite_syntax_770_7",
+      "raw_source_value_or_expression": "{{custom.header_gstart}}/CG",
+      "composite_type": "playbook_syntax_composite",
+      "component_candidates": [
+        "{{custom.header_gstart}}"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Custom header placeholder requires composed operator formatting context.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 770,
+        "source_type": "playbook_syntax",
+        "playbook_name": "Pitcher Slab - S/CG, W-L, ERA, IP, BB, K, HR, OPPAVG"
+      }
+    },
+    {
+      "candidate_id": "composite_syntax_775_5",
+      "raw_source_value_or_expression": "SEASON vs {{info.team(opp).name}} ({{stats.player.season.vs.games_started}} STARTS)",
+      "composite_type": "playbook_syntax_composite",
+      "component_candidates": [
+        "{{info.team(opp).name}}",
+        "{{stats.player.season.vs.games_started}}"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "deferral_reason": "Text-token hybrid contains explicit slash/vs composition marker.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 775,
+        "source_type": "playbook_syntax",
+        "playbook_name": "Pitcher L3 - S, W-L, ERA (vs Opp)"
+      }
+    },
+    {
+      "candidate_id": "composite_syntax_777_7",
+      "raw_source_value_or_expression": "AVG STARTER: {{stats.league(player).season.innings(1).pos_primary(sp).runs_allowed_per_game}}/GAME",
+      "composite_type": "playbook_syntax_composite",
+      "component_candidates": [
+        "{{stats.league(player).season.innings(1).pos_primary(sp).runs_allowed_per_game}}"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Text-token hybrid contains explicit slash/vs composition marker.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 777,
+        "source_type": "playbook_syntax",
+        "playbook_name": "Pitcher L3 - 1st Inning Runs"
+      }
+    },
+    {
+      "candidate_id": "composite_syntax_786_6",
+      "raw_source_value_or_expression": "vs Lefties ({{stats.player.season.vsLHB.pitcher_at_bats_against}} AB)",
+      "composite_type": "playbook_syntax_composite",
+      "component_candidates": [
+        "{{stats.player.season.vsLHB.pitcher_at_bats_against}}"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "deferral_reason": "Text-token hybrid contains explicit slash/vs composition marker.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 786,
+        "source_type": "playbook_syntax",
+        "playbook_name": "Pitcher L3 - vs LHB/RHB"
+      }
+    },
+    {
+      "candidate_id": "composite_syntax_786_10",
+      "raw_source_value_or_expression": "vs Righties ({{stats.player.season.vsRHB.pitcher_at_bats_against}} AB)",
+      "composite_type": "playbook_syntax_composite",
+      "component_candidates": [
+        "{{stats.player.season.vsRHB.pitcher_at_bats_against}}"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "deferral_reason": "Text-token hybrid contains explicit slash/vs composition marker.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 786,
+        "source_type": "playbook_syntax",
+        "playbook_name": "Pitcher L3 - vs LHB/RHB"
+      }
+    },
+    {
+      "candidate_id": "composite_syntax_790_6",
+      "raw_source_value_or_expression": "{{stats.player.season.pitcher_steals}}/{{stats.player.season. pitcher_steals_attempts_against}} STOLEN BASES",
+      "composite_type": "playbook_syntax_composite",
+      "component_candidates": [
+        "{{stats.player.season.pitcher_steals}}",
+        "{{stats.player.season. pitcher_steals_attempts_against}}"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Text-token hybrid contains explicit slash/vs composition marker.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 790,
+        "source_type": "playbook_syntax",
+        "playbook_name": "Pitcher L3 - Baserunners"
+      }
+    },
+    {
+      "candidate_id": "composite_syntax_813_5",
+      "raw_source_value_or_expression": "LAST 3 OUTINGS vs {{info.team(opp).name}}",
+      "composite_type": "playbook_syntax_composite",
+      "component_candidates": [
+        "{{info.team(opp).name}}"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "deferral_reason": "Text-token hybrid contains explicit slash/vs composition marker.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 813,
+        "source_type": "playbook_syntax",
+        "playbook_name": "Pitcher L3 - Last 3 Outings (vs Opp) - IP, H, ER, BB/K"
+      }
+    },
+    {
+      "candidate_id": "composite_syntax_815_7",
+      "raw_source_value_or_expression": "LAST: {{previous.player.equal(pitcher_shutouts, 1).game_date|flex_long}} vs {{previous.player.equal(pitcher_shutouts, 1).opp_name}}",
+      "composite_type": "playbook_syntax_composite",
+      "component_candidates": [
+        "{{previous.player.equal(pitcher_shutouts, 1).game_date|flex_long}}",
+        "{{previous.player.equal(pitcher_shutouts, 1).opp_name}}"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "deferral_reason": "Text-token hybrid contains explicit slash/vs composition marker.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 815,
+        "source_type": "playbook_syntax",
+        "playbook_name": "Pitcher L3 - XXth Career Shutouts"
+      }
+    },
+    {
+      "candidate_id": "composite_syntax_828_15",
+      "raw_source_value_or_expression": "{{stats.player.career.vs_league(inter).pitcher_saves}}/{{stats.player.career.vs_league(inter).pitcher_saves_opportunities}} ({{stats.player.career.vs_league(inter).pitcher_saves_percentage}})",
+      "composite_type": "playbook_syntax_composite",
+      "component_candidates": [
+        "{{stats.player.career.vs_league(inter).pitcher_saves}}",
+        "{{stats.player.career.vs_league(inter).pitcher_saves_opportunities}}",
+        "{{stats.player.career.vs_league(inter).pitcher_saves_percentage}}"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Text-token hybrid contains explicit slash/vs composition marker.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 828,
+        "source_type": "playbook_syntax",
+        "playbook_name": "Pitcher L3 - GP, W-L, ERA, K/BB, SV/OPP (interleague)"
+      }
+    },
+    {
+      "candidate_id": "composite_syntax_1629_6",
+      "raw_source_value_or_expression": "WITH {{info.team.name}}: {{stats.player.season.on_team.games_started}} {{custom.header_gstart}}, {{stats.player.season.on_team.pitcher_record}}, {{stats.player.season.on_team.pitcher_era}} {{custom.header_era}}",
+      "composite_type": "playbook_syntax_composite",
+      "component_candidates": [
+        "{{info.team.name}}",
+        "{{stats.player.season.on_team.games_started}}",
+        "{{custom.header_gstart}}",
+        "{{stats.player.season.on_team.pitcher_record}}",
+        "{{stats.player.season.on_team.pitcher_era}}",
+        "{{custom.header_era}}"
+      ],
+      "operator_format": "{{TOKEN}} {{TOKEN}} {{TOKEN}}",
+      "deferral_reason": "Custom header placeholder requires composed operator formatting context.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 1629,
+        "source_type": "playbook_syntax",
+        "playbook_name": "Player - Starter GS/W-L/ERA (After Trade)"
+      }
+    },
+    {
+      "candidate_id": "composite_syntax_1630_6",
+      "raw_source_value_or_expression": "WITH {{info.team.name}}: {{stats.player.season.on_team.games_pitched}} {{custom.header_gpitch}}, {{stats.player.season.on_team.pitcher_record}}, {{stats.player.season.on_team.pitcher_era}} ERA",
+      "composite_type": "playbook_syntax_composite",
+      "component_candidates": [
+        "{{info.team.name}}",
+        "{{stats.player.season.on_team.games_pitched}}",
+        "{{custom.header_gpitch}}",
+        "{{stats.player.season.on_team.pitcher_record}}",
+        "{{stats.player.season.on_team.pitcher_era}}"
+      ],
+      "operator_format": "{{TOKEN}} {{TOKEN}} {{TOKEN}}",
+      "deferral_reason": "Custom header placeholder requires composed operator formatting context.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 1630,
+        "source_type": "playbook_syntax",
+        "playbook_name": "Player - Reliever GP/W-L/ERA (After Trade)"
+      }
+    },
+    {
+      "candidate_id": "composite_syntax_1631_5",
+      "raw_source_value_or_expression": "SEASON vs {{info.team(opp).name}} ({{stats.player.season.vs.games_pitched}} GAMES)",
+      "composite_type": "playbook_syntax_composite",
+      "component_candidates": [
+        "{{info.team(opp).name}}",
+        "{{stats.player.season.vs.games_pitched}}"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "deferral_reason": "Text-token hybrid contains explicit slash/vs composition marker.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 1631,
+        "source_type": "playbook_syntax",
+        "playbook_name": "Pitcher L3 - S, W-L, ERA, SV (vs Opp)"
+      }
+    },
+    {
+      "candidate_id": "composite_syntax_1656_7",
+      "raw_source_value_or_expression": "LAST: {{previous.player.minimum(walkoff_home_runs, 1).ab_result}} ON {{previous.player.minimum(walkoff_home_runs, 1).game_date | flex_short}} vs {{previous.player.minimum(walkoff_home_runs, 1).opp_name}}",
+      "composite_type": "playbook_syntax_composite",
+      "component_candidates": [
+        "{{previous.player.minimum(walkoff_home_runs, 1).ab_result}}",
+        "{{previous.player.minimum(walkoff_home_runs, 1).game_date | flex_short}}",
+        "{{previous.player.minimum(walkoff_home_runs, 1).opp_name}}"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "deferral_reason": "Text-token hybrid contains explicit slash/vs composition marker.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 1656,
+        "source_type": "playbook_syntax",
+        "playbook_name": "Player - Career Walkoff HRs"
+      }
+    },
+    {
+      "candidate_id": "composite_syntax_1815_5",
+      "raw_source_value_or_expression": "{{info.time.season}} vs BASES LOADED ({{stats.player.season.runners(loaded).batters_faced}} AB)",
+      "composite_type": "playbook_syntax_composite",
+      "component_candidates": [
+        "{{info.time.season}}",
+        "{{stats.player.season.runners(loaded).batters_faced}}"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "deferral_reason": "Text-token hybrid contains explicit slash/vs composition marker.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 1815,
+        "source_type": "playbook_syntax",
+        "playbook_name": "Pitcher - Season vs Bases Loaded"
+      }
+    },
+    {
+      "candidate_id": "composite_syntax_1816_5",
+      "raw_source_value_or_expression": "CAREER vs BASES LOADED ({{stats.player.career.runners(loaded).batters_faced}} AB)",
+      "composite_type": "playbook_syntax_composite",
+      "component_candidates": [
+        "{{stats.player.career.runners(loaded).batters_faced}}"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "deferral_reason": "Text-token hybrid contains explicit slash/vs composition marker.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 1816,
+        "source_type": "playbook_syntax",
+        "playbook_name": "Pitcher - Career vs Bases Loaded"
+      }
+    },
+    {
+      "candidate_id": "composite_syntax_1817_6",
+      "raw_source_value_or_expression": "vs LHP ({{stats.player.season.vsLHP.at_bats}} AB)",
+      "composite_type": "playbook_syntax_composite",
+      "component_candidates": [
+        "{{stats.player.season.vsLHP.at_bats}}"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "deferral_reason": "Text-token hybrid contains explicit slash/vs composition marker.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 1817,
+        "source_type": "playbook_syntax",
+        "playbook_name": "Batter - Season vs LHP/RHP"
+      }
+    },
+    {
+      "candidate_id": "composite_syntax_1817_10",
+      "raw_source_value_or_expression": "vs RHP ({{stats.player.season.vsRHP.at_bats}} AB)",
+      "composite_type": "playbook_syntax_composite",
+      "component_candidates": [
+        "{{stats.player.season.vsRHP.at_bats}}"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "deferral_reason": "Text-token hybrid contains explicit slash/vs composition marker.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 1817,
+        "source_type": "playbook_syntax",
+        "playbook_name": "Batter - Season vs LHP/RHP"
+      }
+    },
+    {
+      "candidate_id": "composite_syntax_1831_5",
+      "raw_source_value_or_expression": "vs {{info.pitcher.full_name}} - REG. + POSTSEASON",
+      "composite_type": "playbook_syntax_composite",
+      "component_candidates": [
+        "{{info.pitcher.full_name}}"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "deferral_reason": "Text-token hybrid contains explicit slash/vs composition marker.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 1831,
+        "source_type": "playbook_syntax",
+        "playbook_name": "CG_TickerPlayerStats - Career Batter vs Pitcher (Including Postseason)"
+      }
+    },
+    {
+      "candidate_id": "composite_syntax_1835_5",
+      "raw_source_value_or_expression": "{{info.time.season}} w/ RUNNER ON 3rd & LESS THAN 2 OUTS",
+      "composite_type": "playbook_syntax_composite",
+      "component_candidates": [
+        "{{info.time.season}}"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Text-token hybrid contains explicit slash/vs composition marker.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 1835,
+        "source_type": "playbook_syntax",
+        "playbook_name": "Player - Season Runner on 3rd - Less than 2 Outs"
+      }
+    },
+    {
+      "candidate_id": "measure_0",
+      "raw_source_value_or_expression": "called_strike",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "Called_Strike",
+        "called_strike"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 0,
+        "query_engine_key": "Called_Strike"
+      }
+    },
+    {
+      "candidate_id": "measure_10",
+      "raw_source_value_or_expression": "batter_home_run_to_fly_ball_percentage",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "b_Hr_To_Fly_Ball_pct",
+        "batter_home_run_to_fly_ball_percentage"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 10,
+        "query_engine_key": "b_Hr_To_Fly_Ball_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_24",
+      "raw_source_value_or_expression": "at_bats_per_home_run",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "b_ab_per_hr",
+        "at_bats_per_home_run"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 24,
+        "query_engine_key": "b_ab_per_hr"
+      }
+    },
+    {
+      "candidate_id": "measure_25",
+      "raw_source_value_or_expression": "at_bats_per_strikeout",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "b_ab_per_k",
+        "at_bats_per_strikeout"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 25,
+        "query_engine_key": "b_ab_per_k"
+      }
+    },
+    {
+      "candidate_id": "measure_26",
+      "raw_source_value_or_expression": "at_bats_per_rbi",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "b_ab_per_rbi",
+        "at_bats_per_rbi"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 26,
+        "query_engine_key": "b_ab_per_rbi"
+      }
+    },
+    {
+      "candidate_id": "measure_31",
+      "raw_source_value_or_expression": "batting_average_balls_in_play",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "b_babip",
+        "batting_average_balls_in_play"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 31,
+        "query_engine_key": "b_babip"
+      }
+    },
+    {
+      "candidate_id": "measure_36",
+      "raw_source_value_or_expression": "batting_average_differential",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "b_bavg_diff",
+        "batting_average_differential"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 36,
+        "query_engine_key": "b_bavg_diff"
+      }
+    },
+    {
+      "candidate_id": "measure_37",
+      "raw_source_value_or_expression": "batting_average_home_road_differential",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "b_bavg_diff_home_road",
+        "batting_average_home_road_differential"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 37,
+        "query_engine_key": "b_bavg_diff_home_road"
+      }
+    },
+    {
+      "candidate_id": "measure_39",
+      "raw_source_value_or_expression": "batting_average_runners_in_scoring_position",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "b_bavg_risp",
+        "batting_average_runners_in_scoring_position"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 39,
+        "query_engine_key": "b_bavg_risp"
+      }
+    },
+    {
+      "candidate_id": "measure_44",
+      "raw_source_value_or_expression": "walks_differential",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "b_bb_diff",
+        "walks_differential"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 44,
+        "query_engine_key": "b_bb_diff"
+      }
+    },
+    {
+      "candidate_id": "measure_46",
+      "raw_source_value_or_expression": "walks_per_game",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "b_bb_per_gm",
+        "walks_per_game"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 46,
+        "query_engine_key": "b_bb_per_gm"
+      }
+    },
+    {
+      "candidate_id": "measure_56",
+      "raw_source_value_or_expression": "ground_balls_to_air_balls_differential",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "b_gb_airb_ratio",
+        "ground_balls_to_air_balls_differential"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 56,
+        "query_engine_key": "b_gb_airb_ratio"
+      }
+    },
+    {
+      "candidate_id": "measure_57",
+      "raw_source_value_or_expression": "ground_balls_to_fly_pop_balls_differential",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "b_gb_flypop_ratio",
+        "ground_balls_to_fly_pop_balls_differential"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 57,
+        "query_engine_key": "b_gb_flypop_ratio"
+      }
+    },
+    {
+      "candidate_id": "measure_63",
+      "raw_source_value_or_expression": "singles_per_game",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "b_h1b_per_gm",
+        "singles_per_game"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 63,
+        "query_engine_key": "b_h1b_per_gm"
+      }
+    },
+    {
+      "candidate_id": "measure_65",
+      "raw_source_value_or_expression": "doubles_per_game",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "b_h2b_per_gm",
+        "doubles_per_game"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 65,
+        "query_engine_key": "b_h2b_per_gm"
+      }
+    },
+    {
+      "candidate_id": "measure_67",
+      "raw_source_value_or_expression": "triples_per_game",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "b_h3b_per_gm",
+        "triples_per_game"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 67,
+        "query_engine_key": "b_h3b_per_gm"
+      }
+    },
+    {
+      "candidate_id": "measure_69",
+      "raw_source_value_or_expression": "hits_differential",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "b_h_diff",
+        "hits_differential"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 69,
+        "query_engine_key": "b_h_diff"
+      }
+    },
+    {
+      "candidate_id": "measure_70",
+      "raw_source_value_or_expression": "hits_home_road_differential",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "b_h_diff_home_road",
+        "hits_home_road_differential"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 70,
+        "query_engine_key": "b_h_diff_home_road"
+      }
+    },
+    {
+      "candidate_id": "measure_73",
+      "raw_source_value_or_expression": "hits_per_game",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "b_h_per_gm",
+        "hits_per_game"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 73,
+        "query_engine_key": "b_h_per_gm"
+      }
+    },
+    {
+      "candidate_id": "measure_74",
+      "raw_source_value_or_expression": "hits_per_game_differential",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "b_h_per_gm_diff",
+        "hits_per_game_differential"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 74,
+        "query_engine_key": "b_h_per_gm_diff"
+      }
+    },
+    {
+      "candidate_id": "measure_81",
+      "raw_source_value_or_expression": "home_runs_differential_home_road",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "b_hr_diff_home_road",
+        "home_runs_differential_home_road"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 81,
+        "query_engine_key": "b_hr_diff_home_road"
+      }
+    },
+    {
+      "candidate_id": "measure_86",
+      "raw_source_value_or_expression": "home_runs_per_game",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "b_hr_per_gm",
+        "home_runs_per_game"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 86,
+        "query_engine_key": "b_hr_per_gm"
+      }
+    },
+    {
+      "candidate_id": "measure_91",
+      "raw_source_value_or_expression": "isolated_power",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "b_iso",
+        "isolated_power"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 91,
+        "query_engine_key": "b_iso"
+      }
+    },
+    {
+      "candidate_id": "measure_93",
+      "raw_source_value_or_expression": "strikeouts_to_walk_ratio",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "b_k_bb_ratio",
+        "strikeouts_to_walk_ratio"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 93,
+        "query_engine_key": "b_k_bb_ratio"
+      }
+    },
+    {
+      "candidate_id": "measure_96",
+      "raw_source_value_or_expression": "strikeouts_per_game",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "b_k_per_gm",
+        "strikeouts_per_game"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 96,
+        "query_engine_key": "b_k_per_gm"
+      }
+    },
+    {
+      "candidate_id": "measure_102",
+      "raw_source_value_or_expression": "on_base_percentage_differential",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "b_obp_diff",
+        "on_base_percentage_differential"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 102,
+        "query_engine_key": "b_obp_diff"
+      }
+    },
+    {
+      "candidate_id": "measure_103",
+      "raw_source_value_or_expression": "on_base_percentage_home_road_differential",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "b_obp_diff_home_road",
+        "on_base_percentage_home_road_differential"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 103,
+        "query_engine_key": "b_obp_diff_home_road"
+      }
+    },
+    {
+      "candidate_id": "measure_109",
+      "raw_source_value_or_expression": "on_base_plus_slugging_home_road_differential",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "b_ops_diff_home_road",
+        "on_base_plus_slugging_home_road_differential"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 109,
+        "query_engine_key": "b_ops_diff_home_road"
+      }
+    },
+    {
+      "candidate_id": "measure_116",
+      "raw_source_value_or_expression": "plate_apperances_per_walk",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "b_pa_per_bb",
+        "plate_apperances_per_walk"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 116,
+        "query_engine_key": "b_pa_per_bb"
+      }
+    },
+    {
+      "candidate_id": "measure_117",
+      "raw_source_value_or_expression": "plate_apperances_per_home_run",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "b_pa_per_hr",
+        "plate_apperances_per_home_run"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 117,
+        "query_engine_key": "b_pa_per_hr"
+      }
+    },
+    {
+      "candidate_id": "measure_118",
+      "raw_source_value_or_expression": "plate_apperances_per_strikeout",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "b_pa_per_k",
+        "plate_apperances_per_strikeout"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 118,
+        "query_engine_key": "b_pa_per_k"
+      }
+    },
+    {
+      "candidate_id": "measure_119",
+      "raw_source_value_or_expression": "plate_apperances_per_rbi",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "b_pa_per_rbi",
+        "plate_apperances_per_rbi"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 119,
+        "query_engine_key": "b_pa_per_rbi"
+      }
+    },
+    {
+      "candidate_id": "measure_121",
+      "raw_source_value_or_expression": "batter_percentage_team_runs",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "b_pct_Team_Runs",
+        "batter_percentage_team_runs"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 121,
+        "query_engine_key": "b_pct_Team_Runs"
+      }
+    },
+    {
+      "candidate_id": "measure_123",
+      "raw_source_value_or_expression": "batter_percentage_teams_ab",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "b_pct_Teams_Ab",
+        "batter_percentage_teams_ab"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 123,
+        "query_engine_key": "b_pct_Teams_Ab"
+      }
+    },
+    {
+      "candidate_id": "measure_124",
+      "raw_source_value_or_expression": "batter_percentage_teams_extra_base_hits",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "b_pct_Teams_Extra_Base_Hits",
+        "batter_percentage_teams_extra_base_hits"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 124,
+        "query_engine_key": "b_pct_Teams_Extra_Base_Hits"
+      }
+    },
+    {
+      "candidate_id": "measure_125",
+      "raw_source_value_or_expression": "batter_percentage_teams_hits",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "b_pct_Teams_Hits",
+        "batter_percentage_teams_hits"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 125,
+        "query_engine_key": "b_pct_Teams_Hits"
+      }
+    },
+    {
+      "candidate_id": "measure_126",
+      "raw_source_value_or_expression": "batter_percentage_teams_home_runs",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "b_pct_Teams_Hr",
+        "batter_percentage_teams_home_runs"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 126,
+        "query_engine_key": "b_pct_Teams_Hr"
+      }
+    },
+    {
+      "candidate_id": "measure_127",
+      "raw_source_value_or_expression": "batter_percentage_teams_pa",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "b_pct_Teams_Pa",
+        "batter_percentage_teams_pa"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 127,
+        "query_engine_key": "b_pct_Teams_Pa"
+      }
+    },
+    {
+      "candidate_id": "measure_128",
+      "raw_source_value_or_expression": "batter_percentage_teams_rbis",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "b_pct_Teams_Rbis",
+        "batter_percentage_teams_rbis"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 128,
+        "query_engine_key": "b_pct_Teams_Rbis"
+      }
+    },
+    {
+      "candidate_id": "measure_129",
+      "raw_source_value_or_expression": "batter_percentage_teams_strikeouts",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "b_pct_Teams_Strikeouts",
+        "batter_percentage_teams_strikeouts"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 129,
+        "query_engine_key": "b_pct_Teams_Strikeouts"
+      }
+    },
+    {
+      "candidate_id": "measure_134",
+      "raw_source_value_or_expression": "hits_extra_bases_percentage",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "b_pct_h_are_xbh",
+        "hits_extra_bases_percentage"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 134,
+        "query_engine_key": "b_pct_h_are_xbh"
+      }
+    },
+    {
+      "candidate_id": "measure_138",
+      "raw_source_value_or_expression": "pitches_faced_per_game",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "b_pit_per_gm",
+        "pitches_faced_per_game"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 138,
+        "query_engine_key": "b_pit_per_gm"
+      }
+    },
+    {
+      "candidate_id": "measure_139",
+      "raw_source_value_or_expression": "pitches_faced_per_pa",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "b_pit_per_pa",
+        "pitches_faced_per_pa"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 139,
+        "query_engine_key": "b_pit_per_pa"
+      }
+    },
+    {
+      "candidate_id": "measure_144",
+      "raw_source_value_or_expression": "power_speed_number",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "b_psn",
+        "power_speed_number"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 144,
+        "query_engine_key": "b_psn"
+      }
+    },
+    {
+      "candidate_id": "measure_146",
+      "raw_source_value_or_expression": "runs_per_game",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "b_r_per_gm",
+        "runs_per_game"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 146,
+        "query_engine_key": "b_r_per_gm"
+      }
+    },
+    {
+      "candidate_id": "measure_158",
+      "raw_source_value_or_expression": "steals_per_game",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "b_sb_per_gm",
+        "steals_per_game"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 158,
+        "query_engine_key": "b_sb_per_gm"
+      }
+    },
+    {
+      "candidate_id": "measure_160",
+      "raw_source_value_or_expression": "secondary_average",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "b_seca",
+        "secondary_average"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 160,
+        "query_engine_key": "b_seca"
+      }
+    },
+    {
+      "candidate_id": "measure_163",
+      "raw_source_value_or_expression": "slugging_day_night_differential",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "b_slg_diff_day_night",
+        "slugging_day_night_differential"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 163,
+        "query_engine_key": "b_slg_diff_day_night"
+      }
+    },
+    {
+      "candidate_id": "measure_164",
+      "raw_source_value_or_expression": "slugging_home_road_differential",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "b_slg_diff_home_road",
+        "slugging_home_road_differential"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 164,
+        "query_engine_key": "b_slg_diff_home_road"
+      }
+    },
+    {
+      "candidate_id": "measure_174",
+      "raw_source_value_or_expression": "extra_base_hits_differential",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "b_xbh_diff",
+        "extra_base_hits_differential"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 174,
+        "query_engine_key": "b_xbh_diff"
+      }
+    },
+    {
+      "candidate_id": "measure_175",
+      "raw_source_value_or_expression": "balls_in_play_per_game",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "balls_In_Play_Per_Game",
+        "balls_in_play_per_game"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 175,
+        "query_engine_key": "balls_In_Play_Per_Game"
+      }
+    },
+    {
+      "candidate_id": "measure_177",
+      "raw_source_value_or_expression": "batting_average_lhp_rhp_differential",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "bavg_Lhp_Rhp_Differential",
+        "batting_average_lhp_rhp_differential"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 177,
+        "query_engine_key": "bavg_Lhp_Rhp_Differential"
+      }
+    },
+    {
+      "candidate_id": "measure_178",
+      "raw_source_value_or_expression": "batting_average_runners_in_scoring_position_two_outs",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "bavg_risp_Two_Outs",
+        "batting_average_runners_in_scoring_position_two_outs"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 178,
+        "query_engine_key": "bavg_risp_Two_Outs"
+      }
+    },
+    {
+      "candidate_id": "measure_180",
+      "raw_source_value_or_expression": "total_over_games",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "bet_games_over",
+        "total_over_games"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 180,
+        "query_engine_key": "bet_games_over"
+      }
+    },
+    {
+      "candidate_id": "measure_181",
+      "raw_source_value_or_expression": "total_over_attempts",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "bet_games_over_pct",
+        "total_over_attempts"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 181,
+        "query_engine_key": "bet_games_over_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_182",
+      "raw_source_value_or_expression": "total_under_games",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "bet_games_under",
+        "total_under_games"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 182,
+        "query_engine_key": "bet_games_under"
+      }
+    },
+    {
+      "candidate_id": "measure_183",
+      "raw_source_value_or_expression": "total_under_attempts",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "bet_games_under_pct",
+        "total_under_attempts"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 183,
+        "query_engine_key": "bet_games_under_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_196",
+      "raw_source_value_or_expression": "combined_extra_base_hits",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "combined_Extra_Base_Hits",
+        "combined_extra_base_hits"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 196,
+        "query_engine_key": "combined_Extra_Base_Hits"
+      }
+    },
+    {
+      "candidate_id": "measure_197",
+      "raw_source_value_or_expression": "combined_extra_base_hits_per_game",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "combined_Extra_Base_Hits_Per_Game",
+        "combined_extra_base_hits_per_game"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 197,
+        "query_engine_key": "combined_Extra_Base_Hits_Per_Game"
+      }
+    },
+    {
+      "candidate_id": "measure_199",
+      "raw_source_value_or_expression": "combined_hits_per_game",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "combined_Hits_Per_Game",
+        "combined_hits_per_game"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 199,
+        "query_engine_key": "combined_Hits_Per_Game"
+      }
+    },
+    {
+      "candidate_id": "measure_201",
+      "raw_source_value_or_expression": "combined_home_runs_per_game",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "combined_Hr_Per_Game",
+        "combined_home_runs_per_game"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 201,
+        "query_engine_key": "combined_Hr_Per_Game"
+      }
+    },
+    {
+      "candidate_id": "measure_203",
+      "raw_source_value_or_expression": "combined_runs_per_game",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "combined_Runs_Per_Game",
+        "combined_runs_per_game"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 203,
+        "query_engine_key": "combined_Runs_Per_Game"
+      }
+    },
+    {
+      "candidate_id": "measure_205",
+      "raw_source_value_or_expression": "combined_strikeouts_per_game",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "combined_Strikeouts_Per_Game",
+        "combined_strikeouts_per_game"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 205,
+        "query_engine_key": "combined_Strikeouts_Per_Game"
+      }
+    },
+    {
+      "candidate_id": "measure_213",
+      "raw_source_value_or_expression": "extra_base_hits_per_game",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "extra_Base_Hits_Per_Game",
+        "extra_base_hits_per_game"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 213,
+        "query_engine_key": "extra_Base_Hits_Per_Game"
+      }
+    },
+    {
+      "candidate_id": "measure_222",
+      "raw_source_value_or_expression": "fielding_percentage",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "f_fpct",
+        "fielding_percentage"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 222,
+        "query_engine_key": "f_fpct"
+      }
+    },
+    {
+      "candidate_id": "measure_227",
+      "raw_source_value_or_expression": "range_factor_per_nine",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "f_rf_per_9ip",
+        "range_factor_per_nine"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 227,
+        "query_engine_key": "f_rf_per_9ip"
+      }
+    },
+    {
+      "candidate_id": "measure_228",
+      "raw_source_value_or_expression": "range_factor_per_game",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "f_rf_per_gm",
+        "range_factor_per_game"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 228,
+        "query_engine_key": "f_rf_per_gm"
+      }
+    },
+    {
+      "candidate_id": "measure_235",
+      "raw_source_value_or_expression": "fantasy_points_per_game_draftkings_batting",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "fantasy_Points_Per_Game_Draftkings_Batting",
+        "fantasy_points_per_game_draftkings_batting"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 235,
+        "query_engine_key": "fantasy_Points_Per_Game_Draftkings_Batting"
+      }
+    },
+    {
+      "candidate_id": "measure_236",
+      "raw_source_value_or_expression": "fantasy_points_per_game_draftkings_pitching",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "fantasy_Points_Per_Game_Draftkings_Pitching",
+        "fantasy_points_per_game_draftkings_pitching"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 236,
+        "query_engine_key": "fantasy_Points_Per_Game_Draftkings_Pitching"
+      }
+    },
+    {
+      "candidate_id": "measure_258",
+      "raw_source_value_or_expression": "games_pitched_total",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "games_Pitched_Total",
+        "games_pitched_total"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 258,
+        "query_engine_key": "games_Pitched_Total"
+      }
+    },
+    {
+      "candidate_id": "measure_281",
+      "raw_source_value_or_expression": "hits_allowed_extra_bases_percentage",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "hits_Allowed_For_Extra_Base_pct",
+        "hits_allowed_extra_bases_percentage"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 281,
+        "query_engine_key": "hits_Allowed_For_Extra_Base_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_342",
+      "raw_source_value_or_expression": "on_base_plus_slugging_differential",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "on_Base_Plus_Slugging_Differential",
+        "on_base_plus_slugging_differential"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 342,
+        "query_engine_key": "on_Base_Plus_Slugging_Differential"
+      }
+    },
+    {
+      "candidate_id": "measure_343",
+      "raw_source_value_or_expression": "on_base_plus_slugging_lhp_rhp_differential",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "on_Base_Plus_Slugging_Lhp_Rhp_Differential",
+        "on_base_plus_slugging_lhp_rhp_differential"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 343,
+        "query_engine_key": "on_Base_Plus_Slugging_Lhp_Rhp_Differential"
+      }
+    },
+    {
+      "candidate_id": "measure_362",
+      "raw_source_value_or_expression": "pitcher_hits_allowed_per_game",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "p_Hits_Allowed_Per_Game",
+        "pitcher_hits_allowed_per_game"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 362,
+        "query_engine_key": "p_Hits_Allowed_Per_Game"
+      }
+    },
+    {
+      "candidate_id": "measure_373",
+      "raw_source_value_or_expression": "pitcher_lob_percentage",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "p_Lob_pct",
+        "pitcher_lob_percentage"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 373,
+        "query_engine_key": "p_Lob_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_379",
+      "raw_source_value_or_expression": "pitcher_opponent_balls_in_play_per_game",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "p_Opponent_Balls_In_Play_Per_Game",
+        "pitcher_opponent_balls_in_play_per_game"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 379,
+        "query_engine_key": "p_Opponent_Balls_In_Play_Per_Game"
+      }
+    },
+    {
+      "candidate_id": "measure_382",
+      "raw_source_value_or_expression": "pitcher_opponent_on_base_plus_slugging_lhb_rhp_differential",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "p_Opponent_On_Base_Plus_Slugging_Lhb_Rhp_Differential",
+        "pitcher_opponent_on_base_plus_slugging_lhb_rhp_differential"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 382,
+        "query_engine_key": "p_Opponent_On_Base_Plus_Slugging_Lhb_Rhp_Differential"
+      }
+    },
+    {
+      "candidate_id": "measure_384",
+      "raw_source_value_or_expression": "pitcher_opponent_batting_average_lhb_rhp_differential",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "p_Opponent_bavg_Lhb_Rhp_Differential",
+        "pitcher_opponent_batting_average_lhb_rhp_differential"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 384,
+        "query_engine_key": "p_Opponent_bavg_Lhb_Rhp_Differential"
+      }
+    },
+    {
+      "candidate_id": "measure_385",
+      "raw_source_value_or_expression": "pitcher_opponent_batting_average_runners_in_scoring_position",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "p_Opponent_bavg_risp",
+        "pitcher_opponent_batting_average_runners_in_scoring_position"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 385,
+        "query_engine_key": "p_Opponent_bavg_risp"
+      }
+    },
+    {
+      "candidate_id": "measure_390",
+      "raw_source_value_or_expression": "pitcher_reliefs_innings_pitched_per_game",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "p_Relief_Innings_Pitched_Per_Game",
+        "pitcher_reliefs_innings_pitched_per_game"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 390,
+        "query_engine_key": "p_Relief_Innings_Pitched_Per_Game"
+      }
+    },
+    {
+      "candidate_id": "measure_397",
+      "raw_source_value_or_expression": "pitcher_runs_support_starter_average",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "p_Runs_Support_Starter_avg",
+        "pitcher_runs_support_starter_average"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 397,
+        "query_engine_key": "p_Runs_Support_Starter_avg"
+      }
+    },
+    {
+      "candidate_id": "measure_416",
+      "raw_source_value_or_expression": "pitcher_strikeouts_walks_differential",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "p_Strikeout_Walks_Differential",
+        "pitcher_strikeouts_walks_differential"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 416,
+        "query_engine_key": "p_Strikeout_Walks_Differential"
+      }
+    },
+    {
+      "candidate_id": "measure_419",
+      "raw_source_value_or_expression": "pitcher_strikeouts_per_game",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "p_Strikeouts_Per_Game",
+        "pitcher_strikeouts_per_game"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 419,
+        "query_engine_key": "p_Strikeouts_Per_Game"
+      }
+    },
+    {
+      "candidate_id": "measure_426",
+      "raw_source_value_or_expression": "pitcher_teams_home_runs_allowed_percentage",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "p_Team_Hr_Allowed_pct",
+        "pitcher_teams_home_runs_allowed_percentage"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 426,
+        "query_engine_key": "p_Team_Hr_Allowed_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_427",
+      "raw_source_value_or_expression": "pitcher_teams_strikeouts_percentage",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "p_Team_Strikeout_pct",
+        "pitcher_teams_strikeouts_percentage"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 427,
+        "query_engine_key": "p_Team_Strikeout_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_436",
+      "raw_source_value_or_expression": "pitcherbatting_average_balls_in_play_against",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "p_babip",
+        "pitcherbatting_average_balls_in_play_against"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 436,
+        "query_engine_key": "p_babip"
+      }
+    },
+    {
+      "candidate_id": "measure_439",
+      "raw_source_value_or_expression": "pitcher_opponent_average_home_road_differential",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "p_bavg_diff_home_road",
+        "pitcher_opponent_average_home_road_differential"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 439,
+        "query_engine_key": "p_bavg_diff_home_road"
+      }
+    },
+    {
+      "candidate_id": "measure_447",
+      "raw_source_value_or_expression": "pitcher_walks_per_game",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "p_bb_per_gm",
+        "pitcher_walks_per_game"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 447,
+        "query_engine_key": "p_bb_per_gm"
+      }
+    },
+    {
+      "candidate_id": "measure_456",
+      "raw_source_value_or_expression": "pitcher_era_home_road_differential",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "p_era_diff_home_road",
+        "pitcher_era_home_road_differential"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 456,
+        "query_engine_key": "p_era_diff_home_road"
+      }
+    },
+    {
+      "candidate_id": "measure_457",
+      "raw_source_value_or_expression": "pitcher_era_starter_reliever_differential",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "p_era_diff_sp_rp",
+        "pitcher_era_starter_reliever_differential"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 457,
+        "query_engine_key": "p_era_diff_sp_rp"
+      }
+    },
+    {
+      "candidate_id": "measure_460",
+      "raw_source_value_or_expression": "pitcher_era_reliver",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "p_era_rp",
+        "pitcher_era_reliver"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 460,
+        "query_engine_key": "p_era_rp"
+      }
+    },
+    {
+      "candidate_id": "measure_461",
+      "raw_source_value_or_expression": "pitcher_era_starter",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "p_era_sp",
+        "pitcher_era_starter"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 461,
+        "query_engine_key": "p_era_sp"
+      }
+    },
+    {
+      "candidate_id": "measure_468",
+      "raw_source_value_or_expression": "pitcher_opponent_ground_balls_air_balls_differential",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "p_gb_airb_ratio",
+        "pitcher_opponent_ground_balls_air_balls_differential"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 468,
+        "query_engine_key": "p_gb_airb_ratio"
+      }
+    },
+    {
+      "candidate_id": "measure_469",
+      "raw_source_value_or_expression": "pitcher_groundballto_fly_out_ratio",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "p_gb_flypop_ratio",
+        "pitcher_groundballto_fly_out_ratio"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 469,
+        "query_engine_key": "p_gb_flypop_ratio"
+      }
+    },
+    {
+      "candidate_id": "measure_484",
+      "raw_source_value_or_expression": "pitcher_h_r_to_fly_percentage",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "p_hr_To_Fly_pct",
+        "pitcher_h_r_to_fly_percentage"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 484,
+        "query_engine_key": "p_hr_To_Fly_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_485",
+      "raw_source_value_or_expression": "pitcher_home_runs_per_nine",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "p_hr_per_9ip",
+        "pitcher_home_runs_per_nine"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 485,
+        "query_engine_key": "p_hr_per_9ip"
+      }
+    },
+    {
+      "candidate_id": "measure_486",
+      "raw_source_value_or_expression": "pitcher_home_runs_allowed_per_game",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "p_hr_per_gm",
+        "pitcher_home_runs_allowed_per_game"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 486,
+        "query_engine_key": "p_hr_per_gm"
+      }
+    },
+    {
+      "candidate_id": "measure_494",
+      "raw_source_value_or_expression": "pitcher_starting_innings_pitched_per_start",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "p_ip_per_gs",
+        "pitcher_starting_innings_pitched_per_start"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 494,
+        "query_engine_key": "p_ip_per_gs"
+      }
+    },
+    {
+      "candidate_id": "measure_497",
+      "raw_source_value_or_expression": "strikeouts_differential",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "p_k_diff",
+        "strikeouts_differential"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 497,
+        "query_engine_key": "p_k_diff"
+      }
+    },
+    {
+      "candidate_id": "measure_501",
+      "raw_source_value_or_expression": "strikeouts_per_game_differential",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "p_k_per_gm_diff",
+        "strikeouts_per_game_differential"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 501,
+        "query_engine_key": "p_k_per_gm_diff"
+      }
+    },
+    {
+      "candidate_id": "measure_508",
+      "raw_source_value_or_expression": "pitcher_opponent_on_base_percentage_home_road_differential",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "p_obp_diff_home_road",
+        "pitcher_opponent_on_base_percentage_home_road_differential"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 508,
+        "query_engine_key": "p_obp_diff_home_road"
+      }
+    },
+    {
+      "candidate_id": "measure_512",
+      "raw_source_value_or_expression": "pitcher_opponent_on_base_plus_slugging_home_road_differential",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "p_ops_diff_home_road",
+        "pitcher_opponent_on_base_plus_slugging_home_road_differential"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 512,
+        "query_engine_key": "p_ops_diff_home_road"
+      }
+    },
+    {
+      "candidate_id": "measure_562",
+      "raw_source_value_or_expression": "runs_allowed_per_game",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "p_r_per_gm",
+        "runs_allowed_per_game"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 562,
+        "query_engine_key": "p_r_per_gm"
+      }
+    },
+    {
+      "candidate_id": "measure_566",
+      "raw_source_value_or_expression": "pitcher_runs_support_average",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "p_rsa",
+        "pitcher_runs_support_average"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 566,
+        "query_engine_key": "p_rsa"
+      }
+    },
+    {
+      "candidate_id": "measure_574",
+      "raw_source_value_or_expression": "pitcher_opponent_slugging_home_road_differential",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "p_slg_diff_home_road",
+        "pitcher_opponent_slugging_home_road_differential"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 574,
+        "query_engine_key": "p_slg_diff_home_road"
+      }
+    },
+    {
+      "candidate_id": "measure_587",
+      "raw_source_value_or_expression": "whip_home_road_differential",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "p_whip_diff_home_road",
+        "whip_home_road_differential"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 587,
+        "query_engine_key": "p_whip_diff_home_road"
+      }
+    },
+    {
+      "candidate_id": "measure_624",
+      "raw_source_value_or_expression": "pitches_per_inning",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "pitches_Per_Inning",
+        "pitches_per_inning"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 624,
+        "query_engine_key": "pitches_Per_Inning"
+      }
+    },
+    {
+      "candidate_id": "measure_627",
+      "raw_source_value_or_expression": "pitches_thrown_per_batter",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "pitches_Thrown_Per_Batter",
+        "pitches_thrown_per_batter"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 627,
+        "query_engine_key": "pitches_Thrown_Per_Batter"
+      }
+    },
+    {
+      "candidate_id": "measure_628",
+      "raw_source_value_or_expression": "pitches_thrown_per_game",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "pitches_Thrown_Per_Game",
+        "pitches_thrown_per_game"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 628,
+        "query_engine_key": "pitches_Thrown_Per_Game"
+      }
+    },
+    {
+      "candidate_id": "measure_629",
+      "raw_source_value_or_expression": "pitches_thrown_starter_per_start",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "pitches_Thrown_Per_Start",
+        "pitches_thrown_starter_per_start"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 629,
+        "query_engine_key": "pitches_Thrown_Per_Start"
+      }
+    },
+    {
+      "candidate_id": "measure_647",
+      "raw_source_value_or_expression": "runs_allowed_per_game_differential",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "runs_Allowed_Per_Game_Differential",
+        "runs_allowed_per_game_differential"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 647,
+        "query_engine_key": "runs_Allowed_Per_Game_Differential"
+      }
+    },
+    {
+      "candidate_id": "measure_648",
+      "raw_source_value_or_expression": "runs_allowed_per_home",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "runs_Allowed_Per_Home_Game",
+        "runs_allowed_per_home"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 648,
+        "query_engine_key": "runs_Allowed_Per_Home_Game"
+      }
+    },
+    {
+      "candidate_id": "measure_649",
+      "raw_source_value_or_expression": "runs_allowed_per_road",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "runs_Allowed_Per_Road_Game",
+        "runs_allowed_per_road"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 649,
+        "query_engine_key": "runs_Allowed_Per_Road_Game"
+      }
+    },
+    {
+      "candidate_id": "measure_658",
+      "raw_source_value_or_expression": "runs_created",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "runs_Created",
+        "runs_created"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 658,
+        "query_engine_key": "runs_Created"
+      }
+    },
+    {
+      "candidate_id": "measure_664",
+      "raw_source_value_or_expression": "runs_per_game_away",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "runs_Per_Game_Away",
+        "runs_per_game_away"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 664,
+        "query_engine_key": "runs_Per_Game_Away"
+      }
+    },
+    {
+      "candidate_id": "measure_665",
+      "raw_source_value_or_expression": "runs_home_road_per_game_differential",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "runs_Per_Game_Differential_Home_Away",
+        "runs_home_road_per_game_differential"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 665,
+        "query_engine_key": "runs_Per_Game_Differential_Home_Away"
+      }
+    },
+    {
+      "candidate_id": "measure_666",
+      "raw_source_value_or_expression": "runs_per_game_home",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "runs_Per_Game_Home",
+        "runs_per_game_home"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 666,
+        "query_engine_key": "runs_Per_Game_Home"
+      }
+    },
+    {
+      "candidate_id": "measure_677",
+      "raw_source_value_or_expression": "slugging_lhp_rhp_differential",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "slugging_Lhp_Rhp_Differential",
+        "slugging_lhp_rhp_differential"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 677,
+        "query_engine_key": "slugging_Lhp_Rhp_Differential"
+      }
+    },
+    {
+      "candidate_id": "measure_679",
+      "raw_source_value_or_expression": "steals_attempts_per_game",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "steal_Attempts_Per_Game",
+        "steals_attempts_per_game"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 679,
+        "query_engine_key": "steal_Attempts_Per_Game"
+      }
+    },
+    {
+      "candidate_id": "measure_687",
+      "raw_source_value_or_expression": "team_blown_saves",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "t_bsv",
+        "team_blown_saves"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 687,
+        "query_engine_key": "t_bsv"
+      }
+    },
+    {
+      "candidate_id": "measure_689",
+      "raw_source_value_or_expression": "team_era",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "t_era",
+        "team_era"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 689,
+        "query_engine_key": "t_era"
+      }
+    },
+    {
+      "candidate_id": "measure_694",
+      "raw_source_value_or_expression": "home_runs_differential",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "t_hr_diff",
+        "home_runs_differential"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 694,
+        "query_engine_key": "t_hr_diff"
+      }
+    },
+    {
+      "candidate_id": "measure_705",
+      "raw_source_value_or_expression": "team_left_on_base_per_game",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "t_lob_per_gm",
+        "team_left_on_base_per_game"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 705,
+        "query_engine_key": "t_lob_per_gm"
+      }
+    },
+    {
+      "candidate_id": "measure_706",
+      "raw_source_value_or_expression": "runs_differential",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "t_r_diff",
+        "runs_differential"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 706,
+        "query_engine_key": "t_r_diff"
+      }
+    },
+    {
+      "candidate_id": "measure_707",
+      "raw_source_value_or_expression": "runs_pergame_differential",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "t_r_diff_per_gm",
+        "runs_pergame_differential"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 707,
+        "query_engine_key": "t_r_diff_per_gm"
+      }
+    },
+    {
+      "candidate_id": "measure_716",
+      "raw_source_value_or_expression": "team_win_percentage",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "t_w_pct",
+        "team_win_percentage"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 716,
+        "query_engine_key": "t_w_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_718",
+      "raw_source_value_or_expression": "winning_percentage_day_night_differential",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "t_w_pct_diff_day_night",
+        "winning_percentage_day_night_differential"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 718,
+        "query_engine_key": "t_w_pct_diff_day_night"
+      }
+    },
+    {
+      "candidate_id": "measure_719",
+      "raw_source_value_or_expression": "winning_percentage_home_road_differential",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "t_w_pct_diff_home_road",
+        "winning_percentage_home_road_differential"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 719,
+        "query_engine_key": "t_w_pct_diff_home_road"
+      }
+    },
+    {
+      "candidate_id": "measure_720",
+      "raw_source_value_or_expression": "winning_percentage_pre_post_all_star_differential",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "t_w_pct_diff_pre_post_asb",
+        "winning_percentage_pre_post_all_star_differential"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 720,
+        "query_engine_key": "t_w_pct_diff_pre_post_asb"
+      }
+    },
+    {
+      "candidate_id": "measure_721",
+      "raw_source_value_or_expression": "winning_percentage_rhp_lhp_differential",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "t_w_pct_diff_vrhs_vlhs",
+        "winning_percentage_rhp_lhp_differential"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 721,
+        "query_engine_key": "t_w_pct_diff_vrhs_vlhs"
+      }
+    },
+    {
+      "candidate_id": "measure_751",
+      "raw_source_value_or_expression": "war_batter_per_full_season",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "war_Batting_Per_Full_Season",
+        "war_batter_per_full_season"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 751,
+        "query_engine_key": "war_Batting_Per_Full_Season"
+      }
+    },
+    {
+      "candidate_id": "measure_755",
+      "raw_source_value_or_expression": "whip_three_decimals",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "whip_Three_Decimals",
+        "whip_three_decimals"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 755,
+        "query_engine_key": "whip_Three_Decimals"
+      }
+    },
+    {
+      "candidate_id": "measure_756",
+      "raw_source_value_or_expression": "slugging_differential",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "Slugging_Differential",
+        "slugging_differential"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 756,
+        "query_engine_key": "Slugging_Differential"
+      }
+    },
+    {
+      "candidate_id": "measure_760",
+      "raw_source_value_or_expression": "stolen_base_differential",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "b_sb_diff",
+        "stolen_base_differential"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 760,
+        "query_engine_key": "b_sb_diff"
+      }
+    },
+    {
+      "candidate_id": "measure_761",
+      "raw_source_value_or_expression": "batting_average_two_outs",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "bavg_two_outs",
+        "batting_average_two_outs"
+      ],
+      "operator_format": "{{COMPOSITE_MEASURE}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 761,
+        "query_engine_key": "bavg_two_outs"
+      }
+    },
+    {
+      "candidate_id": "measure_768",
+      "raw_source_value_or_expression": "runs_win_loss_per_game_differential",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "runs_win_loss_per_game_differential",
+        "runs_win_loss_per_game_differential"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 768,
+        "query_engine_key": "runs_win_loss_per_game_differential"
+      }
+    },
+    {
+      "candidate_id": "measure_770",
+      "raw_source_value_or_expression": "pitcher_strikeouts_to_walk_ratio_number",
+      "composite_type": "ratio_or_composed_measure",
+      "component_candidates": [
+        "p_k_bb_ratio_number",
+        "pitcher_strikeouts_to_walk_ratio_number"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Requires composite-aware handling beyond learn-layer alias staging.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 770,
+        "query_engine_key": "p_k_bb_ratio_number"
+      }
+    },
+    {
+      "candidate_id": "user_16",
+      "raw_source_value_or_expression": "H/AB",
+      "composite_type": "ratio_phrase",
+      "component_candidates": [
+        "H",
+        "AB"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "User dictionary phrase requires composite assembly behavior.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 16,
+        "group_name": "L3 - HITTING",
+        "name": "header_hab"
+      }
+    },
+    {
+      "candidate_id": "user_71",
+      "raw_source_value_or_expression": "WALK/STRIKEOUT RATIO",
+      "composite_type": "ratio_phrase",
+      "component_candidates": [
+        "WALK",
+        "STRIKEOUT RATIO"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "User dictionary phrase requires composite assembly behavior.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 71,
+        "group_name": "LEADERBOARD - PITCHING",
+        "name": "leaders_bbkratio"
+      }
+    },
+    {
+      "candidate_id": "user_74",
+      "raw_source_value_or_expression": "HR/9 INNINGS",
+      "composite_type": "ratio_phrase",
+      "component_candidates": [
+        "HR",
+        "9 INNINGS"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "User dictionary phrase requires composite assembly behavior.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 74,
+        "group_name": "LEADERBOARD - PITCHING",
+        "name": "leaders_phr9"
+      }
+    },
+    {
+      "candidate_id": "user_75",
+      "raw_source_value_or_expression": "K/9 INNINGS",
+      "composite_type": "ratio_phrase",
+      "component_candidates": [
+        "K",
+        "9 INNINGS"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "User dictionary phrase requires composite assembly behavior.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 75,
+        "group_name": "LEADERBOARD - PITCHING",
+        "name": "leaders_pk9"
+      }
+    },
+    {
+      "candidate_id": "user_76",
+      "raw_source_value_or_expression": "RUN SUPPORT/9 INNINGS",
+      "composite_type": "ratio_phrase",
+      "component_candidates": [
+        "RUN SUPPORT",
+        "9 INNINGS"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "User dictionary phrase requires composite assembly behavior.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 76,
+        "group_name": "LEADERBOARD - PITCHING",
+        "name": "leaders_rs9"
+      }
+    },
+    {
+      "candidate_id": "user_103",
+      "raw_source_value_or_expression": "BB/9 INNINGS",
+      "composite_type": "ratio_phrase",
+      "component_candidates": [
+        "BB",
+        "9 INNINGS"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "User dictionary phrase requires composite assembly behavior.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 103,
+        "group_name": "LEADERBOARD - PITCHING",
+        "name": "leaders_pbb9"
+      }
+    },
+    {
+      "candidate_id": "user_144",
+      "raw_source_value_or_expression": "E:/EDRIVE/MLB/HEADSHOTS/{{info.team.alias}}/{{info.team.alias}}_{{info.player.last_name | file_path}}_{{info.player.first_name | file_path}}_960.png",
+      "composite_type": "ratio_phrase",
+      "component_candidates": [
+        "E:",
+        "EDRIVE",
+        "MLB",
+        "HEADSHOTS",
+        "{{info.team.alias}}",
+        "{{info.team.alias}}_{{info.player.last_name | file_path}}_{{info.player.first_name | file_path}}_960.png"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "User dictionary phrase requires composite assembly behavior.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 144,
+        "group_name": "HEADSHOTS",
+        "name": "player_hs"
+      }
+    },
+    {
+      "candidate_id": "user_145",
+      "raw_source_value_or_expression": "{{stats.player.season.pitcher_strikeouts}}/{{stats.player.season.pitcher_walks}}",
+      "composite_type": "ratio_phrase",
+      "component_candidates": [
+        "{{stats.player.season.pitcher_strikeouts}}",
+        "{{stats.player.season.pitcher_walks}}"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "User dictionary phrase requires composite assembly behavior.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 145,
+        "group_name": "L3 - PITCHING",
+        "name": "pstat_bb_k"
+      }
+    },
+    {
+      "candidate_id": "user_150",
+      "raw_source_value_or_expression": "K/BB",
+      "composite_type": "ratio_phrase",
+      "component_candidates": [
+        "K",
+        "BB"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "User dictionary phrase requires composite assembly behavior.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 150,
+        "group_name": "L3 - PITCHING",
+        "name": "header_bbk"
+      }
+    },
+    {
+      "candidate_id": "user_160",
+      "raw_source_value_or_expression": "SV/OPP",
+      "composite_type": "ratio_phrase",
+      "component_candidates": [
+        "SV",
+        "OPP"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "User dictionary phrase requires composite assembly behavior.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 160,
+        "group_name": "L3 - PITCHING",
+        "name": "header_sv_opp"
+      }
+    },
+    {
+      "candidate_id": "user_162",
+      "raw_source_value_or_expression": "IP/START",
+      "composite_type": "ratio_phrase",
+      "component_candidates": [
+        "IP",
+        "START"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "User dictionary phrase requires composite assembly behavior.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 162,
+        "group_name": "L3 - PITCHING",
+        "name": "header_ipstart"
+      }
+    },
+    {
+      "candidate_id": "user_165",
+      "raw_source_value_or_expression": "R/ER",
+      "composite_type": "ratio_phrase",
+      "component_candidates": [
+        "R",
+        "ER"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "User dictionary phrase requires composite assembly behavior.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 165,
+        "group_name": "L3 - PITCHING",
+        "name": "header_prer"
+      }
+    },
+    {
+      "candidate_id": "user_173",
+      "raw_source_value_or_expression": "HR/9 IP",
+      "composite_type": "ratio_phrase",
+      "component_candidates": [
+        "HR",
+        "9 IP"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "User dictionary phrase requires composite assembly behavior.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 173,
+        "group_name": "L3 - PITCHING",
+        "name": "header_phr9"
+      }
+    },
+    {
+      "candidate_id": "user_158",
+      "raw_source_value_or_expression": "AVG vs LHB",
+      "composite_type": "split_phrase",
+      "component_candidates": [
+        "AVG",
+        "LHB"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "deferral_reason": "User dictionary phrase requires composite assembly behavior.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 158,
+        "group_name": "L3 - PITCHING",
+        "name": "header_oppavg_lhb"
+      }
+    },
+    {
+      "candidate_id": "user_159",
+      "raw_source_value_or_expression": "AVG vs RHB",
+      "composite_type": "split_phrase",
+      "component_candidates": [
+        "AVG",
+        "RHB"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "deferral_reason": "User dictionary phrase requires composite assembly behavior.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 159,
+        "group_name": "L3 - PITCHING",
+        "name": "header_oppavg_rhb"
+      }
+    },
+    {
+      "candidate_id": "user_169",
+      "raw_source_value_or_expression": "OPS vs LHB",
+      "composite_type": "split_phrase",
+      "component_candidates": [
+        "OPS",
+        "LHB"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "deferral_reason": "User dictionary phrase requires composite assembly behavior.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 169,
+        "group_name": "L3 - PITCHING",
+        "name": "header_oppops_lhb"
+      }
+    },
+    {
+      "candidate_id": "user_170",
+      "raw_source_value_or_expression": "OPS vs RHB",
+      "composite_type": "split_phrase",
+      "component_candidates": [
+        "OPS",
+        "RHB"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "deferral_reason": "User dictionary phrase requires composite assembly behavior.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 170,
+        "group_name": "L3 - PITCHING",
+        "name": "header_oppops_rhb"
+      }
+    },
+    {
+      "candidate_id": "user_42",
+      "raw_source_value_or_expression": "HIGHEST IN {{info.conference.alias}} - {{info.time.season}}",
+      "composite_type": "text_token_hybrid",
+      "component_candidates": [
+        "HIGHEST IN {{info.conference.alias}} - {{info.time.season}}"
+      ],
+      "operator_format": "{{TEXT}} {{TOKEN}}",
+      "deferral_reason": "User dictionary phrase requires composite assembly behavior.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 42,
+        "group_name": "LEADERBOARD - SUBTITLES",
+        "name": "leaders_highconf"
+      }
+    },
+    {
+      "candidate_id": "user_43",
+      "raw_source_value_or_expression": "LOWEST IN {{info.conference.alias}} - {{info.time.season}}",
+      "composite_type": "text_token_hybrid",
+      "component_candidates": [
+        "LOWEST IN {{info.conference.alias}} - {{info.time.season}}"
+      ],
+      "operator_format": "{{TEXT}} {{TOKEN}}",
+      "deferral_reason": "User dictionary phrase requires composite assembly behavior.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 43,
+        "group_name": "LEADERBOARD - SUBTITLES",
+        "name": "leaders_lowconf"
+      }
+    },
+    {
+      "candidate_id": "user_44",
+      "raw_source_value_or_expression": "MOST IN {{info.conference.alias}} - {{info.time.season}}",
+      "composite_type": "text_token_hybrid",
+      "component_candidates": [
+        "MOST IN {{info.conference.alias}} - {{info.time.season}}"
+      ],
+      "operator_format": "{{TEXT}} {{TOKEN}}",
+      "deferral_reason": "User dictionary phrase requires composite assembly behavior.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 44,
+        "group_name": "LEADERBOARD - SUBTITLES",
+        "name": "leaders_mostconf"
+      }
+    },
+    {
+      "candidate_id": "user_45",
+      "raw_source_value_or_expression": "FEWEST IN {{info.conference.alias}} - {{info.time.season}}",
+      "composite_type": "text_token_hybrid",
+      "component_candidates": [
+        "FEWEST IN {{info.conference.alias}} - {{info.time.season}}"
+      ],
+      "operator_format": "{{TEXT}} {{TOKEN}}",
+      "deferral_reason": "User dictionary phrase requires composite assembly behavior.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 45,
+        "group_name": "LEADERBOARD - SUBTITLES",
+        "name": "leaders_fewconf"
+      }
+    },
+    {
+      "candidate_id": "user_46",
+      "raw_source_value_or_expression": "HIGHEST IN MLB - {{info.time.season}}",
+      "composite_type": "text_token_hybrid",
+      "component_candidates": [
+        "HIGHEST IN MLB - {{info.time.season}}"
+      ],
+      "operator_format": "{{TEXT}} {{TOKEN}}",
+      "deferral_reason": "User dictionary phrase requires composite assembly behavior.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 46,
+        "group_name": "LEADERBOARD - SUBTITLES",
+        "name": "leaders_highmlb"
+      }
+    },
+    {
+      "candidate_id": "user_47",
+      "raw_source_value_or_expression": "LOWEST IN MLB - {{info.time.season}}",
+      "composite_type": "text_token_hybrid",
+      "component_candidates": [
+        "LOWEST IN MLB - {{info.time.season}}"
+      ],
+      "operator_format": "{{TEXT}} {{TOKEN}}",
+      "deferral_reason": "User dictionary phrase requires composite assembly behavior.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 47,
+        "group_name": "LEADERBOARD - SUBTITLES",
+        "name": "leaders_lowmlb"
+      }
+    },
+    {
+      "candidate_id": "user_48",
+      "raw_source_value_or_expression": "MOST IN MLB - {{info.time.season}}",
+      "composite_type": "text_token_hybrid",
+      "component_candidates": [
+        "MOST IN MLB - {{info.time.season}}"
+      ],
+      "operator_format": "{{TEXT}} {{TOKEN}}",
+      "deferral_reason": "User dictionary phrase requires composite assembly behavior.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 48,
+        "group_name": "LEADERBOARD - SUBTITLES",
+        "name": "leaders_mostmlb"
+      }
+    },
+    {
+      "candidate_id": "user_49",
+      "raw_source_value_or_expression": "FEWEST IN MLB - {{info.time.season}}",
+      "composite_type": "text_token_hybrid",
+      "component_candidates": [
+        "FEWEST IN MLB - {{info.time.season}}"
+      ],
+      "operator_format": "{{TEXT}} {{TOKEN}}",
+      "deferral_reason": "User dictionary phrase requires composite assembly behavior.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 49,
+        "group_name": "LEADERBOARD - SUBTITLES",
+        "name": "leaders_fewmlb"
+      }
+    },
+    {
+      "candidate_id": "user_50",
+      "raw_source_value_or_expression": "{{info.conference.alias}} LEADERS - {{info.time.season}}",
+      "composite_type": "text_token_hybrid",
+      "component_candidates": [
+        "{{info.conference.alias}} LEADERS - {{info.time.season}}"
+      ],
+      "operator_format": "{{TEXT}} {{TOKEN}}",
+      "deferral_reason": "User dictionary phrase requires composite assembly behavior.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 50,
+        "group_name": "LEADERBOARD - SUBTITLES",
+        "name": "conf_leaders"
+      }
+    },
+    {
+      "candidate_id": "user_51",
+      "raw_source_value_or_expression": "MLB LEADERS - {{info.time.season}}",
+      "composite_type": "text_token_hybrid",
+      "component_candidates": [
+        "MLB LEADERS - {{info.time.season}}"
+      ],
+      "operator_format": "{{TEXT}} {{TOKEN}}",
+      "deferral_reason": "User dictionary phrase requires composite assembly behavior.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 51,
+        "group_name": "LEADERBOARD - SUBTITLES",
+        "name": "league_leaders"
+      }
+    },
+    {
+      "candidate_id": "user_52",
+      "raw_source_value_or_expression": "WORST IN {{info.conference.alias}} {{info.time.season}}",
+      "composite_type": "text_token_hybrid",
+      "component_candidates": [
+        "WORST IN {{info.conference.alias}} {{info.time.season}}"
+      ],
+      "operator_format": "{{TEXT}} {{TOKEN}}",
+      "deferral_reason": "User dictionary phrase requires composite assembly behavior.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 52,
+        "group_name": "LEADERBOARD - SUBTITLES",
+        "name": "leaders_worstconf"
+      }
+    },
+    {
+      "candidate_id": "user_185",
+      "raw_source_value_or_expression": "{{stats.player.season.pitcher_strikeouts}}",
+      "composite_type": "text_token_hybrid",
+      "component_candidates": [
+        "{{stats.player.season.pitcher_strikeouts}}"
+      ],
+      "operator_format": "{{TEXT}} {{TOKEN}}",
+      "deferral_reason": "User dictionary phrase requires composite assembly behavior.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 185,
+        "group_name": "L3 - PITCHING",
+        "name": "stat_pbbk1"
+      }
+    },
+    {
+      "candidate_id": "user_186",
+      "raw_source_value_or_expression": "{{stats.player.season.pitcher_walks}}",
+      "composite_type": "text_token_hybrid",
+      "component_candidates": [
+        "{{stats.player.season.pitcher_walks}}"
+      ],
+      "operator_format": "{{TEXT}} {{TOKEN}}",
+      "deferral_reason": "User dictionary phrase requires composite assembly behavior.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 186,
+        "group_name": "L3 - PITCHING",
+        "name": "stat_pbbk2"
+      }
+    },
+    {
+      "candidate_id": "composite_user_16",
+      "raw_source_value_or_expression": "H/AB",
+      "composite_type": "user_dictionary_composite",
+      "component_candidates": [
+        "H",
+        "AB"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Explicit slash composition in operator phrase requires multi-measure/hybrid composition.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 16,
+        "source_type": "user_dictionary",
+        "playbook_name": null
+      }
+    },
+    {
+      "candidate_id": "composite_user_42",
+      "raw_source_value_or_expression": "HIGHEST IN {{info.conference.alias}} - {{info.time.season}}",
+      "composite_type": "user_dictionary_composite",
+      "component_candidates": [
+        "TEXT_SEGMENT",
+        "SYNTAX_TOKEN"
+      ],
+      "operator_format": "{{TEXT}} {{TOKEN}}",
+      "deferral_reason": "Explicit template marker indicates text+syntax hybrid composition.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 42,
+        "source_type": "user_dictionary",
+        "playbook_name": null
+      }
+    },
+    {
+      "candidate_id": "composite_user_43",
+      "raw_source_value_or_expression": "LOWEST IN {{info.conference.alias}} - {{info.time.season}}",
+      "composite_type": "user_dictionary_composite",
+      "component_candidates": [
+        "TEXT_SEGMENT",
+        "SYNTAX_TOKEN"
+      ],
+      "operator_format": "{{TEXT}} {{TOKEN}}",
+      "deferral_reason": "Explicit template marker indicates text+syntax hybrid composition.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 43,
+        "source_type": "user_dictionary",
+        "playbook_name": null
+      }
+    },
+    {
+      "candidate_id": "composite_user_44",
+      "raw_source_value_or_expression": "MOST IN {{info.conference.alias}} - {{info.time.season}}",
+      "composite_type": "user_dictionary_composite",
+      "component_candidates": [
+        "TEXT_SEGMENT",
+        "SYNTAX_TOKEN"
+      ],
+      "operator_format": "{{TEXT}} {{TOKEN}}",
+      "deferral_reason": "Explicit template marker indicates text+syntax hybrid composition.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 44,
+        "source_type": "user_dictionary",
+        "playbook_name": null
+      }
+    },
+    {
+      "candidate_id": "composite_user_45",
+      "raw_source_value_or_expression": "FEWEST IN {{info.conference.alias}} - {{info.time.season}}",
+      "composite_type": "user_dictionary_composite",
+      "component_candidates": [
+        "TEXT_SEGMENT",
+        "SYNTAX_TOKEN"
+      ],
+      "operator_format": "{{TEXT}} {{TOKEN}}",
+      "deferral_reason": "Explicit template marker indicates text+syntax hybrid composition.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 45,
+        "source_type": "user_dictionary",
+        "playbook_name": null
+      }
+    },
+    {
+      "candidate_id": "composite_user_46",
+      "raw_source_value_or_expression": "HIGHEST IN MLB - {{info.time.season}}",
+      "composite_type": "user_dictionary_composite",
+      "component_candidates": [
+        "TEXT_SEGMENT",
+        "SYNTAX_TOKEN"
+      ],
+      "operator_format": "{{TEXT}} {{TOKEN}}",
+      "deferral_reason": "Explicit template marker indicates text+syntax hybrid composition.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 46,
+        "source_type": "user_dictionary",
+        "playbook_name": null
+      }
+    },
+    {
+      "candidate_id": "composite_user_47",
+      "raw_source_value_or_expression": "LOWEST IN MLB - {{info.time.season}}",
+      "composite_type": "user_dictionary_composite",
+      "component_candidates": [
+        "TEXT_SEGMENT",
+        "SYNTAX_TOKEN"
+      ],
+      "operator_format": "{{TEXT}} {{TOKEN}}",
+      "deferral_reason": "Explicit template marker indicates text+syntax hybrid composition.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 47,
+        "source_type": "user_dictionary",
+        "playbook_name": null
+      }
+    },
+    {
+      "candidate_id": "composite_user_48",
+      "raw_source_value_or_expression": "MOST IN MLB - {{info.time.season}}",
+      "composite_type": "user_dictionary_composite",
+      "component_candidates": [
+        "TEXT_SEGMENT",
+        "SYNTAX_TOKEN"
+      ],
+      "operator_format": "{{TEXT}} {{TOKEN}}",
+      "deferral_reason": "Explicit template marker indicates text+syntax hybrid composition.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 48,
+        "source_type": "user_dictionary",
+        "playbook_name": null
+      }
+    },
+    {
+      "candidate_id": "composite_user_49",
+      "raw_source_value_or_expression": "FEWEST IN MLB - {{info.time.season}}",
+      "composite_type": "user_dictionary_composite",
+      "component_candidates": [
+        "TEXT_SEGMENT",
+        "SYNTAX_TOKEN"
+      ],
+      "operator_format": "{{TEXT}} {{TOKEN}}",
+      "deferral_reason": "Explicit template marker indicates text+syntax hybrid composition.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 49,
+        "source_type": "user_dictionary",
+        "playbook_name": null
+      }
+    },
+    {
+      "candidate_id": "composite_user_50",
+      "raw_source_value_or_expression": "{{info.conference.alias}} LEADERS - {{info.time.season}}",
+      "composite_type": "user_dictionary_composite",
+      "component_candidates": [
+        "TEXT_SEGMENT",
+        "SYNTAX_TOKEN"
+      ],
+      "operator_format": "{{TEXT}} {{TOKEN}}",
+      "deferral_reason": "Explicit template marker indicates text+syntax hybrid composition.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 50,
+        "source_type": "user_dictionary",
+        "playbook_name": null
+      }
+    },
+    {
+      "candidate_id": "composite_user_51",
+      "raw_source_value_or_expression": "MLB LEADERS - {{info.time.season}}",
+      "composite_type": "user_dictionary_composite",
+      "component_candidates": [
+        "TEXT_SEGMENT",
+        "SYNTAX_TOKEN"
+      ],
+      "operator_format": "{{TEXT}} {{TOKEN}}",
+      "deferral_reason": "Explicit template marker indicates text+syntax hybrid composition.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 51,
+        "source_type": "user_dictionary",
+        "playbook_name": null
+      }
+    },
+    {
+      "candidate_id": "composite_user_52",
+      "raw_source_value_or_expression": "WORST IN {{info.conference.alias}} {{info.time.season}}",
+      "composite_type": "user_dictionary_composite",
+      "component_candidates": [
+        "TEXT_SEGMENT",
+        "SYNTAX_TOKEN"
+      ],
+      "operator_format": "{{TEXT}} {{TOKEN}}",
+      "deferral_reason": "Explicit template marker indicates text+syntax hybrid composition.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 52,
+        "source_type": "user_dictionary",
+        "playbook_name": null
+      }
+    },
+    {
+      "candidate_id": "composite_user_71",
+      "raw_source_value_or_expression": "WALK/STRIKEOUT RATIO",
+      "composite_type": "user_dictionary_composite",
+      "component_candidates": [
+        "WALK",
+        "STRIKEOUT RATIO"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Explicit slash composition in operator phrase requires multi-measure/hybrid composition.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 71,
+        "source_type": "user_dictionary",
+        "playbook_name": null
+      }
+    },
+    {
+      "candidate_id": "composite_user_74",
+      "raw_source_value_or_expression": "HR/9 INNINGS",
+      "composite_type": "user_dictionary_composite",
+      "component_candidates": [
+        "HR",
+        "9 INNINGS"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Explicit slash composition in operator phrase requires multi-measure/hybrid composition.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 74,
+        "source_type": "user_dictionary",
+        "playbook_name": null
+      }
+    },
+    {
+      "candidate_id": "composite_user_75",
+      "raw_source_value_or_expression": "K/9 INNINGS",
+      "composite_type": "user_dictionary_composite",
+      "component_candidates": [
+        "K",
+        "9 INNINGS"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Explicit slash composition in operator phrase requires multi-measure/hybrid composition.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 75,
+        "source_type": "user_dictionary",
+        "playbook_name": null
+      }
+    },
+    {
+      "candidate_id": "composite_user_76",
+      "raw_source_value_or_expression": "RUN SUPPORT/9 INNINGS",
+      "composite_type": "user_dictionary_composite",
+      "component_candidates": [
+        "RUN SUPPORT",
+        "9 INNINGS"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Explicit slash composition in operator phrase requires multi-measure/hybrid composition.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 76,
+        "source_type": "user_dictionary",
+        "playbook_name": null
+      }
+    },
+    {
+      "candidate_id": "composite_user_103",
+      "raw_source_value_or_expression": "BB/9 INNINGS",
+      "composite_type": "user_dictionary_composite",
+      "component_candidates": [
+        "BB",
+        "9 INNINGS"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Explicit slash composition in operator phrase requires multi-measure/hybrid composition.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 103,
+        "source_type": "user_dictionary",
+        "playbook_name": null
+      }
+    },
+    {
+      "candidate_id": "composite_user_144",
+      "raw_source_value_or_expression": "E:/EDRIVE/MLB/HEADSHOTS/{{info.team.alias}}/{{info.team.alias}}_{{info.player.last_name | file_path}}_{{info.player.first_name | file_path}}_960.png",
+      "composite_type": "user_dictionary_composite",
+      "component_candidates": [
+        "E:",
+        "EDRIVE"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Explicit slash composition in operator phrase requires multi-measure/hybrid composition.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 144,
+        "source_type": "user_dictionary",
+        "playbook_name": null
+      }
+    },
+    {
+      "candidate_id": "composite_user_145",
+      "raw_source_value_or_expression": "{{stats.player.season.pitcher_strikeouts}}/{{stats.player.season.pitcher_walks}}",
+      "composite_type": "user_dictionary_composite",
+      "component_candidates": [
+        "{{stats.player.season.pitcher_strikeouts}}",
+        "{{stats.player.season.pitcher_walks}}"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Explicit slash composition in operator phrase requires multi-measure/hybrid composition.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 145,
+        "source_type": "user_dictionary",
+        "playbook_name": null
+      }
+    },
+    {
+      "candidate_id": "composite_user_150",
+      "raw_source_value_or_expression": "K/BB",
+      "composite_type": "user_dictionary_composite",
+      "component_candidates": [
+        "K",
+        "BB"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Explicit slash composition in operator phrase requires multi-measure/hybrid composition.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 150,
+        "source_type": "user_dictionary",
+        "playbook_name": null
+      }
+    },
+    {
+      "candidate_id": "composite_user_158",
+      "raw_source_value_or_expression": "AVG vs LHB",
+      "composite_type": "user_dictionary_composite",
+      "component_candidates": [
+        "AVG",
+        "LHB"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "deferral_reason": "Explicit split phrase uses vs-pattern and requires composed operator output.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 158,
+        "source_type": "user_dictionary",
+        "playbook_name": null
+      }
+    },
+    {
+      "candidate_id": "composite_user_159",
+      "raw_source_value_or_expression": "AVG vs RHB",
+      "composite_type": "user_dictionary_composite",
+      "component_candidates": [
+        "AVG",
+        "RHB"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "deferral_reason": "Explicit split phrase uses vs-pattern and requires composed operator output.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 159,
+        "source_type": "user_dictionary",
+        "playbook_name": null
+      }
+    },
+    {
+      "candidate_id": "composite_user_160",
+      "raw_source_value_or_expression": "SV/OPP",
+      "composite_type": "user_dictionary_composite",
+      "component_candidates": [
+        "SV",
+        "OPP"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Explicit slash composition in operator phrase requires multi-measure/hybrid composition.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 160,
+        "source_type": "user_dictionary",
+        "playbook_name": null
+      }
+    },
+    {
+      "candidate_id": "composite_user_162",
+      "raw_source_value_or_expression": "IP/START",
+      "composite_type": "user_dictionary_composite",
+      "component_candidates": [
+        "IP",
+        "START"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Explicit slash composition in operator phrase requires multi-measure/hybrid composition.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 162,
+        "source_type": "user_dictionary",
+        "playbook_name": null
+      }
+    },
+    {
+      "candidate_id": "composite_user_165",
+      "raw_source_value_or_expression": "R/ER",
+      "composite_type": "user_dictionary_composite",
+      "component_candidates": [
+        "R",
+        "ER"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Explicit slash composition in operator phrase requires multi-measure/hybrid composition.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 165,
+        "source_type": "user_dictionary",
+        "playbook_name": null
+      }
+    },
+    {
+      "candidate_id": "composite_user_169",
+      "raw_source_value_or_expression": "OPS vs LHB",
+      "composite_type": "user_dictionary_composite",
+      "component_candidates": [
+        "OPS",
+        "LHB"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "deferral_reason": "Explicit split phrase uses vs-pattern and requires composed operator output.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 169,
+        "source_type": "user_dictionary",
+        "playbook_name": null
+      }
+    },
+    {
+      "candidate_id": "composite_user_170",
+      "raw_source_value_or_expression": "OPS vs RHB",
+      "composite_type": "user_dictionary_composite",
+      "component_candidates": [
+        "OPS",
+        "RHB"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "deferral_reason": "Explicit split phrase uses vs-pattern and requires composed operator output.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 170,
+        "source_type": "user_dictionary",
+        "playbook_name": null
+      }
+    },
+    {
+      "candidate_id": "composite_user_173",
+      "raw_source_value_or_expression": "HR/9 IP",
+      "composite_type": "user_dictionary_composite",
+      "component_candidates": [
+        "HR",
+        "9 IP"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "deferral_reason": "Explicit slash composition in operator phrase requires multi-measure/hybrid composition.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 173,
+        "source_type": "user_dictionary",
+        "playbook_name": null
+      }
+    },
+    {
+      "candidate_id": "composite_user_185",
+      "raw_source_value_or_expression": "{{stats.player.season.pitcher_strikeouts}}",
+      "composite_type": "user_dictionary_composite",
+      "component_candidates": [
+        "TEXT_SEGMENT",
+        "SYNTAX_TOKEN"
+      ],
+      "operator_format": "{{TEXT}} {{TOKEN}}",
+      "deferral_reason": "Explicit template marker indicates text+syntax hybrid composition.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 185,
+        "source_type": "user_dictionary",
+        "playbook_name": null
+      }
+    },
+    {
+      "candidate_id": "composite_user_186",
+      "raw_source_value_or_expression": "{{stats.player.season.pitcher_walks}}",
+      "composite_type": "user_dictionary_composite",
+      "component_candidates": [
+        "TEXT_SEGMENT",
+        "SYNTAX_TOKEN"
+      ],
+      "operator_format": "{{TEXT}} {{TOKEN}}",
+      "deferral_reason": "Explicit template marker indicates text+syntax hybrid composition.",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_composite_candidates.json",
+        "source_index": 186,
+        "source_type": "user_dictionary",
+        "playbook_name": null
+      }
+    }
+  ]
+}

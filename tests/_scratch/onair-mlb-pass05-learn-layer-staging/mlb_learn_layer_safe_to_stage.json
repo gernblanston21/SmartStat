@@ -1,0 +1,533 @@
+{
+  "pass_name": "MLB_LEARN_LAYER_STAGING_PASS_05",
+  "bucket": "safe_to_stage",
+  "total_rows": 27,
+  "rows": [
+    {
+      "candidate_id": "measure_156",
+      "source_type": "alias",
+      "raw_source_value": "steals",
+      "normalized_candidate": "steals",
+      "proposed_learn_entry_shape": {
+        "section": "PENDING_ALIASES",
+        "entry_key": "steals",
+        "entry_value": "STEALS",
+        "review_gate": "controlled_learn_layer_pass_required"
+      },
+      "rationale": "High-confidence alias alignment to existing MLB SmartStat concept without context-split ambiguity.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 156,
+        "query_engine_key": "b_sb"
+      }
+    },
+    {
+      "candidate_id": "measure_277",
+      "source_type": "alias",
+      "raw_source_value": "gs",
+      "normalized_candidate": "gs",
+      "proposed_learn_entry_shape": {
+        "section": "PENDING_ALIASES",
+        "entry_key": "gs",
+        "entry_value": "GS",
+        "review_gate": "controlled_learn_layer_pass_required"
+      },
+      "rationale": "High-confidence alias alignment to existing MLB SmartStat concept without context-split ambiguity.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 277,
+        "query_engine_key": "gs"
+      }
+    },
+    {
+      "candidate_id": "measure_49",
+      "source_type": "measure",
+      "raw_source_value": "caught_stealing",
+      "normalized_candidate": "caught stealing",
+      "proposed_learn_entry_shape": {
+        "section": "PENDING",
+        "entry_key": "caught_stealing",
+        "entry_value": "TBD_CANONICAL_TARGET",
+        "review_gate": "cross_source_corroborated_high_missing"
+      },
+      "rationale": "High-confidence missing measure is corroborated by high-confidence user dictionary vocabulary.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 49,
+        "query_engine_key": "b_cs"
+      }
+    },
+    {
+      "candidate_id": "measure_62",
+      "source_type": "measure",
+      "raw_source_value": "singles",
+      "normalized_candidate": "singles",
+      "proposed_learn_entry_shape": {
+        "section": "PENDING",
+        "entry_key": "singles",
+        "entry_value": "TBD_CANONICAL_TARGET",
+        "review_gate": "cross_source_corroborated_high_missing"
+      },
+      "rationale": "High-confidence missing measure is corroborated by high-confidence user dictionary vocabulary.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 62,
+        "query_engine_key": "b_h1b"
+      }
+    },
+    {
+      "candidate_id": "measure_140",
+      "source_type": "measure",
+      "raw_source_value": "pickoffs",
+      "normalized_candidate": "pickoffs",
+      "proposed_learn_entry_shape": {
+        "section": "PENDING",
+        "entry_key": "pickoffs",
+        "entry_value": "TBD_CANONICAL_TARGET",
+        "review_gate": "cross_source_corroborated_high_missing"
+      },
+      "rationale": "High-confidence missing measure is corroborated by high-confidence user dictionary vocabulary.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 140,
+        "query_engine_key": "b_pko"
+      }
+    },
+    {
+      "candidate_id": "measure_214",
+      "source_type": "measure",
+      "raw_source_value": "fielding_assists",
+      "normalized_candidate": "fielding assists",
+      "proposed_learn_entry_shape": {
+        "section": "PENDING",
+        "entry_key": "fielding_assists",
+        "entry_value": "TBD_CANONICAL_TARGET",
+        "review_gate": "cross_source_corroborated_high_missing"
+      },
+      "rationale": "High-confidence missing measure is corroborated by high-confidence user dictionary vocabulary.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 214,
+        "query_engine_key": "f_a"
+      }
+    },
+    {
+      "candidate_id": "measure_216",
+      "source_type": "measure",
+      "raw_source_value": "fielding_caught_stealing",
+      "normalized_candidate": "fielding caught stealing",
+      "proposed_learn_entry_shape": {
+        "section": "PENDING",
+        "entry_key": "fielding_caught_stealing",
+        "entry_value": "TBD_CANONICAL_TARGET",
+        "review_gate": "cross_source_corroborated_high_missing"
+      },
+      "rationale": "High-confidence missing measure is corroborated by high-confidence user dictionary vocabulary.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 216,
+        "query_engine_key": "f_cs"
+      }
+    },
+    {
+      "candidate_id": "measure_217",
+      "source_type": "measure",
+      "raw_source_value": "fielding_double_plays",
+      "normalized_candidate": "fielding double plays",
+      "proposed_learn_entry_shape": {
+        "section": "PENDING",
+        "entry_key": "fielding_double_plays",
+        "entry_value": "TBD_CANONICAL_TARGET",
+        "review_gate": "cross_source_corroborated_high_missing"
+      },
+      "rationale": "High-confidence missing measure is corroborated by high-confidence user dictionary vocabulary.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 217,
+        "query_engine_key": "f_dp"
+      }
+    },
+    {
+      "candidate_id": "measure_226",
+      "source_type": "measure",
+      "raw_source_value": "fielding_putouts",
+      "normalized_candidate": "fielding putouts",
+      "proposed_learn_entry_shape": {
+        "section": "PENDING",
+        "entry_key": "fielding_putouts",
+        "entry_value": "TBD_CANONICAL_TARGET",
+        "review_gate": "cross_source_corroborated_high_missing"
+      },
+      "rationale": "High-confidence missing measure is corroborated by high-confidence user dictionary vocabulary.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 226,
+        "query_engine_key": "f_po"
+      }
+    },
+    {
+      "candidate_id": "measure_437",
+      "source_type": "measure",
+      "raw_source_value": "balks",
+      "normalized_candidate": "balks",
+      "proposed_learn_entry_shape": {
+        "section": "PENDING",
+        "entry_key": "balks",
+        "entry_value": "TBD_CANONICAL_TARGET",
+        "review_gate": "cross_source_corroborated_high_missing"
+      },
+      "rationale": "High-confidence missing measure is corroborated by high-confidence user dictionary vocabulary.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 437,
+        "query_engine_key": "p_balk"
+      }
+    },
+    {
+      "candidate_id": "measure_449",
+      "source_type": "measure",
+      "raw_source_value": "pitcher_blown_saves",
+      "normalized_candidate": "pitcher blown saves",
+      "proposed_learn_entry_shape": {
+        "section": "PENDING",
+        "entry_key": "pitcher_blown_saves",
+        "entry_value": "TBD_CANONICAL_TARGET",
+        "review_gate": "cross_source_corroborated_high_missing"
+      },
+      "rationale": "High-confidence missing measure is corroborated by high-confidence user dictionary vocabulary.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 449,
+        "query_engine_key": "p_bsv"
+      }
+    },
+    {
+      "candidate_id": "measure_451",
+      "source_type": "measure",
+      "raw_source_value": "pitcher_caught_stealing",
+      "normalized_candidate": "pitcher caught stealing",
+      "proposed_learn_entry_shape": {
+        "section": "PENDING",
+        "entry_key": "pitcher_caught_stealing",
+        "entry_value": "TBD_CANONICAL_TARGET",
+        "review_gate": "cross_source_corroborated_high_missing"
+      },
+      "rationale": "High-confidence missing measure is corroborated by high-confidence user dictionary vocabulary.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 451,
+        "query_engine_key": "p_cs"
+      }
+    },
+    {
+      "candidate_id": "measure_762",
+      "source_type": "measure",
+      "raw_source_value": "game_winning_rbi",
+      "normalized_candidate": "game winning rbi",
+      "proposed_learn_entry_shape": {
+        "section": "PENDING",
+        "entry_key": "game_winning_rbi",
+        "entry_value": "TBD_CANONICAL_TARGET",
+        "review_gate": "cross_source_corroborated_high_missing"
+      },
+      "rationale": "High-confidence missing measure is corroborated by high-confidence user dictionary vocabulary.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 762,
+        "query_engine_key": "game_winning_rbi"
+      }
+    },
+    {
+      "candidate_id": "measure_769",
+      "source_type": "measure",
+      "raw_source_value": "go_ahead_rbi",
+      "normalized_candidate": "go ahead rbi",
+      "proposed_learn_entry_shape": {
+        "section": "PENDING",
+        "entry_key": "go_ahead_rbi",
+        "entry_value": "TBD_CANONICAL_TARGET",
+        "review_gate": "cross_source_corroborated_high_missing"
+      },
+      "rationale": "High-confidence missing measure is corroborated by high-confidence user dictionary vocabulary.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 769,
+        "query_engine_key": "go_ahead_rbi"
+      }
+    },
+    {
+      "candidate_id": "user_2",
+      "source_type": "user_dictionary",
+      "raw_source_value": "DOUBLE PLAYS",
+      "normalized_candidate": "double plays",
+      "proposed_learn_entry_shape": {
+        "section": "PENDING_ALIASES",
+        "entry_key": "DOUBLE PLAYS",
+        "entry_value": "TBD_CANONICAL_TARGET",
+        "review_gate": "cross_source_corroborated_high_missing"
+      },
+      "rationale": "High-confidence user phrase is corroborated by high-confidence missing measure vocabulary.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 2,
+        "group_name": "LEADERBOARD - FIELDING",
+        "name": "leaders_doubleplays"
+      }
+    },
+    {
+      "candidate_id": "user_4",
+      "source_type": "user_dictionary",
+      "raw_source_value": "PUTOUTS",
+      "normalized_candidate": "putouts",
+      "proposed_learn_entry_shape": {
+        "section": "PENDING_ALIASES",
+        "entry_key": "PUTOUTS",
+        "entry_value": "TBD_CANONICAL_TARGET",
+        "review_gate": "cross_source_corroborated_high_missing"
+      },
+      "rationale": "High-confidence user phrase is corroborated by high-confidence missing measure vocabulary.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 4,
+        "group_name": "LEADERBOARD - FIELDING",
+        "name": "leaders_fputouts"
+      }
+    },
+    {
+      "candidate_id": "user_6",
+      "source_type": "user_dictionary",
+      "raw_source_value": "ASSISTS",
+      "normalized_candidate": "assists",
+      "proposed_learn_entry_shape": {
+        "section": "PENDING_ALIASES",
+        "entry_key": "ASSISTS",
+        "entry_value": "TBD_CANONICAL_TARGET",
+        "review_gate": "cross_source_corroborated_high_missing"
+      },
+      "rationale": "High-confidence user phrase is corroborated by high-confidence missing measure vocabulary.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 6,
+        "group_name": "LEADERBOARD - FIELDING",
+        "name": "leaders_fassists"
+      }
+    },
+    {
+      "candidate_id": "user_40",
+      "source_type": "user_dictionary",
+      "raw_source_value": "PUTOUTS",
+      "normalized_candidate": "putouts",
+      "proposed_learn_entry_shape": {
+        "section": "PENDING_ALIASES",
+        "entry_key": "PUTOUTS",
+        "entry_value": "TBD_CANONICAL_TARGET",
+        "review_gate": "cross_source_corroborated_high_missing"
+      },
+      "rationale": "High-confidence user phrase is corroborated by high-confidence missing measure vocabulary.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 40,
+        "group_name": "L3 - FIELDING",
+        "name": "header_putouts"
+      }
+    },
+    {
+      "candidate_id": "user_41",
+      "source_type": "user_dictionary",
+      "raw_source_value": "ASSISTS",
+      "normalized_candidate": "assists",
+      "proposed_learn_entry_shape": {
+        "section": "PENDING_ALIASES",
+        "entry_key": "ASSISTS",
+        "entry_value": "TBD_CANONICAL_TARGET",
+        "review_gate": "cross_source_corroborated_high_missing"
+      },
+      "rationale": "High-confidence user phrase is corroborated by high-confidence missing measure vocabulary.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 41,
+        "group_name": "L3 - FIELDING",
+        "name": "header_assists"
+      }
+    },
+    {
+      "candidate_id": "user_69",
+      "source_type": "user_dictionary",
+      "raw_source_value": "BLOWN SAVES",
+      "normalized_candidate": "blown saves",
+      "proposed_learn_entry_shape": {
+        "section": "PENDING_ALIASES",
+        "entry_key": "BLOWN SAVES",
+        "entry_value": "TBD_CANONICAL_TARGET",
+        "review_gate": "cross_source_corroborated_high_missing"
+      },
+      "rationale": "High-confidence user phrase is corroborated by high-confidence missing measure vocabulary.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 69,
+        "group_name": "LEADERBOARD - PITCHING",
+        "name": "leaders_bs"
+      }
+    },
+    {
+      "candidate_id": "user_94",
+      "source_type": "user_dictionary",
+      "raw_source_value": "PICKOFFS",
+      "normalized_candidate": "pickoffs",
+      "proposed_learn_entry_shape": {
+        "section": "PENDING_ALIASES",
+        "entry_key": "PICKOFFS",
+        "entry_value": "TBD_CANONICAL_TARGET",
+        "review_gate": "cross_source_corroborated_high_missing"
+      },
+      "rationale": "High-confidence user phrase is corroborated by high-confidence missing measure vocabulary.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 94,
+        "group_name": "LEADERBOARD - PITCHING",
+        "name": "leaders_pickoffs"
+      }
+    },
+    {
+      "candidate_id": "user_95",
+      "source_type": "user_dictionary",
+      "raw_source_value": "BALKS",
+      "normalized_candidate": "balks",
+      "proposed_learn_entry_shape": {
+        "section": "PENDING_ALIASES",
+        "entry_key": "BALKS",
+        "entry_value": "TBD_CANONICAL_TARGET",
+        "review_gate": "cross_source_corroborated_high_missing"
+      },
+      "rationale": "High-confidence user phrase is corroborated by high-confidence missing measure vocabulary.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 95,
+        "group_name": "LEADERBOARD - PITCHING",
+        "name": "leaders_balks"
+      }
+    },
+    {
+      "candidate_id": "user_107",
+      "source_type": "user_dictionary",
+      "raw_source_value": "GO-AHEAD RBI",
+      "normalized_candidate": "go ahead rbi",
+      "proposed_learn_entry_shape": {
+        "section": "PENDING_ALIASES",
+        "entry_key": "GO-AHEAD RBI",
+        "entry_value": "TBD_CANONICAL_TARGET",
+        "review_gate": "cross_source_corroborated_high_missing"
+      },
+      "rationale": "High-confidence user phrase is corroborated by high-confidence missing measure vocabulary.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 107,
+        "group_name": "LEADERBOARD - HITTING",
+        "name": "leaders_garbi"
+      }
+    },
+    {
+      "candidate_id": "user_119",
+      "source_type": "user_dictionary",
+      "raw_source_value": "GAME WINNING RBI",
+      "normalized_candidate": "game winning rbi",
+      "proposed_learn_entry_shape": {
+        "section": "PENDING_ALIASES",
+        "entry_key": "GAME WINNING RBI",
+        "entry_value": "TBD_CANONICAL_TARGET",
+        "review_gate": "cross_source_corroborated_high_missing"
+      },
+      "rationale": "High-confidence user phrase is corroborated by high-confidence missing measure vocabulary.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 119,
+        "group_name": "LEADERBOARD - HITTING",
+        "name": "leaders_gwrbi"
+      }
+    },
+    {
+      "candidate_id": "user_123",
+      "source_type": "user_dictionary",
+      "raw_source_value": "CAUGHT STEALING",
+      "normalized_candidate": "caught stealing",
+      "proposed_learn_entry_shape": {
+        "section": "PENDING_ALIASES",
+        "entry_key": "CAUGHT STEALING",
+        "entry_value": "TBD_CANONICAL_TARGET",
+        "review_gate": "cross_source_corroborated_high_missing"
+      },
+      "rationale": "High-confidence user phrase is corroborated by high-confidence missing measure vocabulary.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 123,
+        "group_name": "LEADERBOARD - HITTING",
+        "name": "leaders_cs"
+      }
+    },
+    {
+      "candidate_id": "user_138",
+      "source_type": "user_dictionary",
+      "raw_source_value": "SINGLES",
+      "normalized_candidate": "singles",
+      "proposed_learn_entry_shape": {
+        "section": "PENDING_ALIASES",
+        "entry_key": "SINGLES",
+        "entry_value": "TBD_CANONICAL_TARGET",
+        "review_gate": "cross_source_corroborated_high_missing"
+      },
+      "rationale": "High-confidence user phrase is corroborated by high-confidence missing measure vocabulary.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 138,
+        "group_name": "LEADERBOARD - HITTING",
+        "name": "leaders_1b"
+      }
+    },
+    {
+      "candidate_id": "user_183",
+      "source_type": "user_dictionary",
+      "raw_source_value": "PICKOFFS",
+      "normalized_candidate": "pickoffs",
+      "proposed_learn_entry_shape": {
+        "section": "PENDING_ALIASES",
+        "entry_key": "PICKOFFS",
+        "entry_value": "TBD_CANONICAL_TARGET",
+        "review_gate": "cross_source_corroborated_high_missing"
+      },
+      "rationale": "High-confidence user phrase is corroborated by high-confidence missing measure vocabulary.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 183,
+        "group_name": "L3 - PITCHING",
+        "name": "header_pickoffs"
+      }
+    }
+  ]
+}

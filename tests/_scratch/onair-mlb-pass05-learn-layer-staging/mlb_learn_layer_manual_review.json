@@ -1,0 +1,3405 @@
+{
+  "pass_name": "MLB_LEARN_LAYER_STAGING_PASS_05",
+  "bucket": "manual_review_required",
+  "total_rows": 280,
+  "rows": [
+    {
+      "candidate_id": "measure_2",
+      "raw_source_value": "at_bats_bases_empty",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 2,
+        "query_engine_key": "ab_Bases_Empty"
+      }
+    },
+    {
+      "candidate_id": "measure_3",
+      "raw_source_value": "at_bats_bases_loaded",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 3,
+        "query_engine_key": "ab_Bases_Loaded"
+      }
+    },
+    {
+      "candidate_id": "measure_4",
+      "raw_source_value": "at_bats_runners",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 4,
+        "query_engine_key": "ab_Runners"
+      }
+    },
+    {
+      "candidate_id": "measure_5",
+      "raw_source_value": "at_bats_runners_in_scoring_position_two_outs",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 5,
+        "query_engine_key": "ab_risp_Two_Outs"
+      }
+    },
+    {
+      "candidate_id": "measure_9",
+      "raw_source_value": "batter_foul_balls",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 9,
+        "query_engine_key": "b_Foul_Balls"
+      }
+    },
+    {
+      "candidate_id": "measure_11",
+      "raw_source_value": "batter_inzone_contact_percentage",
+      "likely_direction": "Alias toward `batter_contact_percentage`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 11,
+        "query_engine_key": "b_In_zone_Contact_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_12",
+      "raw_source_value": "batter_inzone_swing_percentage",
+      "likely_direction": "Alias toward `batter_swing_percentage`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 12,
+        "query_engine_key": "b_In_zone_Swing_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_13",
+      "raw_source_value": "batter_inzone_whiff_percentage",
+      "likely_direction": "Alias toward `batter_whiff_percentage`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 13,
+        "query_engine_key": "b_In_zone_Whiff_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_14",
+      "raw_source_value": "batter_outofzone_contact_percentage",
+      "likely_direction": "Alias toward `batter_contact_percentage`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 14,
+        "query_engine_key": "b_Out_of_zone_Contact_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_15",
+      "raw_source_value": "batter_outofzone_whiff_percentage",
+      "likely_direction": "Alias toward `batter_whiff_percentage`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 15,
+        "query_engine_key": "b_Out_of_zone_Whiff_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_19",
+      "raw_source_value": "batter_times_chased",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 19,
+        "query_engine_key": "b_Times_Chased"
+      }
+    },
+    {
+      "candidate_id": "measure_22",
+      "raw_source_value": "at_bats",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 22,
+        "query_engine_key": "b_ab"
+      }
+    },
+    {
+      "candidate_id": "measure_23",
+      "raw_source_value": "at_bats_home",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 23,
+        "query_engine_key": "b_ab_home"
+      }
+    },
+    {
+      "candidate_id": "measure_27",
+      "raw_source_value": "at_bats_runners_in_scoring_position",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 27,
+        "query_engine_key": "b_ab_risp"
+      }
+    },
+    {
+      "candidate_id": "measure_28",
+      "raw_source_value": "at_bats_road",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 28,
+        "query_engine_key": "b_ab_road"
+      }
+    },
+    {
+      "candidate_id": "measure_29",
+      "raw_source_value": "air_balls",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 29,
+        "query_engine_key": "b_airb"
+      }
+    },
+    {
+      "candidate_id": "measure_30",
+      "raw_source_value": "air_balls_percentage",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 30,
+        "query_engine_key": "b_airb_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_32",
+      "raw_source_value": "batting_average_balls_in_play_number",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 32,
+        "query_engine_key": "b_babip_denom"
+      }
+    },
+    {
+      "candidate_id": "measure_47",
+      "raw_source_value": "balls_in_play",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 47,
+        "query_engine_key": "b_bip"
+      }
+    },
+    {
+      "candidate_id": "measure_48",
+      "raw_source_value": "balls_in_field",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 48,
+        "query_engine_key": "b_bip_field"
+      }
+    },
+    {
+      "candidate_id": "measure_50",
+      "raw_source_value": "fly_balls",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 50,
+        "query_engine_key": "b_fb"
+      }
+    },
+    {
+      "candidate_id": "measure_51",
+      "raw_source_value": "fly_balls_percentage",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 51,
+        "query_engine_key": "b_fb_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_52",
+      "raw_source_value": "fielders_choice",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 52,
+        "query_engine_key": "b_fc"
+      }
+    },
+    {
+      "candidate_id": "measure_53",
+      "raw_source_value": "fly_pop_balls",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 53,
+        "query_engine_key": "b_flypop"
+      }
+    },
+    {
+      "candidate_id": "measure_54",
+      "raw_source_value": "fly_pop_balls_percentage",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 54,
+        "query_engine_key": "b_flypop_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_55",
+      "raw_source_value": "ground_balls",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 55,
+        "query_engine_key": "b_gb"
+      }
+    },
+    {
+      "candidate_id": "measure_58",
+      "raw_source_value": "ground_balls_percentage",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 58,
+        "query_engine_key": "b_gb_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_59",
+      "raw_source_value": "ground_outs",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 59,
+        "query_engine_key": "b_gbo"
+      }
+    },
+    {
+      "candidate_id": "measure_60",
+      "raw_source_value": "grounded_into_double_play",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 60,
+        "query_engine_key": "b_gdp"
+      }
+    },
+    {
+      "candidate_id": "measure_75",
+      "raw_source_value": "hits_runners_in_scoring_position",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 75,
+        "query_engine_key": "b_h_risp"
+      }
+    },
+    {
+      "candidate_id": "measure_77",
+      "raw_source_value": "hit_by_pitches",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 77,
+        "query_engine_key": "b_hbp"
+      }
+    },
+    {
+      "candidate_id": "measure_85",
+      "raw_source_value": "home_runs_home",
+      "likely_direction": "Alias toward `HOME RUNS`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 85,
+        "query_engine_key": "b_hr_home"
+      }
+    },
+    {
+      "candidate_id": "measure_98",
+      "raw_source_value": "line_drives",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 98,
+        "query_engine_key": "b_ld"
+      }
+    },
+    {
+      "candidate_id": "measure_99",
+      "raw_source_value": "line_drive_percentage",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 99,
+        "query_engine_key": "b_ld_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_100",
+      "raw_source_value": "line_drive_outs",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 100,
+        "query_engine_key": "b_ldo"
+      }
+    },
+    {
+      "candidate_id": "measure_104",
+      "raw_source_value": "on_base_percentage_home",
+      "likely_direction": "Alias toward `on_base_percentage`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 104,
+        "query_engine_key": "b_obp_home"
+      }
+    },
+    {
+      "candidate_id": "measure_105",
+      "raw_source_value": "on_base_percentage_road",
+      "likely_direction": "Alias toward `on_base_percentage`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 105,
+        "query_engine_key": "b_obp_road"
+      }
+    },
+    {
+      "candidate_id": "measure_106",
+      "raw_source_value": "on_base_percentage_lhp",
+      "likely_direction": "Alias toward `on_base_percentage`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 106,
+        "query_engine_key": "b_obp_vlh"
+      }
+    },
+    {
+      "candidate_id": "measure_107",
+      "raw_source_value": "on_base_percentage_rhp",
+      "likely_direction": "Alias toward `on_base_percentage`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 107,
+        "query_engine_key": "b_obp_vrh"
+      }
+    },
+    {
+      "candidate_id": "measure_110",
+      "raw_source_value": "on_base_plus_slugging_home",
+      "likely_direction": "Alias toward `on_base_plus_slugging`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 110,
+        "query_engine_key": "b_ops_home"
+      }
+    },
+    {
+      "candidate_id": "measure_111",
+      "raw_source_value": "on_base_plus_slugging_road",
+      "likely_direction": "Alias toward `on_base_plus_slugging`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 111,
+        "query_engine_key": "b_ops_road"
+      }
+    },
+    {
+      "candidate_id": "measure_112",
+      "raw_source_value": "on_base_plus_slugging_lhp",
+      "likely_direction": "Alias toward `on_base_plus_slugging`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 112,
+        "query_engine_key": "b_ops_vlh"
+      }
+    },
+    {
+      "candidate_id": "measure_113",
+      "raw_source_value": "on_base_plus_slugging_rhp",
+      "likely_direction": "Alias toward `on_base_plus_slugging`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 113,
+        "query_engine_key": "b_ops_vrh"
+      }
+    },
+    {
+      "candidate_id": "measure_115",
+      "raw_source_value": "plate_apperances_home",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 115,
+        "query_engine_key": "b_pa_home"
+      }
+    },
+    {
+      "candidate_id": "measure_120",
+      "raw_source_value": "plate_apperances_road",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 120,
+        "query_engine_key": "b_pa_road"
+      }
+    },
+    {
+      "candidate_id": "measure_130",
+      "raw_source_value": "hits_doubles_percentage",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 130,
+        "query_engine_key": "b_pct_h_are_doub"
+      }
+    },
+    {
+      "candidate_id": "measure_132",
+      "raw_source_value": "hits_singles_percentage",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 132,
+        "query_engine_key": "b_pct_h_are_sing"
+      }
+    },
+    {
+      "candidate_id": "measure_133",
+      "raw_source_value": "hits_triples_percentage",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 133,
+        "query_engine_key": "b_pct_h_are_trip"
+      }
+    },
+    {
+      "candidate_id": "measure_141",
+      "raw_source_value": "popups",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 141,
+        "query_engine_key": "b_pop"
+      }
+    },
+    {
+      "candidate_id": "measure_142",
+      "raw_source_value": "popups_percentage",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 142,
+        "query_engine_key": "b_pop_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_143",
+      "raw_source_value": "popups_outs",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 143,
+        "query_engine_key": "b_popo"
+      }
+    },
+    {
+      "candidate_id": "measure_151",
+      "raw_source_value": "reached_on_error",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 151,
+        "query_engine_key": "b_rch_err"
+      }
+    },
+    {
+      "candidate_id": "measure_152",
+      "raw_source_value": "reached_on_interference",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 152,
+        "query_engine_key": "b_rch_int"
+      }
+    },
+    {
+      "candidate_id": "measure_153",
+      "raw_source_value": "times_reached",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 153,
+        "query_engine_key": "b_reached"
+      }
+    },
+    {
+      "candidate_id": "measure_154",
+      "raw_source_value": "sacflies",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 154,
+        "query_engine_key": "b_sac_f"
+      }
+    },
+    {
+      "candidate_id": "measure_155",
+      "raw_source_value": "sachits",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 155,
+        "query_engine_key": "b_sac_h"
+      }
+    },
+    {
+      "candidate_id": "measure_168",
+      "raw_source_value": "slugging_vs_lhp",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 168,
+        "query_engine_key": "b_slg_vlh"
+      }
+    },
+    {
+      "candidate_id": "measure_169",
+      "raw_source_value": "slugging_vs_rhp",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 169,
+        "query_engine_key": "b_slg_vrh"
+      }
+    },
+    {
+      "candidate_id": "measure_171",
+      "raw_source_value": "three_true_outcomes",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 171,
+        "query_engine_key": "b_three_true"
+      }
+    },
+    {
+      "candidate_id": "measure_172",
+      "raw_source_value": "three_true_outcomes_percentage",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 172,
+        "query_engine_key": "b_three_true_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_176",
+      "raw_source_value": "batted_balls_events",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 176,
+        "query_engine_key": "batted_Ball_Events"
+      }
+    },
+    {
+      "candidate_id": "measure_188",
+      "raw_source_value": "bet_t_w_fav",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 188,
+        "query_engine_key": "bet_t_w_fav"
+      }
+    },
+    {
+      "candidate_id": "measure_189",
+      "raw_source_value": "winning_percentage_favorite",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 189,
+        "query_engine_key": "bet_t_w_pct_fav"
+      }
+    },
+    {
+      "candidate_id": "measure_190",
+      "raw_source_value": "winning_percentage_underdog",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 190,
+        "query_engine_key": "bet_t_w_pct_udog"
+      }
+    },
+    {
+      "candidate_id": "measure_191",
+      "raw_source_value": "bet_t_w_udog",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 191,
+        "query_engine_key": "bet_t_w_udog"
+      }
+    },
+    {
+      "candidate_id": "measure_215",
+      "raw_source_value": "fielding_wild_pitches",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 215,
+        "query_engine_key": "f_c_wp"
+      }
+    },
+    {
+      "candidate_id": "measure_218",
+      "raw_source_value": "errors_total",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 218,
+        "query_engine_key": "f_e"
+      }
+    },
+    {
+      "candidate_id": "measure_219",
+      "raw_source_value": "errors_fielding",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 219,
+        "query_engine_key": "f_ef"
+      }
+    },
+    {
+      "candidate_id": "measure_220",
+      "raw_source_value": "errors_interference",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 220,
+        "query_engine_key": "f_ei"
+      }
+    },
+    {
+      "candidate_id": "measure_221",
+      "raw_source_value": "errors_throwing",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 221,
+        "query_engine_key": "f_et"
+      }
+    },
+    {
+      "candidate_id": "measure_223",
+      "raw_source_value": "fielding_innings_played",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 223,
+        "query_engine_key": "f_ip_fmt"
+      }
+    },
+    {
+      "candidate_id": "measure_224",
+      "raw_source_value": "assists_outfield",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 224,
+        "query_engine_key": "f_of_a"
+      }
+    },
+    {
+      "candidate_id": "measure_225",
+      "raw_source_value": "catcher_passed_balls",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 225,
+        "query_engine_key": "f_pb"
+      }
+    },
+    {
+      "candidate_id": "measure_229",
+      "raw_source_value": "fielding_steals_against",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 229,
+        "query_engine_key": "f_sb"
+      }
+    },
+    {
+      "candidate_id": "measure_230",
+      "raw_source_value": "fielding_steals_attempts_against",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 230,
+        "query_engine_key": "f_sba"
+      }
+    },
+    {
+      "candidate_id": "measure_231",
+      "raw_source_value": "fielding_total_chances",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 231,
+        "query_engine_key": "f_tc"
+      }
+    },
+    {
+      "candidate_id": "measure_232",
+      "raw_source_value": "fielding_triple_plays",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 232,
+        "query_engine_key": "f_tp"
+      }
+    },
+    {
+      "candidate_id": "measure_233",
+      "raw_source_value": "fantasy_points_draftkings_batting",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 233,
+        "query_engine_key": "fantasy_Points_Draftkings_Batting"
+      }
+    },
+    {
+      "candidate_id": "measure_234",
+      "raw_source_value": "fantasy_points_draftkings_pitching",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 234,
+        "query_engine_key": "fantasy_Points_Draftkings_Pitching"
+      }
+    },
+    {
+      "candidate_id": "measure_253",
+      "raw_source_value": "gamelog_era_reliever",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 253,
+        "query_engine_key": "gamelog_Era_Reliever"
+      }
+    },
+    {
+      "candidate_id": "measure_254",
+      "raw_source_value": "gamelog_era_starter",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 254,
+        "query_engine_key": "gamelog_Era_Starter"
+      }
+    },
+    {
+      "candidate_id": "measure_255",
+      "raw_source_value": "gamelog_team_winning_percentage",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 255,
+        "query_engine_key": "gamelog_Team_Winning_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_260",
+      "raw_source_value": "gamelog_on_base_percentage",
+      "likely_direction": "Alias toward `on_base_percentage`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 260,
+        "query_engine_key": "glog_b_obp"
+      }
+    },
+    {
+      "candidate_id": "measure_261",
+      "raw_source_value": "gamelog_on_base_plus_slugging",
+      "likely_direction": "Alias toward `on_base_plus_slugging`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 261,
+        "query_engine_key": "glog_b_ops"
+      }
+    },
+    {
+      "candidate_id": "measure_265",
+      "raw_source_value": "gamelog_era_team",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 265,
+        "query_engine_key": "glog_t_era"
+      }
+    },
+    {
+      "candidate_id": "measure_266",
+      "raw_source_value": "gamelog_team_losses",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 266,
+        "query_engine_key": "glog_t_l"
+      }
+    },
+    {
+      "candidate_id": "measure_267",
+      "raw_source_value": "gamelog_team_wins",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 267,
+        "query_engine_key": "glog_t_w"
+      }
+    },
+    {
+      "candidate_id": "measure_276",
+      "raw_source_value": "ground_outs_percentage",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 276,
+        "query_engine_key": "ground_Out_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_282",
+      "raw_source_value": "hits_bases_empty",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 282,
+        "query_engine_key": "hits_Bases_Empty"
+      }
+    },
+    {
+      "candidate_id": "measure_283",
+      "raw_source_value": "hits_bases_loaded",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 283,
+        "query_engine_key": "hits_Bases_Loaded"
+      }
+    },
+    {
+      "candidate_id": "measure_284",
+      "raw_source_value": "hits_by_five_directions_center",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 284,
+        "query_engine_key": "hits_By_Five_Directions_Center"
+      }
+    },
+    {
+      "candidate_id": "measure_285",
+      "raw_source_value": "hits_by_five_directions_center_percentage",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 285,
+        "query_engine_key": "hits_By_Five_Directions_Center_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_286",
+      "raw_source_value": "hits_by_five_directions_left",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 286,
+        "query_engine_key": "hits_By_Five_Directions_Left"
+      }
+    },
+    {
+      "candidate_id": "measure_287",
+      "raw_source_value": "hits_by_five_directions_left_center",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 287,
+        "query_engine_key": "hits_By_Five_Directions_Left_Center"
+      }
+    },
+    {
+      "candidate_id": "measure_288",
+      "raw_source_value": "hits_by_five_directions_left_center_percentage",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 288,
+        "query_engine_key": "hits_By_Five_Directions_Left_Center_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_289",
+      "raw_source_value": "hits_by_five_directions_left_percentage",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 289,
+        "query_engine_key": "hits_By_Five_Directions_Left_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_290",
+      "raw_source_value": "hits_by_five_directions_right",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 290,
+        "query_engine_key": "hits_By_Five_Directions_Right"
+      }
+    },
+    {
+      "candidate_id": "measure_291",
+      "raw_source_value": "hits_by_five_directions_right_center",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 291,
+        "query_engine_key": "hits_By_Five_Directions_Right_Center"
+      }
+    },
+    {
+      "candidate_id": "measure_292",
+      "raw_source_value": "hits_by_five_directions_right_center_percentage",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 292,
+        "query_engine_key": "hits_By_Five_Directions_Right_Center_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_293",
+      "raw_source_value": "hits_by_five_directions_right_percentage",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 293,
+        "query_engine_key": "hits_By_Five_Directions_Right_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_294",
+      "raw_source_value": "hits_by_three_directions_center",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 294,
+        "query_engine_key": "hits_By_Three_Directions_Center"
+      }
+    },
+    {
+      "candidate_id": "measure_295",
+      "raw_source_value": "hits_by_three_directions_center_percentage",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 295,
+        "query_engine_key": "hits_By_Three_Directions_Center_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_296",
+      "raw_source_value": "hits_by_three_directions_left",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 296,
+        "query_engine_key": "hits_By_Three_Directions_Left"
+      }
+    },
+    {
+      "candidate_id": "measure_297",
+      "raw_source_value": "hits_by_three_directions_left_percentage",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 297,
+        "query_engine_key": "hits_By_Three_Directions_Left_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_298",
+      "raw_source_value": "hits_by_three_directions_right",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 298,
+        "query_engine_key": "hits_By_Three_Directions_Right"
+      }
+    },
+    {
+      "candidate_id": "measure_299",
+      "raw_source_value": "hits_by_three_directions_right_percentage",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 299,
+        "query_engine_key": "hits_By_Three_Directions_Right_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_301",
+      "raw_source_value": "hits_opposite_percentage",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 301,
+        "query_engine_key": "hits_Opposite_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_303",
+      "raw_source_value": "hits_pulled_percentage",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 303,
+        "query_engine_key": "hits_Pulled_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_305",
+      "raw_source_value": "hits_runners_in_scoring_position_two_outs",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 305,
+        "query_engine_key": "hits_risp_Two_Outs"
+      }
+    },
+    {
+      "candidate_id": "measure_306",
+      "raw_source_value": "homeruns_by_five_directions_center",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 306,
+        "query_engine_key": "hr_By_Five_Directions_Center"
+      }
+    },
+    {
+      "candidate_id": "measure_307",
+      "raw_source_value": "homeruns_by_five_directions_center_percentage",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 307,
+        "query_engine_key": "hr_By_Five_Directions_Center_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_308",
+      "raw_source_value": "homeruns_by_five_directions_left_percentage",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 308,
+        "query_engine_key": "hr_By_Five_Directions_Left"
+      }
+    },
+    {
+      "candidate_id": "measure_309",
+      "raw_source_value": "homeruns_by_five_directions_left_center",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 309,
+        "query_engine_key": "hr_By_Five_Directions_Left_Center"
+      }
+    },
+    {
+      "candidate_id": "measure_310",
+      "raw_source_value": "homeruns_by_five_directions_left_center_percentage",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 310,
+        "query_engine_key": "hr_By_Five_Directions_Left_Center_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_311",
+      "raw_source_value": "hr__by__five__directions__left_pct",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 311,
+        "query_engine_key": "hr_By_Five_Directions_Left_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_312",
+      "raw_source_value": "homeruns_by_five_directions_right_percentage",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 312,
+        "query_engine_key": "hr_By_Five_Directions_Right"
+      }
+    },
+    {
+      "candidate_id": "measure_313",
+      "raw_source_value": "homeruns_by_five_directions_right_center_percentage",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 313,
+        "query_engine_key": "hr_By_Five_Directions_Right_Center"
+      }
+    },
+    {
+      "candidate_id": "measure_314",
+      "raw_source_value": "hr__by__five__directions__right__center_pct",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 314,
+        "query_engine_key": "hr_By_Five_Directions_Right_Center_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_315",
+      "raw_source_value": "hr__by__five__directions__right_pct",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 315,
+        "query_engine_key": "hr_By_Five_Directions_Right_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_316",
+      "raw_source_value": "homeruns_by_three_directions_right_percentage",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 316,
+        "query_engine_key": "hr_By_Three_DirectionsRight"
+      }
+    },
+    {
+      "candidate_id": "measure_317",
+      "raw_source_value": "homeruns_by_three_directions_center_percentage",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 317,
+        "query_engine_key": "hr_By_Three_Directions_Center"
+      }
+    },
+    {
+      "candidate_id": "measure_318",
+      "raw_source_value": "homeruns_by_three_directions_center",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 318,
+        "query_engine_key": "hr_By_Three_Directions_Center_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_319",
+      "raw_source_value": "homeruns_by_three_directions_left_percentage",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 319,
+        "query_engine_key": "hr_By_Three_Directions_Left"
+      }
+    },
+    {
+      "candidate_id": "measure_320",
+      "raw_source_value": "homeruns_by_three_directions_left",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 320,
+        "query_engine_key": "hr_By_Three_Directions_Left_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_321",
+      "raw_source_value": "homeruns_by_three_directions_right",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 321,
+        "query_engine_key": "hr_By_Three_Directions_Right_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_323",
+      "raw_source_value": "homerun_leadoff",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 323,
+        "query_engine_key": "hr_Leadoff"
+      }
+    },
+    {
+      "candidate_id": "measure_324",
+      "raw_source_value": "homerun_leadoff_inning",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 324,
+        "query_engine_key": "hr_Leadoff_Inning"
+      }
+    },
+    {
+      "candidate_id": "measure_325",
+      "raw_source_value": "homerun_leadoff_top",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 325,
+        "query_engine_key": "hr_Leadoff_Top"
+      }
+    },
+    {
+      "candidate_id": "measure_326",
+      "raw_source_value": "homeruns_opposite",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 326,
+        "query_engine_key": "hr_Opposite"
+      }
+    },
+    {
+      "candidate_id": "measure_327",
+      "raw_source_value": "homeruns_opposite_percentage",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 327,
+        "query_engine_key": "hr_Opposite_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_328",
+      "raw_source_value": "homeruns_pulled",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 328,
+        "query_engine_key": "hr_Pulled"
+      }
+    },
+    {
+      "candidate_id": "measure_329",
+      "raw_source_value": "homeruns_pulled_percentage",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 329,
+        "query_engine_key": "hr_Pulled_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_330",
+      "raw_source_value": "inherited_runners",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 330,
+        "query_engine_key": "inherited_Runners"
+      }
+    },
+    {
+      "candidate_id": "measure_331",
+      "raw_source_value": "inherited_runners_scored",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 331,
+        "query_engine_key": "inherited_Runners_Scored"
+      }
+    },
+    {
+      "candidate_id": "measure_332",
+      "raw_source_value": "inherited_runners_scored_percentage",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 332,
+        "query_engine_key": "inherited_Runners_Scored_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_333",
+      "raw_source_value": "isolated_power_discipline",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 333,
+        "query_engine_key": "isolated_Power_Discipline"
+      }
+    },
+    {
+      "candidate_id": "measure_336",
+      "raw_source_value": "made_playoff_season",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 336,
+        "query_engine_key": "made_Playoff_Season"
+      }
+    },
+    {
+      "candidate_id": "measure_351",
+      "raw_source_value": "pitcher_eephuses_velocity_average",
+      "likely_direction": "Alias toward `pitcher_velocity_average`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 351,
+        "query_engine_key": "p_Eephuses_Velocity_avg"
+      }
+    },
+    {
+      "candidate_id": "measure_354",
+      "raw_source_value": "pitcher_forkballs_velocity_average",
+      "likely_direction": "Alias toward `pitcher_velocity_average`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 354,
+        "query_engine_key": "p_Forkballs_Velocity_avg"
+      }
+    },
+    {
+      "candidate_id": "measure_358",
+      "raw_source_value": "pitcher_hard_hit_balls_against",
+      "likely_direction": "Alias toward `pitcher_hard_hit_balls_against_percentage`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 358,
+        "query_engine_key": "p_Hard_Hit_Balls_Against"
+      }
+    },
+    {
+      "candidate_id": "measure_365",
+      "raw_source_value": "pitcher_home_runs_solo",
+      "likely_direction": "Alias toward `pitcher_home_runs_allowed`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 365,
+        "query_engine_key": "p_Hr_Solo"
+      }
+    },
+    {
+      "candidate_id": "measure_375",
+      "raw_source_value": "pitcher_on_base_plus_slugging_against_home",
+      "likely_direction": "Alias toward `pitcher_on_base_plus_slugging_against`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 375,
+        "query_engine_key": "p_On_Base_Plus_Slugging_Against_Home"
+      }
+    },
+    {
+      "candidate_id": "measure_376",
+      "raw_source_value": "pitcher_on_base_percentage_against_lhb",
+      "likely_direction": "Alias toward `pitcher_on_base_percentage_against`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 376,
+        "query_engine_key": "p_On_Base_pct_Against_Lhb"
+      }
+    },
+    {
+      "candidate_id": "measure_377",
+      "raw_source_value": "pitcher_on_base_percentage_against_rhb",
+      "likely_direction": "Alias toward `pitcher_on_base_percentage_against`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 377,
+        "query_engine_key": "p_On_Base_pct_Against_Rhb"
+      }
+    },
+    {
+      "candidate_id": "measure_381",
+      "raw_source_value": "pitcher_opponent_hits_runners_in_scoring_position",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 381,
+        "query_engine_key": "p_Opponent_Hits_risp"
+      }
+    },
+    {
+      "candidate_id": "measure_383",
+      "raw_source_value": "pitcher_opponent_at_bats_runners_in_scoring_position",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 383,
+        "query_engine_key": "p_Opponent_ab_risp"
+      }
+    },
+    {
+      "candidate_id": "measure_387",
+      "raw_source_value": "pitcher_out_of_zone_whiff_percentage",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 387,
+        "query_engine_key": "p_Out_Of_Zone_Whiff_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_388",
+      "raw_source_value": "pitcher_relief_hits_allowed",
+      "likely_direction": "Alias toward `pitcher_hits_allowed`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 388,
+        "query_engine_key": "p_Relief_Hits_Allowed"
+      }
+    },
+    {
+      "candidate_id": "measure_389",
+      "raw_source_value": "pitcher_relief_home_runs_allowed",
+      "likely_direction": "Alias toward `pitcher_home_runs_allowed`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 389,
+        "query_engine_key": "p_Relief_Hr_Allowed"
+      }
+    },
+    {
+      "candidate_id": "measure_401",
+      "raw_source_value": "pitcher_slugging_against_lhb",
+      "likely_direction": "Alias toward `pitcher_slugging_against`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 401,
+        "query_engine_key": "p_Slugging_Against_Lhb"
+      }
+    },
+    {
+      "candidate_id": "measure_402",
+      "raw_source_value": "pitcher_slugging_against_rhb",
+      "likely_direction": "Alias toward `pitcher_slugging_against`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 402,
+        "query_engine_key": "p_Slugging_Against_Rhb"
+      }
+    },
+    {
+      "candidate_id": "measure_405",
+      "raw_source_value": "pitcher_starting_hits_allowed",
+      "likely_direction": "Alias toward `pitcher_hits_allowed`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 405,
+        "query_engine_key": "p_Starting_Hits_Allowed"
+      }
+    },
+    {
+      "candidate_id": "measure_411",
+      "raw_source_value": "pitcher_starting_home_runs_allowed",
+      "likely_direction": "Alias toward `pitcher_home_runs_allowed`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 411,
+        "query_engine_key": "p_Starting_hr_Allowed"
+      }
+    },
+    {
+      "candidate_id": "measure_413",
+      "raw_source_value": "pitcher_steals_second",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 413,
+        "query_engine_key": "p_Steals_Second"
+      }
+    },
+    {
+      "candidate_id": "measure_414",
+      "raw_source_value": "pitcher_steals_third",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 414,
+        "query_engine_key": "p_Steals_Third"
+      }
+    },
+    {
+      "candidate_id": "measure_415",
+      "raw_source_value": "pitcher_strikeouts_looking_percentage",
+      "likely_direction": "Alias toward `pitcher_strikeouts_percentage`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 415,
+        "query_engine_key": "p_Strikeout_Looking_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_421",
+      "raw_source_value": "pitcher_strikeouts_swinging_percentage",
+      "likely_direction": "Alias toward `pitcher_strikeouts_percentage`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 421,
+        "query_engine_key": "p_Strikeouts_Swinging_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_424",
+      "raw_source_value": "pitcher_swings_contact_against",
+      "likely_direction": "Alias toward `pitcher_swings_against_percentage`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 424,
+        "query_engine_key": "p_Swings_Contact_Against"
+      }
+    },
+    {
+      "candidate_id": "measure_428",
+      "raw_source_value": "pitcher_times_chased",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 428,
+        "query_engine_key": "p_Times_Chased"
+      }
+    },
+    {
+      "candidate_id": "measure_440",
+      "raw_source_value": "pitcher_opponent_average_home",
+      "likely_direction": "Alias toward `pitcher_opponent_batting_average`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 440,
+        "query_engine_key": "p_bavg_home"
+      }
+    },
+    {
+      "candidate_id": "measure_441",
+      "raw_source_value": "pitcher_opponent_average_road",
+      "likely_direction": "Alias toward `pitcher_opponent_batting_average`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 441,
+        "query_engine_key": "p_bavg_road"
+      }
+    },
+    {
+      "candidate_id": "measure_442",
+      "raw_source_value": "pitcher_opponent_average_lhb",
+      "likely_direction": "Alias toward `pitcher_opponent_batting_average`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 442,
+        "query_engine_key": "p_bavg_vlh"
+      }
+    },
+    {
+      "candidate_id": "measure_443",
+      "raw_source_value": "pitcher_opponent_average_rhb",
+      "likely_direction": "Alias toward `pitcher_opponent_batting_average`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 443,
+        "query_engine_key": "p_bavg_vrh"
+      }
+    },
+    {
+      "candidate_id": "measure_450",
+      "raw_source_value": "pitcher_complete_games",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 450,
+        "query_engine_key": "p_cg"
+      }
+    },
+    {
+      "candidate_id": "measure_452",
+      "raw_source_value": "pitcher_earned_runs_allowed",
+      "likely_direction": "Alias toward `pitcher_home_runs_allowed`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 452,
+        "query_engine_key": "p_er"
+      }
+    },
+    {
+      "candidate_id": "measure_472",
+      "raw_source_value": "pitcher_groundball_double_plays",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 472,
+        "query_engine_key": "p_gdp"
+      }
+    },
+    {
+      "candidate_id": "measure_474",
+      "raw_source_value": "game_score",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 474,
+        "query_engine_key": "p_gm_score"
+      }
+    },
+    {
+      "candidate_id": "measure_489",
+      "raw_source_value": "pitcher_innings_pitched_home",
+      "likely_direction": "Alias toward `pitcher_innings_pitched`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 489,
+        "query_engine_key": "p_ip_fmt_home"
+      }
+    },
+    {
+      "candidate_id": "measure_490",
+      "raw_source_value": "pitcher_innings_pitched_road",
+      "likely_direction": "Alias toward `pitcher_innings_pitched`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 490,
+        "query_engine_key": "p_ip_fmt_road"
+      }
+    },
+    {
+      "candidate_id": "measure_492",
+      "raw_source_value": "pitcher_innings_pitched_sp",
+      "likely_direction": "Alias toward `pitcher_innings_pitched`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 492,
+        "query_engine_key": "p_ip_fmt_sp"
+      }
+    },
+    {
+      "candidate_id": "measure_498",
+      "raw_source_value": "pitcher_strikeouts_walks_percentage",
+      "likely_direction": "Alias toward `pitcher_walks_percentage`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 498,
+        "query_engine_key": "p_k_minus_bb_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_506",
+      "raw_source_value": "pitcher_starting_no_decisions",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 506,
+        "query_engine_key": "p_nd_sp"
+      }
+    },
+    {
+      "candidate_id": "measure_509",
+      "raw_source_value": "pitcher_on_base_percentage_against_home",
+      "likely_direction": "Alias toward `pitcher_on_base_percentage_against`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 509,
+        "query_engine_key": "p_obp_home"
+      }
+    },
+    {
+      "candidate_id": "measure_510",
+      "raw_source_value": "pitcher_on_base_percentage_against_road",
+      "likely_direction": "Alias toward `pitcher_on_base_percentage_against`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 510,
+        "query_engine_key": "p_obp_road"
+      }
+    },
+    {
+      "candidate_id": "measure_513",
+      "raw_source_value": "pitcher_on_base_plus_slugging_against_road",
+      "likely_direction": "Alias toward `pitcher_on_base_plus_slugging_against`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 513,
+        "query_engine_key": "p_ops_road"
+      }
+    },
+    {
+      "candidate_id": "measure_514",
+      "raw_source_value": "pitcher_on_base_plus_slugging_against_lhb",
+      "likely_direction": "Alias toward `pitcher_on_base_plus_slugging_against`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 514,
+        "query_engine_key": "p_ops_vlh"
+      }
+    },
+    {
+      "candidate_id": "measure_515",
+      "raw_source_value": "pitcher_on_base_plus_slugging_against_rhb",
+      "likely_direction": "Alias toward `pitcher_on_base_plus_slugging_against`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 515,
+        "query_engine_key": "p_ops_vrh"
+      }
+    },
+    {
+      "candidate_id": "measure_518",
+      "raw_source_value": "pitches_thrown_balls_percentage",
+      "likely_direction": "Alias toward `pitches_thrown_strikes_percentage`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 518,
+        "query_engine_key": "p_pit_bb_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_519",
+      "raw_source_value": "pitches_thrown_strikes",
+      "likely_direction": "Alias toward `pitches_thrown_strikes_percentage`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 519,
+        "query_engine_key": "p_pit_k"
+      }
+    },
+    {
+      "candidate_id": "measure_575",
+      "raw_source_value": "pitcher_slugging_against_home",
+      "likely_direction": "Alias toward `pitcher_slugging_against`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 575,
+        "query_engine_key": "p_slg_home"
+      }
+    },
+    {
+      "candidate_id": "measure_576",
+      "raw_source_value": "pitcher_slugging_against_road",
+      "likely_direction": "Alias toward `pitcher_slugging_against`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 576,
+        "query_engine_key": "p_slg_road"
+      }
+    },
+    {
+      "candidate_id": "measure_579",
+      "raw_source_value": "pitcher_saves_opportunities",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 579,
+        "query_engine_key": "p_svo"
+      }
+    },
+    {
+      "candidate_id": "measure_580",
+      "raw_source_value": "pitcher_total_bases",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 580,
+        "query_engine_key": "p_tb"
+      }
+    },
+    {
+      "candidate_id": "measure_581",
+      "raw_source_value": "pitcher_three_true_outcomes",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 581,
+        "query_engine_key": "p_three_true"
+      }
+    },
+    {
+      "candidate_id": "measure_585",
+      "raw_source_value": "pitching_winning_percentage",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 585,
+        "query_engine_key": "p_w_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_591",
+      "raw_source_value": "pitcher_extra_base_hits",
+      "likely_direction": "Alias toward `EXTRA BASE HITS`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 591,
+        "query_engine_key": "p_xbh"
+      }
+    },
+    {
+      "candidate_id": "measure_615",
+      "raw_source_value": "pitches_faced_out_of_zone_percentage",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 615,
+        "query_engine_key": "pitches_Faced_Out_Of_Zone_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_621",
+      "raw_source_value": "pitches_faced_strikes_percentage",
+      "likely_direction": "Alias toward `pitches_thrown_strikes_percentage`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 621,
+        "query_engine_key": "pitches_Faced_Strike_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_630",
+      "raw_source_value": "pitches_thrown_strikes_called_strikes_percentage",
+      "likely_direction": "Alias toward `pitches_thrown_strikes_percentage`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 630,
+        "query_engine_key": "pitches_Thrown_Percent_Of_Strikes_Called"
+      }
+    },
+    {
+      "candidate_id": "measure_631",
+      "raw_source_value": "pitches_thrown_strikes_called_percentage",
+      "likely_direction": "Alias toward `pitches_thrown_strikes_percentage`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 631,
+        "query_engine_key": "pitches_Thrown_Strike_Call_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_632",
+      "raw_source_value": "pitches_thrown_strikes_called",
+      "likely_direction": "Alias toward `pitches_thrown_strikes_percentage`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 632,
+        "query_engine_key": "pitches_Thrown_Strikes_Called"
+      }
+    },
+    {
+      "candidate_id": "measure_633",
+      "raw_source_value": "pitches_thrown_strikes_swinging",
+      "likely_direction": "Alias toward `pitches_thrown_strikes_percentage`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 633,
+        "query_engine_key": "pitches_Thrown_Strikes_Swinging"
+      }
+    },
+    {
+      "candidate_id": "measure_634",
+      "raw_source_value": "plate_apperances_bases_empty",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 634,
+        "query_engine_key": "plate_Apperances_Bases_Empty"
+      }
+    },
+    {
+      "candidate_id": "measure_635",
+      "raw_source_value": "plate_apperances_bases_loaded",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 635,
+        "query_engine_key": "plate_Apperances_Bases_Loaded"
+      }
+    },
+    {
+      "candidate_id": "measure_637",
+      "raw_source_value": "plate_apperances_runners_in_scoring_position_two_outs",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 637,
+        "query_engine_key": "plate_Apperances_risp"
+      }
+    },
+    {
+      "candidate_id": "measure_638",
+      "raw_source_value": "plate__apperances_risp__two__outs",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 638,
+        "query_engine_key": "plate_Apperances_risp_Two_Outs"
+      }
+    },
+    {
+      "candidate_id": "measure_640",
+      "raw_source_value": "pulled_percentage",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 640,
+        "query_engine_key": "pulled_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_641",
+      "raw_source_value": "quality_starts_percentage",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 641,
+        "query_engine_key": "quality_Starts_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_659",
+      "raw_source_value": "runs_eight_inning",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 659,
+        "query_engine_key": "runs_Eighth_Inning"
+      }
+    },
+    {
+      "candidate_id": "measure_660",
+      "raw_source_value": "runs_fifth_inning",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 660,
+        "query_engine_key": "runs_Fifth_Inning"
+      }
+    },
+    {
+      "candidate_id": "measure_661",
+      "raw_source_value": "runs_first_inning",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 661,
+        "query_engine_key": "runs_First_Inning"
+      }
+    },
+    {
+      "candidate_id": "measure_662",
+      "raw_source_value": "runs_fourth_inning",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 662,
+        "query_engine_key": "runs_Fourth_Inning"
+      }
+    },
+    {
+      "candidate_id": "measure_663",
+      "raw_source_value": "runs_ninth_inning",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 663,
+        "query_engine_key": "runs_Ninth_Inning"
+      }
+    },
+    {
+      "candidate_id": "measure_667",
+      "raw_source_value": "runs_second_inning",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 667,
+        "query_engine_key": "runs_Second_Inning"
+      }
+    },
+    {
+      "candidate_id": "measure_668",
+      "raw_source_value": "runs_seventh_inning",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 668,
+        "query_engine_key": "runs_Seventh_Inning"
+      }
+    },
+    {
+      "candidate_id": "measure_669",
+      "raw_source_value": "runs_sixth_inning",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 669,
+        "query_engine_key": "runs_Sixth_Inning"
+      }
+    },
+    {
+      "candidate_id": "measure_670",
+      "raw_source_value": "runs_tenth_inning",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 670,
+        "query_engine_key": "runs_Tenth_Inning"
+      }
+    },
+    {
+      "candidate_id": "measure_671",
+      "raw_source_value": "runs_tenth_plus_inning",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 671,
+        "query_engine_key": "runs_Tenth_Plus_Inning"
+      }
+    },
+    {
+      "candidate_id": "measure_672",
+      "raw_source_value": "runs_third_inning",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 672,
+        "query_engine_key": "runs_Third_Inning"
+      }
+    },
+    {
+      "candidate_id": "measure_673",
+      "raw_source_value": "runs_two_outs",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 673,
+        "query_engine_key": "runs_Two_Outs"
+      }
+    },
+    {
+      "candidate_id": "measure_674",
+      "raw_source_value": "runs_with_one_outs_percentages",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 674,
+        "query_engine_key": "runs_With_One_Out_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_675",
+      "raw_source_value": "runs_with_two_outs_percentages",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 675,
+        "query_engine_key": "runs_With_Two_Outs_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_676",
+      "raw_source_value": "runs_with_zero_outs_percentages",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 676,
+        "query_engine_key": "runs_With_Zero_Outs_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_678",
+      "raw_source_value": "spin_rate_faced_average",
+      "likely_direction": "Alias toward `pitcher_spin_rate_average`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 678,
+        "query_engine_key": "spin_Rate_Faced_avg"
+      }
+    },
+    {
+      "candidate_id": "measure_690",
+      "raw_source_value": "team_era_home_road_diffential",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 690,
+        "query_engine_key": "t_era_diff_home_road"
+      }
+    },
+    {
+      "candidate_id": "measure_691",
+      "raw_source_value": "team_era_home",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 691,
+        "query_engine_key": "t_era_home"
+      }
+    },
+    {
+      "candidate_id": "measure_692",
+      "raw_source_value": "team_era_road",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 692,
+        "query_engine_key": "t_era_road"
+      }
+    },
+    {
+      "candidate_id": "measure_699",
+      "raw_source_value": "losses_post_all_star",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 699,
+        "query_engine_key": "t_l_post_asb"
+      }
+    },
+    {
+      "candidate_id": "measure_700",
+      "raw_source_value": "losses_pre_all_star",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 700,
+        "query_engine_key": "t_l_pre_asb"
+      }
+    },
+    {
+      "candidate_id": "measure_709",
+      "raw_source_value": "team_saves_percentage",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 709,
+        "query_engine_key": "t_sv_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_710",
+      "raw_source_value": "team_saves_opportunities",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 710,
+        "query_engine_key": "t_svo"
+      }
+    },
+    {
+      "candidate_id": "measure_717",
+      "raw_source_value": "winning_percentage_day",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 717,
+        "query_engine_key": "t_w_pct_day"
+      }
+    },
+    {
+      "candidate_id": "measure_722",
+      "raw_source_value": "winning_percentage_home",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 722,
+        "query_engine_key": "t_w_pct_home"
+      }
+    },
+    {
+      "candidate_id": "measure_723",
+      "raw_source_value": "winning_percentage_night",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 723,
+        "query_engine_key": "t_w_pct_night"
+      }
+    },
+    {
+      "candidate_id": "measure_724",
+      "raw_source_value": "winning_percentage_post_all_star",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 724,
+        "query_engine_key": "t_w_pct_post_asb"
+      }
+    },
+    {
+      "candidate_id": "measure_725",
+      "raw_source_value": "winning_percentage_pre_all_star",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 725,
+        "query_engine_key": "t_w_pct_pre_asb"
+      }
+    },
+    {
+      "candidate_id": "measure_726",
+      "raw_source_value": "winning_percentage_road",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 726,
+        "query_engine_key": "t_w_pct_road"
+      }
+    },
+    {
+      "candidate_id": "measure_727",
+      "raw_source_value": "winning_percentage_lhp",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 727,
+        "query_engine_key": "t_w_pct_vlhs"
+      }
+    },
+    {
+      "candidate_id": "measure_728",
+      "raw_source_value": "winning_percentage_rhp",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 728,
+        "query_engine_key": "t_w_pct_vrhs"
+      }
+    },
+    {
+      "candidate_id": "measure_729",
+      "raw_source_value": "wins_post_all_star",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 729,
+        "query_engine_key": "t_w_post_asb"
+      }
+    },
+    {
+      "candidate_id": "measure_730",
+      "raw_source_value": "wins_pre_all_star",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 730,
+        "query_engine_key": "t_w_pre_asb"
+      }
+    },
+    {
+      "candidate_id": "measure_734",
+      "raw_source_value": "team_blown_lead_losses",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 734,
+        "query_engine_key": "team_Blown_Lead_Losses"
+      }
+    },
+    {
+      "candidate_id": "measure_735",
+      "raw_source_value": "team_comeback_wins",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 735,
+        "query_engine_key": "team_Comeback_Wins"
+      }
+    },
+    {
+      "candidate_id": "measure_748",
+      "raw_source_value": "war",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 748,
+        "query_engine_key": "war"
+      }
+    },
+    {
+      "candidate_id": "measure_749",
+      "raw_source_value": "war_baserunning",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 749,
+        "query_engine_key": "war_Baserunning"
+      }
+    },
+    {
+      "candidate_id": "measure_753",
+      "raw_source_value": "war_fielding",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 753,
+        "query_engine_key": "war_Fielding"
+      }
+    },
+    {
+      "candidate_id": "measure_754",
+      "raw_source_value": "war_pitching",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 754,
+        "query_engine_key": "war_Pitching"
+      }
+    },
+    {
+      "candidate_id": "measure_757",
+      "raw_source_value": "fly_ball_outs",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 757,
+        "query_engine_key": "b_fbo"
+      }
+    },
+    {
+      "candidate_id": "measure_758",
+      "raw_source_value": "b_hr_multi_pct",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 758,
+        "query_engine_key": "b_hr_multi_pct"
+      }
+    },
+    {
+      "candidate_id": "measure_759",
+      "raw_source_value": "b_hr_multirun",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 759,
+        "query_engine_key": "b_hr_multirun"
+      }
+    },
+    {
+      "candidate_id": "measure_764",
+      "raw_source_value": "home_run_distance",
+      "likely_direction": "Alias toward `home_run_distance_average`",
+      "blocking_reason": "Context/split dependency or non-high confidence requires manual semantic review.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 764,
+        "query_engine_key": "home_run_distance"
+      }
+    },
+    {
+      "candidate_id": "measure_767",
+      "raw_source_value": "put_away_rate",
+      "likely_direction": "Potential new MLB learn-layer entry",
+      "blocking_reason": "High-confidence missing candidate lacks direct cross-source corroboration or may be context-dependent.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_measure_crosswalk_rebaseline.json",
+        "source_index": 767,
+        "query_engine_key": "put_away_rate"
+      }
+    },
+    {
+      "candidate_id": "user_1",
+      "raw_source_value": "ERRORS",
+      "likely_direction": "Potential user phrase enrichment",
+      "blocking_reason": "High-confidence phrase is promising but lacks sufficient corroboration for safe auto-staging.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 1,
+        "group_name": "LEADERBOARD - FIELDING",
+        "name": "leaders_errors"
+      }
+    },
+    {
+      "candidate_id": "user_5",
+      "raw_source_value": "ERRORS",
+      "likely_direction": "Potential user phrase enrichment",
+      "blocking_reason": "High-confidence phrase is promising but lacks sufficient corroboration for safe auto-staging.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 5,
+        "group_name": "LEADERBOARD - FIELDING",
+        "name": "leaders_ferrors"
+      }
+    },
+    {
+      "candidate_id": "user_11",
+      "raw_source_value": "TOTAL WAR",
+      "likely_direction": "Potential user phrase enrichment",
+      "blocking_reason": "High-confidence phrase is promising but lacks sufficient corroboration for safe auto-staging.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 11,
+        "group_name": "L3 - HITTING",
+        "name": "leaders_twar"
+      }
+    },
+    {
+      "candidate_id": "user_14",
+      "raw_source_value": "CAUGHT",
+      "likely_direction": "Potential user phrase enrichment",
+      "blocking_reason": "High-confidence phrase is promising but lacks sufficient corroboration for safe auto-staging.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 14,
+        "group_name": "L3 - RUNNING",
+        "name": "header_caughtstealing"
+      }
+    },
+    {
+      "candidate_id": "user_17",
+      "raw_source_value": "SAC BUNTS",
+      "likely_direction": "Potential user phrase enrichment",
+      "blocking_reason": "High-confidence phrase is promising but lacks sufficient corroboration for safe auto-staging.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 17,
+        "group_name": "L3 - HITTING",
+        "name": "header_sacbunts"
+      }
+    },
+    {
+      "candidate_id": "user_26",
+      "raw_source_value": "AB",
+      "likely_direction": "Potential user phrase enrichment",
+      "blocking_reason": "High-confidence phrase is promising but lacks sufficient corroboration for safe auto-staging.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 26,
+        "group_name": "L3 - HITTING",
+        "name": "header_ab"
+      }
+    },
+    {
+      "candidate_id": "user_28",
+      "raw_source_value": "ATTEMPTS",
+      "likely_direction": "Potential user phrase enrichment",
+      "blocking_reason": "High-confidence phrase is promising but lacks sufficient corroboration for safe auto-staging.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 28,
+        "group_name": "L3 - RUNNING",
+        "name": "header_sbattempts"
+      }
+    },
+    {
+      "candidate_id": "user_32",
+      "raw_source_value": "PICKED OFF",
+      "likely_direction": "Potential user phrase enrichment",
+      "blocking_reason": "High-confidence phrase is promising but lacks sufficient corroboration for safe auto-staging.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 32,
+        "group_name": "L3 - RUNNING",
+        "name": "header_pickedoff"
+      }
+    },
+    {
+      "candidate_id": "user_33",
+      "raw_source_value": "SACRIFICE",
+      "likely_direction": "Potential user phrase enrichment",
+      "blocking_reason": "High-confidence phrase is promising but lacks sufficient corroboration for safe auto-staging.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 33,
+        "group_name": "L3 - HITTING",
+        "name": "header_sacrifice"
+      }
+    },
+    {
+      "candidate_id": "user_36",
+      "raw_source_value": "GIDP",
+      "likely_direction": "Potential user phrase enrichment",
+      "blocking_reason": "High-confidence phrase is promising but lacks sufficient corroboration for safe auto-staging.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 36,
+        "group_name": "L3 - HITTING",
+        "name": "header_doubleplays"
+      }
+    },
+    {
+      "candidate_id": "user_37",
+      "raw_source_value": "ERRORS",
+      "likely_direction": "Potential user phrase enrichment",
+      "blocking_reason": "High-confidence phrase is promising but lacks sufficient corroboration for safe auto-staging.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 37,
+        "group_name": "L3 - FIELDING",
+        "name": "header_errors"
+      }
+    },
+    {
+      "candidate_id": "user_38",
+      "raw_source_value": "CHANCES",
+      "likely_direction": "Potential user phrase enrichment",
+      "blocking_reason": "High-confidence phrase is promising but lacks sufficient corroboration for safe auto-staging.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 38,
+        "group_name": "L3 - FIELDING",
+        "name": "header_chances"
+      }
+    },
+    {
+      "candidate_id": "user_39",
+      "raw_source_value": "DP",
+      "likely_direction": "Potential user phrase enrichment",
+      "blocking_reason": "High-confidence phrase is promising but lacks sufficient corroboration for safe auto-staging.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 39,
+        "group_name": "L3 - FIELDING",
+        "name": "header_fielddp"
+      }
+    },
+    {
+      "candidate_id": "user_68",
+      "raw_source_value": "SAVES",
+      "likely_direction": "Potential user phrase enrichment",
+      "blocking_reason": "High-confidence phrase is promising but lacks sufficient corroboration for safe auto-staging.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 68,
+        "group_name": "LEADERBOARD - PITCHING",
+        "name": "leaders_saves"
+      }
+    },
+    {
+      "candidate_id": "user_70",
+      "raw_source_value": "HOLDS",
+      "likely_direction": "Potential user phrase enrichment",
+      "blocking_reason": "High-confidence phrase is promising but lacks sufficient corroboration for safe auto-staging.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 70,
+        "group_name": "LEADERBOARD - PITCHING",
+        "name": "leaders_holds"
+      }
+    },
+    {
+      "candidate_id": "user_73",
+      "raw_source_value": "DP INDUCED",
+      "likely_direction": "Potential user phrase enrichment",
+      "blocking_reason": "High-confidence phrase is promising but lacks sufficient corroboration for safe auto-staging.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 73,
+        "group_name": "LEADERBOARD - PITCHING",
+        "name": "leaders_pdp"
+      }
+    },
+    {
+      "candidate_id": "user_84",
+      "raw_source_value": "SHUTOUTS",
+      "likely_direction": "Potential user phrase enrichment",
+      "blocking_reason": "High-confidence phrase is promising but lacks sufficient corroboration for safe auto-staging.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 84,
+        "group_name": "LEADERBOARD - PITCHING",
+        "name": "leaders_pso"
+      }
+    },
+    {
+      "candidate_id": "user_87",
+      "raw_source_value": "EXTRA BASE HITS ALLOWED",
+      "likely_direction": "Alias toward `extra_base_hits`",
+      "blocking_reason": "Alias confidence is not high; requires manual validation.",
+      "confidence": "medium",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 87,
+        "group_name": "LEADERBOARD - PITCHING",
+        "name": "leaders_pxbh"
+      }
+    },
+    {
+      "candidate_id": "user_93",
+      "raw_source_value": "OPP. RUNNERS CAUGHT STEALING",
+      "likely_direction": "Potential user phrase enrichment",
+      "blocking_reason": "High-confidence phrase is promising but lacks sufficient corroboration for safe auto-staging.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 93,
+        "group_name": "LEADERBOARD - PITCHING",
+        "name": "leaders_pcs"
+      }
+    },
+    {
+      "candidate_id": "user_101",
+      "raw_source_value": "IR SCORED PCT",
+      "likely_direction": "Potential user phrase enrichment",
+      "blocking_reason": "High-confidence phrase is promising but lacks sufficient corroboration for safe auto-staging.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 101,
+        "group_name": "LEADERBOARD - PITCHING",
+        "name": "leaders_pirscorepct"
+      }
+    },
+    {
+      "candidate_id": "user_102",
+      "raw_source_value": "PITCHING WAR",
+      "likely_direction": "Potential user phrase enrichment",
+      "blocking_reason": "High-confidence phrase is promising but lacks sufficient corroboration for safe auto-staging.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 102,
+        "group_name": "LEADERBOARD - PITCHING",
+        "name": "leaders_pwar"
+      }
+    },
+    {
+      "candidate_id": "user_106",
+      "raw_source_value": "GROUNDED INTO DP",
+      "likely_direction": "Potential user phrase enrichment",
+      "blocking_reason": "High-confidence phrase is promising but lacks sufficient corroboration for safe auto-staging.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 106,
+        "group_name": "LEADERBOARD - HITTING",
+        "name": "leaders_intodp"
+      }
+    },
+    {
+      "candidate_id": "user_109",
+      "raw_source_value": "PINCH-HIT APPEARANCES",
+      "likely_direction": "Potential user phrase enrichment",
+      "blocking_reason": "High-confidence phrase is promising but lacks sufficient corroboration for safe auto-staging.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 109,
+        "group_name": "LEADERBOARD - HITTING",
+        "name": "leaders_phapps"
+      }
+    },
+    {
+      "candidate_id": "user_110",
+      "raw_source_value": "PINCH-RUN APPEARANCES",
+      "likely_direction": "Potential user phrase enrichment",
+      "blocking_reason": "High-confidence phrase is promising but lacks sufficient corroboration for safe auto-staging.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 110,
+        "group_name": "LEADERBOARD - HITTING",
+        "name": "leaders_prapps"
+      }
+    },
+    {
+      "candidate_id": "user_114",
+      "raw_source_value": "STOLEN BASE PCT",
+      "likely_direction": "Potential user phrase enrichment",
+      "blocking_reason": "High-confidence phrase is promising but lacks sufficient corroboration for safe auto-staging.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 114,
+        "group_name": "LEADERBOARD - HITTING",
+        "name": "leaders_sbpct"
+      }
+    },
+    {
+      "candidate_id": "user_116",
+      "raw_source_value": "HITTING WAR",
+      "likely_direction": "Potential user phrase enrichment",
+      "blocking_reason": "High-confidence phrase is promising but lacks sufficient corroboration for safe auto-staging.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 116,
+        "group_name": "LEADERBOARD - HITTING",
+        "name": "leaders_bwar"
+      }
+    },
+    {
+      "candidate_id": "user_118",
+      "raw_source_value": "REACHED BASE",
+      "likely_direction": "Potential user phrase enrichment",
+      "blocking_reason": "High-confidence phrase is promising but lacks sufficient corroboration for safe auto-staging.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 118,
+        "group_name": "LEADERBOARD - HITTING",
+        "name": "leaders_tob"
+      }
+    },
+    {
+      "candidate_id": "user_120",
+      "raw_source_value": "SAC FLIES",
+      "likely_direction": "Potential user phrase enrichment",
+      "blocking_reason": "High-confidence phrase is promising but lacks sufficient corroboration for safe auto-staging.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 120,
+        "group_name": "LEADERBOARD - HITTING",
+        "name": "leaders_sacfly"
+      }
+    },
+    {
+      "candidate_id": "user_121",
+      "raw_source_value": "SAC BUNTS",
+      "likely_direction": "Potential user phrase enrichment",
+      "blocking_reason": "High-confidence phrase is promising but lacks sufficient corroboration for safe auto-staging.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 121,
+        "group_name": "LEADERBOARD - HITTING",
+        "name": "leaders_sacbunt"
+      }
+    },
+    {
+      "candidate_id": "user_126",
+      "raw_source_value": "HIT BY PITCH",
+      "likely_direction": "Potential user phrase enrichment",
+      "blocking_reason": "High-confidence phrase is promising but lacks sufficient corroboration for safe auto-staging.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 126,
+        "group_name": "LEADERBOARD - HITTING",
+        "name": "leaders_hbp"
+      }
+    },
+    {
+      "candidate_id": "user_135",
+      "raw_source_value": "RUNS BATTED IN",
+      "likely_direction": "Potential user phrase enrichment",
+      "blocking_reason": "High-confidence phrase is promising but lacks sufficient corroboration for safe auto-staging.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 135,
+        "group_name": "LEADERBOARD - HITTING",
+        "name": "leaders_rbi"
+      }
+    },
+    {
+      "candidate_id": "user_149",
+      "raw_source_value": "HOLDS",
+      "likely_direction": "Potential user phrase enrichment",
+      "blocking_reason": "High-confidence phrase is promising but lacks sufficient corroboration for safe auto-staging.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 149,
+        "group_name": "L3 - PITCHING",
+        "name": "header_holds"
+      }
+    },
+    {
+      "candidate_id": "user_153",
+      "raw_source_value": "SAVES",
+      "likely_direction": "Potential user phrase enrichment",
+      "blocking_reason": "High-confidence phrase is promising but lacks sufficient corroboration for safe auto-staging.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 153,
+        "group_name": "L3 - PITCHING",
+        "name": "header_saves"
+      }
+    },
+    {
+      "candidate_id": "user_157",
+      "raw_source_value": "IR STRANDED",
+      "likely_direction": "Potential user phrase enrichment",
+      "blocking_reason": "High-confidence phrase is promising but lacks sufficient corroboration for safe auto-staging.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 157,
+        "group_name": "L3 - PITCHING",
+        "name": "header_ir_irs"
+      }
+    },
+    {
+      "candidate_id": "user_167",
+      "raw_source_value": "CG",
+      "likely_direction": "Potential user phrase enrichment",
+      "blocking_reason": "High-confidence phrase is promising but lacks sufficient corroboration for safe auto-staging.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 167,
+        "group_name": "L3 - PITCHING",
+        "name": "header_pcg"
+      }
+    },
+    {
+      "candidate_id": "user_174",
+      "raw_source_value": "SHUTOUTS",
+      "likely_direction": "Potential user phrase enrichment",
+      "blocking_reason": "High-confidence phrase is promising but lacks sufficient corroboration for safe auto-staging.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 174,
+        "group_name": "L3 - PITCHING",
+        "name": "header_pso"
+      }
+    },
+    {
+      "candidate_id": "user_177",
+      "raw_source_value": "ER",
+      "likely_direction": "Potential user phrase enrichment",
+      "blocking_reason": "High-confidence phrase is promising but lacks sufficient corroboration for safe auto-staging.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 177,
+        "group_name": "L3 - PITCHING",
+        "name": "header_per"
+      }
+    },
+    {
+      "candidate_id": "user_181",
+      "raw_source_value": "CS",
+      "likely_direction": "Potential user phrase enrichment",
+      "blocking_reason": "High-confidence phrase is promising but lacks sufficient corroboration for safe auto-staging.",
+      "confidence": "high",
+      "source_trace": {
+        "artifact": "tests/_scratch/onair-mlb-pass04-mlb-only-rebaseline/mlb_user_dictionary_crosswalk_rebaseline.json",
+        "source_index": 181,
+        "group_name": "L3 - PITCHING",
+        "name": "header_pcs"
+      }
+    }
+  ]
+}
