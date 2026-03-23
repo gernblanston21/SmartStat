@@ -1,0 +1,263 @@
+{
+  "pass_name": "MLB_RUNTIME_MAPPING_POST_PROMOTION_VALIDATION_PASS_12",
+  "mode": "read_only_validation_evidence",
+  "generated_at_utc": "2026-03-23T19:48:21Z",
+  "source_artifacts": {
+    "runtime_file": "SmartStat_Mappings.ini",
+    "pass09_signoff_json": "tests/_scratch/onair-mlb-pass09-patch-review-signoff/mlb_learn_layer_patch_signoff.json",
+    "pass09_approved_ini": "tests/_scratch/onair-mlb-pass09-patch-review-signoff/mlb_learn_layer_patch_signoff_approved.ini",
+    "pass09_summary_md": "tests/_scratch/onair-mlb-pass09-patch-review-signoff/mlb_learn_layer_patch_signoff_summary.md",
+    "learn_file_reference": "SmartStat_Mappings.learn.ini",
+    "static_overrides_reference": "SmartStat_StaticOverrides.ini",
+    "template_config_reference": "SmartStat_TemplateConfig.ini"
+  },
+  "fallback_substitution": {
+    "used": false,
+    "details": ""
+  },
+  "approved_line_set_consistency": {
+    "status": "PASS",
+    "expected": [
+      "[CATEGORY_TO_MEASURE_ALIASES]::GO-AHEAD RBI=GO AHEAD RBI",
+      "[CATEGORY_TO_MEASURE]::GAME WINNING RBI=game_winning_rbi",
+      "[CATEGORY_TO_MEASURE]::GO AHEAD RBI=go_ahead_rbi",
+      "[CATEGORY_TO_MEASURE]::SINGLES=singles"
+    ],
+    "from_pass09_approved_ini": [
+      "[CATEGORY_TO_MEASURE_ALIASES]::GO-AHEAD RBI=GO AHEAD RBI",
+      "[CATEGORY_TO_MEASURE]::GAME WINNING RBI=game_winning_rbi",
+      "[CATEGORY_TO_MEASURE]::GO AHEAD RBI=go_ahead_rbi",
+      "[CATEGORY_TO_MEASURE]::SINGLES=singles"
+    ],
+    "from_pass09_signoff_json": [
+      "[CATEGORY_TO_MEASURE_ALIASES]::GO-AHEAD RBI=GO AHEAD RBI",
+      "[CATEGORY_TO_MEASURE]::GAME WINNING RBI=game_winning_rbi",
+      "[CATEGORY_TO_MEASURE]::GO AHEAD RBI=go_ahead_rbi",
+      "[CATEGORY_TO_MEASURE]::SINGLES=singles"
+    ],
+    "mismatches": []
+  },
+  "presence_placement_findings": [
+    {
+      "line": "GAME WINNING RBI=game_winning_rbi",
+      "expected_section": "CATEGORY_TO_MEASURE",
+      "exact_count_in_file": 1,
+      "exact_count_in_expected_section": 1,
+      "matching_line_numbers": [
+        65
+      ],
+      "status": "PASS"
+    },
+    {
+      "line": "GO AHEAD RBI=go_ahead_rbi",
+      "expected_section": "CATEGORY_TO_MEASURE",
+      "exact_count_in_file": 1,
+      "exact_count_in_expected_section": 1,
+      "matching_line_numbers": [
+        66
+      ],
+      "status": "PASS"
+    },
+    {
+      "line": "SINGLES=singles",
+      "expected_section": "CATEGORY_TO_MEASURE",
+      "exact_count_in_file": 1,
+      "exact_count_in_expected_section": 1,
+      "matching_line_numbers": [
+        79
+      ],
+      "status": "PASS"
+    },
+    {
+      "line": "GO-AHEAD RBI=GO AHEAD RBI",
+      "expected_section": "CATEGORY_TO_MEASURE_ALIASES",
+      "exact_count_in_file": 1,
+      "exact_count_in_expected_section": 1,
+      "matching_line_numbers": [
+        95
+      ],
+      "status": "PASS"
+    }
+  ],
+  "dependency_findings": {
+    "canonical_line": "GO AHEAD RBI=go_ahead_rbi",
+    "alias_line": "GO-AHEAD RBI=GO AHEAD RBI",
+    "canonical_exists_once_in_category_to_measure": true,
+    "alias_exists_once_in_category_to_measure_aliases": true,
+    "alias_points_to_existing_canonical_key": true,
+    "status": "PASS",
+    "canonical_line_numbers": [
+      66
+    ],
+    "alias_line_numbers": [
+      95
+    ]
+  },
+  "collision_duplicate_findings": {
+    "exact_promoted_line_duplicate_check": [
+      {
+        "line": "GAME WINNING RBI=game_winning_rbi",
+        "count": 1,
+        "status": "PASS"
+      },
+      {
+        "line": "GO AHEAD RBI=go_ahead_rbi",
+        "count": 1,
+        "status": "PASS"
+      },
+      {
+        "line": "SINGLES=singles",
+        "count": 1,
+        "status": "PASS"
+      },
+      {
+        "line": "GO-AHEAD RBI=GO AHEAD RBI",
+        "count": 1,
+        "status": "PASS"
+      }
+    ],
+    "key_collision_check": [
+      {
+        "key": "GAME WINNING RBI",
+        "hit_count": 1,
+        "sections": [
+          "CATEGORY_TO_MEASURE"
+        ],
+        "values": [
+          "game_winning_rbi"
+        ],
+        "line_numbers": [
+          65
+        ],
+        "status": "PASS"
+      },
+      {
+        "key": "GO AHEAD RBI",
+        "hit_count": 1,
+        "sections": [
+          "CATEGORY_TO_MEASURE"
+        ],
+        "values": [
+          "go_ahead_rbi"
+        ],
+        "line_numbers": [
+          66
+        ],
+        "status": "PASS"
+      },
+      {
+        "key": "GO-AHEAD RBI",
+        "hit_count": 1,
+        "sections": [
+          "CATEGORY_TO_MEASURE_ALIASES"
+        ],
+        "values": [
+          "GO AHEAD RBI"
+        ],
+        "line_numbers": [
+          95
+        ],
+        "status": "PASS"
+      },
+      {
+        "key": "SINGLES",
+        "hit_count": 1,
+        "sections": [
+          "CATEGORY_TO_MEASURE"
+        ],
+        "values": [
+          "singles"
+        ],
+        "line_numbers": [
+          79
+        ],
+        "status": "PASS"
+      }
+    ],
+    "status": "PASS"
+  },
+  "held_line_exclusion_findings": {
+    "checks": [
+      {
+        "line": "ASSISTS=fielding_assists",
+        "count": 0,
+        "status": "PASS"
+      },
+      {
+        "line": "DOUBLE PLAYS=fielding_double_plays",
+        "count": 0,
+        "status": "PASS"
+      },
+      {
+        "line": "PUTOUTS=fielding_putouts",
+        "count": 0,
+        "status": "PASS"
+      },
+      {
+        "line": "BLOWN SAVES=pitcher_blown_saves",
+        "count": 0,
+        "status": "PASS"
+      }
+    ],
+    "status": "PASS"
+  },
+  "learn_file_comparison_findings": {
+    "purpose": "traceability_only",
+    "promoted_entries_presence": [
+      {
+        "line": "GAME WINNING RBI=game_winning_rbi",
+        "expected_section": "CATEGORY_TO_MEASURE",
+        "exact_count_in_learn_file": 1,
+        "exact_count_in_expected_section": 1,
+        "matching_line_numbers": [
+          65
+        ],
+        "status": "PRESENT"
+      },
+      {
+        "line": "GO AHEAD RBI=go_ahead_rbi",
+        "expected_section": "CATEGORY_TO_MEASURE",
+        "exact_count_in_learn_file": 1,
+        "exact_count_in_expected_section": 1,
+        "matching_line_numbers": [
+          66
+        ],
+        "status": "PRESENT"
+      },
+      {
+        "line": "SINGLES=singles",
+        "expected_section": "CATEGORY_TO_MEASURE",
+        "exact_count_in_learn_file": 1,
+        "exact_count_in_expected_section": 1,
+        "matching_line_numbers": [
+          79
+        ],
+        "status": "PRESENT"
+      },
+      {
+        "line": "GO-AHEAD RBI=GO AHEAD RBI",
+        "expected_section": "CATEGORY_TO_MEASURE_ALIASES",
+        "exact_count_in_learn_file": 1,
+        "exact_count_in_expected_section": 1,
+        "matching_line_numbers": [
+          95
+        ],
+        "status": "PRESENT"
+      }
+    ]
+  },
+  "external_validation_note": {
+    "evidence_type": "manual_external_validation",
+    "source": "user-provided",
+    "status": "passed in Viz Trio",
+    "details": "No additional runtime details provided; recorded as stated."
+  },
+  "governance_boundary_confirmation": {
+    "runtime_changes": "none",
+    "ini_changes": "none",
+    "automatic_cleanup": "none",
+    "pass_behavior": "read_only_inspection_plus_additive_scratch_artifacts"
+  },
+  "overall_validation_status": "PASS",
+  "overall_fail_reasons": []
+}

@@ -1,0 +1,21 @@
+{
+  "pass_name": "MLB_RUNTIME_MAPPING_POST_PROMOTION_VALIDATION_PASS_12",
+  "output_directory": "tests/_scratch/onair-mlb-pass12-post-promotion-validation",
+  "artifacts": [
+    {
+      "path": "tests\\_scratch\\onair-mlb-pass12-post-promotion-validation\\mlb_runtime_mapping_post_promotion_validation.json",
+      "size_bytes": 7480,
+      "sha256": "0D83D83E4FFB7F0594F29389F202256AB61B44DCB7BCCB1421212B0E55FEF01B"
+    },
+    {
+      "path": "tests\\_scratch\\onair-mlb-pass12-post-promotion-validation\\mlb_runtime_mapping_post_promotion_validation_summary.md",
+      "size_bytes": 2627,
+      "sha256": "EFD34586E9BB140192D0AC3EE0810A6F0D50D080A23B8011D2A913ACAE07454C"
+    },
+    {
+      "path": "tests\\_scratch\\onair-mlb-pass12-post-promotion-validation\\mlb_runtime_mapping_post_promotion_validation_manifest.json",
+      "size_bytes": 703,
+      "sha256": "81ACBB91F3E3FB0FAA79EF5826E247368AF734BBCDBBAC47FD94063DDACDAE5F"
+    }
+  ]
+}
