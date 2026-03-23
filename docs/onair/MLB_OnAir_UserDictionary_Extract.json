@@ -1,0 +1,767 @@
+{
+  "source_file": "docs/onair/source/MLB_Network_26.json",
+  "extraction_pass": "ONAIR_PROFILE_EXTRACTION_MLB_PASS_01",
+  "user_variable_count": 187,
+  "group_counts": [
+    {
+      "groupName": "HEADSHOTS",
+      "count": 1
+    },
+    {
+      "groupName": "L3 - FIELDING",
+      "count": 5
+    },
+    {
+      "groupName": "L3 - HITTING",
+      "count": 23
+    },
+    {
+      "groupName": "L3 - PITCHING",
+      "count": 42
+    },
+    {
+      "groupName": "L3 - RUNNING",
+      "count": 5
+    },
+    {
+      "groupName": "LEADERBOARD - FIELDING",
+      "count": 9
+    },
+    {
+      "groupName": "LEADERBOARD - HITTING",
+      "count": 40
+    },
+    {
+      "groupName": "LEADERBOARD - PITCHING",
+      "count": 41
+    },
+    {
+      "groupName": "LEADERBOARD - SUBTITLES",
+      "count": 21
+    }
+  ],
+  "user_dictionary_extract_limit": 120,
+  "user_dictionary_extract": [
+    {
+      "source_index": 144,
+      "name": "player_hs",
+      "value": "E:/EDRIVE/MLB/HEADSHOTS/{{info.team.alias}}/{{info.team.alias}}_{{info.player.last_name | file_path}}_{{info.player.first_name | file_path}}_960.png",
+      "groupName": "HEADSHOTS"
+    },
+    {
+      "source_index": 41,
+      "name": "header_assists",
+      "value": "ASSISTS",
+      "groupName": "L3 - FIELDING"
+    },
+    {
+      "source_index": 38,
+      "name": "header_chances",
+      "value": "CHANCES",
+      "groupName": "L3 - FIELDING"
+    },
+    {
+      "source_index": 37,
+      "name": "header_errors",
+      "value": "ERRORS",
+      "groupName": "L3 - FIELDING"
+    },
+    {
+      "source_index": 39,
+      "name": "header_fielddp",
+      "value": "DP",
+      "groupName": "L3 - FIELDING"
+    },
+    {
+      "source_index": 40,
+      "name": "header_putouts",
+      "value": "PUTOUTS",
+      "groupName": "L3 - FIELDING"
+    },
+    {
+      "source_index": 26,
+      "name": "header_ab",
+      "value": "AB",
+      "groupName": "L3 - HITTING"
+    },
+    {
+      "source_index": 22,
+      "name": "header_avg",
+      "value": "AVG",
+      "groupName": "L3 - HITTING"
+    },
+    {
+      "source_index": 36,
+      "name": "header_doubleplays",
+      "value": "GIDP",
+      "groupName": "L3 - HITTING"
+    },
+    {
+      "source_index": 19,
+      "name": "header_games",
+      "value": "GMS",
+      "groupName": "L3 - HITTING"
+    },
+    {
+      "source_index": 16,
+      "name": "header_hab",
+      "value": "H/AB",
+      "groupName": "L3 - HITTING"
+    },
+    {
+      "source_index": 25,
+      "name": "header_hits",
+      "value": "HITS",
+      "groupName": "L3 - HITTING"
+    },
+    {
+      "source_index": 23,
+      "name": "header_hr",
+      "value": "HR",
+      "groupName": "L3 - HITTING"
+    },
+    {
+      "source_index": 13,
+      "name": "header_kbbratio",
+      "value": "RATIO",
+      "groupName": "L3 - HITTING"
+    },
+    {
+      "source_index": 30,
+      "name": "header_obp",
+      "value": "OBP",
+      "groupName": "L3 - HITTING"
+    },
+    {
+      "source_index": 34,
+      "name": "header_ops",
+      "value": "OPS",
+      "groupName": "L3 - HITTING"
+    },
+    {
+      "source_index": 15,
+      "name": "header_pa",
+      "value": "PA",
+      "groupName": "L3 - HITTING"
+    },
+    {
+      "source_index": 9,
+      "name": "header_pbbk1",
+      "value": "STRIKEOUTS",
+      "groupName": "L3 - HITTING"
+    },
+    {
+      "source_index": 10,
+      "name": "header_pbbk2",
+      "value": "WALKS",
+      "groupName": "L3 - HITTING"
+    },
+    {
+      "source_index": 21,
+      "name": "header_pitchesfaced",
+      "value": "PITCHES",
+      "groupName": "L3 - HITTING"
+    },
+    {
+      "source_index": 24,
+      "name": "header_rbi",
+      "value": "RBI",
+      "groupName": "L3 - HITTING"
+    },
+    {
+      "source_index": 18,
+      "name": "header_runs",
+      "value": "RUNS",
+      "groupName": "L3 - HITTING"
+    },
+    {
+      "source_index": 17,
+      "name": "header_sacbunts",
+      "value": "SAC BUNTS",
+      "groupName": "L3 - HITTING"
+    },
+    {
+      "source_index": 33,
+      "name": "header_sacrifice",
+      "value": "SACRIFICE",
+      "groupName": "L3 - HITTING"
+    },
+    {
+      "source_index": 31,
+      "name": "header_slg",
+      "value": "SLG",
+      "groupName": "L3 - HITTING"
+    },
+    {
+      "source_index": 35,
+      "name": "header_strikeouts",
+      "value": "K",
+      "groupName": "L3 - HITTING"
+    },
+    {
+      "source_index": 20,
+      "name": "header_swings",
+      "value": "SWINGS",
+      "groupName": "L3 - HITTING"
+    },
+    {
+      "source_index": 12,
+      "name": "header_walks",
+      "value": "BB",
+      "groupName": "L3 - HITTING"
+    },
+    {
+      "source_index": 11,
+      "name": "leaders_twar",
+      "value": "TOTAL WAR",
+      "groupName": "L3 - HITTING"
+    },
+    {
+      "source_index": 150,
+      "name": "header_bbk",
+      "value": "K/BB",
+      "groupName": "L3 - PITCHING"
+    },
+    {
+      "source_index": 148,
+      "name": "header_era",
+      "value": "ERA",
+      "groupName": "L3 - PITCHING"
+    },
+    {
+      "source_index": 147,
+      "name": "header_gpitch",
+      "value": "GAMES",
+      "groupName": "L3 - PITCHING"
+    },
+    {
+      "source_index": 146,
+      "name": "header_gstart",
+      "value": "STARTS",
+      "groupName": "L3 - PITCHING"
+    },
+    {
+      "source_index": 149,
+      "name": "header_holds",
+      "value": "HOLDS",
+      "groupName": "L3 - PITCHING"
+    },
+    {
+      "source_index": 155,
+      "name": "header_ip",
+      "value": "INNINGS",
+      "groupName": "L3 - PITCHING"
+    },
+    {
+      "source_index": 162,
+      "name": "header_ipstart",
+      "value": "IP/START",
+      "groupName": "L3 - PITCHING"
+    },
+    {
+      "source_index": 157,
+      "name": "header_ir_irs",
+      "value": "IR STRANDED",
+      "groupName": "L3 - PITCHING"
+    },
+    {
+      "source_index": 151,
+      "name": "header_oppavg",
+      "value": "OPP. AVG",
+      "groupName": "L3 - PITCHING"
+    },
+    {
+      "source_index": 158,
+      "name": "header_oppavg_lhb",
+      "value": "AVG vs LHB",
+      "groupName": "L3 - PITCHING"
+    },
+    {
+      "source_index": 159,
+      "name": "header_oppavg_rhb",
+      "value": "AVG vs RHB",
+      "groupName": "L3 - PITCHING"
+    },
+    {
+      "source_index": 152,
+      "name": "header_opphr",
+      "value": "HR ALLOWED",
+      "groupName": "L3 - PITCHING"
+    },
+    {
+      "source_index": 179,
+      "name": "header_oppops",
+      "value": "OPP. OPS",
+      "groupName": "L3 - PITCHING"
+    },
+    {
+      "source_index": 169,
+      "name": "header_oppops_lhb",
+      "value": "OPS vs LHB",
+      "groupName": "L3 - PITCHING"
+    },
+    {
+      "source_index": 170,
+      "name": "header_oppops_rhb",
+      "value": "OPS vs RHB",
+      "groupName": "L3 - PITCHING"
+    },
+    {
+      "source_index": 171,
+      "name": "header_pbb9",
+      "value": "BB/9 IP",
+      "groupName": "L3 - PITCHING"
+    },
+    {
+      "source_index": 167,
+      "name": "header_pcg",
+      "value": "CG",
+      "groupName": "L3 - PITCHING"
+    },
+    {
+      "source_index": 181,
+      "name": "header_pcs",
+      "value": "CS",
+      "groupName": "L3 - PITCHING"
+    },
+    {
+      "source_index": 182,
+      "name": "header_pcspct",
+      "value": "CS PCT",
+      "groupName": "L3 - PITCHING"
+    },
+    {
+      "source_index": 177,
+      "name": "header_per",
+      "value": "ER",
+      "groupName": "L3 - PITCHING"
+    },
+    {
+      "source_index": 161,
+      "name": "header_phits",
+      "value": "HITS",
+      "groupName": "L3 - PITCHING"
+    },
+    {
+      "source_index": 173,
+      "name": "header_phr9",
+      "value": "HR/9 IP",
+      "groupName": "L3 - PITCHING"
+    },
+    {
+      "source_index": 183,
+      "name": "header_pickoffs",
+      "value": "PICKOFFS",
+      "groupName": "L3 - PITCHING"
+    },
+    {
+      "source_index": 156,
+      "name": "header_pitchrec",
+      "value": "RECORD",
+      "groupName": "L3 - PITCHING"
+    },
+    {
+      "source_index": 172,
+      "name": "header_pk9",
+      "value": "K/9 IP",
+      "groupName": "L3 - PITCHING"
+    },
+    {
+      "source_index": 168,
+      "name": "header_ppitches",
+      "value": "PITCHES",
+      "groupName": "L3 - PITCHING"
+    },
+    {
+      "source_index": 165,
+      "name": "header_prer",
+      "value": "R/ER",
+      "groupName": "L3 - PITCHING"
+    },
+    {
+      "source_index": 178,
+      "name": "header_prun",
+      "value": "R",
+      "groupName": "L3 - PITCHING"
+    },
+    {
+      "source_index": 166,
+      "name": "header_pruns",
+      "value": "RUNS",
+      "groupName": "L3 - PITCHING"
+    },
+    {
+      "source_index": 184,
+      "name": "header_psbatt",
+      "value": "SB ATTEMPTS",
+      "groupName": "L3 - PITCHING"
+    },
+    {
+      "source_index": 174,
+      "name": "header_pso",
+      "value": "SHUTOUTS",
+      "groupName": "L3 - PITCHING"
+    },
+    {
+      "source_index": 180,
+      "name": "header_psteals",
+      "value": "SB",
+      "groupName": "L3 - PITCHING"
+    },
+    {
+      "source_index": 164,
+      "name": "header_pstrikeouts",
+      "value": "K",
+      "groupName": "L3 - PITCHING"
+    },
+    {
+      "source_index": 163,
+      "name": "header_pwalks",
+      "value": "BB",
+      "groupName": "L3 - PITCHING"
+    },
+    {
+      "source_index": 153,
+      "name": "header_saves",
+      "value": "SAVES",
+      "groupName": "L3 - PITCHING"
+    },
+    {
+      "source_index": 160,
+      "name": "header_sv_opp",
+      "value": "SV/OPP",
+      "groupName": "L3 - PITCHING"
+    },
+    {
+      "source_index": 175,
+      "name": "header_svopps",
+      "value": "SV OPP",
+      "groupName": "L3 - PITCHING"
+    },
+    {
+      "source_index": 176,
+      "name": "header_svpct",
+      "value": "SV PCT",
+      "groupName": "L3 - PITCHING"
+    },
+    {
+      "source_index": 154,
+      "name": "header_whip",
+      "value": "WHIP",
+      "groupName": "L3 - PITCHING"
+    },
+    {
+      "source_index": 145,
+      "name": "pstat_bb_k",
+      "value": "{{stats.player.season.pitcher_strikeouts}}/{{stats.player.season.pitcher_walks}}",
+      "groupName": "L3 - PITCHING"
+    },
+    {
+      "source_index": 185,
+      "name": "stat_pbbk1",
+      "value": "{{stats.player.season.pitcher_strikeouts}}",
+      "groupName": "L3 - PITCHING"
+    },
+    {
+      "source_index": 186,
+      "name": "stat_pbbk2",
+      "value": "{{stats.player.season.pitcher_walks}}",
+      "groupName": "L3 - PITCHING"
+    },
+    {
+      "source_index": 14,
+      "name": "header_caughtstealing",
+      "value": "CAUGHT",
+      "groupName": "L3 - RUNNING"
+    },
+    {
+      "source_index": 32,
+      "name": "header_pickedoff",
+      "value": "PICKED OFF",
+      "groupName": "L3 - RUNNING"
+    },
+    {
+      "source_index": 28,
+      "name": "header_sbattempts",
+      "value": "ATTEMPTS",
+      "groupName": "L3 - RUNNING"
+    },
+    {
+      "source_index": 29,
+      "name": "header_sbpct",
+      "value": "SB PCT",
+      "groupName": "L3 - RUNNING"
+    },
+    {
+      "source_index": 27,
+      "name": "header_steals",
+      "value": "STEALS",
+      "groupName": "L3 - RUNNING"
+    },
+    {
+      "source_index": 2,
+      "name": "leaders_doubleplays",
+      "value": "DOUBLE PLAYS",
+      "groupName": "LEADERBOARD - FIELDING"
+    },
+    {
+      "source_index": 1,
+      "name": "leaders_errors",
+      "value": "ERRORS",
+      "groupName": "LEADERBOARD - FIELDING"
+    },
+    {
+      "source_index": 6,
+      "name": "leaders_fassists",
+      "value": "ASSISTS",
+      "groupName": "LEADERBOARD - FIELDING"
+    },
+    {
+      "source_index": 5,
+      "name": "leaders_ferrors",
+      "value": "ERRORS",
+      "groupName": "LEADERBOARD - FIELDING"
+    },
+    {
+      "source_index": 0,
+      "name": "leaders_fieldingpct",
+      "value": "FIELDING PCT",
+      "groupName": "LEADERBOARD - FIELDING"
+    },
+    {
+      "source_index": 4,
+      "name": "leaders_fputouts",
+      "value": "PUTOUTS",
+      "groupName": "LEADERBOARD - FIELDING"
+    },
+    {
+      "source_index": 3,
+      "name": "leaders_highfieldpct",
+      "value": "HIGHEST FIELDING PCT",
+      "groupName": "LEADERBOARD - FIELDING"
+    },
+    {
+      "source_index": 7,
+      "name": "leaders_lowfieldpct",
+      "value": "LOWEST FIELDING PCT",
+      "groupName": "LEADERBOARD - FIELDING"
+    },
+    {
+      "source_index": 8,
+      "name": "leaders_passedballs",
+      "value": "PASSED BALLS",
+      "groupName": "LEADERBOARD - FIELDING"
+    },
+    {
+      "source_index": 138,
+      "name": "leaders_1b",
+      "value": "SINGLES",
+      "groupName": "LEADERBOARD - HITTING"
+    },
+    {
+      "source_index": 139,
+      "name": "leaders_2b",
+      "value": "DOUBLES",
+      "groupName": "LEADERBOARD - HITTING"
+    },
+    {
+      "source_index": 140,
+      "name": "leaders_3b",
+      "value": "TRIPLES",
+      "groupName": "LEADERBOARD - HITTING"
+    },
+    {
+      "source_index": 108,
+      "name": "leaders_ab",
+      "value": "AT BATS",
+      "groupName": "LEADERBOARD - HITTING"
+    },
+    {
+      "source_index": 117,
+      "name": "leaders_avg",
+      "value": "BATTING AVG",
+      "groupName": "LEADERBOARD - HITTING"
+    },
+    {
+      "source_index": 124,
+      "name": "leaders_bb",
+      "value": "WALKS",
+      "groupName": "LEADERBOARD - HITTING"
+    },
+    {
+      "source_index": 112,
+      "name": "leaders_bbrate",
+      "value": "AB PER WALK",
+      "groupName": "LEADERBOARD - HITTING"
+    },
+    {
+      "source_index": 116,
+      "name": "leaders_bwar",
+      "value": "HITTING WAR",
+      "groupName": "LEADERBOARD - HITTING"
+    },
+    {
+      "source_index": 123,
+      "name": "leaders_cs",
+      "value": "CAUGHT STEALING",
+      "groupName": "LEADERBOARD - HITTING"
+    },
+    {
+      "source_index": 104,
+      "name": "leaders_extrabasehits",
+      "value": "EXTRA-BASE HITS",
+      "groupName": "LEADERBOARD - HITTING"
+    },
+    {
+      "source_index": 107,
+      "name": "leaders_garbi",
+      "value": "GO-AHEAD RBI",
+      "groupName": "LEADERBOARD - HITTING"
+    },
+    {
+      "source_index": 115,
+      "name": "leaders_garbi7",
+      "value": "GO-AHEAD RBI 7th INNING OR LATER",
+      "groupName": "LEADERBOARD - HITTING"
+    },
+    {
+      "source_index": 134,
+      "name": "leaders_gp",
+      "value": "GAMES PLAYED",
+      "groupName": "LEADERBOARD - HITTING"
+    },
+    {
+      "source_index": 119,
+      "name": "leaders_gwrbi",
+      "value": "GAME WINNING RBI",
+      "groupName": "LEADERBOARD - HITTING"
+    },
+    {
+      "source_index": 126,
+      "name": "leaders_hbp",
+      "value": "HIT BY PITCH",
+      "groupName": "LEADERBOARD - HITTING"
+    },
+    {
+      "source_index": 137,
+      "name": "leaders_hits",
+      "value": "HITS",
+      "groupName": "LEADERBOARD - HITTING"
+    },
+    {
+      "source_index": 133,
+      "name": "leaders_hr",
+      "value": "HOME RUNS",
+      "groupName": "LEADERBOARD - HITTING"
+    },
+    {
+      "source_index": 111,
+      "name": "leaders_hrrate",
+      "value": "AB PER HR",
+      "groupName": "LEADERBOARD - HITTING"
+    },
+    {
+      "source_index": 125,
+      "name": "leaders_ibb",
+      "value": "INTENTIONAL WALKS",
+      "groupName": "LEADERBOARD - HITTING"
+    },
+    {
+      "source_index": 105,
+      "name": "leaders_ifhits",
+      "value": "INFIELD HITS",
+      "groupName": "LEADERBOARD - HITTING"
+    },
+    {
+      "source_index": 106,
+      "name": "leaders_intodp",
+      "value": "GROUNDED INTO DP",
+      "groupName": "LEADERBOARD - HITTING"
+    },
+    {
+      "source_index": 127,
+      "name": "leaders_k",
+      "value": "STRIKEOUTS",
+      "groupName": "LEADERBOARD - HITTING"
+    },
+    {
+      "source_index": 113,
+      "name": "leaders_krate",
+      "value": "AB PER STRIKEOUT",
+      "groupName": "LEADERBOARD - HITTING"
+    },
+    {
+      "source_index": 131,
+      "name": "leaders_obp",
+      "value": "ON BASE PCT",
+      "groupName": "LEADERBOARD - HITTING"
+    },
+    {
+      "source_index": 132,
+      "name": "leaders_ops",
+      "value": "OPS",
+      "groupName": "LEADERBOARD - HITTING"
+    },
+    {
+      "source_index": 129,
+      "name": "leaders_pa",
+      "value": "PLATE APPEARANCES",
+      "groupName": "LEADERBOARD - HITTING"
+    },
+    {
+      "source_index": 143,
+      "name": "leaders_pashort",
+      "value": "PA",
+      "groupName": "LEADERBOARD - HITTING"
+    },
+    {
+      "source_index": 109,
+      "name": "leaders_phapps",
+      "value": "PINCH-HIT APPEARANCES",
+      "groupName": "LEADERBOARD - HITTING"
+    },
+    {
+      "source_index": 110,
+      "name": "leaders_prapps",
+      "value": "PINCH-RUN APPEARANCES",
+      "groupName": "LEADERBOARD - HITTING"
+    },
+    {
+      "source_index": 128,
+      "name": "leaders_pseen",
+      "value": "PITCHES SEEN",
+      "groupName": "LEADERBOARD - HITTING"
+    },
+    {
+      "source_index": 135,
+      "name": "leaders_rbi",
+      "value": "RUNS BATTED IN",
+      "groupName": "LEADERBOARD - HITTING"
+    },
+    {
+      "source_index": 142,
+      "name": "leaders_rbishort",
+      "value": "RBI",
+      "groupName": "LEADERBOARD - HITTING"
+    },
+    {
+      "source_index": 136,
+      "name": "leaders_runs",
+      "value": "RUNS SCORED",
+      "groupName": "LEADERBOARD - HITTING"
+    },
+    {
+      "source_index": 121,
+      "name": "leaders_sacbunt",
+      "value": "SAC BUNTS",
+      "groupName": "LEADERBOARD - HITTING"
+    },
+    {
+      "source_index": 120,
+      "name": "leaders_sacfly",
+      "value": "SAC FLIES",
+      "groupName": "LEADERBOARD - HITTING"
+    }
+  ],
+  "bounded_scope_note": "PASS_01 emits deterministic bounded user dictionary rows while preserving full source count for follow-on passes."
+}

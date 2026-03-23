@@ -1,0 +1,998 @@
+{
+  "source_file": "docs/onair/source/MLB_Network_26.json",
+  "extraction_pass": "ONAIR_PROFILE_EXTRACTION_MLB_PASS_01",
+  "playbook_entry_count": 1862,
+  "playbook_entry_index_extract_limit": 40,
+  "playbook_entry_index_extract": [
+    {
+      "source_index": 956,
+      "name": "FS - Conference Fielding - Assists - OF",
+      "grouping": "Conference - Ind Fielding Leaders",
+      "category": "Conference",
+      "basePage": "97023",
+      "writeToPattern": "300C604"
+    },
+    {
+      "source_index": 968,
+      "name": "FS - Conference Fielding - Errors - 1B",
+      "grouping": "Conference - Ind Fielding Leaders",
+      "category": "Conference",
+      "basePage": "97023",
+      "writeToPattern": "300C632"
+    },
+    {
+      "source_index": 969,
+      "name": "FS - Conference Fielding - Errors - 2B",
+      "grouping": "Conference - Ind Fielding Leaders",
+      "category": "Conference",
+      "basePage": "97023",
+      "writeToPattern": "300C642"
+    },
+    {
+      "source_index": 970,
+      "name": "FS - Conference Fielding - Errors - 3B",
+      "grouping": "Conference - Ind Fielding Leaders",
+      "category": "Conference",
+      "basePage": "97023",
+      "writeToPattern": "300C652"
+    },
+    {
+      "source_index": 954,
+      "name": "FS - Conference Fielding - Errors - OF",
+      "grouping": "Conference - Ind Fielding Leaders",
+      "category": "Conference",
+      "basePage": "97023",
+      "writeToPattern": "300C602"
+    },
+    {
+      "source_index": 957,
+      "name": "FS - Conference Fielding - Errors - P",
+      "grouping": "Conference - Ind Fielding Leaders",
+      "category": "Conference",
+      "basePage": "97023",
+      "writeToPattern": "300C612"
+    },
+    {
+      "source_index": 971,
+      "name": "FS - Conference Fielding - Errors - SS",
+      "grouping": "Conference - Ind Fielding Leaders",
+      "category": "Conference",
+      "basePage": "97023",
+      "writeToPattern": "300C662"
+    },
+    {
+      "source_index": 960,
+      "name": "FS - Conference Fielding - Highest Field Pct - 1B",
+      "grouping": "Conference - Ind Fielding Leaders",
+      "category": "Conference",
+      "basePage": "97023",
+      "writeToPattern": "300C630"
+    },
+    {
+      "source_index": 963,
+      "name": "FS - Conference Fielding - Highest Field Pct - 2B",
+      "grouping": "Conference - Ind Fielding Leaders",
+      "category": "Conference",
+      "basePage": "97023",
+      "writeToPattern": "300C640"
+    },
+    {
+      "source_index": 964,
+      "name": "FS - Conference Fielding - Highest Field Pct - 3B",
+      "grouping": "Conference - Ind Fielding Leaders",
+      "category": "Conference",
+      "basePage": "97023",
+      "writeToPattern": "300C650"
+    },
+    {
+      "source_index": 952,
+      "name": "FS - Conference Fielding - Highest Field Pct - OF",
+      "grouping": "Conference - Ind Fielding Leaders",
+      "category": "Conference",
+      "basePage": "97023",
+      "writeToPattern": "300C600"
+    },
+    {
+      "source_index": 958,
+      "name": "FS - Conference Fielding - Highest Field Pct - P",
+      "grouping": "Conference - Ind Fielding Leaders",
+      "category": "Conference",
+      "basePage": "97023",
+      "writeToPattern": "300C610"
+    },
+    {
+      "source_index": 966,
+      "name": "FS - Conference Fielding - Highest Field Pct - SS",
+      "grouping": "Conference - Ind Fielding Leaders",
+      "category": "Conference",
+      "basePage": "97023",
+      "writeToPattern": "300C660"
+    },
+    {
+      "source_index": 961,
+      "name": "FS - Conference Fielding - Lowest Field Pct - 1B",
+      "grouping": "Conference - Ind Fielding Leaders",
+      "category": "Conference",
+      "basePage": "97023",
+      "writeToPattern": "300C631"
+    },
+    {
+      "source_index": 962,
+      "name": "FS - Conference Fielding - Lowest Field Pct - 2B",
+      "grouping": "Conference - Ind Fielding Leaders",
+      "category": "Conference",
+      "basePage": "97023",
+      "writeToPattern": "300C641"
+    },
+    {
+      "source_index": 965,
+      "name": "FS - Conference Fielding - Lowest Field Pct - 3B",
+      "grouping": "Conference - Ind Fielding Leaders",
+      "category": "Conference",
+      "basePage": "97023",
+      "writeToPattern": "300C651"
+    },
+    {
+      "source_index": 953,
+      "name": "FS - Conference Fielding - Lowest Field Pct - OF",
+      "grouping": "Conference - Ind Fielding Leaders",
+      "category": "Conference",
+      "basePage": "97023",
+      "writeToPattern": "300C601"
+    },
+    {
+      "source_index": 959,
+      "name": "FS - Conference Fielding - Lowest Field Pct - P",
+      "grouping": "Conference - Ind Fielding Leaders",
+      "category": "Conference",
+      "basePage": "97023",
+      "writeToPattern": "300C611"
+    },
+    {
+      "source_index": 967,
+      "name": "FS - Conference Fielding - Lowest Field Pct - SS",
+      "grouping": "Conference - Ind Fielding Leaders",
+      "category": "Conference",
+      "basePage": "97023",
+      "writeToPattern": "300C661"
+    },
+    {
+      "source_index": 972,
+      "name": "FS - Conference Fielding - Passed Balls - C",
+      "grouping": "Conference - Ind Fielding Leaders",
+      "category": "Conference",
+      "basePage": "97023",
+      "writeToPattern": "300C620"
+    },
+    {
+      "source_index": 955,
+      "name": "FS - Conference Fielding - Putouts - OF",
+      "grouping": "Conference - Ind Fielding Leaders",
+      "category": "Conference",
+      "basePage": "97023",
+      "writeToPattern": "300C603"
+    },
+    {
+      "source_index": 977,
+      "name": "SLAB - Conference Fielding - Assists - OF",
+      "grouping": "Conference - Ind Fielding Leaders",
+      "category": "Conference",
+      "basePage": "97024",
+      "writeToPattern": "500C604"
+    },
+    {
+      "source_index": 984,
+      "name": "SLAB - Conference Fielding - Errors - 1B",
+      "grouping": "Conference - Ind Fielding Leaders",
+      "category": "Conference",
+      "basePage": "97024",
+      "writeToPattern": "500C632"
+    },
+    {
+      "source_index": 987,
+      "name": "SLAB - Conference Fielding - Errors - 2B",
+      "grouping": "Conference - Ind Fielding Leaders",
+      "category": "Conference",
+      "basePage": "97024",
+      "writeToPattern": "500C642"
+    },
+    {
+      "source_index": 990,
+      "name": "SLAB - Conference Fielding - Errors - 3B",
+      "grouping": "Conference - Ind Fielding Leaders",
+      "category": "Conference",
+      "basePage": "97024",
+      "writeToPattern": "500C652"
+    },
+    {
+      "source_index": 975,
+      "name": "SLAB - Conference Fielding - Errors - OF",
+      "grouping": "Conference - Ind Fielding Leaders",
+      "category": "Conference",
+      "basePage": "97024",
+      "writeToPattern": "500C602"
+    },
+    {
+      "source_index": 980,
+      "name": "SLAB - Conference Fielding - Errors - P",
+      "grouping": "Conference - Ind Fielding Leaders",
+      "category": "Conference",
+      "basePage": "97024",
+      "writeToPattern": "500C612"
+    },
+    {
+      "source_index": 993,
+      "name": "SLAB - Conference Fielding - Errors - SS",
+      "grouping": "Conference - Ind Fielding Leaders",
+      "category": "Conference",
+      "basePage": "97024",
+      "writeToPattern": "500C662"
+    },
+    {
+      "source_index": 982,
+      "name": "SLAB - Conference Fielding - Highest Field Pct - 1B",
+      "grouping": "Conference - Ind Fielding Leaders",
+      "category": "Conference",
+      "basePage": "97024",
+      "writeToPattern": "500C630"
+    },
+    {
+      "source_index": 985,
+      "name": "SLAB - Conference Fielding - Highest Field Pct - 2B",
+      "grouping": "Conference - Ind Fielding Leaders",
+      "category": "Conference",
+      "basePage": "97024",
+      "writeToPattern": "500C640"
+    },
+    {
+      "source_index": 988,
+      "name": "SLAB - Conference Fielding - Highest Field Pct - 3B",
+      "grouping": "Conference - Ind Fielding Leaders",
+      "category": "Conference",
+      "basePage": "97024",
+      "writeToPattern": "500C650"
+    },
+    {
+      "source_index": 973,
+      "name": "SLAB - Conference Fielding - Highest Field Pct - OF",
+      "grouping": "Conference - Ind Fielding Leaders",
+      "category": "Conference",
+      "basePage": "97024",
+      "writeToPattern": "500C600"
+    },
+    {
+      "source_index": 978,
+      "name": "SLAB - Conference Fielding - Highest Field Pct - P",
+      "grouping": "Conference - Ind Fielding Leaders",
+      "category": "Conference",
+      "basePage": "97024",
+      "writeToPattern": "500C610"
+    },
+    {
+      "source_index": 991,
+      "name": "SLAB - Conference Fielding - Highest Field Pct - SS",
+      "grouping": "Conference - Ind Fielding Leaders",
+      "category": "Conference",
+      "basePage": "97024",
+      "writeToPattern": "500C660"
+    },
+    {
+      "source_index": 983,
+      "name": "SLAB - Conference Fielding - Lowest Field Pct - 1B",
+      "grouping": "Conference - Ind Fielding Leaders",
+      "category": "Conference",
+      "basePage": "97024",
+      "writeToPattern": "500C631"
+    },
+    {
+      "source_index": 986,
+      "name": "SLAB - Conference Fielding - Lowest Field Pct - 2B",
+      "grouping": "Conference - Ind Fielding Leaders",
+      "category": "Conference",
+      "basePage": "97024",
+      "writeToPattern": "500C641"
+    },
+    {
+      "source_index": 989,
+      "name": "SLAB - Conference Fielding - Lowest Field Pct - 3B",
+      "grouping": "Conference - Ind Fielding Leaders",
+      "category": "Conference",
+      "basePage": "97024",
+      "writeToPattern": "500C651"
+    },
+    {
+      "source_index": 974,
+      "name": "SLAB - Conference Fielding - Lowest Field Pct - OF",
+      "grouping": "Conference - Ind Fielding Leaders",
+      "category": "Conference",
+      "basePage": "97024",
+      "writeToPattern": "500C601"
+    },
+    {
+      "source_index": 979,
+      "name": "SLAB - Conference Fielding - Lowest Field Pct - P",
+      "grouping": "Conference - Ind Fielding Leaders",
+      "category": "Conference",
+      "basePage": "97024",
+      "writeToPattern": "500C611"
+    },
+    {
+      "source_index": 992,
+      "name": "SLAB - Conference Fielding - Lowest Field Pct - SS",
+      "grouping": "Conference - Ind Fielding Leaders",
+      "category": "Conference",
+      "basePage": "97024",
+      "writeToPattern": "500C661"
+    }
+  ],
+  "syntax_corpus_examples": {
+    "single_token": [
+      {
+        "playbook_name": "FS - Conference Fielding - Assists - OF",
+        "grouping": "Conference - Ind Fielding Leaders",
+        "basePage": "97023",
+        "writeToPattern": "300C604",
+        "order": 0,
+        "template": "{{info.conference.alias}}",
+        "token_count": 1
+      },
+      {
+        "playbook_name": "FS - Conference Fielding - Assists - OF",
+        "grouping": "Conference - Ind Fielding Leaders",
+        "basePage": "97023",
+        "writeToPattern": "300C604",
+        "order": 1,
+        "template": "{{custom.leaders_fassists}}",
+        "token_count": 1
+      },
+      {
+        "playbook_name": "FS - Conference Fielding - Assists - OF",
+        "grouping": "Conference - Ind Fielding Leaders",
+        "basePage": "97023",
+        "writeToPattern": "300C604",
+        "order": 4,
+        "template": "{{leader(1, assists_outfield).player.season.conference.pos_group(of).full_name}}",
+        "token_count": 1
+      },
+      {
+        "playbook_name": "FS - Conference Fielding - Assists - OF",
+        "grouping": "Conference - Ind Fielding Leaders",
+        "basePage": "97023",
+        "writeToPattern": "300C604",
+        "order": 5,
+        "template": "{{leader(1, assists_outfield).player.season.conference.pos_group(of).team_alias}}",
+        "token_count": 1
+      },
+      {
+        "playbook_name": "FS - Conference Fielding - Assists - OF",
+        "grouping": "Conference - Ind Fielding Leaders",
+        "basePage": "97023",
+        "writeToPattern": "300C604",
+        "order": 6,
+        "template": "{{leader(1, assists_outfield).player.season.conference.pos_group(of).assists_outfield}}",
+        "token_count": 1
+      },
+      {
+        "playbook_name": "FS - Conference Fielding - Assists - OF",
+        "grouping": "Conference - Ind Fielding Leaders",
+        "basePage": "97023",
+        "writeToPattern": "300C604",
+        "order": 7,
+        "template": "{{leader(2, assists_outfield).player.season.conference.pos_group(of).full_name}}",
+        "token_count": 1
+      },
+      {
+        "playbook_name": "FS - Conference Fielding - Assists - OF",
+        "grouping": "Conference - Ind Fielding Leaders",
+        "basePage": "97023",
+        "writeToPattern": "300C604",
+        "order": 8,
+        "template": "{{leader(2, assists_outfield).player.season.conference.pos_group(of).team_alias}}",
+        "token_count": 1
+      },
+      {
+        "playbook_name": "FS - Conference Fielding - Assists - OF",
+        "grouping": "Conference - Ind Fielding Leaders",
+        "basePage": "97023",
+        "writeToPattern": "300C604",
+        "order": 9,
+        "template": "{{leader(2, assists_outfield).player.season.conference.pos_group(of).assists_outfield}}",
+        "token_count": 1
+      },
+      {
+        "playbook_name": "FS - Conference Fielding - Assists - OF",
+        "grouping": "Conference - Ind Fielding Leaders",
+        "basePage": "97023",
+        "writeToPattern": "300C604",
+        "order": 10,
+        "template": "{{leader(3, assists_outfield).player.season.conference.pos_group(of).full_name}}",
+        "token_count": 1
+      },
+      {
+        "playbook_name": "FS - Conference Fielding - Assists - OF",
+        "grouping": "Conference - Ind Fielding Leaders",
+        "basePage": "97023",
+        "writeToPattern": "300C604",
+        "order": 11,
+        "template": "{{leader(3, assists_outfield).player.season.conference.pos_group(of).team_alias}}",
+        "token_count": 1
+      },
+      {
+        "playbook_name": "FS - Conference Fielding - Assists - OF",
+        "grouping": "Conference - Ind Fielding Leaders",
+        "basePage": "97023",
+        "writeToPattern": "300C604",
+        "order": 12,
+        "template": "{{leader(3, assists_outfield).player.season.conference.pos_group(of).assists_outfield}}",
+        "token_count": 1
+      },
+      {
+        "playbook_name": "FS - Conference Fielding - Assists - OF",
+        "grouping": "Conference - Ind Fielding Leaders",
+        "basePage": "97023",
+        "writeToPattern": "300C604",
+        "order": 13,
+        "template": "{{leader(4, assists_outfield).player.season.conference.pos_group(of).full_name}}",
+        "token_count": 1
+      }
+    ],
+    "multi_token": [
+      {
+        "playbook_name": "Player - Career Cycles",
+        "grouping": "Players - Batting - Career",
+        "basePage": "97007",
+        "writeToPattern": "T00PP64",
+        "order": 7,
+        "template": "{{previous.player.minimum(home_runs, 1).minimum(triples, 1).minimum(doubles, 1).minimum(singles, 1).game_date | flex_short}}  {{previous.player.minimum(home_runs, 1).minimum(triples, 1).minimum(doubles, 1).minimum(singles, 1).game_vs}}  {{previous.player.minimum(home_runs, 1).minimum(triples, 1).minimum(doubles, 1).minimum(singles, 1).opp_name}}",
+        "token_count": 3
+      },
+      {
+        "playbook_name": "Team - Calendar - 1 Week (Week Start 1)",
+        "grouping": "Team - Calendars",
+        "basePage": "97153",
+        "writeToPattern": "T049711",
+        "order": 3,
+        "template": "{{calendar(1, sun).team.game_vs}} {{calendar(1, sun).team.opp_alias}}",
+        "token_count": 2
+      },
+      {
+        "playbook_name": "Team - Calendar - 1 Week (Week Start 1)",
+        "grouping": "Team - Calendars",
+        "basePage": "97153",
+        "writeToPattern": "T049711",
+        "order": 6,
+        "template": "{{calendar(1, mon).team.game_vs}} {{calendar(1, mon).team.opp_alias}}",
+        "token_count": 2
+      },
+      {
+        "playbook_name": "Team - Calendar - 1 Week (Week Start 1)",
+        "grouping": "Team - Calendars",
+        "basePage": "97153",
+        "writeToPattern": "T049711",
+        "order": 9,
+        "template": "{{calendar(1, tue).team.game_vs}} {{calendar(1, tue).team.opp_alias}}",
+        "token_count": 2
+      },
+      {
+        "playbook_name": "Team - Calendar - 1 Week (Week Start 1)",
+        "grouping": "Team - Calendars",
+        "basePage": "97153",
+        "writeToPattern": "T049711",
+        "order": 12,
+        "template": "{{calendar(1, wed).team.game_vs}} {{calendar(1, wed).team.opp_alias}}",
+        "token_count": 2
+      },
+      {
+        "playbook_name": "Team - Calendar - 1 Week (Week Start 1)",
+        "grouping": "Team - Calendars",
+        "basePage": "97153",
+        "writeToPattern": "T049711",
+        "order": 15,
+        "template": "{{calendar(1, thu).team.game_vs}} {{calendar(1, thu).team.opp_alias}}",
+        "token_count": 2
+      },
+      {
+        "playbook_name": "Team - Calendar - 1 Week (Week Start 1)",
+        "grouping": "Team - Calendars",
+        "basePage": "97153",
+        "writeToPattern": "T049711",
+        "order": 18,
+        "template": "{{calendar(1, fri).team.game_vs}} {{calendar(1, fri).team.opp_alias}}",
+        "token_count": 2
+      },
+      {
+        "playbook_name": "Team - Calendar - 1 Week (Week Start 1)",
+        "grouping": "Team - Calendars",
+        "basePage": "97153",
+        "writeToPattern": "T049711",
+        "order": 21,
+        "template": "{{calendar(1, sat).team.game_vs}} {{calendar(1, sat).team.opp_alias}}",
+        "token_count": 2
+      },
+      {
+        "playbook_name": "Team - Calendar - 1 Week (Week Start 1)",
+        "grouping": "Team - Calendars",
+        "basePage": "97153",
+        "writeToPattern": "T049711",
+        "order": 23,
+        "template": "{{info.team.city}} {{info.team.name}}",
+        "token_count": 2
+      },
+      {
+        "playbook_name": "Team - Calendar - 1 Week (Week Start 2)",
+        "grouping": "Team - Calendars",
+        "basePage": "97153",
+        "writeToPattern": "T049712",
+        "order": 3,
+        "template": "{{calendar(2, sun).team.game_vs}} {{calendar(2, sun).team.opp_alias}}",
+        "token_count": 2
+      },
+      {
+        "playbook_name": "Team - Calendar - 1 Week (Week Start 2)",
+        "grouping": "Team - Calendars",
+        "basePage": "97153",
+        "writeToPattern": "T049712",
+        "order": 6,
+        "template": "{{calendar(2, mon).team.game_vs}} {{calendar(2, mon).team.opp_alias}}",
+        "token_count": 2
+      },
+      {
+        "playbook_name": "Team - Calendar - 1 Week (Week Start 2)",
+        "grouping": "Team - Calendars",
+        "basePage": "97153",
+        "writeToPattern": "T049712",
+        "order": 9,
+        "template": "{{calendar(2, tue).team.game_vs}} {{calendar(2, tue).team.opp_alias}}",
+        "token_count": 2
+      }
+    ],
+    "text_token_hybrid": [
+      {
+        "playbook_name": "FS - Conference Fielding - Assists - OF",
+        "grouping": "Conference - Ind Fielding Leaders",
+        "basePage": "97023",
+        "writeToPattern": "300C604",
+        "order": 2,
+        "template": "{{info.conference.alias}} OUTFIELDERS",
+        "token_count": 1
+      },
+      {
+        "playbook_name": "FS - Conference Fielding - Errors - 1B",
+        "grouping": "Conference - Ind Fielding Leaders",
+        "basePage": "97023",
+        "writeToPattern": "300C632",
+        "order": 2,
+        "template": "{{info.conference.alias}} FIRST BASEMEN",
+        "token_count": 1
+      },
+      {
+        "playbook_name": "FS - Conference Fielding - Errors - 2B",
+        "grouping": "Conference - Ind Fielding Leaders",
+        "basePage": "97023",
+        "writeToPattern": "300C642",
+        "order": 2,
+        "template": "{{info.conference.alias}} SECOND BASEMEN",
+        "token_count": 1
+      },
+      {
+        "playbook_name": "FS - Conference Fielding - Errors - 3B",
+        "grouping": "Conference - Ind Fielding Leaders",
+        "basePage": "97023",
+        "writeToPattern": "300C652",
+        "order": 2,
+        "template": "{{info.conference.alias}} THIRD BASEMEN",
+        "token_count": 1
+      },
+      {
+        "playbook_name": "FS - Conference Fielding - Errors - P",
+        "grouping": "Conference - Ind Fielding Leaders",
+        "basePage": "97023",
+        "writeToPattern": "300C612",
+        "order": 2,
+        "template": "{{info.conference.alias}} PITCHERS",
+        "token_count": 1
+      },
+      {
+        "playbook_name": "FS - Conference Fielding - Errors - SS",
+        "grouping": "Conference - Ind Fielding Leaders",
+        "basePage": "97023",
+        "writeToPattern": "300C662",
+        "order": 2,
+        "template": "{{info.conference.alias}} SHORTSTOPS",
+        "token_count": 1
+      },
+      {
+        "playbook_name": "FS - Conference Fielding - Passed Balls - C",
+        "grouping": "Conference - Ind Fielding Leaders",
+        "basePage": "97023",
+        "writeToPattern": "300C620",
+        "order": 2,
+        "template": "{{info.conference.alias}} CATCHERS",
+        "token_count": 1
+      },
+      {
+        "playbook_name": "FS - Conference Batting After 7th Close Game - Highest AVG",
+        "grouping": "Conference - Ind Leaders Batting",
+        "basePage": "97023",
+        "writeToPattern": "300C194",
+        "order": 1,
+        "template": "HIGHEST {{custom.leaders_avg}} IN {{info.conference.alias}}",
+        "token_count": 2
+      },
+      {
+        "playbook_name": "FS - Conference Batting After 7th Close Game - Lowest AVG",
+        "grouping": "Conference - Ind Leaders Batting",
+        "basePage": "97023",
+        "writeToPattern": "300C195",
+        "order": 1,
+        "template": "LOWEST {{custom.leaders_avg}} IN {{info.conference.alias}}",
+        "token_count": 2
+      },
+      {
+        "playbook_name": "FS - Conference Batting DH - HR",
+        "grouping": "Conference - Ind Leaders Batting",
+        "basePage": "97023",
+        "writeToPattern": "300C182",
+        "order": 1,
+        "template": "{{custom.leaders_hr}} AS DH",
+        "token_count": 1
+      },
+      {
+        "playbook_name": "FS - Conference Batting DH - Highest AVG",
+        "grouping": "Conference - Ind Leaders Batting",
+        "basePage": "97023",
+        "writeToPattern": "300C180",
+        "order": 1,
+        "template": "{{custom.leaders_avg}} AS DH",
+        "token_count": 1
+      },
+      {
+        "playbook_name": "FS - Conference Batting DH - RBI",
+        "grouping": "Conference - Ind Leaders Batting",
+        "basePage": "97023",
+        "writeToPattern": "300C183",
+        "order": 1,
+        "template": "{{custom.leaders_rbi}} AS DH",
+        "token_count": 1
+      }
+    ],
+    "custom_header_placeholder": [
+      {
+        "playbook_name": "Player - Career Stolen Bases",
+        "grouping": "Players - Baserunning",
+        "basePage": "97000",
+        "writeToPattern": "T01PP13",
+        "order": 6,
+        "template": "{{custom.header_steals}}",
+        "token_count": 1
+      },
+      {
+        "playbook_name": "Player - Career Stolen Bases",
+        "grouping": "Players - Baserunning",
+        "basePage": "97000",
+        "writeToPattern": "T01PP13",
+        "order": 8,
+        "template": "{{custom.header_sbattempts}}",
+        "token_count": 1
+      },
+      {
+        "playbook_name": "Player - Career Stolen Bases",
+        "grouping": "Players - Baserunning",
+        "basePage": "97000",
+        "writeToPattern": "T01PP13",
+        "order": 10,
+        "template": "{{custom.header_sbpct}}",
+        "token_count": 1
+      },
+      {
+        "playbook_name": "Player - Season Picked Off",
+        "grouping": "Players - Baserunning",
+        "basePage": "97000",
+        "writeToPattern": "T00PP14",
+        "order": 8,
+        "template": "{{custom.header_pickedoff}}",
+        "token_count": 1
+      },
+      {
+        "playbook_name": "Player - Season SB/CS/PCT/PICKEDOFF",
+        "grouping": "Players - Baserunning",
+        "basePage": "97030",
+        "writeToPattern": "T00PP57",
+        "order": 9,
+        "template": "{{custom.header_caughtstealing}}",
+        "token_count": 1
+      },
+      {
+        "playbook_name": "CG_Ticker_BattervsPitcher - Career Batter vs Pitcher",
+        "grouping": "Players - Batter vs Pitcher",
+        "basePage": "97505",
+        "writeToPattern": "T62BBPP",
+        "order": 12,
+        "template": "{{custom.header_avg}}",
+        "token_count": 1
+      },
+      {
+        "playbook_name": "CG_Ticker_BattervsPitcher - Career Batter vs Pitcher",
+        "grouping": "Players - Batter vs Pitcher",
+        "basePage": "97505",
+        "writeToPattern": "T62BBPP",
+        "order": 14,
+        "template": "{{custom.header_hr}}",
+        "token_count": 1
+      },
+      {
+        "playbook_name": "CG_Ticker_BattervsPitcher - Career Batter vs Pitcher",
+        "grouping": "Players - Batter vs Pitcher",
+        "basePage": "97505",
+        "writeToPattern": "T62BBPP",
+        "order": 16,
+        "template": "{{custom.header_rbi}}",
+        "token_count": 1
+      },
+      {
+        "playbook_name": "CG_Ticker_BattervsPitcher - Career Batter vs Pitcher",
+        "grouping": "Players - Batter vs Pitcher",
+        "basePage": "97505",
+        "writeToPattern": "T62BBPP",
+        "order": 18,
+        "template": "{{custom.header_strikeouts}}",
+        "token_count": 1
+      },
+      {
+        "playbook_name": "Player - Season Batting (< 25 ABs)",
+        "grouping": "Players - Batting - This Season",
+        "basePage": "97000",
+        "writeToPattern": "T10PP00",
+        "order": 8,
+        "template": "{{custom.header_hits}}",
+        "token_count": 1
+      },
+      {
+        "playbook_name": "Player - Season Batting (< 25 ABs)",
+        "grouping": "Players - Batting - This Season",
+        "basePage": "97000",
+        "writeToPattern": "T10PP00",
+        "order": 10,
+        "template": "{{custom.header_ab}}",
+        "token_count": 1
+      },
+      {
+        "playbook_name": "Player - Season Batting + Series AVG/HR/RBI",
+        "grouping": "Players - Batting - This Season",
+        "basePage": "97030",
+        "writeToPattern": "T00PP02",
+        "order": 13,
+        "template": "{{custom.header_ops}}",
+        "token_count": 1
+      }
+    ]
+  },
+  "gamePlanFilters_count": 28,
+  "filter_grammar_candidates": [
+    {
+      "bucket": "playerSplits",
+      "id": "0",
+      "name": "Total",
+      "filter": "total",
+      "jsonOutputType": "string",
+      "type": "player_split"
+    },
+    {
+      "bucket": "playerSplits",
+      "id": "1",
+      "name": "Home",
+      "filter": "location(home)",
+      "jsonOutputType": "string",
+      "type": "player_split"
+    },
+    {
+      "bucket": "playerSplits",
+      "id": "2",
+      "name": "Away",
+      "filter": "location(away)",
+      "jsonOutputType": "string",
+      "type": "player_split"
+    },
+    {
+      "bucket": "playerSplits",
+      "id": "3",
+      "name": "Inter Division",
+      "filter": "division",
+      "jsonOutputType": "string",
+      "type": "player_split"
+    },
+    {
+      "bucket": "playerSplits",
+      "id": "4",
+      "name": "vs Division",
+      "filter": "division(opp)",
+      "jsonOutputType": "string",
+      "type": "player_split"
+    },
+    {
+      "bucket": "playerSplits",
+      "id": "5",
+      "name": "Inter Conference",
+      "filter": "conference",
+      "jsonOutputType": "string",
+      "type": "player_split"
+    },
+    {
+      "bucket": "playerSplits",
+      "id": "6",
+      "name": "vs Conference",
+      "filter": "conference(opp)",
+      "jsonOutputType": "string",
+      "type": "player_split"
+    },
+    {
+      "bucket": "playerTimes",
+      "id": "0",
+      "name": "Season",
+      "filter": "season",
+      "jsonOutputType": "string",
+      "type": "player_time"
+    },
+    {
+      "bucket": "playerTimes",
+      "id": "1",
+      "name": "Last Season",
+      "filter": "season(prev1)",
+      "jsonOutputType": "string",
+      "type": "player_time"
+    },
+    {
+      "bucket": "playerTimes",
+      "id": "2",
+      "name": "Postseason",
+      "filter": "postseason",
+      "jsonOutputType": "string",
+      "type": "player_time"
+    },
+    {
+      "bucket": "playerTimes",
+      "id": "3",
+      "name": "Last Postseason",
+      "filter": "postseason(prev1)",
+      "jsonOutputType": "string",
+      "type": "player_time"
+    },
+    {
+      "bucket": "playerTimes",
+      "id": "4",
+      "name": "This Month",
+      "filter": "month",
+      "jsonOutputType": "string",
+      "type": "player_time"
+    },
+    {
+      "bucket": "playerTimes",
+      "id": "5",
+      "name": "Last Month",
+      "filter": "month(prev1)",
+      "jsonOutputType": "string",
+      "type": "player_time"
+    },
+    {
+      "bucket": "playerTimes",
+      "id": "6",
+      "name": "Series",
+      "filter": "series",
+      "jsonOutputType": "string",
+      "type": "player_time"
+    },
+    {
+      "bucket": "teamSplits",
+      "id": "0",
+      "name": "Total",
+      "filter": "total",
+      "jsonOutputType": "string",
+      "type": "team_split"
+    },
+    {
+      "bucket": "teamSplits",
+      "id": "1",
+      "name": "Home",
+      "filter": "location(home)",
+      "jsonOutputType": "string",
+      "type": "team_split"
+    },
+    {
+      "bucket": "teamSplits",
+      "id": "2",
+      "name": "Away",
+      "filter": "location(away)",
+      "jsonOutputType": "string",
+      "type": "team_split"
+    },
+    {
+      "bucket": "teamSplits",
+      "id": "3",
+      "name": "Inter Division",
+      "filter": "division",
+      "jsonOutputType": "string",
+      "type": "team_split"
+    },
+    {
+      "bucket": "teamSplits",
+      "id": "4",
+      "name": "vs Division",
+      "filter": "division(opp)",
+      "jsonOutputType": "string",
+      "type": "team_split"
+    },
+    {
+      "bucket": "teamSplits",
+      "id": "5",
+      "name": "Inter Conference",
+      "filter": "conference",
+      "jsonOutputType": "string",
+      "type": "team_split"
+    },
+    {
+      "bucket": "teamSplits",
+      "id": "6",
+      "name": "vs Conference",
+      "filter": "conference(opp)",
+      "jsonOutputType": "string",
+      "type": "team_split"
+    },
+    {
+      "bucket": "teamTimes",
+      "id": "0",
+      "name": "Season",
+      "filter": "season",
+      "jsonOutputType": "string",
+      "type": "team_time"
+    },
+    {
+      "bucket": "teamTimes",
+      "id": "1",
+      "name": "Last Season",
+      "filter": "season(prev1)",
+      "jsonOutputType": "string",
+      "type": "team_time"
+    },
+    {
+      "bucket": "teamTimes",
+      "id": "2",
+      "name": "Postseason",
+      "filter": "postseason",
+      "jsonOutputType": "string",
+      "type": "team_time"
+    },
+    {
+      "bucket": "teamTimes",
+      "id": "3",
+      "name": "Last Postseason",
+      "filter": "postseason(prev1)",
+      "jsonOutputType": "string",
+      "type": "team_time"
+    },
+    {
+      "bucket": "teamTimes",
+      "id": "4",
+      "name": "This Month",
+      "filter": "month",
+      "jsonOutputType": "string",
+      "type": "team_time"
+    },
+    {
+      "bucket": "teamTimes",
+      "id": "5",
+      "name": "Last Month",
+      "filter": "month(prev1)",
+      "jsonOutputType": "string",
+      "type": "team_time"
+    },
+    {
+      "bucket": "teamTimes",
+      "id": "6",
+      "name": "Series",
+      "filter": "series",
+      "jsonOutputType": "string",
+      "type": "team_time"
+    }
+  ],
+  "bounded_scope_note": "PASS_01 captures deterministic bounded playbook/syntax extracts and full gamePlanFilters rows."
+}

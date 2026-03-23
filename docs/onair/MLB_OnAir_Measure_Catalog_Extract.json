@@ -1,0 +1,737 @@
+{
+  "source_file": "docs/onair/source/MLB_Network_26.json",
+  "extraction_pass": "ONAIR_PROFILE_EXTRACTION_MLB_PASS_01",
+  "stat_defaults_count": 771,
+  "measure_key_index_extract_limit": 60,
+  "measure_key_index_extract": [
+    {
+      "source_index": 29,
+      "queryEngineMeasureKey": "b_airb",
+      "onAirCatalogMeasureKey": "air_balls"
+    },
+    {
+      "source_index": 30,
+      "queryEngineMeasureKey": "b_airb_pct",
+      "onAirCatalogMeasureKey": "air_balls_percentage"
+    },
+    {
+      "source_index": 525,
+      "queryEngineMeasureKey": "p_pitars_changeup",
+      "onAirCatalogMeasureKey": "arsenal_changeups"
+    },
+    {
+      "source_index": 526,
+      "queryEngineMeasureKey": "p_pitars_changeup_pct",
+      "onAirCatalogMeasureKey": "arsenal_changeups_percentage"
+    },
+    {
+      "source_index": 527,
+      "queryEngineMeasureKey": "p_pitars_curve",
+      "onAirCatalogMeasureKey": "arsenal_curveballs"
+    },
+    {
+      "source_index": 528,
+      "queryEngineMeasureKey": "p_pitars_curve_pct",
+      "onAirCatalogMeasureKey": "arsenal_curveballs_percentage"
+    },
+    {
+      "source_index": 529,
+      "queryEngineMeasureKey": "p_pitars_cutter",
+      "onAirCatalogMeasureKey": "arsenal_cutters"
+    },
+    {
+      "source_index": 530,
+      "queryEngineMeasureKey": "p_pitars_cutter_pct",
+      "onAirCatalogMeasureKey": "arsenal_cutters_percentage"
+    },
+    {
+      "source_index": 531,
+      "queryEngineMeasureKey": "p_pitars_eephus",
+      "onAirCatalogMeasureKey": "arsenal_eephuses"
+    },
+    {
+      "source_index": 532,
+      "queryEngineMeasureKey": "p_pitars_eephus_pct",
+      "onAirCatalogMeasureKey": "arsenal_eephuses_percentage"
+    },
+    {
+      "source_index": 523,
+      "queryEngineMeasureKey": "p_pitars_4seam",
+      "onAirCatalogMeasureKey": "arsenal_fastballs"
+    },
+    {
+      "source_index": 524,
+      "queryEngineMeasureKey": "p_pitars_4seam_pct",
+      "onAirCatalogMeasureKey": "arsenal_fastballs_percentage"
+    },
+    {
+      "source_index": 533,
+      "queryEngineMeasureKey": "p_pitars_fork",
+      "onAirCatalogMeasureKey": "arsenal_forkballs"
+    },
+    {
+      "source_index": 534,
+      "queryEngineMeasureKey": "p_pitars_fork_pct",
+      "onAirCatalogMeasureKey": "arsenal_forkballs_percentage"
+    },
+    {
+      "source_index": 537,
+      "queryEngineMeasureKey": "p_pitars_knuckle",
+      "onAirCatalogMeasureKey": "arsenal_knuckleballs"
+    },
+    {
+      "source_index": 538,
+      "queryEngineMeasureKey": "p_pitars_knuckle_pct",
+      "onAirCatalogMeasureKey": "arsenal_knuckleballs_percentage"
+    },
+    {
+      "source_index": 535,
+      "queryEngineMeasureKey": "p_pitars_kncurve",
+      "onAirCatalogMeasureKey": "arsenal_knucklecurves"
+    },
+    {
+      "source_index": 536,
+      "queryEngineMeasureKey": "p_pitars_kncurve_pct",
+      "onAirCatalogMeasureKey": "arsenal_knucklecurves_percentage"
+    },
+    {
+      "source_index": 539,
+      "queryEngineMeasureKey": "p_pitars_screw",
+      "onAirCatalogMeasureKey": "arsenal_screwballs"
+    },
+    {
+      "source_index": 540,
+      "queryEngineMeasureKey": "p_pitars_screw_pct",
+      "onAirCatalogMeasureKey": "arsenal_screwballs_percentage"
+    },
+    {
+      "source_index": 521,
+      "queryEngineMeasureKey": "p_pitars_2seam",
+      "onAirCatalogMeasureKey": "arsenal_sinkers"
+    },
+    {
+      "source_index": 522,
+      "queryEngineMeasureKey": "p_pitars_2seam_pct",
+      "onAirCatalogMeasureKey": "arsenal_sinkers_percentage"
+    },
+    {
+      "source_index": 541,
+      "queryEngineMeasureKey": "p_pitars_slider",
+      "onAirCatalogMeasureKey": "arsenal_sliders"
+    },
+    {
+      "source_index": 542,
+      "queryEngineMeasureKey": "p_pitars_slider_pct",
+      "onAirCatalogMeasureKey": "arsenal_sliders_percentage"
+    },
+    {
+      "source_index": 543,
+      "queryEngineMeasureKey": "p_pitars_slurve",
+      "onAirCatalogMeasureKey": "arsenal_slurves"
+    },
+    {
+      "source_index": 544,
+      "queryEngineMeasureKey": "p_pitars_slurve_pct",
+      "onAirCatalogMeasureKey": "arsenal_slurves_percentage"
+    },
+    {
+      "source_index": 545,
+      "queryEngineMeasureKey": "p_pitars_splitter",
+      "onAirCatalogMeasureKey": "arsenal_splitters"
+    },
+    {
+      "source_index": 546,
+      "queryEngineMeasureKey": "p_pitars_splitter_pct",
+      "onAirCatalogMeasureKey": "arsenal_splitters_percentage"
+    },
+    {
+      "source_index": 548,
+      "queryEngineMeasureKey": "p_pitars_sweepers",
+      "onAirCatalogMeasureKey": "arsenal_sweepers"
+    },
+    {
+      "source_index": 547,
+      "queryEngineMeasureKey": "p_pitars_sweeper_pct",
+      "onAirCatalogMeasureKey": "arsenal_sweepers_percentage"
+    },
+    {
+      "source_index": 224,
+      "queryEngineMeasureKey": "f_of_a",
+      "onAirCatalogMeasureKey": "assists_outfield"
+    },
+    {
+      "source_index": 22,
+      "queryEngineMeasureKey": "b_ab",
+      "onAirCatalogMeasureKey": "at_bats"
+    },
+    {
+      "source_index": 2,
+      "queryEngineMeasureKey": "ab_Bases_Empty",
+      "onAirCatalogMeasureKey": "at_bats_bases_empty"
+    },
+    {
+      "source_index": 3,
+      "queryEngineMeasureKey": "ab_Bases_Loaded",
+      "onAirCatalogMeasureKey": "at_bats_bases_loaded"
+    },
+    {
+      "source_index": 23,
+      "queryEngineMeasureKey": "b_ab_home",
+      "onAirCatalogMeasureKey": "at_bats_home"
+    },
+    {
+      "source_index": 24,
+      "queryEngineMeasureKey": "b_ab_per_hr",
+      "onAirCatalogMeasureKey": "at_bats_per_home_run"
+    },
+    {
+      "source_index": 26,
+      "queryEngineMeasureKey": "b_ab_per_rbi",
+      "onAirCatalogMeasureKey": "at_bats_per_rbi"
+    },
+    {
+      "source_index": 25,
+      "queryEngineMeasureKey": "b_ab_per_k",
+      "onAirCatalogMeasureKey": "at_bats_per_strikeout"
+    },
+    {
+      "source_index": 28,
+      "queryEngineMeasureKey": "b_ab_road",
+      "onAirCatalogMeasureKey": "at_bats_road"
+    },
+    {
+      "source_index": 4,
+      "queryEngineMeasureKey": "ab_Runners",
+      "onAirCatalogMeasureKey": "at_bats_runners"
+    },
+    {
+      "source_index": 27,
+      "queryEngineMeasureKey": "b_ab_risp",
+      "onAirCatalogMeasureKey": "at_bats_runners_in_scoring_position"
+    },
+    {
+      "source_index": 5,
+      "queryEngineMeasureKey": "ab_risp_Two_Outs",
+      "onAirCatalogMeasureKey": "at_bats_runners_in_scoring_position_two_outs"
+    },
+    {
+      "source_index": 758,
+      "queryEngineMeasureKey": "b_hr_multi_pct",
+      "onAirCatalogMeasureKey": "b_hr_multi_pct"
+    },
+    {
+      "source_index": 759,
+      "queryEngineMeasureKey": "b_hr_multirun",
+      "onAirCatalogMeasureKey": "b_hr_multirun"
+    },
+    {
+      "source_index": 437,
+      "queryEngineMeasureKey": "p_balk",
+      "onAirCatalogMeasureKey": "balks"
+    },
+    {
+      "source_index": 48,
+      "queryEngineMeasureKey": "b_bip_field",
+      "onAirCatalogMeasureKey": "balls_in_field"
+    },
+    {
+      "source_index": 47,
+      "queryEngineMeasureKey": "b_bip",
+      "onAirCatalogMeasureKey": "balls_in_play"
+    },
+    {
+      "source_index": 175,
+      "queryEngineMeasureKey": "balls_In_Play_Per_Game",
+      "onAirCatalogMeasureKey": "balls_in_play_per_game"
+    },
+    {
+      "source_index": 176,
+      "queryEngineMeasureKey": "batted_Ball_Events",
+      "onAirCatalogMeasureKey": "batted_balls_events"
+    },
+    {
+      "source_index": 7,
+      "queryEngineMeasureKey": "b_Chase_pct",
+      "onAirCatalogMeasureKey": "batter_chase_percentage"
+    },
+    {
+      "source_index": 8,
+      "queryEngineMeasureKey": "b_Contact_pct",
+      "onAirCatalogMeasureKey": "batter_contact_percentage"
+    },
+    {
+      "source_index": 9,
+      "queryEngineMeasureKey": "b_Foul_Balls",
+      "onAirCatalogMeasureKey": "batter_foul_balls"
+    },
+    {
+      "source_index": 10,
+      "queryEngineMeasureKey": "b_Hr_To_Fly_Ball_pct",
+      "onAirCatalogMeasureKey": "batter_home_run_to_fly_ball_percentage"
+    },
+    {
+      "source_index": 11,
+      "queryEngineMeasureKey": "b_In_zone_Contact_pct",
+      "onAirCatalogMeasureKey": "batter_inzone_contact_percentage"
+    },
+    {
+      "source_index": 12,
+      "queryEngineMeasureKey": "b_In_zone_Swing_pct",
+      "onAirCatalogMeasureKey": "batter_inzone_swing_percentage"
+    },
+    {
+      "source_index": 13,
+      "queryEngineMeasureKey": "b_In_zone_Whiff_pct",
+      "onAirCatalogMeasureKey": "batter_inzone_whiff_percentage"
+    },
+    {
+      "source_index": 14,
+      "queryEngineMeasureKey": "b_Out_of_zone_Contact_pct",
+      "onAirCatalogMeasureKey": "batter_outofzone_contact_percentage"
+    },
+    {
+      "source_index": 15,
+      "queryEngineMeasureKey": "b_Out_of_zone_Whiff_pct",
+      "onAirCatalogMeasureKey": "batter_outofzone_whiff_percentage"
+    },
+    {
+      "source_index": 121,
+      "queryEngineMeasureKey": "b_pct_Team_Runs",
+      "onAirCatalogMeasureKey": "batter_percentage_team_runs"
+    },
+    {
+      "source_index": 122,
+      "queryEngineMeasureKey": "b_pct_Team_Walks",
+      "onAirCatalogMeasureKey": "batter_percentage_team_walks"
+    }
+  ],
+  "measure_catalog_extract_limit": 25,
+  "measure_catalog_extract": [
+    {
+      "source_index": 29,
+      "queryEngineMeasureKey": "b_airb",
+      "onAirCatalogMeasureKey": "air_balls",
+      "description": "Batters, number of balls in play that were hit in the air. (Fly Balls + Line Drives + Pop-Ups)",
+      "formatType": "number",
+      "useLiveData": true,
+      "sortDirectionDesc": true,
+      "format": {
+        "decimalPlaceCount": 0,
+        "decimalShiftCount": 0,
+        "showPlusSymbol": false,
+        "showZeroBeforeDecimal": true,
+        "customSuffix": ""
+      },
+      "smartstat_relevance_notes": "mapping_candidate_keys + deterministic_format_metadata + live/sort_flags"
+    },
+    {
+      "source_index": 30,
+      "queryEngineMeasureKey": "b_airb_pct",
+      "onAirCatalogMeasureKey": "air_balls_percentage",
+      "description": "Batters, percentage of balls in play that were hit in the air. (Fly Balls + Line Drives + Pop-Ups)",
+      "formatType": "number",
+      "useLiveData": true,
+      "sortDirectionDesc": true,
+      "format": {
+        "decimalPlaceCount": 1,
+        "decimalShiftCount": 2,
+        "showPlusSymbol": false,
+        "showZeroBeforeDecimal": false,
+        "customSuffix": "%"
+      },
+      "smartstat_relevance_notes": "mapping_candidate_keys + deterministic_format_metadata + live/sort_flags"
+    },
+    {
+      "source_index": 525,
+      "queryEngineMeasureKey": "p_pitars_changeup",
+      "onAirCatalogMeasureKey": "arsenal_changeups",
+      "description": "Pitcher, number of changeups thrown",
+      "formatType": "number",
+      "useLiveData": true,
+      "sortDirectionDesc": true,
+      "format": {
+        "decimalPlaceCount": 0,
+        "decimalShiftCount": 0,
+        "showPlusSymbol": false,
+        "showZeroBeforeDecimal": true,
+        "customSuffix": ""
+      },
+      "smartstat_relevance_notes": "mapping_candidate_keys + deterministic_format_metadata + live/sort_flags"
+    },
+    {
+      "source_index": 526,
+      "queryEngineMeasureKey": "p_pitars_changeup_pct",
+      "onAirCatalogMeasureKey": "arsenal_changeups_percentage",
+      "description": "Pitcher, percentage of total pitches thrown that were changeups  (among pitches with recorded pitch type only)",
+      "formatType": "number",
+      "useLiveData": true,
+      "sortDirectionDesc": true,
+      "format": {
+        "decimalPlaceCount": 1,
+        "decimalShiftCount": 2,
+        "showPlusSymbol": false,
+        "showZeroBeforeDecimal": false,
+        "customSuffix": "%"
+      },
+      "smartstat_relevance_notes": "mapping_candidate_keys + deterministic_format_metadata + live/sort_flags"
+    },
+    {
+      "source_index": 527,
+      "queryEngineMeasureKey": "p_pitars_curve",
+      "onAirCatalogMeasureKey": "arsenal_curveballs",
+      "description": "Pitcher, number of curveballs thrown",
+      "formatType": "number",
+      "useLiveData": true,
+      "sortDirectionDesc": true,
+      "format": {
+        "decimalPlaceCount": 0,
+        "decimalShiftCount": 0,
+        "showPlusSymbol": false,
+        "showZeroBeforeDecimal": true,
+        "customSuffix": ""
+      },
+      "smartstat_relevance_notes": "mapping_candidate_keys + deterministic_format_metadata + live/sort_flags"
+    },
+    {
+      "source_index": 528,
+      "queryEngineMeasureKey": "p_pitars_curve_pct",
+      "onAirCatalogMeasureKey": "arsenal_curveballs_percentage",
+      "description": "Pitcher, percentage of total pitches thrown that were curveballs  (among pitches with recorded pitch type only)",
+      "formatType": "number",
+      "useLiveData": true,
+      "sortDirectionDesc": true,
+      "format": {
+        "decimalPlaceCount": 1,
+        "decimalShiftCount": 2,
+        "showPlusSymbol": false,
+        "showZeroBeforeDecimal": false,
+        "customSuffix": "%"
+      },
+      "smartstat_relevance_notes": "mapping_candidate_keys + deterministic_format_metadata + live/sort_flags"
+    },
+    {
+      "source_index": 529,
+      "queryEngineMeasureKey": "p_pitars_cutter",
+      "onAirCatalogMeasureKey": "arsenal_cutters",
+      "description": "Pitcher, number of cutters thrown (aka cut fastballs)",
+      "formatType": "number",
+      "useLiveData": true,
+      "sortDirectionDesc": true,
+      "format": {
+        "decimalPlaceCount": 0,
+        "decimalShiftCount": 0,
+        "showPlusSymbol": false,
+        "showZeroBeforeDecimal": true,
+        "customSuffix": ""
+      },
+      "smartstat_relevance_notes": "mapping_candidate_keys + deterministic_format_metadata + live/sort_flags"
+    },
+    {
+      "source_index": 530,
+      "queryEngineMeasureKey": "p_pitars_cutter_pct",
+      "onAirCatalogMeasureKey": "arsenal_cutters_percentage",
+      "description": "Pitcher, percentage of total pitches thrown that were cutters  (among pitches with recorded pitch type only)",
+      "formatType": "number",
+      "useLiveData": true,
+      "sortDirectionDesc": true,
+      "format": {
+        "decimalPlaceCount": 1,
+        "decimalShiftCount": 2,
+        "showPlusSymbol": false,
+        "showZeroBeforeDecimal": false,
+        "customSuffix": "%"
+      },
+      "smartstat_relevance_notes": "mapping_candidate_keys + deterministic_format_metadata + live/sort_flags"
+    },
+    {
+      "source_index": 531,
+      "queryEngineMeasureKey": "p_pitars_eephus",
+      "onAirCatalogMeasureKey": "arsenal_eephuses",
+      "description": "Pitcher, number of pitches thrown classified as Eephus",
+      "formatType": "number",
+      "useLiveData": true,
+      "sortDirectionDesc": true,
+      "format": {
+        "decimalPlaceCount": 0,
+        "decimalShiftCount": 0,
+        "showPlusSymbol": false,
+        "showZeroBeforeDecimal": true,
+        "customSuffix": ""
+      },
+      "smartstat_relevance_notes": "mapping_candidate_keys + deterministic_format_metadata + live/sort_flags"
+    },
+    {
+      "source_index": 532,
+      "queryEngineMeasureKey": "p_pitars_eephus_pct",
+      "onAirCatalogMeasureKey": "arsenal_eephuses_percentage",
+      "description": "Pitcher, percentage of total pitches thrown that were eephus pitches  (among pitches with recorded pitch type only)",
+      "formatType": "number",
+      "useLiveData": true,
+      "sortDirectionDesc": true,
+      "format": {
+        "decimalPlaceCount": 1,
+        "decimalShiftCount": 2,
+        "showPlusSymbol": false,
+        "showZeroBeforeDecimal": false,
+        "customSuffix": "%"
+      },
+      "smartstat_relevance_notes": "mapping_candidate_keys + deterministic_format_metadata + live/sort_flags"
+    },
+    {
+      "source_index": 523,
+      "queryEngineMeasureKey": "p_pitars_4seam",
+      "onAirCatalogMeasureKey": "arsenal_fastballs",
+      "description": "Pitcher, number of 4-seam fastballs thrown",
+      "formatType": "number",
+      "useLiveData": true,
+      "sortDirectionDesc": true,
+      "format": {
+        "decimalPlaceCount": 0,
+        "decimalShiftCount": 0,
+        "showPlusSymbol": false,
+        "showZeroBeforeDecimal": true,
+        "customSuffix": ""
+      },
+      "smartstat_relevance_notes": "mapping_candidate_keys + deterministic_format_metadata + live/sort_flags"
+    },
+    {
+      "source_index": 524,
+      "queryEngineMeasureKey": "p_pitars_4seam_pct",
+      "onAirCatalogMeasureKey": "arsenal_fastballs_percentage",
+      "description": "Pitcher, percentage of total pitches thrown that were 4-seam fastballs (among pitches with recorded pitch type only)",
+      "formatType": "number",
+      "useLiveData": true,
+      "sortDirectionDesc": true,
+      "format": {
+        "decimalPlaceCount": 1,
+        "decimalShiftCount": 2,
+        "showPlusSymbol": false,
+        "showZeroBeforeDecimal": false,
+        "customSuffix": "%"
+      },
+      "smartstat_relevance_notes": "mapping_candidate_keys + deterministic_format_metadata + live/sort_flags"
+    },
+    {
+      "source_index": 533,
+      "queryEngineMeasureKey": "p_pitars_fork",
+      "onAirCatalogMeasureKey": "arsenal_forkballs",
+      "description": "Pitcher, number of forkballs thrown",
+      "formatType": "number",
+      "useLiveData": true,
+      "sortDirectionDesc": true,
+      "format": {
+        "decimalPlaceCount": 0,
+        "decimalShiftCount": 0,
+        "showPlusSymbol": false,
+        "showZeroBeforeDecimal": true,
+        "customSuffix": ""
+      },
+      "smartstat_relevance_notes": "mapping_candidate_keys + deterministic_format_metadata + live/sort_flags"
+    },
+    {
+      "source_index": 534,
+      "queryEngineMeasureKey": "p_pitars_fork_pct",
+      "onAirCatalogMeasureKey": "arsenal_forkballs_percentage",
+      "description": "Pitcher, percentage of total pitches thrown that were forkballs  (among pitches with recorded pitch type only)",
+      "formatType": "number",
+      "useLiveData": true,
+      "sortDirectionDesc": true,
+      "format": {
+        "decimalPlaceCount": 1,
+        "decimalShiftCount": 2,
+        "showPlusSymbol": false,
+        "showZeroBeforeDecimal": false,
+        "customSuffix": "%"
+      },
+      "smartstat_relevance_notes": "mapping_candidate_keys + deterministic_format_metadata + live/sort_flags"
+    },
+    {
+      "source_index": 537,
+      "queryEngineMeasureKey": "p_pitars_knuckle",
+      "onAirCatalogMeasureKey": "arsenal_knuckleballs",
+      "description": "Pitcher, number of knuckleballs thrown",
+      "formatType": "number",
+      "useLiveData": true,
+      "sortDirectionDesc": true,
+      "format": {
+        "decimalPlaceCount": 0,
+        "decimalShiftCount": 0,
+        "showPlusSymbol": false,
+        "showZeroBeforeDecimal": true,
+        "customSuffix": ""
+      },
+      "smartstat_relevance_notes": "mapping_candidate_keys + deterministic_format_metadata + live/sort_flags"
+    },
+    {
+      "source_index": 538,
+      "queryEngineMeasureKey": "p_pitars_knuckle_pct",
+      "onAirCatalogMeasureKey": "arsenal_knuckleballs_percentage",
+      "description": "Pitcher, percentage of total pitches thrown that were knuckleballs  (among pitches with recorded pitch type only)",
+      "formatType": "number",
+      "useLiveData": true,
+      "sortDirectionDesc": true,
+      "format": {
+        "decimalPlaceCount": 1,
+        "decimalShiftCount": 2,
+        "showPlusSymbol": false,
+        "showZeroBeforeDecimal": false,
+        "customSuffix": "%"
+      },
+      "smartstat_relevance_notes": "mapping_candidate_keys + deterministic_format_metadata + live/sort_flags"
+    },
+    {
+      "source_index": 535,
+      "queryEngineMeasureKey": "p_pitars_kncurve",
+      "onAirCatalogMeasureKey": "arsenal_knucklecurves",
+      "description": "Pitcher, number of pitches thrown classified as knuckle curve",
+      "formatType": "number",
+      "useLiveData": true,
+      "sortDirectionDesc": true,
+      "format": {
+        "decimalPlaceCount": 0,
+        "decimalShiftCount": 0,
+        "showPlusSymbol": false,
+        "showZeroBeforeDecimal": true,
+        "customSuffix": ""
+      },
+      "smartstat_relevance_notes": "mapping_candidate_keys + deterministic_format_metadata + live/sort_flags"
+    },
+    {
+      "source_index": 536,
+      "queryEngineMeasureKey": "p_pitars_kncurve_pct",
+      "onAirCatalogMeasureKey": "arsenal_knucklecurves_percentage",
+      "description": "Pitcher, percentage of total pitches thrown that were knuckle curves  (among pitches with recorded pitch type only)",
+      "formatType": "number",
+      "useLiveData": true,
+      "sortDirectionDesc": true,
+      "format": {
+        "decimalPlaceCount": 1,
+        "decimalShiftCount": 2,
+        "showPlusSymbol": false,
+        "showZeroBeforeDecimal": false,
+        "customSuffix": "%"
+      },
+      "smartstat_relevance_notes": "mapping_candidate_keys + deterministic_format_metadata + live/sort_flags"
+    },
+    {
+      "source_index": 539,
+      "queryEngineMeasureKey": "p_pitars_screw",
+      "onAirCatalogMeasureKey": "arsenal_screwballs",
+      "description": "Pitcher, number of screwballs thrown",
+      "formatType": "number",
+      "useLiveData": true,
+      "sortDirectionDesc": true,
+      "format": {
+        "decimalPlaceCount": 0,
+        "decimalShiftCount": 0,
+        "showPlusSymbol": false,
+        "showZeroBeforeDecimal": true,
+        "customSuffix": ""
+      },
+      "smartstat_relevance_notes": "mapping_candidate_keys + deterministic_format_metadata + live/sort_flags"
+    },
+    {
+      "source_index": 540,
+      "queryEngineMeasureKey": "p_pitars_screw_pct",
+      "onAirCatalogMeasureKey": "arsenal_screwballs_percentage",
+      "description": "Pitcher, percentage of total pitches thrown that were screwballs  (among pitches with recorded pitch type only)",
+      "formatType": "number",
+      "useLiveData": true,
+      "sortDirectionDesc": true,
+      "format": {
+        "decimalPlaceCount": 1,
+        "decimalShiftCount": 2,
+        "showPlusSymbol": false,
+        "showZeroBeforeDecimal": false,
+        "customSuffix": "%"
+      },
+      "smartstat_relevance_notes": "mapping_candidate_keys + deterministic_format_metadata + live/sort_flags"
+    },
+    {
+      "source_index": 521,
+      "queryEngineMeasureKey": "p_pitars_2seam",
+      "onAirCatalogMeasureKey": "arsenal_sinkers",
+      "description": "Pitcher, number of 2-seam fastballs thrown (aka sinkers)",
+      "formatType": "number",
+      "useLiveData": true,
+      "sortDirectionDesc": true,
+      "format": {
+        "decimalPlaceCount": 0,
+        "decimalShiftCount": 0,
+        "showPlusSymbol": false,
+        "showZeroBeforeDecimal": true,
+        "customSuffix": ""
+      },
+      "smartstat_relevance_notes": "mapping_candidate_keys + deterministic_format_metadata + live/sort_flags"
+    },
+    {
+      "source_index": 522,
+      "queryEngineMeasureKey": "p_pitars_2seam_pct",
+      "onAirCatalogMeasureKey": "arsenal_sinkers_percentage",
+      "description": "Pitcher, percentage of total pitches thrown that were 2-seam fastballs (aka sinkers)  (among pitches with recorded pitch type only)",
+      "formatType": "number",
+      "useLiveData": true,
+      "sortDirectionDesc": true,
+      "format": {
+        "decimalPlaceCount": 1,
+        "decimalShiftCount": 2,
+        "showPlusSymbol": false,
+        "showZeroBeforeDecimal": false,
+        "customSuffix": "%"
+      },
+      "smartstat_relevance_notes": "mapping_candidate_keys + deterministic_format_metadata + live/sort_flags"
+    },
+    {
+      "source_index": 541,
+      "queryEngineMeasureKey": "p_pitars_slider",
+      "onAirCatalogMeasureKey": "arsenal_sliders",
+      "description": "Pitcher, number of sliders thrown",
+      "formatType": "number",
+      "useLiveData": true,
+      "sortDirectionDesc": true,
+      "format": {
+        "decimalPlaceCount": 0,
+        "decimalShiftCount": 0,
+        "showPlusSymbol": false,
+        "showZeroBeforeDecimal": true,
+        "customSuffix": ""
+      },
+      "smartstat_relevance_notes": "mapping_candidate_keys + deterministic_format_metadata + live/sort_flags"
+    },
+    {
+      "source_index": 542,
+      "queryEngineMeasureKey": "p_pitars_slider_pct",
+      "onAirCatalogMeasureKey": "arsenal_sliders_percentage",
+      "description": "Pitcher, percentage of total pitches thrown that were sliders  (among pitches with recorded pitch type only)",
+      "formatType": "number",
+      "useLiveData": true,
+      "sortDirectionDesc": true,
+      "format": {
+        "decimalPlaceCount": 1,
+        "decimalShiftCount": 2,
+        "showPlusSymbol": false,
+        "showZeroBeforeDecimal": false,
+        "customSuffix": "%"
+      },
+      "smartstat_relevance_notes": "mapping_candidate_keys + deterministic_format_metadata + live/sort_flags"
+    },
+    {
+      "source_index": 543,
+      "queryEngineMeasureKey": "p_pitars_slurve",
+      "onAirCatalogMeasureKey": "arsenal_slurves",
+      "description": "Pitcher, number of slurves thrown",
+      "formatType": "number",
+      "useLiveData": true,
+      "sortDirectionDesc": true,
+      "format": {
+        "decimalPlaceCount": 0,
+        "decimalShiftCount": 0,
+        "showPlusSymbol": false,
+        "showZeroBeforeDecimal": true,
+        "customSuffix": ""
+      },
+      "smartstat_relevance_notes": "mapping_candidate_keys + deterministic_format_metadata + live/sort_flags"
+    }
+  ],
+  "bounded_scope_note": "PASS_01 emits deterministic bounded measure extracts while preserving full source count for follow-on passes."
+}
