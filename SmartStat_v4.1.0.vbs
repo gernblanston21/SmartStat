@@ -1246,6 +1246,116 @@ Function WP21Advisory_BuildOperatorHintSummary(ByVal operatorHintSurface, ByVal 
   WP21Advisory_BuildOperatorHintSummary = outTxt
 End Function
 
+Sub WP21Advisory_AddNextStepPreviewItem(ByRef stepItems, ByRef stepCount, ByVal stepTxt)
+  Dim normalizedStep
+  Dim i
+
+  normalizedStep = Trim(CStr(stepTxt))
+  If Len(normalizedStep) = 0 Then Exit Sub
+
+  For i = 0 To CLng(stepCount) - 1
+    If CStr(stepItems(i)) = normalizedStep Then Exit Sub
+  Next
+
+  If CLng(stepCount) >= 4 Then Exit Sub
+  stepItems(CLng(stepCount)) = normalizedStep
+  stepCount = CLng(stepCount) + 1
+End Sub
+
+Function WP21Advisory_BuildOperatorNextStepPreviewJson(ByVal operatorHintSurface, ByVal operatorHintDetail)
+  Dim hintLevel, hintCode
+  Dim reasonCount
+  Dim i
+  Dim codeTxt
+  Dim conflictCode
+  Dim stepItems()
+  Dim stepCount
+  Dim outTxt
+
+  hintLevel = "none"
+  hintCode = "NO_ADVISORY"
+  If IsObject(operatorHintSurface) Then
+    If Not (operatorHintSurface Is Nothing) Then
+      If operatorHintSurface.Exists("hint_level") Then hintLevel = Trim(CStr(operatorHintSurface("hint_level")))
+      If operatorHintSurface.Exists("hint_code") Then hintCode = Trim(CStr(operatorHintSurface("hint_code")))
+    End If
+  End If
+
+  reasonCount = 0
+  If IsObject(operatorHintDetail) Then
+    If Not (operatorHintDetail Is Nothing) Then
+      If operatorHintDetail.Exists("reason_count") Then reasonCount = CLng(operatorHintDetail("reason_count"))
+    End If
+  End If
+
+  ReDim stepItems(3)
+  stepCount = 0
+
+  Select Case UCase(CStr(hintCode))
+    Case "NO_ADVISORY"
+      Call WP21Advisory_AddNextStepPreviewItem(stepItems, stepCount, "verify advisory source coverage")
+    Case "ADVISORY_ALIGNED"
+      Call WP21Advisory_AddNextStepPreviewItem(stepItems, stepCount, "no action needed")
+    Case "ADVISORY_PARTIAL"
+      If WP21Advisory_DetailHasReasonCode(operatorHintDetail, "RUN_ID_MISSING") Then
+        Call WP21Advisory_AddNextStepPreviewItem(stepItems, stepCount, "verify run id")
+      End If
+      If WP21Advisory_DetailHasReasonCode(operatorHintDetail, "TEMPLATE_MISSING") Then
+        Call WP21Advisory_AddNextStepPreviewItem(stepItems, stepCount, "verify template")
+      End If
+      If WP21Advisory_DetailHasReasonCode(operatorHintDetail, "ARTIFACT_PATH_MISSING") Then
+        Call WP21Advisory_AddNextStepPreviewItem(stepItems, stepCount, "verify advisory source coverage")
+      End If
+      If WP21Advisory_DetailHasReasonCode(operatorHintDetail, "PREVIEW_KIND_MISSING") Then
+        Call WP21Advisory_AddNextStepPreviewItem(stepItems, stepCount, "verify preview kind")
+      End If
+      If CLng(stepCount) = 0 Then
+        Call WP21Advisory_AddNextStepPreviewItem(stepItems, stepCount, "verify advisory context coverage")
+      End If
+    Case "ADVISORY_CONFLICT"
+      Call WP21Advisory_AddNextStepPreviewItem(stepItems, stepCount, "verify advisory/runtime context match")
+      Call WP21Advisory_AddNextStepPreviewItem(stepItems, stepCount, "verify advisory source coverage")
+      conflictCode = ""
+      For i = 0 To CLng(reasonCount) - 1
+        codeTxt = Trim(CStr(WP21Advisory_GetDetailReasonCode(operatorHintDetail, i)))
+        If Len(codeTxt) > 0 Then
+          If UCase(codeTxt) <> "ADVISORY_PRESENT" And UCase(codeTxt) <> "EXPLICIT_CONFLICT_MARKER" Then
+            conflictCode = codeTxt
+            Exit For
+          End If
+        End If
+      Next
+      If Len(conflictCode) > 0 Then
+        Call WP21Advisory_AddNextStepPreviewItem(stepItems, stepCount, "verify conflict marker " & conflictCode)
+      End If
+    Case Else
+      Select Case UCase(CStr(hintLevel))
+        Case "NONE"
+          Call WP21Advisory_AddNextStepPreviewItem(stepItems, stepCount, "verify advisory source coverage")
+        Case "INFO"
+          Call WP21Advisory_AddNextStepPreviewItem(stepItems, stepCount, "no action needed")
+        Case "RISK"
+          Call WP21Advisory_AddNextStepPreviewItem(stepItems, stepCount, "verify advisory/runtime context match")
+        Case Else
+          Call WP21Advisory_AddNextStepPreviewItem(stepItems, stepCount, "verify advisory context coverage")
+      End Select
+  End Select
+
+  If CLng(stepCount) = 0 Then
+    Call WP21Advisory_AddNextStepPreviewItem(stepItems, stepCount, "verify advisory context coverage")
+  End If
+
+  outTxt = "[" & vbCrLf
+  For i = 0 To CLng(stepCount) - 1
+    outTxt = outTxt & "      """ & Slice1Ingress_JsonEscape(CStr(stepItems(i))) & """"
+    If i < CLng(stepCount) - 1 Then outTxt = outTxt & ","
+    outTxt = outTxt & vbCrLf
+  Next
+  outTxt = outTxt & "    ]"
+
+  WP21Advisory_BuildOperatorNextStepPreviewJson = outTxt
+End Function
+
 Function WP21Advisory_ResolveArtifactPath()
   WP21Advisory_ResolveArtifactPath = Trim(CStr(Slice1Ingress_GetNamedArg(WP21_ADVISORY_DECISION_ARG, WP21_ADVISORY_DEFAULT_ARTIFACT)))
 End Function
@@ -8553,7 +8663,7 @@ Function Slice2PlanBridge_BuildPreviewPayloadJson(ByVal tabfieldRecords, ByVal p
   Dim keys, payload, ruleSummaryJson
   Dim operatorHintSurface, operatorHintSurfaceJson
   Dim operatorHintDetail, operatorHintDetailJson
-  Dim operatorHintSummary
+  Dim operatorHintSummary, operatorNextStepPreviewJson
 
   keys = tabfieldRecords.Keys
   If tabfieldRecords.Count > 0 Then keys = Slice1Ingress_SortTextBinary(keys)
@@ -8562,6 +8672,7 @@ Function Slice2PlanBridge_BuildPreviewPayloadJson(ByVal tabfieldRecords, ByVal p
   Set operatorHintDetail = WP21Advisory_BuildOperatorHintDetailState(previewKind, operatorHintSurface)
   operatorHintDetailJson = WP21Advisory_BuildOperatorHintDetailJson(operatorHintDetail)
   operatorHintSummary = WP21Advisory_BuildOperatorHintSummary(operatorHintSurface, operatorHintDetail)
+  operatorNextStepPreviewJson = WP21Advisory_BuildOperatorNextStepPreviewJson(operatorHintSurface, operatorHintDetail)
 
   payload = ""
   payload = payload & "{" & vbCrLf
@@ -8589,7 +8700,8 @@ Function Slice2PlanBridge_BuildPreviewPayloadJson(ByVal tabfieldRecords, ByVal p
   payload = payload & "," & vbCrLf
   payload = payload & "    ""operator_hint_surface"": " & CStr(operatorHintSurfaceJson) & "," & vbCrLf
   payload = payload & "    ""operator_hint_detail"": " & CStr(operatorHintDetailJson) & "," & vbCrLf
-  payload = payload & "    ""operator_hint_summary"": """ & Slice1Ingress_JsonEscape(CStr(operatorHintSummary)) & """" & vbCrLf
+  payload = payload & "    ""operator_hint_summary"": """ & Slice1Ingress_JsonEscape(CStr(operatorHintSummary)) & """," & vbCrLf
+  payload = payload & "    ""operator_next_step_preview"": " & CStr(operatorNextStepPreviewJson) & vbCrLf
   payload = payload & "  }"
 
   Slice2PlanBridge_BuildPreviewPayloadJson = payload
