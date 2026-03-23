@@ -825,3 +825,33 @@ Regression/Boundary Summary:
   - `page:set_property` count = 0
   - `tabfield:set_custom_property` count = 0
   - `sock:send_socket_data` count = 0
+
+### Runtime Mapping Promotion: `MLB_RUNTIME_MAPPING_PROMOTION_CHAIN` (PASS_10 through PASS_13)
+
+Status:
+- IMPLEMENTED
+- VALIDATED
+- CLOSED
+
+Scope:
+- bounded MLB runtime mapping promotion in `SmartStat_Mappings.ini` only
+
+Promoted runtime mappings:
+- `[CATEGORY_TO_MEASURE]`
+  - `GAME WINNING RBI=game_winning_rbi`
+  - `GO AHEAD RBI=go_ahead_rbi`
+  - `SINGLES=singles`
+- `[CATEGORY_TO_MEASURE_ALIASES]`
+  - `GO-AHEAD RBI=GO AHEAD RBI`
+
+Validation evidence:
+- `tests/_scratch/onair-mlb-pass12-post-promotion-validation/mlb_runtime_mapping_post_promotion_validation.json`
+- `tests/_scratch/onair-mlb-pass12-post-promotion-validation/mlb_runtime_mapping_post_promotion_validation_summary.md`
+- `tests/_scratch/onair-mlb-pass12-post-promotion-validation/mlb_runtime_mapping_post_promotion_validation_manifest.json`
+- PASS_12 checks confirmed exact presence/placement, canonical/alias dependency validity, no collisions for the promoted set, and held-line exclusion persistence.
+- External manual evidence recorded: passed in Viz Trio.
+
+Boundary confirmation:
+- no additional runtime mapping discovery/promotion in closeout
+- no `SmartStat_v4.1.0.vbs` changes
+- no additional `.ini` mutation beyond prior PASS_11 promotion
