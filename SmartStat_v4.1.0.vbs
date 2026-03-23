@@ -903,9 +903,28 @@ Sub WP21Advisory_EmitStatusSurface()
   Dim messageTxt
   Dim unavailableCode
   Dim unavailableDetail
+  Dim runIdTxt
+  Dim templateTxt
+  Dim artifactPathTxt
+  Dim contextStateTxt
+  Dim contextTxt
   Dim lineTxt
 
   If Not CBool(DIAG_MODE) Then Exit Sub
+
+  runIdTxt = Ambiguity_SafeTruncate(Trim(CStr(gDiagRunId)), 64)
+  templateTxt = Ambiguity_SafeTruncate(Trim(CStr(gTemplateName)), 96)
+  artifactPathTxt = Ambiguity_SafeTruncate(Trim(CStr(G_WP21_ADVISORY_SOURCE_PATH)), 180)
+  If Len(runIdTxt) = 0 Then runIdTxt = "UNAVAILABLE"
+  If Len(templateTxt) = 0 Then templateTxt = "UNAVAILABLE"
+  If Len(artifactPathTxt) = 0 Then artifactPathTxt = "UNAVAILABLE"
+  contextStateTxt = "BOUND"
+  If runIdTxt = "UNAVAILABLE" Or templateTxt = "UNAVAILABLE" Then contextStateTxt = "PARTIAL_FAIL_CLOSED"
+  contextTxt = " context_runtime_line=" & SMARTSTAT_RUNTIME_LINE & _
+               " context_run_id=" & runIdTxt & _
+               " context_template=[" & templateTxt & "]" & _
+               " context_artifact=[" & artifactPathTxt & "]" & _
+               " context_binding_state=" & contextStateTxt
 
   If CBool(G_WP21_ADVISORY_AVAILABLE) Then
     statusTxt = Trim(CStr(G_WP21_ADVISORY_STATUS))
@@ -919,16 +938,16 @@ Sub WP21Advisory_EmitStatusSurface()
                   " reason=" & reasonTxt & _
                   " action=" & actionTxt & _
                   " message=[" & messageTxt & "]" & _
-                  " advisory_only=True non_authoritative=True execution_permission=False non_blocking=True"
+                  " advisory_only=True non_authoritative=True execution_permission=False non_blocking=True" & contextTxt
       Case Else
-        lineTxt = "WP21_ADVISORY_STATUS_SURFACE status=UNAVAILABLE fail_closed=True code=STATUS_INVALID detail=[unsupported_status_" & Ambiguity_SafeTruncate(statusTxt, 64) & "] advisory_only=True non_authoritative=True execution_permission=False non_blocking=True"
+        lineTxt = "WP21_ADVISORY_STATUS_SURFACE status=UNAVAILABLE fail_closed=True code=STATUS_INVALID detail=[unsupported_status_" & Ambiguity_SafeTruncate(statusTxt, 64) & "] advisory_only=True non_authoritative=True execution_permission=False non_blocking=True" & contextTxt
     End Select
   Else
     unavailableCode = Trim(CStr(G_WP21_ADVISORY_UNAVAILABLE_CODE))
     unavailableDetail = Ambiguity_SafeTruncate(Trim(CStr(G_WP21_ADVISORY_UNAVAILABLE_DETAIL)), 180)
     If Len(unavailableCode) = 0 Then unavailableCode = "UNAVAILABLE_STATE_UNSPECIFIED"
     lineTxt = "WP21_ADVISORY_STATUS_SURFACE status=UNAVAILABLE fail_closed=True code=" & unavailableCode & _
-              " detail=[" & unavailableDetail & "] advisory_only=True non_authoritative=True execution_permission=False non_blocking=True"
+              " detail=[" & unavailableDetail & "] advisory_only=True non_authoritative=True execution_permission=False non_blocking=True" & contextTxt
   End If
 
   Call Diag_WriteLine(lineTxt)
