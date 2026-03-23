@@ -1,0 +1,939 @@
+{
+  "pass_name": "MLB_ONAIR_TO_SMARTSTAT_MLB_ONLY_CANDIDATE_REBASELINE_PASS_04",
+  "scope": "MLB_ONLY",
+  "onair_sources": [
+    "docs/onair/MLB_OnAir_UserDictionary_Full.json",
+    "docs/onair/MLB_OnAir_Playbook_Syntax_Corpus_Full.json"
+  ],
+  "smartstat_mlb_sources": [
+    "SmartStat_Mappings.ini",
+    "SmartStat_Mappings.learn.ini"
+  ],
+  "shared_sources": [
+    "SmartStat_StaticOverrides.ini",
+    "SmartStat_TemplateConfig.ini"
+  ],
+  "excluded_sources": [
+    "SmartStat_MappingsNBA.ini",
+    "SmartStat_MappingsNBA.learn.ini",
+    "SmartStat_MappingsNHL.ini",
+    "SmartStat_MappingsNHL.learn.ini"
+  ],
+  "total_rows": 67,
+  "rows": [
+    {
+      "composite_id": "syntax_2_7",
+      "source_type": "playbook_syntax",
+      "source_index": 2,
+      "playbook_name": "Player - Season Batting Manual Today 0-for ",
+      "raw_expression": "{{info.time.season}}: {{stats.player.season.batting_average}}, {{stats.player.season.home_runs}} {{custom.header_hr}}, {{stats.player.season.rbis}} {{custom.header_rbi}}",
+      "components": [
+        "{{info.time.season}}",
+        "{{stats.player.season.batting_average}}",
+        "{{stats.player.season.home_runs}}",
+        "{{custom.header_hr}}",
+        "{{stats.player.season.rbis}}",
+        "{{custom.header_rbi}}"
+      ],
+      "operator_format": "{{TOKEN}} {{TOKEN}} {{TOKEN}}",
+      "confidence": "medium",
+      "reason": "Custom header placeholder requires composed operator formatting context."
+    },
+    {
+      "composite_id": "syntax_29_5",
+      "source_type": "playbook_syntax",
+      "source_index": 29,
+      "playbook_name": "Player - Season Batting Pitches/PA",
+      "raw_expression": "PITCHES/PA - {{info.time.season}}",
+      "components": [
+        "{{info.time.season}}"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "confidence": "high",
+      "reason": "Text-token hybrid contains explicit slash/vs composition marker."
+    },
+    {
+      "composite_id": "syntax_34_6",
+      "source_type": "playbook_syntax",
+      "source_index": 34,
+      "playbook_name": "Player - Season Batting AVG/HR/RBI (After Trade)",
+      "raw_expression": "WITH {{info.team.name}}: {{stats.player.season.on_team.batting_average}}, {{stats.player.season.on_team.home_runs}} {{custom.header_hr}}, {{stats.player.season.on_team.rbis}} {{custom.header_rbi}}",
+      "components": [
+        "{{info.team.name}}",
+        "{{stats.player.season.on_team.batting_average}}",
+        "{{stats.player.season.on_team.home_runs}}",
+        "{{custom.header_hr}}",
+        "{{stats.player.season.on_team.rbis}}",
+        "{{custom.header_rbi}}"
+      ],
+      "operator_format": "{{TOKEN}} {{TOKEN}} {{TOKEN}}",
+      "confidence": "medium",
+      "reason": "Custom header placeholder requires composed operator formatting context."
+    },
+    {
+      "composite_id": "syntax_41_7",
+      "source_type": "playbook_syntax",
+      "source_index": 41,
+      "playbook_name": "Player - Season Batting H/AB/AVG/SACB/K",
+      "raw_expression": "{{stats.player.season.hits}}/{{stats.player.season.at_bats}}",
+      "components": [
+        "{{stats.player.season.hits}}",
+        "{{stats.player.season.at_bats}}"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "confidence": "high",
+      "reason": "Text-token hybrid contains explicit slash/vs composition marker."
+    },
+    {
+      "composite_id": "syntax_61_6",
+      "source_type": "playbook_syntax",
+      "source_index": 61,
+      "playbook_name": "Player - This Postseason Batting AVG/HR/RBI",
+      "raw_expression": "[REGULAR SEASON: {{stats.player.season.batting_average}}, {{stats.player.season.home_runs}} {{custom.header_hr}}, {{stats.player.season.rbis}} {{custom.header_rbi}}",
+      "components": [
+        "{{stats.player.season.batting_average}}",
+        "{{stats.player.season.home_runs}}",
+        "{{custom.header_hr}}",
+        "{{stats.player.season.rbis}}",
+        "{{custom.header_rbi}}"
+      ],
+      "operator_format": "{{TOKEN}} {{TOKEN}} {{TOKEN}}",
+      "confidence": "medium",
+      "reason": "Custom header placeholder requires composed operator formatting context."
+    },
+    {
+      "composite_id": "syntax_77_5",
+      "source_type": "playbook_syntax",
+      "source_index": 77,
+      "playbook_name": "Player - Batting Season vs Opponent",
+      "raw_expression": "{{info.time.season}} vs {{info.team(opp).name}} ({{stats.player.season.vs.games_played}} GAMES)",
+      "components": [
+        "{{info.time.season}}",
+        "{{info.team(opp).name}}",
+        "{{stats.player.season.vs.games_played}}"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "confidence": "high",
+      "reason": "Text-token hybrid contains explicit slash/vs composition marker."
+    },
+    {
+      "composite_id": "syntax_85_5",
+      "source_type": "playbook_syntax",
+      "source_index": 85,
+      "playbook_name": "Player - Season Batting RISP",
+      "raw_expression": "{{info.time.season}} w/ RISP",
+      "components": [
+        "{{info.time.season}}"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "confidence": "high",
+      "reason": "Text-token hybrid contains explicit slash/vs composition marker."
+    },
+    {
+      "composite_id": "syntax_86_5",
+      "source_type": "playbook_syntax",
+      "source_index": 86,
+      "playbook_name": "Player - Season Batting RISP & 2 Outs",
+      "raw_expression": "{{info.time.season}} w/ 2 OUTS & RISP",
+      "components": [
+        "{{info.time.season}}"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "confidence": "high",
+      "reason": "Text-token hybrid contains explicit slash/vs composition marker."
+    },
+    {
+      "composite_id": "syntax_112_5",
+      "source_type": "playbook_syntax",
+      "source_index": 112,
+      "playbook_name": "Player - Season Batting AVG vs Pitch Type",
+      "raw_expression": "{{custom.header_avg}} VS PITCH TYPE",
+      "components": [
+        "{{custom.header_avg}}"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "confidence": "medium",
+      "reason": "Custom header placeholder requires composed operator formatting context."
+    },
+    {
+      "composite_id": "syntax_116_5",
+      "source_type": "playbook_syntax",
+      "source_index": 116,
+      "playbook_name": "Player - Career Batting vs Opponent",
+      "raw_expression": "CAREER vs {{info.team(opp).name}} ({{stats.player.vs.games_played}} GAMES)",
+      "components": [
+        "{{info.team(opp).name}}",
+        "{{stats.player.vs.games_played}}"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "confidence": "high",
+      "reason": "Text-token hybrid contains explicit slash/vs composition marker."
+    },
+    {
+      "composite_id": "syntax_119_5",
+      "source_type": "playbook_syntax",
+      "source_index": 119,
+      "playbook_name": "Player - Career Batting with RISP + 2 Outs",
+      "raw_expression": "CAREER w/ 2 OUTS & RISP ({{info.player.experience|ordinal}} SEASON)",
+      "components": [
+        "{{info.player.experience|ordinal}}"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "confidence": "high",
+      "reason": "Text-token hybrid contains explicit slash/vs composition marker."
+    },
+    {
+      "composite_id": "syntax_168_1",
+      "source_type": "playbook_syntax",
+      "source_index": 168,
+      "playbook_name": "FS - League Batting vs LHP - Highest AVG",
+      "raw_expression": "{{custom.leaders_avg}} vs LHP",
+      "components": [
+        "{{custom.leaders_avg}}"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "confidence": "high",
+      "reason": "Text-token hybrid contains explicit slash/vs composition marker."
+    },
+    {
+      "composite_id": "syntax_172_1",
+      "source_type": "playbook_syntax",
+      "source_index": 172,
+      "playbook_name": "FS - League Batting vs RHP - Highest AVG",
+      "raw_expression": "{{custom.leaders_avg}} vs RHP",
+      "components": [
+        "{{custom.leaders_avg}}"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "confidence": "high",
+      "reason": "Text-token hybrid contains explicit slash/vs composition marker."
+    },
+    {
+      "composite_id": "syntax_383_7",
+      "source_type": "playbook_syntax",
+      "source_index": 383,
+      "playbook_name": "Player - Career Batting Multi-HR Games",
+      "raw_expression": "LAST: {{previous.player.minimum(home_runs, 2).game_date | flex_short}} vs {{previous.player.minimum(home_runs, 2).opp_name}} ({{previous.player.minimum(home_runs, 2).home_runs}} HR)",
+      "components": [
+        "{{previous.player.minimum(home_runs, 2).game_date | flex_short}}",
+        "{{previous.player.minimum(home_runs, 2).opp_name}}",
+        "{{previous.player.minimum(home_runs, 2).home_runs}}"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "confidence": "high",
+      "reason": "Text-token hybrid contains explicit slash/vs composition marker."
+    },
+    {
+      "composite_id": "syntax_685_3",
+      "source_type": "playbook_syntax",
+      "source_index": 685,
+      "playbook_name": "Manager - Career vs Oppoenent",
+      "raw_expression": "CAREER vs {{info.team(opp).name}}",
+      "components": [
+        "{{info.team(opp).name}}"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "confidence": "high",
+      "reason": "Text-token hybrid contains explicit slash/vs composition marker."
+    },
+    {
+      "composite_id": "syntax_685_4",
+      "source_type": "playbook_syntax",
+      "source_index": 685,
+      "playbook_name": "Manager - Career vs Oppoenent",
+      "raw_expression": "RECORD: {{stats.coach.career.vs.team_record}} ({{stats.coach.career.vs.team_win_percentage}})",
+      "components": [
+        "{{stats.coach.career.vs.team_record}}",
+        "{{stats.coach.career.vs.team_win_percentage}}"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "confidence": "high",
+      "reason": "Text-token hybrid contains explicit slash/vs composition marker."
+    },
+    {
+      "composite_id": "syntax_704_5",
+      "source_type": "playbook_syntax",
+      "source_index": 704,
+      "playbook_name": "Team - Last Player had a 2-HR Game",
+      "raw_expression": "{{previous.team_player.minimum(home_runs, 2).full_name}} {{previous.team_player.minimum(home_runs, 2).game_vs}} {{previous.team_player.minimum(home_runs, 2).opp_name}}",
+      "components": [
+        "{{previous.team_player.minimum(home_runs, 2).full_name}}",
+        "{{previous.team_player.minimum(home_runs, 2).game_vs}}",
+        "{{previous.team_player.minimum(home_runs, 2).opp_name}}"
+      ],
+      "operator_format": "{{TOKEN}} {{TOKEN}} {{TOKEN}}",
+      "confidence": "high",
+      "reason": "OnAir syntax classification is multi_token."
+    },
+    {
+      "composite_id": "syntax_713_2",
+      "source_type": "playbook_syntax",
+      "source_index": 713,
+      "playbook_name": "FS - Team Leaders - Games Played",
+      "raw_expression": "{{info.team.name}} {{info.time.season}}",
+      "components": [
+        "{{info.team.name}}",
+        "{{info.time.season}}"
+      ],
+      "operator_format": "{{TOKEN}} {{TOKEN}}",
+      "confidence": "high",
+      "reason": "OnAir syntax classification is multi_token."
+    },
+    {
+      "composite_id": "syntax_770_7",
+      "source_type": "playbook_syntax",
+      "source_index": 770,
+      "playbook_name": "Pitcher Slab - S/CG, W-L, ERA, IP, BB, K, HR, OPPAVG",
+      "raw_expression": "{{custom.header_gstart}}/CG",
+      "components": [
+        "{{custom.header_gstart}}"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "confidence": "medium",
+      "reason": "Custom header placeholder requires composed operator formatting context."
+    },
+    {
+      "composite_id": "syntax_775_5",
+      "source_type": "playbook_syntax",
+      "source_index": 775,
+      "playbook_name": "Pitcher L3 - S, W-L, ERA (vs Opp)",
+      "raw_expression": "SEASON vs {{info.team(opp).name}} ({{stats.player.season.vs.games_started}} STARTS)",
+      "components": [
+        "{{info.team(opp).name}}",
+        "{{stats.player.season.vs.games_started}}"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "confidence": "high",
+      "reason": "Text-token hybrid contains explicit slash/vs composition marker."
+    },
+    {
+      "composite_id": "syntax_777_7",
+      "source_type": "playbook_syntax",
+      "source_index": 777,
+      "playbook_name": "Pitcher L3 - 1st Inning Runs",
+      "raw_expression": "AVG STARTER: {{stats.league(player).season.innings(1).pos_primary(sp).runs_allowed_per_game}}/GAME",
+      "components": [
+        "{{stats.league(player).season.innings(1).pos_primary(sp).runs_allowed_per_game}}"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "confidence": "high",
+      "reason": "Text-token hybrid contains explicit slash/vs composition marker."
+    },
+    {
+      "composite_id": "syntax_786_6",
+      "source_type": "playbook_syntax",
+      "source_index": 786,
+      "playbook_name": "Pitcher L3 - vs LHB/RHB",
+      "raw_expression": "vs Lefties ({{stats.player.season.vsLHB.pitcher_at_bats_against}} AB)",
+      "components": [
+        "{{stats.player.season.vsLHB.pitcher_at_bats_against}}"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "confidence": "high",
+      "reason": "Text-token hybrid contains explicit slash/vs composition marker."
+    },
+    {
+      "composite_id": "syntax_786_10",
+      "source_type": "playbook_syntax",
+      "source_index": 786,
+      "playbook_name": "Pitcher L3 - vs LHB/RHB",
+      "raw_expression": "vs Righties ({{stats.player.season.vsRHB.pitcher_at_bats_against}} AB)",
+      "components": [
+        "{{stats.player.season.vsRHB.pitcher_at_bats_against}}"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "confidence": "high",
+      "reason": "Text-token hybrid contains explicit slash/vs composition marker."
+    },
+    {
+      "composite_id": "syntax_790_6",
+      "source_type": "playbook_syntax",
+      "source_index": 790,
+      "playbook_name": "Pitcher L3 - Baserunners",
+      "raw_expression": "{{stats.player.season.pitcher_steals}}/{{stats.player.season. pitcher_steals_attempts_against}} STOLEN BASES",
+      "components": [
+        "{{stats.player.season.pitcher_steals}}",
+        "{{stats.player.season. pitcher_steals_attempts_against}}"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "confidence": "high",
+      "reason": "Text-token hybrid contains explicit slash/vs composition marker."
+    },
+    {
+      "composite_id": "syntax_813_5",
+      "source_type": "playbook_syntax",
+      "source_index": 813,
+      "playbook_name": "Pitcher L3 - Last 3 Outings (vs Opp) - IP, H, ER, BB/K",
+      "raw_expression": "LAST 3 OUTINGS vs {{info.team(opp).name}}",
+      "components": [
+        "{{info.team(opp).name}}"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "confidence": "high",
+      "reason": "Text-token hybrid contains explicit slash/vs composition marker."
+    },
+    {
+      "composite_id": "syntax_815_7",
+      "source_type": "playbook_syntax",
+      "source_index": 815,
+      "playbook_name": "Pitcher L3 - XXth Career Shutouts",
+      "raw_expression": "LAST: {{previous.player.equal(pitcher_shutouts, 1).game_date|flex_long}} vs {{previous.player.equal(pitcher_shutouts, 1).opp_name}}",
+      "components": [
+        "{{previous.player.equal(pitcher_shutouts, 1).game_date|flex_long}}",
+        "{{previous.player.equal(pitcher_shutouts, 1).opp_name}}"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "confidence": "high",
+      "reason": "Text-token hybrid contains explicit slash/vs composition marker."
+    },
+    {
+      "composite_id": "syntax_828_15",
+      "source_type": "playbook_syntax",
+      "source_index": 828,
+      "playbook_name": "Pitcher L3 - GP, W-L, ERA, K/BB, SV/OPP (interleague)",
+      "raw_expression": "{{stats.player.career.vs_league(inter).pitcher_saves}}/{{stats.player.career.vs_league(inter).pitcher_saves_opportunities}} ({{stats.player.career.vs_league(inter).pitcher_saves_percentage}})",
+      "components": [
+        "{{stats.player.career.vs_league(inter).pitcher_saves}}",
+        "{{stats.player.career.vs_league(inter).pitcher_saves_opportunities}}",
+        "{{stats.player.career.vs_league(inter).pitcher_saves_percentage}}"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "confidence": "high",
+      "reason": "Text-token hybrid contains explicit slash/vs composition marker."
+    },
+    {
+      "composite_id": "syntax_1629_6",
+      "source_type": "playbook_syntax",
+      "source_index": 1629,
+      "playbook_name": "Player - Starter GS/W-L/ERA (After Trade)",
+      "raw_expression": "WITH {{info.team.name}}: {{stats.player.season.on_team.games_started}} {{custom.header_gstart}}, {{stats.player.season.on_team.pitcher_record}}, {{stats.player.season.on_team.pitcher_era}} {{custom.header_era}}",
+      "components": [
+        "{{info.team.name}}",
+        "{{stats.player.season.on_team.games_started}}",
+        "{{custom.header_gstart}}",
+        "{{stats.player.season.on_team.pitcher_record}}",
+        "{{stats.player.season.on_team.pitcher_era}}",
+        "{{custom.header_era}}"
+      ],
+      "operator_format": "{{TOKEN}} {{TOKEN}} {{TOKEN}}",
+      "confidence": "medium",
+      "reason": "Custom header placeholder requires composed operator formatting context."
+    },
+    {
+      "composite_id": "syntax_1630_6",
+      "source_type": "playbook_syntax",
+      "source_index": 1630,
+      "playbook_name": "Player - Reliever GP/W-L/ERA (After Trade)",
+      "raw_expression": "WITH {{info.team.name}}: {{stats.player.season.on_team.games_pitched}} {{custom.header_gpitch}}, {{stats.player.season.on_team.pitcher_record}}, {{stats.player.season.on_team.pitcher_era}} ERA",
+      "components": [
+        "{{info.team.name}}",
+        "{{stats.player.season.on_team.games_pitched}}",
+        "{{custom.header_gpitch}}",
+        "{{stats.player.season.on_team.pitcher_record}}",
+        "{{stats.player.season.on_team.pitcher_era}}"
+      ],
+      "operator_format": "{{TOKEN}} {{TOKEN}} {{TOKEN}}",
+      "confidence": "medium",
+      "reason": "Custom header placeholder requires composed operator formatting context."
+    },
+    {
+      "composite_id": "syntax_1631_5",
+      "source_type": "playbook_syntax",
+      "source_index": 1631,
+      "playbook_name": "Pitcher L3 - S, W-L, ERA, SV (vs Opp)",
+      "raw_expression": "SEASON vs {{info.team(opp).name}} ({{stats.player.season.vs.games_pitched}} GAMES)",
+      "components": [
+        "{{info.team(opp).name}}",
+        "{{stats.player.season.vs.games_pitched}}"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "confidence": "high",
+      "reason": "Text-token hybrid contains explicit slash/vs composition marker."
+    },
+    {
+      "composite_id": "syntax_1656_7",
+      "source_type": "playbook_syntax",
+      "source_index": 1656,
+      "playbook_name": "Player - Career Walkoff HRs",
+      "raw_expression": "LAST: {{previous.player.minimum(walkoff_home_runs, 1).ab_result}} ON {{previous.player.minimum(walkoff_home_runs, 1).game_date | flex_short}} vs {{previous.player.minimum(walkoff_home_runs, 1).opp_name}}",
+      "components": [
+        "{{previous.player.minimum(walkoff_home_runs, 1).ab_result}}",
+        "{{previous.player.minimum(walkoff_home_runs, 1).game_date | flex_short}}",
+        "{{previous.player.minimum(walkoff_home_runs, 1).opp_name}}"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "confidence": "high",
+      "reason": "Text-token hybrid contains explicit slash/vs composition marker."
+    },
+    {
+      "composite_id": "syntax_1815_5",
+      "source_type": "playbook_syntax",
+      "source_index": 1815,
+      "playbook_name": "Pitcher - Season vs Bases Loaded",
+      "raw_expression": "{{info.time.season}} vs BASES LOADED ({{stats.player.season.runners(loaded).batters_faced}} AB)",
+      "components": [
+        "{{info.time.season}}",
+        "{{stats.player.season.runners(loaded).batters_faced}}"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "confidence": "high",
+      "reason": "Text-token hybrid contains explicit slash/vs composition marker."
+    },
+    {
+      "composite_id": "syntax_1816_5",
+      "source_type": "playbook_syntax",
+      "source_index": 1816,
+      "playbook_name": "Pitcher - Career vs Bases Loaded",
+      "raw_expression": "CAREER vs BASES LOADED ({{stats.player.career.runners(loaded).batters_faced}} AB)",
+      "components": [
+        "{{stats.player.career.runners(loaded).batters_faced}}"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "confidence": "high",
+      "reason": "Text-token hybrid contains explicit slash/vs composition marker."
+    },
+    {
+      "composite_id": "syntax_1817_6",
+      "source_type": "playbook_syntax",
+      "source_index": 1817,
+      "playbook_name": "Batter - Season vs LHP/RHP",
+      "raw_expression": "vs LHP ({{stats.player.season.vsLHP.at_bats}} AB)",
+      "components": [
+        "{{stats.player.season.vsLHP.at_bats}}"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "confidence": "high",
+      "reason": "Text-token hybrid contains explicit slash/vs composition marker."
+    },
+    {
+      "composite_id": "syntax_1817_10",
+      "source_type": "playbook_syntax",
+      "source_index": 1817,
+      "playbook_name": "Batter - Season vs LHP/RHP",
+      "raw_expression": "vs RHP ({{stats.player.season.vsRHP.at_bats}} AB)",
+      "components": [
+        "{{stats.player.season.vsRHP.at_bats}}"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "confidence": "high",
+      "reason": "Text-token hybrid contains explicit slash/vs composition marker."
+    },
+    {
+      "composite_id": "syntax_1831_5",
+      "source_type": "playbook_syntax",
+      "source_index": 1831,
+      "playbook_name": "CG_TickerPlayerStats - Career Batter vs Pitcher (Including Postseason)",
+      "raw_expression": "vs {{info.pitcher.full_name}} - REG. + POSTSEASON",
+      "components": [
+        "{{info.pitcher.full_name}}"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "confidence": "high",
+      "reason": "Text-token hybrid contains explicit slash/vs composition marker."
+    },
+    {
+      "composite_id": "syntax_1835_5",
+      "source_type": "playbook_syntax",
+      "source_index": 1835,
+      "playbook_name": "Player - Season Runner on 3rd - Less than 2 Outs",
+      "raw_expression": "{{info.time.season}} w/ RUNNER ON 3rd & LESS THAN 2 OUTS",
+      "components": [
+        "{{info.time.season}}"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "confidence": "high",
+      "reason": "Text-token hybrid contains explicit slash/vs composition marker."
+    },
+    {
+      "composite_id": "user_16",
+      "source_type": "user_dictionary",
+      "source_index": 16,
+      "raw_expression": "H/AB",
+      "components": [
+        "H",
+        "AB"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "confidence": "high",
+      "reason": "Explicit slash composition in operator phrase requires multi-measure/hybrid composition."
+    },
+    {
+      "composite_id": "user_42",
+      "source_type": "user_dictionary",
+      "source_index": 42,
+      "raw_expression": "HIGHEST IN {{info.conference.alias}} - {{info.time.season}}",
+      "components": [
+        "TEXT_SEGMENT",
+        "SYNTAX_TOKEN"
+      ],
+      "operator_format": "{{TEXT}} {{TOKEN}}",
+      "confidence": "medium",
+      "reason": "Explicit template marker indicates text+syntax hybrid composition."
+    },
+    {
+      "composite_id": "user_43",
+      "source_type": "user_dictionary",
+      "source_index": 43,
+      "raw_expression": "LOWEST IN {{info.conference.alias}} - {{info.time.season}}",
+      "components": [
+        "TEXT_SEGMENT",
+        "SYNTAX_TOKEN"
+      ],
+      "operator_format": "{{TEXT}} {{TOKEN}}",
+      "confidence": "medium",
+      "reason": "Explicit template marker indicates text+syntax hybrid composition."
+    },
+    {
+      "composite_id": "user_44",
+      "source_type": "user_dictionary",
+      "source_index": 44,
+      "raw_expression": "MOST IN {{info.conference.alias}} - {{info.time.season}}",
+      "components": [
+        "TEXT_SEGMENT",
+        "SYNTAX_TOKEN"
+      ],
+      "operator_format": "{{TEXT}} {{TOKEN}}",
+      "confidence": "medium",
+      "reason": "Explicit template marker indicates text+syntax hybrid composition."
+    },
+    {
+      "composite_id": "user_45",
+      "source_type": "user_dictionary",
+      "source_index": 45,
+      "raw_expression": "FEWEST IN {{info.conference.alias}} - {{info.time.season}}",
+      "components": [
+        "TEXT_SEGMENT",
+        "SYNTAX_TOKEN"
+      ],
+      "operator_format": "{{TEXT}} {{TOKEN}}",
+      "confidence": "medium",
+      "reason": "Explicit template marker indicates text+syntax hybrid composition."
+    },
+    {
+      "composite_id": "user_46",
+      "source_type": "user_dictionary",
+      "source_index": 46,
+      "raw_expression": "HIGHEST IN MLB - {{info.time.season}}",
+      "components": [
+        "TEXT_SEGMENT",
+        "SYNTAX_TOKEN"
+      ],
+      "operator_format": "{{TEXT}} {{TOKEN}}",
+      "confidence": "medium",
+      "reason": "Explicit template marker indicates text+syntax hybrid composition."
+    },
+    {
+      "composite_id": "user_47",
+      "source_type": "user_dictionary",
+      "source_index": 47,
+      "raw_expression": "LOWEST IN MLB - {{info.time.season}}",
+      "components": [
+        "TEXT_SEGMENT",
+        "SYNTAX_TOKEN"
+      ],
+      "operator_format": "{{TEXT}} {{TOKEN}}",
+      "confidence": "medium",
+      "reason": "Explicit template marker indicates text+syntax hybrid composition."
+    },
+    {
+      "composite_id": "user_48",
+      "source_type": "user_dictionary",
+      "source_index": 48,
+      "raw_expression": "MOST IN MLB - {{info.time.season}}",
+      "components": [
+        "TEXT_SEGMENT",
+        "SYNTAX_TOKEN"
+      ],
+      "operator_format": "{{TEXT}} {{TOKEN}}",
+      "confidence": "medium",
+      "reason": "Explicit template marker indicates text+syntax hybrid composition."
+    },
+    {
+      "composite_id": "user_49",
+      "source_type": "user_dictionary",
+      "source_index": 49,
+      "raw_expression": "FEWEST IN MLB - {{info.time.season}}",
+      "components": [
+        "TEXT_SEGMENT",
+        "SYNTAX_TOKEN"
+      ],
+      "operator_format": "{{TEXT}} {{TOKEN}}",
+      "confidence": "medium",
+      "reason": "Explicit template marker indicates text+syntax hybrid composition."
+    },
+    {
+      "composite_id": "user_50",
+      "source_type": "user_dictionary",
+      "source_index": 50,
+      "raw_expression": "{{info.conference.alias}} LEADERS - {{info.time.season}}",
+      "components": [
+        "TEXT_SEGMENT",
+        "SYNTAX_TOKEN"
+      ],
+      "operator_format": "{{TEXT}} {{TOKEN}}",
+      "confidence": "medium",
+      "reason": "Explicit template marker indicates text+syntax hybrid composition."
+    },
+    {
+      "composite_id": "user_51",
+      "source_type": "user_dictionary",
+      "source_index": 51,
+      "raw_expression": "MLB LEADERS - {{info.time.season}}",
+      "components": [
+        "TEXT_SEGMENT",
+        "SYNTAX_TOKEN"
+      ],
+      "operator_format": "{{TEXT}} {{TOKEN}}",
+      "confidence": "medium",
+      "reason": "Explicit template marker indicates text+syntax hybrid composition."
+    },
+    {
+      "composite_id": "user_52",
+      "source_type": "user_dictionary",
+      "source_index": 52,
+      "raw_expression": "WORST IN {{info.conference.alias}} {{info.time.season}}",
+      "components": [
+        "TEXT_SEGMENT",
+        "SYNTAX_TOKEN"
+      ],
+      "operator_format": "{{TEXT}} {{TOKEN}}",
+      "confidence": "medium",
+      "reason": "Explicit template marker indicates text+syntax hybrid composition."
+    },
+    {
+      "composite_id": "user_71",
+      "source_type": "user_dictionary",
+      "source_index": 71,
+      "raw_expression": "WALK/STRIKEOUT RATIO",
+      "components": [
+        "WALK",
+        "STRIKEOUT RATIO"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "confidence": "high",
+      "reason": "Explicit slash composition in operator phrase requires multi-measure/hybrid composition."
+    },
+    {
+      "composite_id": "user_74",
+      "source_type": "user_dictionary",
+      "source_index": 74,
+      "raw_expression": "HR/9 INNINGS",
+      "components": [
+        "HR",
+        "9 INNINGS"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "confidence": "high",
+      "reason": "Explicit slash composition in operator phrase requires multi-measure/hybrid composition."
+    },
+    {
+      "composite_id": "user_75",
+      "source_type": "user_dictionary",
+      "source_index": 75,
+      "raw_expression": "K/9 INNINGS",
+      "components": [
+        "K",
+        "9 INNINGS"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "confidence": "high",
+      "reason": "Explicit slash composition in operator phrase requires multi-measure/hybrid composition."
+    },
+    {
+      "composite_id": "user_76",
+      "source_type": "user_dictionary",
+      "source_index": 76,
+      "raw_expression": "RUN SUPPORT/9 INNINGS",
+      "components": [
+        "RUN SUPPORT",
+        "9 INNINGS"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "confidence": "high",
+      "reason": "Explicit slash composition in operator phrase requires multi-measure/hybrid composition."
+    },
+    {
+      "composite_id": "user_103",
+      "source_type": "user_dictionary",
+      "source_index": 103,
+      "raw_expression": "BB/9 INNINGS",
+      "components": [
+        "BB",
+        "9 INNINGS"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "confidence": "high",
+      "reason": "Explicit slash composition in operator phrase requires multi-measure/hybrid composition."
+    },
+    {
+      "composite_id": "user_144",
+      "source_type": "user_dictionary",
+      "source_index": 144,
+      "raw_expression": "E:/EDRIVE/MLB/HEADSHOTS/{{info.team.alias}}/{{info.team.alias}}_{{info.player.last_name | file_path}}_{{info.player.first_name | file_path}}_960.png",
+      "components": [
+        "E:",
+        "EDRIVE"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "confidence": "high",
+      "reason": "Explicit slash composition in operator phrase requires multi-measure/hybrid composition."
+    },
+    {
+      "composite_id": "user_145",
+      "source_type": "user_dictionary",
+      "source_index": 145,
+      "raw_expression": "{{stats.player.season.pitcher_strikeouts}}/{{stats.player.season.pitcher_walks}}",
+      "components": [
+        "{{stats.player.season.pitcher_strikeouts}}",
+        "{{stats.player.season.pitcher_walks}}"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "confidence": "high",
+      "reason": "Explicit slash composition in operator phrase requires multi-measure/hybrid composition."
+    },
+    {
+      "composite_id": "user_150",
+      "source_type": "user_dictionary",
+      "source_index": 150,
+      "raw_expression": "K/BB",
+      "components": [
+        "K",
+        "BB"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "confidence": "high",
+      "reason": "Explicit slash composition in operator phrase requires multi-measure/hybrid composition."
+    },
+    {
+      "composite_id": "user_158",
+      "source_type": "user_dictionary",
+      "source_index": 158,
+      "raw_expression": "AVG vs LHB",
+      "components": [
+        "AVG",
+        "LHB"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "confidence": "medium",
+      "reason": "Explicit split phrase uses vs-pattern and requires composed operator output."
+    },
+    {
+      "composite_id": "user_159",
+      "source_type": "user_dictionary",
+      "source_index": 159,
+      "raw_expression": "AVG vs RHB",
+      "components": [
+        "AVG",
+        "RHB"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "confidence": "medium",
+      "reason": "Explicit split phrase uses vs-pattern and requires composed operator output."
+    },
+    {
+      "composite_id": "user_160",
+      "source_type": "user_dictionary",
+      "source_index": 160,
+      "raw_expression": "SV/OPP",
+      "components": [
+        "SV",
+        "OPP"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "confidence": "high",
+      "reason": "Explicit slash composition in operator phrase requires multi-measure/hybrid composition."
+    },
+    {
+      "composite_id": "user_162",
+      "source_type": "user_dictionary",
+      "source_index": 162,
+      "raw_expression": "IP/START",
+      "components": [
+        "IP",
+        "START"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "confidence": "high",
+      "reason": "Explicit slash composition in operator phrase requires multi-measure/hybrid composition."
+    },
+    {
+      "composite_id": "user_165",
+      "source_type": "user_dictionary",
+      "source_index": 165,
+      "raw_expression": "R/ER",
+      "components": [
+        "R",
+        "ER"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "confidence": "high",
+      "reason": "Explicit slash composition in operator phrase requires multi-measure/hybrid composition."
+    },
+    {
+      "composite_id": "user_169",
+      "source_type": "user_dictionary",
+      "source_index": 169,
+      "raw_expression": "OPS vs LHB",
+      "components": [
+        "OPS",
+        "LHB"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "confidence": "medium",
+      "reason": "Explicit split phrase uses vs-pattern and requires composed operator output."
+    },
+    {
+      "composite_id": "user_170",
+      "source_type": "user_dictionary",
+      "source_index": 170,
+      "raw_expression": "OPS vs RHB",
+      "components": [
+        "OPS",
+        "RHB"
+      ],
+      "operator_format": "{{LEFT_SPLIT}} vs {{RIGHT_SPLIT}}",
+      "confidence": "medium",
+      "reason": "Explicit split phrase uses vs-pattern and requires composed operator output."
+    },
+    {
+      "composite_id": "user_173",
+      "source_type": "user_dictionary",
+      "source_index": 173,
+      "raw_expression": "HR/9 IP",
+      "components": [
+        "HR",
+        "9 IP"
+      ],
+      "operator_format": "{{A}}/{{B}}",
+      "confidence": "high",
+      "reason": "Explicit slash composition in operator phrase requires multi-measure/hybrid composition."
+    },
+    {
+      "composite_id": "user_185",
+      "source_type": "user_dictionary",
+      "source_index": 185,
+      "raw_expression": "{{stats.player.season.pitcher_strikeouts}}",
+      "components": [
+        "TEXT_SEGMENT",
+        "SYNTAX_TOKEN"
+      ],
+      "operator_format": "{{TEXT}} {{TOKEN}}",
+      "confidence": "medium",
+      "reason": "Explicit template marker indicates text+syntax hybrid composition."
+    },
+    {
+      "composite_id": "user_186",
+      "source_type": "user_dictionary",
+      "source_index": 186,
+      "raw_expression": "{{stats.player.season.pitcher_walks}}",
+      "components": [
+        "TEXT_SEGMENT",
+        "SYNTAX_TOKEN"
+      ],
+      "operator_format": "{{TEXT}} {{TOKEN}}",
+      "confidence": "medium",
+      "reason": "Explicit template marker indicates text+syntax hybrid composition."
+    }
+  ],
+  "boundary_note": "Read-only deterministic analysis output. Composite definitions are advisory and non-authoritative."
+}
