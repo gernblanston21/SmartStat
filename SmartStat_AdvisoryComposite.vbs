@@ -176,7 +176,7 @@ Private Function AC_ApplyMappingValidation(ByRef baseResult)
         Else
             ' Preserve PASS_08 bounded structure authority for non-approved shapes.
             baseResult("classification") = "DEFER"
-            baseResult("reason_code") = "DEFER_PARTIAL_MAPPING"
+            baseResult("reason_code") = "DEFER_NON_APPROVED_PATTERN_WITH_VALID_MAPPING"
         End If
         Set AC_ApplyMappingValidation = baseResult
         Exit Function
@@ -193,60 +193,68 @@ Private Function AC_BuildComponentValidation(ByRef components, ByRef mapData)
         Exit Function
     End If
 
-    Dim categories, categoryAliases, qualifiers, qualifierAliases
-    Set categories = mapData("CATEGORY")
+    Dim categoryTokens, categoryTargets, categoryAliases, qualifierTokens, qualifierTargets, qualifierAliases
+    Set categoryTokens = mapData("CATEGORY_TOKEN")
+    Set categoryTargets = mapData("CATEGORY_TARGET")
     Set categoryAliases = mapData("CATEGORY_ALIAS")
-    Set qualifiers = mapData("QUALIFIER")
+    Set qualifierTokens = mapData("QUALIFIER_TOKEN")
+    Set qualifierTargets = mapData("QUALIFIER_TARGET")
     Set qualifierAliases = mapData("QUALIFIER_ALIAS")
 
-    Dim rows(), i, token, norm, mappingType, mappingKey, isValid, canonicalNorm
+    Dim rows(), i, token, norm, mappingType, canonicalToken, mappedTargetValue, isValid, canonicalNorm
     ReDim rows(UBound(components))
 
     For i = LBound(components) To UBound(components)
         token = CStr(components(i))
         norm = AC_NormalizeMappingToken(token)
         mappingType = "UNKNOWN"
-        mappingKey = ""
+        canonicalToken = ""
+        mappedTargetValue = ""
         isValid = False
 
-        If categories.Exists(norm) Then
+        If categoryTokens.Exists(norm) Then
             mappingType = "CATEGORY"
-            mappingKey = CStr(categories(norm))
+            canonicalToken = CStr(categoryTokens(norm))
+            mappedTargetValue = CStr(categoryTargets(norm))
             isValid = True
         ElseIf categoryAliases.Exists(norm) Then
             canonicalNorm = CStr(categoryAliases(norm))
-            If categories.Exists(canonicalNorm) Then
+            If categoryTokens.Exists(canonicalNorm) Then
                 mappingType = "CATEGORY"
-                mappingKey = CStr(categories(canonicalNorm))
+                canonicalToken = CStr(categoryTokens(canonicalNorm))
+                mappedTargetValue = CStr(categoryTargets(canonicalNorm))
                 isValid = True
             End If
-        ElseIf qualifiers.Exists(norm) Then
+        ElseIf qualifierTokens.Exists(norm) Then
             mappingType = "QUALIFIER"
-            mappingKey = CStr(qualifiers(norm))
+            canonicalToken = CStr(qualifierTokens(norm))
+            mappedTargetValue = CStr(qualifierTargets(norm))
             isValid = True
         ElseIf qualifierAliases.Exists(norm) Then
             canonicalNorm = CStr(qualifierAliases(norm))
-            If qualifiers.Exists(canonicalNorm) Then
+            If qualifierTokens.Exists(canonicalNorm) Then
                 mappingType = "QUALIFIER"
-                mappingKey = CStr(qualifiers(canonicalNorm))
+                canonicalToken = CStr(qualifierTokens(canonicalNorm))
+                mappedTargetValue = CStr(qualifierTargets(canonicalNorm))
                 isValid = True
             End If
         End If
 
-        Set rows(i) = AC_NewComponentValidation(token, norm, mappingType, mappingKey, isValid)
+        Set rows(i) = AC_NewComponentValidation(token, norm, mappingType, canonicalToken, mappedTargetValue, isValid)
     Next
 
     AC_BuildComponentValidation = rows
 End Function
 
-Private Function AC_NewComponentValidation(ByVal token, ByVal normalizedToken, ByVal mappingType, ByVal mappingKey, ByVal isValid)
+Private Function AC_NewComponentValidation(ByVal token, ByVal normalizedToken, ByVal mappingType, ByVal canonicalToken, ByVal mappedTargetValue, ByVal isValid)
     Dim row
     Set row = CreateObject("Scripting.Dictionary")
     row.CompareMode = vbTextCompare
     row("token") = token
     row("normalized") = normalizedToken
     row("mapping_type") = mappingType
-    row("mapping_key") = mappingKey
+    row("canonical_token") = canonicalToken
+    row("mapped_target_value") = mappedTargetValue
     row("is_valid") = CBool(isValid)
     Set AC_NewComponentValidation = row
 End Function
@@ -292,14 +300,18 @@ Private Function AC_LoadMappingData()
     End If
     On Error GoTo 0
 
-    Dim categories, categoryAliases, qualifiers, qualifierAliases
-    Set categories = CreateObject("Scripting.Dictionary")
+    Dim categoryTokens, categoryTargets, categoryAliases, qualifierTokens, qualifierTargets, qualifierAliases
+    Set categoryTokens = CreateObject("Scripting.Dictionary")
+    Set categoryTargets = CreateObject("Scripting.Dictionary")
     Set categoryAliases = CreateObject("Scripting.Dictionary")
-    Set qualifiers = CreateObject("Scripting.Dictionary")
+    Set qualifierTokens = CreateObject("Scripting.Dictionary")
+    Set qualifierTargets = CreateObject("Scripting.Dictionary")
     Set qualifierAliases = CreateObject("Scripting.Dictionary")
-    categories.CompareMode = vbTextCompare
+    categoryTokens.CompareMode = vbTextCompare
+    categoryTargets.CompareMode = vbTextCompare
     categoryAliases.CompareMode = vbTextCompare
-    qualifiers.CompareMode = vbTextCompare
+    qualifierTokens.CompareMode = vbTextCompare
+    qualifierTargets.CompareMode = vbTextCompare
     qualifierAliases.CompareMode = vbTextCompare
 
     Dim section, line, eqPos, keyPart, valuePart, nk, nv
@@ -322,11 +334,17 @@ Private Function AC_LoadMappingData()
 
                 Select Case section
                     Case "CATEGORY_TO_MEASURE", "CATEGORY_TO_MEASURE_PITCHER"
-                        If Not categories.Exists(nk) Then categories.Add nk, keyPart
+                        If Not categoryTokens.Exists(nk) Then
+                            categoryTokens.Add nk, keyPart
+                            categoryTargets.Add nk, valuePart
+                        End If
                     Case "CATEGORY_TO_MEASURE_ALIASES", "CATEGORY_TO_MEASURE_PITCHER_ALIASES"
                         If Not categoryAliases.Exists(nk) Then categoryAliases.Add nk, nv
                     Case "QUALIFIER_TO_FILTER"
-                        If Not qualifiers.Exists(nk) Then qualifiers.Add nk, keyPart
+                        If Not qualifierTokens.Exists(nk) Then
+                            qualifierTokens.Add nk, keyPart
+                            qualifierTargets.Add nk, valuePart
+                        End If
                     Case "QUALIFIER_TO_FILTER_ALIASES"
                         If Not qualifierAliases.Exists(nk) Then qualifierAliases.Add nk, nv
                 End Select
@@ -335,14 +353,16 @@ Private Function AC_LoadMappingData()
     Loop
     stream.Close
 
-    Call AC_AssertNoCategoryQualifierOverlap(categories, qualifiers)
+    Call AC_AssertNoCategoryQualifierOverlap(categoryTokens, qualifierTokens)
 
     Dim mapData
     Set mapData = CreateObject("Scripting.Dictionary")
     mapData.CompareMode = vbTextCompare
-    mapData.Add "CATEGORY", categories
+    mapData.Add "CATEGORY_TOKEN", categoryTokens
+    mapData.Add "CATEGORY_TARGET", categoryTargets
     mapData.Add "CATEGORY_ALIAS", categoryAliases
-    mapData.Add "QUALIFIER", qualifiers
+    mapData.Add "QUALIFIER_TOKEN", qualifierTokens
+    mapData.Add "QUALIFIER_TARGET", qualifierTargets
     mapData.Add "QUALIFIER_ALIAS", qualifierAliases
     Set AC_LoadMappingData = mapData
 End Function
