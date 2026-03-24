@@ -93,7 +93,8 @@ Public Function AdvisoryComposite_ResultLineExtended(ByRef resultObj)
 
     AdvisoryComposite_ResultLineExtended = AdvisoryComposite_ResultLine(resultObj) & vbTab & _
                                            hasAmbiguity & vbTab & _
-                                           ambiguityFlagsText
+                                           ambiguityFlagsText & vbTab & _
+                                           CStr(resultObj("confidence_bucket"))
 End Function
 
 Private Function AC_HandleCommaSequence(ByVal normalized)
@@ -176,6 +177,7 @@ Private Function AC_ApplyMappingValidation(ByRef baseResult)
     baseClass = CStr(baseResult("classification"))
 
     If baseClass = "REJECT" Then
+        baseResult("confidence_bucket") = AC_AssignConfidenceBucket(baseResult)
         Set AC_ApplyMappingValidation = baseResult
         Exit Function
     End If
@@ -183,6 +185,7 @@ Private Function AC_ApplyMappingValidation(ByRef baseResult)
     If validCount = 0 Then
         baseResult("classification") = "REJECT"
         baseResult("reason_code") = "REJECT_NO_VALID_COMPONENTS"
+        baseResult("confidence_bucket") = AC_AssignConfidenceBucket(baseResult)
         Set AC_ApplyMappingValidation = baseResult
         Exit Function
     End If
@@ -196,13 +199,57 @@ Private Function AC_ApplyMappingValidation(ByRef baseResult)
             baseResult("classification") = "DEFER"
             baseResult("reason_code") = "DEFER_NON_APPROVED_PATTERN_WITH_VALID_MAPPING"
         End If
+        baseResult("confidence_bucket") = AC_AssignConfidenceBucket(baseResult)
         Set AC_ApplyMappingValidation = baseResult
         Exit Function
     End If
 
     baseResult("classification") = "DEFER"
     baseResult("reason_code") = "DEFER_PARTIAL_MAPPING"
+    baseResult("confidence_bucket") = AC_AssignConfidenceBucket(baseResult)
     Set AC_ApplyMappingValidation = baseResult
+End Function
+
+Private Function AC_AssignConfidenceBucket(ByRef resultObj)
+    Dim classification, reasonCode, hasAmbiguity, invalidCount
+    classification = CStr(resultObj("classification"))
+    reasonCode = CStr(resultObj("reason_code"))
+    hasAmbiguity = False
+    invalidCount = 0
+
+    If resultObj.Exists("has_ambiguity") Then hasAmbiguity = CBool(resultObj("has_ambiguity"))
+    If resultObj.Exists("invalid_component_count") Then invalidCount = CInt(resultObj("invalid_component_count"))
+
+    If classification = "PASS" Then
+        If hasAmbiguity Then
+            AC_AssignConfidenceBucket = "GUARDED"
+        Else
+            AC_AssignConfidenceBucket = "HIGH"
+        End If
+        Exit Function
+    End If
+
+    If classification = "DEFER" Then
+        If reasonCode = "DEFER_NON_APPROVED_PATTERN_WITH_VALID_MAPPING" And invalidCount = 0 Then
+            AC_AssignConfidenceBucket = "GUARDED"
+            Exit Function
+        End If
+        If reasonCode = "DEFER_PARTIAL_MAPPING" Then
+            AC_AssignConfidenceBucket = "LOW"
+            Exit Function
+        End If
+
+        Err.Raise vbObjectError + 8110, "AC_AssignConfidenceBucket", _
+            "Uncovered DEFER confidence state: reason_code=" & reasonCode & ", invalid_component_count=" & CStr(invalidCount)
+    End If
+
+    If classification = "REJECT" Then
+        AC_AssignConfidenceBucket = "LOW"
+        Exit Function
+    End If
+
+    Err.Raise vbObjectError + 8111, "AC_AssignConfidenceBucket", _
+        "Uncovered confidence state: classification=" & classification & ", reason_code=" & reasonCode
 End Function
 
 Private Function AC_BuildComponentValidation(ByRef components, ByRef mapData)
@@ -842,6 +889,7 @@ Private Function AC_NewResult(ByVal classification, ByVal patternType, ByRef com
     result("pattern_type") = patternType
     result("components") = components
     result("reason_code") = reasonCode
+    result("confidence_bucket") = ""
     Set AC_NewResult = result
 End Function
 
