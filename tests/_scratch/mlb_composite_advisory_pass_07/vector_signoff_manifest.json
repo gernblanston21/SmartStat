@@ -1,0 +1,224 @@
+{
+  "total_vectors": 27,
+  "approved": 7,
+  "hold": 9,
+  "excluded": 11,
+  "vectors": [
+    {
+      "id": "PRECEDENCE_001",
+      "input": "E:/EDRIVE//K/BB",
+      "cluster": "ratio_or_slash",
+      "pass06_classification": "REJECT",
+      "signoff_decision": "EXCLUDED_FROM_INITIAL_SET",
+      "reason": "Not a composite stat expression (path-like content); excluded to prevent false-positive recognition."
+    },
+    {
+      "id": "PRECEDENCE_002",
+      "input": "AVG/HR,UNKNOWN",
+      "cluster": "multi_measure_sequence",
+      "pass06_classification": "REJECT",
+      "signoff_decision": "EXCLUDED_FROM_INITIAL_SET",
+      "reason": "Conflicting structural signals create interpretation ambiguity; excluded per fail-closed rule."
+    },
+    {
+      "id": "PRECEDENCE_003",
+      "input": "K/UNKNOWN",
+      "cluster": "ratio_or_slash",
+      "pass06_classification": "DEFER",
+      "signoff_decision": "HOLD_FOR_LATER",
+      "reason": "Structure is recognizable but one or more components are unresolved; requires additional mapping coverage."
+    },
+    {
+      "id": "PRECEDENCE_004",
+      "input": "",
+      "cluster": "ratio_or_slash",
+      "pass06_classification": "REJECT",
+      "signoff_decision": "EXCLUDED_FROM_INITIAL_SET",
+      "reason": "Empty input cannot be interpreted safely; excluded from initial implementation set."
+    },
+    {
+      "id": "RATIO_DEFER_001",
+      "input": "K/UNKNOWN",
+      "cluster": "ratio_or_slash",
+      "pass06_classification": "DEFER",
+      "signoff_decision": "HOLD_FOR_LATER",
+      "reason": "Structure is recognizable but one or more components are unresolved; requires additional mapping coverage."
+    },
+    {
+      "id": "RATIO_DEFER_002",
+      "input": "AVG/K",
+      "cluster": "ratio_or_slash",
+      "pass06_classification": "DEFER",
+      "signoff_decision": "HOLD_FOR_LATER",
+      "reason": "Structure is recognizable but alias binding is ambiguous and needs explicit disambiguation rules."
+    },
+    {
+      "id": "RATIO_DEFER_003",
+      "input": "{{custom.header_k}}/BB",
+      "cluster": "ratio_or_slash",
+      "pass06_classification": "DEFER",
+      "signoff_decision": "HOLD_FOR_LATER",
+      "reason": "Structure is mostly valid but depends on custom placeholder handling outside the initial bounded implementation."
+    },
+    {
+      "id": "RATIO_DEFER_004",
+      "input": "H/AB",
+      "cluster": "ratio_or_slash",
+      "pass06_classification": "DEFER",
+      "signoff_decision": "HOLD_FOR_LATER",
+      "reason": "Structure is recognizable but one or more components are unresolved; requires additional mapping coverage."
+    },
+    {
+      "id": "RATIO_PASS_001",
+      "input": "K/BB",
+      "cluster": "ratio_or_slash",
+      "pass06_classification": "PASS",
+      "signoff_decision": "APPROVED_FOR_INITIAL_IMPLEMENTATION",
+      "reason": "Deterministic PASS_FULLY_RESOLVED vector with unambiguous boundaries and fully resolved components."
+    },
+    {
+      "id": "RATIO_PASS_002",
+      "input": "BB/K",
+      "cluster": "ratio_or_slash",
+      "pass06_classification": "PASS",
+      "signoff_decision": "APPROVED_FOR_INITIAL_IMPLEMENTATION",
+      "reason": "Deterministic PASS_FULLY_RESOLVED vector with unambiguous boundaries and fully resolved components."
+    },
+    {
+      "id": "RATIO_PASS_003",
+      "input": "STRIKEOUTS/BB",
+      "cluster": "ratio_or_slash",
+      "pass06_classification": "PASS",
+      "signoff_decision": "APPROVED_FOR_INITIAL_IMPLEMENTATION",
+      "reason": "Deterministic PASS_FULLY_RESOLVED vector with unambiguous boundaries and fully resolved components."
+    },
+    {
+      "id": "RATIO_REJECT_001",
+      "input": "K//BB",
+      "cluster": "ratio_or_slash",
+      "pass06_classification": "REJECT",
+      "signoff_decision": "EXCLUDED_FROM_INITIAL_SET",
+      "reason": "Fails structural contract due invalid delimiter; must remain fail-closed for initial implementation."
+    },
+    {
+      "id": "RATIO_REJECT_002",
+      "input": "/K",
+      "cluster": "ratio_or_slash",
+      "pass06_classification": "REJECT",
+      "signoff_decision": "EXCLUDED_FROM_INITIAL_SET",
+      "reason": "Fails structural contract due unsupported component count; excluded from initial implementation set."
+    },
+    {
+      "id": "RATIO_REJECT_003",
+      "input": "E:/EDRIVE/MLB/HEADSHOTS/{{info.team.alias}}/{{info.player.last_name}}.png",
+      "cluster": "ratio_or_slash",
+      "pass06_classification": "REJECT",
+      "signoff_decision": "EXCLUDED_FROM_INITIAL_SET",
+      "reason": "Not a composite stat expression (path-like content); excluded to prevent false-positive recognition."
+    },
+    {
+      "id": "RATIO_REJECT_004",
+      "input": "AVG/HR, RBI",
+      "cluster": "ratio_or_slash",
+      "pass06_classification": "REJECT",
+      "signoff_decision": "EXCLUDED_FROM_INITIAL_SET",
+      "reason": "Conflicting structural signals create interpretation ambiguity; excluded per fail-closed rule."
+    },
+    {
+      "id": "SEQUENCE_DEFER_001",
+      "input": "AVG/HR/???",
+      "cluster": "multi_measure_sequence",
+      "pass06_classification": "DEFER",
+      "signoff_decision": "HOLD_FOR_LATER",
+      "reason": "Structure is recognizable but one or more components are unresolved; requires additional mapping coverage."
+    },
+    {
+      "id": "SEQUENCE_DEFER_002",
+      "input": "SB/CS/PCT",
+      "cluster": "multi_measure_sequence",
+      "pass06_classification": "DEFER",
+      "signoff_decision": "HOLD_FOR_LATER",
+      "reason": "Structure is recognizable but one or more components are unresolved; requires additional mapping coverage."
+    },
+    {
+      "id": "SEQUENCE_DEFER_003",
+      "input": "AVG,HR,{{custom.header_rbi}}",
+      "cluster": "multi_measure_sequence",
+      "pass06_classification": "DEFER",
+      "signoff_decision": "HOLD_FOR_LATER",
+      "reason": "Structure is mostly valid but depends on custom placeholder handling outside the initial bounded implementation."
+    },
+    {
+      "id": "SEQUENCE_DEFER_004",
+      "input": "{{stats.player.season.avg}},HR,RBI",
+      "cluster": "multi_measure_sequence",
+      "pass06_classification": "DEFER",
+      "signoff_decision": "HOLD_FOR_LATER",
+      "reason": "Structure depends on template/context interpretation that is out of initial advisory implementation scope."
+    },
+    {
+      "id": "SEQUENCE_PASS_001",
+      "input": "AVG/HR/RBI",
+      "cluster": "multi_measure_sequence",
+      "pass06_classification": "PASS",
+      "signoff_decision": "APPROVED_FOR_INITIAL_IMPLEMENTATION",
+      "reason": "Deterministic PASS_FULLY_RESOLVED vector with unambiguous boundaries and fully resolved components."
+    },
+    {
+      "id": "SEQUENCE_PASS_002",
+      "input": "OBP/SLG/OPS",
+      "cluster": "multi_measure_sequence",
+      "pass06_classification": "PASS",
+      "signoff_decision": "APPROVED_FOR_INITIAL_IMPLEMENTATION",
+      "reason": "Deterministic PASS_FULLY_RESOLVED vector with unambiguous boundaries and fully resolved components."
+    },
+    {
+      "id": "SEQUENCE_PASS_003",
+      "input": "PA,HR,RBI",
+      "cluster": "multi_measure_sequence",
+      "pass06_classification": "PASS",
+      "signoff_decision": "APPROVED_FOR_INITIAL_IMPLEMENTATION",
+      "reason": "Deterministic PASS_FULLY_RESOLVED vector with unambiguous boundaries and fully resolved components."
+    },
+    {
+      "id": "SEQUENCE_PASS_004",
+      "input": "HR/PA (OBP)",
+      "cluster": "multi_measure_sequence",
+      "pass06_classification": "PASS",
+      "signoff_decision": "APPROVED_FOR_INITIAL_IMPLEMENTATION",
+      "reason": "Deterministic PASS_FULLY_RESOLVED vector with unambiguous boundaries and fully resolved components."
+    },
+    {
+      "id": "SEQUENCE_REJECT_001",
+      "input": "AVG//HR/RBI",
+      "cluster": "multi_measure_sequence",
+      "pass06_classification": "REJECT",
+      "signoff_decision": "EXCLUDED_FROM_INITIAL_SET",
+      "reason": "Fails structural contract due invalid delimiter; must remain fail-closed for initial implementation."
+    },
+    {
+      "id": "SEQUENCE_REJECT_002",
+      "input": "SB/CS/PCT/PICKEDOFF",
+      "cluster": "multi_measure_sequence",
+      "pass06_classification": "REJECT",
+      "signoff_decision": "EXCLUDED_FROM_INITIAL_SET",
+      "reason": "Fails structural contract due unsupported component count; excluded from initial implementation set."
+    },
+    {
+      "id": "SEQUENCE_REJECT_003",
+      "input": "AVG;HR;RBI",
+      "cluster": "multi_measure_sequence",
+      "pass06_classification": "REJECT",
+      "signoff_decision": "EXCLUDED_FROM_INITIAL_SET",
+      "reason": "Unsupported structure with no safe deterministic interpretation path; excluded from initial set."
+    },
+    {
+      "id": "SEQUENCE_REJECT_004",
+      "input": "E:/EDRIVE/MLB/SEQ/AVG/HR/RBI.txt",
+      "cluster": "multi_measure_sequence",
+      "pass06_classification": "REJECT",
+      "signoff_decision": "EXCLUDED_FROM_INITIAL_SET",
+      "reason": "Not a composite stat expression (path-like content); excluded to prevent false-positive recognition."
+    }
+  ]
+}
