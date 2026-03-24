@@ -1,0 +1,78 @@
+{
+  "pass_name": "MLB_ONAIR_COMPOSITE_EXPRESSION_CLUSTER_DEFINITION_PASS_03",
+  "output_directory": "tests/_scratch/onair-mlb-composite-cluster-pass03",
+  "generated_at_utc": "2026-03-24T13:23:10Z",
+  "source_inputs": {
+    "primary_pass02": [
+      "tests/_scratch/onair-mlb-semantic-lane-definition-pass02/mlb_semantic_lane_definition_report.md",
+      "tests/_scratch/onair-mlb-semantic-lane-definition-pass02/mlb_semantic_lane_definition.json",
+      "tests/_scratch/onair-mlb-semantic-lane-definition-pass02/mlb_semantic_lane_definition_manifest.json"
+    ],
+    "primary_pass01": [
+      "tests/_scratch/onair-mlb-semantic-classification-pass01/mlb_semantic_value_classification.json",
+      "tests/_scratch/onair-mlb-semantic-classification-pass01/mlb_semantic_value_classification_summary.md"
+    ],
+    "path_substitution": {
+      "used": false,
+      "details": "None"
+    }
+  },
+  "counts": {
+    "composite_candidates_total": 633,
+    "cluster_counts": [
+      {
+        "cluster_name": "ratio_or_slash_cluster",
+        "count": 161,
+        "percent": 25.43
+      },
+      {
+        "cluster_name": "text_plus_token_cluster",
+        "count": 177,
+        "percent": 27.96
+      },
+      {
+        "cluster_name": "multi_measure_sequence_cluster",
+        "count": 23,
+        "percent": 3.63
+      },
+      {
+        "cluster_name": "split_or_comparison_cluster",
+        "count": 115,
+        "percent": 18.17
+      },
+      {
+        "cluster_name": "header_value_pair_cluster",
+        "count": 9,
+        "percent": 1.42
+      },
+      {
+        "cluster_name": "contextual_template_cluster",
+        "count": 10,
+        "percent": 1.58
+      },
+      {
+        "cluster_name": "unresolved_composite_cluster",
+        "count": 138,
+        "percent": 21.8
+      }
+    ]
+  },
+  "artifacts": [
+    {
+      "path": "tests/_scratch/onair-mlb-composite-cluster-pass03/mlb_composite_expression_cluster_definition.json",
+      "size_bytes": 870930,
+      "sha256": "96710D8AC0DA995398FA0F25BC8BB337336BC5C6B03F1301A25B54DA37DCFDAE"
+    },
+    {
+      "path": "tests/_scratch/onair-mlb-composite-cluster-pass03/mlb_composite_expression_cluster_report.md",
+      "size_bytes": 8549,
+      "sha256": "53086218D7D1C8226FECEB812F616B647A51794A9DFA1E246D1B943AF50DBAD0"
+    },
+    {
+      "path": "tests/_scratch/onair-mlb-composite-cluster-pass03/mlb_composite_expression_cluster_manifest.json",
+      "size_bytes": 2691,
+      "sha256": "N/A_SELF_REFERENTIAL"
+    }
+  ],
+  "boundary_note": "PASS_03 is read-only composite-cluster analysis. No SmartStat runtime/config mutation authorized or performed."
+}
