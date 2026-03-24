@@ -1,0 +1,476 @@
+{
+  "pass_name": "MLB_ONAIR_COMPOSITE_RATIO_SEQUENCE_CONTRACT_PASS_04",
+  "mode": "read_only_contract_definition_analysis",
+  "generated_at_utc": "2026-03-24T13:36:44Z",
+  "scope_boundary": "No runtime mutation, no INI mutation, no composite implementation.",
+  "source_trace": {
+    "primary_pass03_inputs": {
+      "cluster_report": "tests/_scratch/onair-mlb-composite-cluster-pass03/mlb_composite_expression_cluster_report.md",
+      "cluster_definition_json": "tests/_scratch/onair-mlb-composite-cluster-pass03/mlb_composite_expression_cluster_definition.json",
+      "cluster_manifest": "tests/_scratch/onair-mlb-composite-cluster-pass03/mlb_composite_expression_cluster_manifest.json"
+    },
+    "supporting_pass02_inputs": {
+      "lane_report": "tests/_scratch/onair-mlb-semantic-lane-definition-pass02/mlb_semantic_lane_definition_report.md",
+      "lane_definition_json": "tests/_scratch/onair-mlb-semantic-lane-definition-pass02/mlb_semantic_lane_definition.json"
+    },
+    "supporting_pass01_input": "tests/_scratch/onair-mlb-semantic-classification-pass01/mlb_semantic_value_classification.json",
+    "path_substitution": {
+      "used": false,
+      "details": "None"
+    }
+  },
+  "pass03_recap": {
+    "ratio_or_slash_cluster_count": 161,
+    "multi_measure_sequence_cluster_count": 23,
+    "composite_lane_total": 633
+  },
+  "in_scope_contracts": {
+    "ratio_or_slash_cluster": {
+      "cluster_name": "ratio_or_slash_cluster",
+      "pass03_count": 161,
+      "recognition_contract": {
+        "accepted_separator_forms": [
+          "slash (/) pair form",
+          "per-form lexical separator (\"per\" / \"_per_\")"
+        ],
+        "accepted_component_count": {
+          "min": 2,
+          "max": 2,
+          "notes": "Two-component ratio contract only for bounded safe scope."
+        },
+        "ordering_matters": true,
+        "repeated_components_allowed": false,
+        "headers_placeholders_allowed": false,
+        "free_text_allowed": "Limited label wrappers may appear but must not alter two-component ratio semantics; otherwise defer."
+      },
+      "component_contract": {
+        "valid_component_definition": "Component must resolve to a known canonical measure key or deterministic alias to canonical key.",
+        "canonical_required": true,
+        "alias_allowed": true,
+        "missing_component_behavior": "fail_closed",
+        "mixed_stat_domain_policy": "defer_if_cross-domain_context_is_ambiguous"
+      },
+      "assembly_contract": {
+        "conceptual_assembly": "Ordered two-component join preserving source order (A/B is not equivalent to B/A).",
+        "output_shape_intent": "semantic tuple + preferred display separator metadata",
+        "labels_between_values_allowed": false,
+        "formatting_dependency": "unit/label wrappers are out-of-contract unless they preserve unambiguous two-component ratio semantics.",
+        "shape_scope": "semantic recognition contract only (no rendering implementation)"
+      },
+      "fail_closed_contract": [
+        "Reject path-like slash expressions (drive/path/file syntax).",
+        "Reject slash forms with component count not equal to 2.",
+        "Reject forms with unresolved component(s) after canonical/alias lookup attempt.",
+        "Reject duplicate/conflicting interpretations for either component.",
+        "Reject split/comparison/context-dependent terms entering ratio family.",
+        "Defer tokenized/custom-placeholder wrappers requiring template context interpretation."
+      ],
+      "subfamilies": [
+        {
+          "name": "mixed_slash_per_subfamily_tokenized",
+          "count": 1
+        },
+        {
+          "name": "per_form_subfamily_plain",
+          "count": 110
+        },
+        {
+          "name": "slash_ratio_pair_subfamily_plain",
+          "count": 30
+        },
+        {
+          "name": "slash_ratio_pair_subfamily_tokenized",
+          "count": 20
+        }
+      ],
+      "representative_examples": {
+        "pass": [
+          {
+            "candidate_uid": "pass02:measure_catalog_full:measure_0024",
+            "raw_expression": "at_bats_per_home_run",
+            "source_collection": "measure_catalog_full",
+            "contract_disposition": "pass",
+            "rationale": "Meets bounded two-component ratio/per recognition shape."
+          },
+          {
+            "candidate_uid": "pass02:measure_catalog_full:measure_0025",
+            "raw_expression": "at_bats_per_strikeout",
+            "source_collection": "measure_catalog_full",
+            "contract_disposition": "pass",
+            "rationale": "Meets bounded two-component ratio/per recognition shape."
+          },
+          {
+            "candidate_uid": "pass02:measure_catalog_full:measure_0026",
+            "raw_expression": "at_bats_per_rbi",
+            "source_collection": "measure_catalog_full",
+            "contract_disposition": "pass",
+            "rationale": "Meets bounded two-component ratio/per recognition shape."
+          },
+          {
+            "candidate_uid": "pass02:measure_catalog_full:measure_0046",
+            "raw_expression": "walks_per_game",
+            "source_collection": "measure_catalog_full",
+            "contract_disposition": "pass",
+            "rationale": "Meets bounded two-component ratio/per recognition shape."
+          },
+          {
+            "candidate_uid": "pass02:measure_catalog_full:measure_0063",
+            "raw_expression": "singles_per_game",
+            "source_collection": "measure_catalog_full",
+            "contract_disposition": "pass",
+            "rationale": "Meets bounded two-component ratio/per recognition shape."
+          },
+          {
+            "candidate_uid": "pass02:measure_catalog_full:measure_0065",
+            "raw_expression": "doubles_per_game",
+            "source_collection": "measure_catalog_full",
+            "contract_disposition": "pass",
+            "rationale": "Meets bounded two-component ratio/per recognition shape."
+          }
+        ],
+        "fail": [
+          {
+            "candidate_uid": "pass04:user_dictionary_crosswalk:user_0144",
+            "raw_expression": "E:/EDRIVE/MLB/HEADSHOTS/{{info.team.alias}}/{{info.team.alias}}_{{info.player.last_name | file_path}}_{{info.player.first_name | file_path}}_960.png",
+            "source_collection": "user_dictionary_crosswalk",
+            "contract_disposition": "reject",
+            "rationale": "Path-like or file-target syntax is outside stat composite contract."
+          },
+          {
+            "candidate_uid": "pass02:playbook_syntax_corpus_full:syntax_0000_05",
+            "raw_expression": "{{info.time.season}} ({{stats.player.season.games_played}} GAMES)",
+            "source_collection": "playbook_syntax_corpus_full",
+            "outside_cluster": "text_plus_token_cluster",
+            "rationale": "Belongs to `text_plus_token_cluster`, not bounded ratio/slash contract."
+          },
+          {
+            "candidate_uid": "pass02:measure_catalog_full:measure_0037",
+            "raw_expression": "batting_average_home_road_differential",
+            "source_collection": "measure_catalog_full",
+            "outside_cluster": "split_or_comparison_cluster",
+            "rationale": "Belongs to `split_or_comparison_cluster`, not bounded ratio/slash contract."
+          },
+          {
+            "candidate_uid": "pass04:composite_candidates:syntax_112_5",
+            "raw_expression": "{{custom.header_avg}} VS PITCH TYPE",
+            "source_collection": "composite_candidates",
+            "outside_cluster": "header_value_pair_cluster",
+            "rationale": "Belongs to `header_value_pair_cluster`, not bounded ratio/slash contract."
+          },
+          {
+            "candidate_uid": "pass02:playbook_syntax_corpus_full:syntax_0000_00",
+            "raw_expression": "{{info.team.alias}}",
+            "source_collection": "playbook_syntax_corpus_full",
+            "outside_cluster": "contextual_template_cluster",
+            "rationale": "Belongs to `contextual_template_cluster`, not bounded ratio/slash contract."
+          }
+        ],
+        "defer": [
+          {
+            "candidate_uid": "pass02:playbook_syntax_corpus_full:syntax_0029_05",
+            "raw_expression": "PITCHES/PA - {{info.time.season}}",
+            "source_collection": "playbook_syntax_corpus_full",
+            "contract_disposition": "defer",
+            "rationale": "Requires template/context token interpretation beyond bounded ratio contract."
+          },
+          {
+            "candidate_uid": "pass02:playbook_syntax_corpus_full:syntax_0041_07",
+            "raw_expression": "{{stats.player.season.hits}}/{{stats.player.season.at_bats}}",
+            "source_collection": "playbook_syntax_corpus_full",
+            "contract_disposition": "defer",
+            "rationale": "Requires template/context token interpretation beyond bounded ratio contract."
+          },
+          {
+            "candidate_uid": "pass02:playbook_syntax_corpus_full:syntax_0085_05",
+            "raw_expression": "{{info.time.season}} w/ RISP",
+            "source_collection": "playbook_syntax_corpus_full",
+            "contract_disposition": "defer",
+            "rationale": "Requires template/context token interpretation beyond bounded ratio contract."
+          },
+          {
+            "candidate_uid": "pass02:playbook_syntax_corpus_full:syntax_0086_05",
+            "raw_expression": "{{info.time.season}} w/ 2 OUTS & RISP",
+            "source_collection": "playbook_syntax_corpus_full",
+            "contract_disposition": "defer",
+            "rationale": "Requires template/context token interpretation beyond bounded ratio contract."
+          },
+          {
+            "candidate_uid": "pass02:playbook_syntax_corpus_full:syntax_0119_05",
+            "raw_expression": "CAREER w/ 2 OUTS & RISP ({{info.player.experience|ordinal}} SEASON)",
+            "source_collection": "playbook_syntax_corpus_full",
+            "contract_disposition": "defer",
+            "rationale": "Requires template/context token interpretation beyond bounded ratio contract."
+          },
+          {
+            "candidate_uid": "pass02:playbook_syntax_corpus_full:syntax_0770_07",
+            "raw_expression": "{{custom.header_gstart}}/CG",
+            "source_collection": "playbook_syntax_corpus_full",
+            "contract_disposition": "defer",
+            "rationale": "Requires template/context token interpretation beyond bounded ratio contract."
+          }
+        ]
+      },
+      "contract_disposition_counts_from_pass03_membership": {
+        "pass": 130,
+        "defer": 30,
+        "reject": 1
+      },
+      "future_implementation_envelope": {
+        "advisory_only_first_step": [
+          "Recognize two-component ratio shape deterministically.",
+          "Extract ordered component candidates and separator family.",
+          "Attempt canonical/alias component binding in read-only mode.",
+          "Emit advisory preview: PASS / DEFER / REJECT with explicit reason code."
+        ],
+        "possible_later_runtime_step_if_explicitly_authorized": [
+          "Deterministic semantic tuple handoff for downstream non-mutating formatting layer."
+        ],
+        "still_out_of_scope_after_contract_definition": [
+          "Runtime apply/take/mutation behavior.",
+          "Tabfield writes or socket execution.",
+          "Automatic rendering/format selection policy changes."
+        ]
+      }
+    },
+    "multi_measure_sequence_cluster": {
+      "cluster_name": "multi_measure_sequence_cluster",
+      "pass03_count": 23,
+      "recognition_contract": {
+        "accepted_sequence_shapes": [
+          "comma-delimited ordered sequence containing 2-3 stat components",
+          "slash pair with parenthetical third metric sequence (2-3 stat components total)"
+        ],
+        "accepted_component_count": {
+          "min": 2,
+          "max": 3,
+          "notes": "Bounded safe scope from observed PASS_03 membership."
+        },
+        "ordering_matters": true,
+        "repeated_components_allowed": "defer_when_semantically_redundant_or_conflicting",
+        "headers_placeholders_allowed": "defer_if_custom_header_placeholder_present",
+        "free_text_allowed": "Allowed as labels/prefix if stat sequence remains structurally unambiguous."
+      },
+      "component_contract": {
+        "valid_component_definition": "Each sequence component must resolve to known canonical stat component or deterministic alias-to-canonical mapping.",
+        "canonical_required": true,
+        "alias_allowed": true,
+        "all_components_must_resolve": true,
+        "missing_component_behavior": "fail_closed",
+        "mixed_stat_domain_policy": "defer_or_reject_when_context_scope_is_inconsistent_or_unbounded"
+      },
+      "assembly_contract": {
+        "conceptual_assembly": "Ordered component sequence preserving source order and separator metadata.",
+        "output_shape_intent": "sequence semantic frame + ordered component list + optional label metadata",
+        "labels_between_values_allowed": true,
+        "formatting_dependency": "Label/unit text may be retained as metadata only; no render logic authorized in this pass.",
+        "shape_scope": "semantic recognition contract only (no rendering implementation)"
+      },
+      "fail_closed_contract": [
+        "Reject path-like/file-template expressions.",
+        "Reject sequences outside accepted component-count bounds.",
+        "Reject unresolved component(s) or conflicting component interpretations.",
+        "Reject unsupported mixed-context sequences requiring out-of-scope cluster logic.",
+        "Defer sequences with custom header/value coupling (header-value cluster boundary).",
+        "Defer sequences whose meaning depends on template context beyond bounded contract."
+      ],
+      "subfamilies": [
+        {
+          "name": "comma_delimited_sequence_subfamily",
+          "count": 15
+        },
+        {
+          "name": "comma_delimited_sequence_subfamily_with_custom_placeholder",
+          "count": 5
+        },
+        {
+          "name": "other_sequence_shape_subfamily",
+          "count": 2
+        },
+        {
+          "name": "slash_parenthetical_sequence_subfamily",
+          "count": 1
+        }
+      ],
+      "representative_examples": {
+        "pass": [
+          {
+            "candidate_uid": "pass02:playbook_syntax_corpus_full:syntax_0087_06",
+            "raw_expression": "{{stats.player.runners(loaded).batting_average}} AVG, {{stats.player.runners(loaded).home_runs}} GRAND SLAMS",
+            "source_collection": "playbook_syntax_corpus_full",
+            "contract_disposition": "pass",
+            "rationale": "Meets bounded multi-measure sequence signature."
+          },
+          {
+            "candidate_uid": "pass02:playbook_syntax_corpus_full:syntax_0106_06",
+            "raw_expression": "{{stats.player.season.count(3-2).batting_average}} AVG,  {{stats.player.season.count(3-2).home_runs}} HR,  {{stats.player.season.count(3-2).rbis}} RBI",
+            "source_collection": "playbook_syntax_corpus_full",
+            "contract_disposition": "pass",
+            "rationale": "Meets bounded multi-measure sequence signature."
+          },
+          {
+            "candidate_uid": "pass02:playbook_syntax_corpus_full:syntax_0794_06",
+            "raw_expression": "{{stats.player.season.outs(0, 1).pitcher_groundball_double_plays}} FORCED IN {{stats.player.season.runners(1b, 1b-2b, 1b-3b, loaded).outs(0, 1).batters_faced}} OPPORTUNITIES",
+            "source_collection": "playbook_syntax_corpus_full",
+            "contract_disposition": "pass",
+            "rationale": "Meets bounded multi-measure sequence signature."
+          },
+          {
+            "candidate_uid": "pass02:playbook_syntax_corpus_full:syntax_0828_15",
+            "raw_expression": "{{stats.player.career.vs_league(inter).pitcher_saves}}/{{stats.player.career.vs_league(inter).pitcher_saves_opportunities}} ({{stats.player.career.vs_league(inter).pitcher_saves_percentage}})",
+            "source_collection": "playbook_syntax_corpus_full",
+            "contract_disposition": "pass",
+            "rationale": "Meets bounded multi-measure sequence signature."
+          },
+          {
+            "candidate_uid": "pass02:playbook_syntax_corpus_full:syntax_1623_06",
+            "raw_expression": "After 0-1: {{stats.player.season.count_after(0-1).pitcher_opponent_batting_average}} AVG, {{stats.player.season.count_after(0-1).pitcher_home_runs_allowed}} HR",
+            "source_collection": "playbook_syntax_corpus_full",
+            "contract_disposition": "pass",
+            "rationale": "Meets bounded multi-measure sequence signature."
+          },
+          {
+            "candidate_uid": "pass02:playbook_syntax_corpus_full:syntax_1623_07",
+            "raw_expression": "After 1-0: {{stats.player.season.count_after(1-0).pitcher_opponent_batting_average}} AVG, {{stats.player.season.count_after(1-0).pitcher_home_runs_allowed}} HR",
+            "source_collection": "playbook_syntax_corpus_full",
+            "contract_disposition": "pass",
+            "rationale": "Meets bounded multi-measure sequence signature."
+          }
+        ],
+        "fail": [
+          {
+            "candidate_uid": "pass02:user_dictionary_full:user_0144",
+            "raw_expression": "E:/EDRIVE/MLB/HEADSHOTS/{{info.team.alias}}/{{info.team.alias}}_{{info.player.last_name | file_path}}_{{info.player.first_name | file_path}}_960.png",
+            "source_collection": "user_dictionary_full",
+            "contract_disposition": "reject",
+            "rationale": "Path-like or file-target syntax is outside multi-measure sequence contract."
+          },
+          {
+            "candidate_uid": "pass02:measure_catalog_full:measure_0024",
+            "raw_expression": "at_bats_per_home_run",
+            "source_collection": "measure_catalog_full",
+            "outside_cluster": "ratio_or_slash_cluster",
+            "rationale": "Two-part ratio belongs to ratio/slash family, not multi-measure sequence family."
+          },
+          {
+            "candidate_uid": "pass02:playbook_syntax_corpus_full:syntax_0000_05",
+            "raw_expression": "{{info.time.season}} ({{stats.player.season.games_played}} GAMES)",
+            "source_collection": "playbook_syntax_corpus_full",
+            "outside_cluster": "text_plus_token_cluster",
+            "rationale": "Belongs to `text_plus_token_cluster`, not bounded multi-measure sequence contract."
+          },
+          {
+            "candidate_uid": "pass02:measure_catalog_full:measure_0037",
+            "raw_expression": "batting_average_home_road_differential",
+            "source_collection": "measure_catalog_full",
+            "outside_cluster": "split_or_comparison_cluster",
+            "rationale": "Belongs to `split_or_comparison_cluster`, not bounded multi-measure sequence contract."
+          },
+          {
+            "candidate_uid": "pass04:composite_candidates:syntax_112_5",
+            "raw_expression": "{{custom.header_avg}} VS PITCH TYPE",
+            "source_collection": "composite_candidates",
+            "outside_cluster": "header_value_pair_cluster",
+            "rationale": "Belongs to `header_value_pair_cluster`, not bounded multi-measure sequence contract."
+          }
+        ],
+        "defer": [
+          {
+            "candidate_uid": "pass02:playbook_syntax_corpus_full:syntax_0002_07",
+            "raw_expression": "{{info.time.season}}: {{stats.player.season.batting_average}}, {{stats.player.season.home_runs}} {{custom.header_hr}}, {{stats.player.season.rbis}} {{custom.header_rbi}}",
+            "source_collection": "playbook_syntax_corpus_full",
+            "contract_disposition": "defer",
+            "rationale": "Contains custom header placeholder coupling (boundary with header-value cluster)."
+          },
+          {
+            "candidate_uid": "pass02:playbook_syntax_corpus_full:syntax_0034_06",
+            "raw_expression": "WITH {{info.team.name}}: {{stats.player.season.on_team.batting_average}}, {{stats.player.season.on_team.home_runs}} {{custom.header_hr}}, {{stats.player.season.on_team.rbis}} {{custom.header_rbi}}",
+            "source_collection": "playbook_syntax_corpus_full",
+            "contract_disposition": "defer",
+            "rationale": "Contains custom header placeholder coupling (boundary with header-value cluster)."
+          },
+          {
+            "candidate_uid": "pass02:playbook_syntax_corpus_full:syntax_0061_06",
+            "raw_expression": "[REGULAR SEASON: {{stats.player.season.batting_average}}, {{stats.player.season.home_runs}} {{custom.header_hr}}, {{stats.player.season.rbis}} {{custom.header_rbi}}",
+            "source_collection": "playbook_syntax_corpus_full",
+            "contract_disposition": "defer",
+            "rationale": "Contains custom header placeholder coupling (boundary with header-value cluster)."
+          },
+          {
+            "candidate_uid": "pass02:playbook_syntax_corpus_full:syntax_1629_06",
+            "raw_expression": "WITH {{info.team.name}}: {{stats.player.season.on_team.games_started}} {{custom.header_gstart}}, {{stats.player.season.on_team.pitcher_record}}, {{stats.player.season.on_team.pitcher_era}} {{custom.header_era}}",
+            "source_collection": "playbook_syntax_corpus_full",
+            "contract_disposition": "defer",
+            "rationale": "Contains custom header placeholder coupling (boundary with header-value cluster)."
+          },
+          {
+            "candidate_uid": "pass02:playbook_syntax_corpus_full:syntax_1630_06",
+            "raw_expression": "WITH {{info.team.name}}: {{stats.player.season.on_team.games_pitched}} {{custom.header_gpitch}}, {{stats.player.season.on_team.pitcher_record}}, {{stats.player.season.on_team.pitcher_era}} ERA",
+            "source_collection": "playbook_syntax_corpus_full",
+            "contract_disposition": "defer",
+            "rationale": "Contains custom header placeholder coupling (boundary with header-value cluster)."
+          }
+        ]
+      },
+      "contract_disposition_counts_from_pass03_membership": {
+        "pass": 16,
+        "defer": 5,
+        "reject": 2
+      },
+      "future_implementation_envelope": {
+        "advisory_only_first_step": [
+          "Recognize bounded ordered sequence shape (comma/slash-parenthetical).",
+          "Extract ordered component candidates and label metadata.",
+          "Attempt component canonical/alias binding in read-only mode.",
+          "Emit advisory preview with sequence order and unresolved-component diagnostics."
+        ],
+        "possible_later_runtime_step_if_explicitly_authorized": [
+          "Deterministic handoff of ordered sequence tuple to a dedicated non-mutating composition layer."
+        ],
+        "still_out_of_scope_after_contract_definition": [
+          "Runtime apply/take/mutation behavior.",
+          "Tabfield writes or socket execution.",
+          "Automatic formatting/render policy decisions."
+        ]
+      }
+    }
+  },
+  "contract_boundaries": {
+    "out_of_scope_clusters": [
+      "text_plus_token_cluster",
+      "split_or_comparison_cluster",
+      "header_value_pair_cluster",
+      "contextual_template_cluster",
+      "unresolved_composite_cluster"
+    ],
+    "why_out_of_scope_now": [
+      "Each out-of-scope cluster introduces additional context/render/grammar requirements beyond bounded ratio+sequence contract scope.",
+      "Including them now would weaken deterministic fail-closed boundaries for PASS_04."
+    ]
+  },
+  "advisory_first_envelope": {
+    "safe_first_step_common": [
+      "Pattern-shape recognition only.",
+      "Ordered component candidate extraction only.",
+      "Read-only canonical/alias binding attempts only.",
+      "Advisory preview statuses (PASS/DEFER/REJECT) only."
+    ],
+    "must_not_touch": [
+      "No runtime mutation.",
+      "No INI mutation.",
+      "No apply/take/cue.",
+      "No tabfield writes.",
+      "No socket execution.",
+      "No payload/output semantics mutation."
+    ]
+  },
+  "why_not_direct_ini_expansion": [
+    "Ratio and sequence composites require ordered multi-component interpretation, while INI category mappings are one-key static mappings.",
+    "Composite contracts need fail-closed component binding and ambiguity handling that static INI lines cannot safely represent alone.",
+    "PASS_03 evidence includes token/context/path-like edge cases that must be rejected or deferred under structural contract rules before any runtime usage."
+  ],
+  "recommended_next_pass": {
+    "name": "MLB_ONAIR_COMPOSITE_ADVISORY_RECOGNITION_SPEC_PASS_05",
+    "mode": "read_only_specification",
+    "bounded_objective": "Define advisory-only PASS/DEFER/REJECT reason-code schema for ratio_or_slash_cluster and multi_measure_sequence_cluster using this PASS_04 contract without runtime/INI mutation."
+  }
+}

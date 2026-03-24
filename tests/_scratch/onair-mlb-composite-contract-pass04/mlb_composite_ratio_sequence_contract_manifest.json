@@ -1,0 +1,55 @@
+{
+  "pass_name": "MLB_ONAIR_COMPOSITE_RATIO_SEQUENCE_CONTRACT_PASS_04",
+  "output_directory": "tests/_scratch/onair-mlb-composite-contract-pass04",
+  "generated_at_utc": "2026-03-24T13:36:44Z",
+  "source_inputs": {
+    "primary_pass03": [
+      "tests/_scratch/onair-mlb-composite-cluster-pass03/mlb_composite_expression_cluster_report.md",
+      "tests/_scratch/onair-mlb-composite-cluster-pass03/mlb_composite_expression_cluster_definition.json",
+      "tests/_scratch/onair-mlb-composite-cluster-pass03/mlb_composite_expression_cluster_manifest.json"
+    ],
+    "supporting_pass02": [
+      "tests/_scratch/onair-mlb-semantic-lane-definition-pass02/mlb_semantic_lane_definition_report.md",
+      "tests/_scratch/onair-mlb-semantic-lane-definition-pass02/mlb_semantic_lane_definition.json"
+    ],
+    "supporting_pass01": [
+      "tests/_scratch/onair-mlb-semantic-classification-pass01/mlb_semantic_value_classification.json"
+    ],
+    "path_substitution": {
+      "used": false,
+      "details": "None"
+    }
+  },
+  "counts": {
+    "ratio_or_slash_cluster_count": 161,
+    "multi_measure_sequence_cluster_count": 23,
+    "ratio_contract_disposition_counts": {
+      "pass": 130,
+      "defer": 30,
+      "reject": 1
+    },
+    "sequence_contract_disposition_counts": {
+      "pass": 16,
+      "defer": 5,
+      "reject": 2
+    }
+  },
+  "artifacts": [
+    {
+      "path": "tests/_scratch/onair-mlb-composite-contract-pass04/mlb_composite_ratio_sequence_contract_report.md",
+      "size_bytes": 5966,
+      "sha256": "6636CE11E235D42B9C05572576D17B89BAFED643E1ACBE7B4E3ED739A31C90ED"
+    },
+    {
+      "path": "tests/_scratch/onair-mlb-composite-contract-pass04/mlb_composite_ratio_sequence_contract_definition.json",
+      "size_bytes": 25411,
+      "sha256": "D13F2993FE24E1700714370B25DA93417F08F0DAB3E6C1D91AD71321B3E92EFB"
+    },
+    {
+      "path": "tests/_scratch/onair-mlb-composite-contract-pass04/mlb_composite_ratio_sequence_contract_manifest.json",
+      "size_bytes": 2230,
+      "sha256": "N/A_SELF_REFERENTIAL"
+    }
+  ],
+  "boundary_note": "PASS_04 is read-only contract-definition analysis. No SmartStat runtime/config mutation authorized or performed."
+}
