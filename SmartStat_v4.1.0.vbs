@@ -58,6 +58,8 @@ Const PHASE_08_PUSH_TO_TRIO    = "08.PUSH_TO_TRIO"
 Const PHASE_99_DONE            = "99.DONE"
 
 Dim gDiagRunId, gDiagFile, gFSO, gDiagStarted, gTemplateName, gStartTicks
+Dim G_ADVISORY_COMPOSITE_LOAD_STATE
+Dim G_ADVISORY_COMPOSITE_HELPER_PATH
 
 Function Phase_OrderList()
   Phase_OrderList = Array( _
@@ -6618,6 +6620,7 @@ Sub Slice2PlanBridge_RunAndExit(ByVal logFilePath, ByVal runStartTime)
   On Error GoTo 0
 
   Call Diag_WriteLine("SLICE2_TRACE after_execute status=" & CStr(outcome("status")) & " error_code=" & CStr(outcome("error_code")))
+  Call Slice2PlanBridge_MaybeEmitAdvisoryCompositeDiag(outcome)
   Call Diag_WriteLine("SLICE2_TRACE before_emit")
 
   On Error Resume Next
@@ -6640,6 +6643,238 @@ Sub Slice2PlanBridge_RunAndExit(ByVal logFilePath, ByVal runStartTime)
   WScript.Echo "SMARTSTAT_SLICE2_STATUS=" & CStr(outcome("status"))
   WScript.Echo "SMARTSTAT_SLICE2_ERROR_CODE=" & CStr(outcome("error_code"))
 End Sub
+
+Sub Slice2PlanBridge_MaybeEmitAdvisoryCompositeDiag(ByRef outcome)
+  Dim advisoryExpressionRaw, advisoryExpressionNorm, advisoryDiagLine
+
+  advisoryExpressionRaw = CStr(Slice1Ingress_GetNamedArg("advisory_expression", ""))
+  If Len(Trim(CStr(advisoryExpressionRaw))) = 0 Then Exit Sub
+
+  advisoryExpressionNorm = Slice2PlanBridge_NormalizeAdvisoryExpression(CStr(advisoryExpressionRaw))
+  If Len(advisoryExpressionNorm) = 0 Then Exit Sub
+
+  advisoryDiagLine = ""
+  If Slice2PlanBridge_TryBuildAdvisoryCompositeDiagLine(advisoryExpressionNorm, advisoryDiagLine) Then
+    Call Diag_WriteLine(CStr(advisoryDiagLine))
+  Else
+    Call Diag_WriteLine("[ADVISORY_COMPOSITE] status=FAILED")
+  End If
+End Sub
+
+Function Slice2PlanBridge_TryBuildAdvisoryCompositeDiagLine(ByVal advisoryExprNorm, ByRef diagLineOut)
+  Dim advisoryResult
+  Dim classification, reasonCode, confidenceBucket
+  Dim recognizedTxt, ambiguityTxt, hasAmbiguity
+
+  Slice2PlanBridge_TryBuildAdvisoryCompositeDiagLine = False
+  diagLineOut = ""
+
+  If Not Slice2PlanBridge_TryInvokeAdvisoryComposite(CStr(advisoryExprNorm), advisoryResult) Then Exit Function
+  If Not IsObject(advisoryResult) Then Exit Function
+  If (advisoryResult Is Nothing) Then Exit Function
+  If Not advisoryResult.Exists("classification") Then Exit Function
+  If Not advisoryResult.Exists("reason_code") Then Exit Function
+  If Not advisoryResult.Exists("confidence_bucket") Then Exit Function
+  If Not advisoryResult.Exists("has_ambiguity") Then Exit Function
+
+  classification = UCase(Trim(CStr(advisoryResult("classification"))))
+  reasonCode = Trim(CStr(advisoryResult("reason_code")))
+  confidenceBucket = UCase(Trim(CStr(advisoryResult("confidence_bucket"))))
+  If Len(classification) = 0 Then Exit Function
+  If Len(reasonCode) = 0 Then Exit Function
+  If Len(confidenceBucket) = 0 Then Exit Function
+
+  If classification <> "PASS" And classification <> "DEFER" And classification <> "REJECT" Then Exit Function
+
+  recognizedTxt = "false"
+  If classification = "PASS" Then recognizedTxt = "true"
+
+  On Error Resume Next
+  hasAmbiguity = CBool(advisoryResult("has_ambiguity"))
+  If Err.Number <> 0 Then
+    Err.Clear
+    On Error GoTo 0
+    Exit Function
+  End If
+  On Error GoTo 0
+
+  ambiguityTxt = "false"
+  If CBool(hasAmbiguity) Then ambiguityTxt = "true"
+
+  diagLineOut = "[ADVISORY_COMPOSITE] expr=" & CStr(advisoryExprNorm) & _
+                " recognized=" & CStr(recognizedTxt) & _
+                " reason=" & CStr(reasonCode) & _
+                " confidence=" & CStr(confidenceBucket) & _
+                " ambiguity=" & CStr(ambiguityTxt)
+  Slice2PlanBridge_TryBuildAdvisoryCompositeDiagLine = True
+End Function
+
+Function Slice2PlanBridge_TryInvokeAdvisoryComposite(ByVal advisoryExprNorm, ByRef advisoryResultOut)
+  Slice2PlanBridge_TryInvokeAdvisoryComposite = False
+  Set advisoryResultOut = Nothing
+
+  If Not Slice2PlanBridge_EnsureAdvisoryCompositeLoaded() Then Exit Function
+
+  On Error Resume Next
+  Set advisoryResultOut = AdvisoryComposite_Recognize(CStr(advisoryExprNorm))
+  If Err.Number <> 0 Then
+    Err.Clear
+    On Error GoTo 0
+    Set advisoryResultOut = Nothing
+    Exit Function
+  End If
+  On Error GoTo 0
+
+  If Not IsObject(advisoryResultOut) Then
+    Set advisoryResultOut = Nothing
+    Exit Function
+  End If
+  If (advisoryResultOut Is Nothing) Then Exit Function
+
+  Slice2PlanBridge_TryInvokeAdvisoryComposite = True
+End Function
+
+Function Slice2PlanBridge_EnsureAdvisoryCompositeLoaded()
+  Dim helperPath, helperText
+
+  Slice2PlanBridge_EnsureAdvisoryCompositeLoaded = False
+  If Len(Trim(CStr(G_ADVISORY_COMPOSITE_LOAD_STATE))) = 0 Then G_ADVISORY_COMPOSITE_LOAD_STATE = "UNINITIALIZED"
+
+  If G_ADVISORY_COMPOSITE_LOAD_STATE = "LOADED" Then
+    Slice2PlanBridge_EnsureAdvisoryCompositeLoaded = True
+    Exit Function
+  End If
+  If G_ADVISORY_COMPOSITE_LOAD_STATE = "FAILED" Then Exit Function
+
+  helperPath = Slice2PlanBridge_ResolveAdvisoryCompositeHelperPath()
+  If Len(helperPath) = 0 Then
+    G_ADVISORY_COMPOSITE_LOAD_STATE = "FAILED"
+    Exit Function
+  End If
+
+  If Not Slice2PlanBridge_TryReadTextFile(helperPath, helperText) Then
+    G_ADVISORY_COMPOSITE_LOAD_STATE = "FAILED"
+    Exit Function
+  End If
+
+  helperText = Slice2PlanBridge_RemoveOptionExplicitLines(helperText)
+  If Len(Trim(CStr(helperText))) = 0 Then
+    G_ADVISORY_COMPOSITE_LOAD_STATE = "FAILED"
+    Exit Function
+  End If
+
+  On Error Resume Next
+  ExecuteGlobal CStr(helperText)
+  If Err.Number <> 0 Then
+    Err.Clear
+    On Error GoTo 0
+    G_ADVISORY_COMPOSITE_LOAD_STATE = "FAILED"
+    Exit Function
+  End If
+  On Error GoTo 0
+
+  G_ADVISORY_COMPOSITE_HELPER_PATH = CStr(helperPath)
+  G_ADVISORY_COMPOSITE_LOAD_STATE = "LOADED"
+  Slice2PlanBridge_EnsureAdvisoryCompositeLoaded = True
+End Function
+
+Function Slice2PlanBridge_ResolveAdvisoryCompositeHelperPath()
+  Dim fso, scriptDir, candidate
+
+  Slice2PlanBridge_ResolveAdvisoryCompositeHelperPath = ""
+  Set fso = CreateObject("Scripting.FileSystemObject")
+  If fso Is Nothing Then Exit Function
+
+  On Error Resume Next
+  scriptDir = CStr(fso.GetParentFolderName(CStr(WScript.ScriptFullName)))
+  If Err.Number <> 0 Then
+    scriptDir = ""
+    Err.Clear
+  End If
+  On Error GoTo 0
+
+  If Len(Trim(scriptDir)) > 0 Then
+    candidate = CStr(fso.BuildPath(scriptDir, "SmartStat_AdvisoryComposite.vbs"))
+    If fso.FileExists(candidate) Then
+      Slice2PlanBridge_ResolveAdvisoryCompositeHelperPath = candidate
+      Exit Function
+    End If
+  End If
+
+  candidate = "SmartStat_AdvisoryComposite.vbs"
+  If fso.FileExists(candidate) Then
+    Slice2PlanBridge_ResolveAdvisoryCompositeHelperPath = candidate
+    Exit Function
+  End If
+End Function
+
+Function Slice2PlanBridge_TryReadTextFile(ByVal pathIn, ByRef textOut)
+  Dim fso, ts
+
+  Slice2PlanBridge_TryReadTextFile = False
+  textOut = ""
+  Set fso = CreateObject("Scripting.FileSystemObject")
+  If fso Is Nothing Then Exit Function
+  If Not fso.FileExists(CStr(pathIn)) Then Exit Function
+
+  On Error Resume Next
+  Set ts = fso.OpenTextFile(CStr(pathIn), 1, False)
+  If Err.Number <> 0 Then
+    Err.Clear
+    On Error GoTo 0
+    Set ts = Nothing
+    Exit Function
+  End If
+
+  textOut = CStr(ts.ReadAll)
+  ts.Close
+  Set ts = Nothing
+  If Err.Number <> 0 Then
+    Err.Clear
+    On Error GoTo 0
+    textOut = ""
+    Exit Function
+  End If
+  On Error GoTo 0
+  Slice2PlanBridge_TryReadTextFile = True
+End Function
+
+Function Slice2PlanBridge_RemoveOptionExplicitLines(ByVal srcText)
+  Dim normalizedText, lines, i, currentLine, outText
+
+  normalizedText = Replace(CStr(srcText), vbCrLf, vbLf)
+  normalizedText = Replace(normalizedText, vbCr, vbLf)
+  lines = Split(normalizedText, vbLf)
+  outText = ""
+
+  For i = 0 To UBound(lines)
+    currentLine = CStr(lines(i))
+    If UCase(Trim(currentLine)) <> "OPTION EXPLICIT" Then
+      If Len(outText) > 0 Then outText = outText & vbCrLf
+      outText = outText & currentLine
+    End If
+  Next
+
+  Slice2PlanBridge_RemoveOptionExplicitLines = outText
+End Function
+
+Function Slice2PlanBridge_NormalizeAdvisoryExpression(ByVal rawExpr)
+  Dim txt
+
+  txt = UCase(Trim(CStr(rawExpr)))
+  If Len(txt) = 0 Then
+    Slice2PlanBridge_NormalizeAdvisoryExpression = ""
+    Exit Function
+  End If
+
+  txt = Replace(txt, vbTab, " ")
+  Do While InStr(txt, "  ") > 0
+    txt = Replace(txt, "  ", " ")
+  Loop
+  txt = Replace(txt, " ", "_")
+
+  Slice2PlanBridge_NormalizeAdvisoryExpression = txt
+End Function
 
 Function Slice2PlanBridge_Execute(ByRef outcome)
   Dim fixturePath, projectionPath, errDetail

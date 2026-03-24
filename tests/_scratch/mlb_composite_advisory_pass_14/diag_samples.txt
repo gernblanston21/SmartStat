@@ -1,0 +1,19 @@
+# PASS_14 Diagnostic Samples
+
+recognized_case
+[ADVISORY_COMPOSITE] expr=K/BB recognized=true reason=PASS_VALIDATED_MAPPING confidence=HIGH ambiguity=false
+
+ambiguous_case
+[ADVISORY_COMPOSITE] expr=AVG/HR/RBI recognized=true reason=PASS_VALIDATED_MAPPING confidence=GUARDED ambiguity=true
+
+defer_case
+[ADVISORY_COMPOSITE] expr=K/UNKNOWN recognized=false reason=DEFER_PARTIAL_MAPPING confidence=LOW ambiguity=false
+
+reject_case
+[ADVISORY_COMPOSITE] expr=A//B recognized=false reason=REJECT_AMBIGUOUS_STRUCTURE confidence=LOW ambiguity=false
+
+missing_input_case
+(no [ADVISORY_COMPOSITE] line emitted; advisory_expression was omitted)
+
+helper_failure_simulation_case
+[ADVISORY_COMPOSITE] status=FAILED
