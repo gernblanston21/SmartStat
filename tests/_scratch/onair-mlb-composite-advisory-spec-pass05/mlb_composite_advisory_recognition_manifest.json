@@ -1,0 +1,57 @@
+{
+  "pass_name": "MLB_ONAIR_COMPOSITE_ADVISORY_RECOGNITION_SPEC_PASS_05",
+  "output_directory": "tests/_scratch/onair-mlb-composite-advisory-spec-pass05",
+  "generated_at_utc": "2026-03-24T13:52:42Z",
+  "source_inputs": {
+    "primary_pass04": [
+      "tests/_scratch/onair-mlb-composite-contract-pass04/mlb_composite_ratio_sequence_contract_report.md",
+      "tests/_scratch/onair-mlb-composite-contract-pass04/mlb_composite_ratio_sequence_contract_definition.json",
+      "tests/_scratch/onair-mlb-composite-contract-pass04/mlb_composite_ratio_sequence_contract_manifest.json"
+    ],
+    "supporting": [
+      "tests/_scratch/onair-mlb-composite-cluster-pass03/",
+      "tests/_scratch/onair-mlb-semantic-lane-definition-pass02/",
+      "tests/_scratch/onair-mlb-semantic-classification-pass01/"
+    ],
+    "reference_context": [
+      "SmartStat_Mappings.ini",
+      "SmartStat_StaticOverrides.ini",
+      "SmartStat_TemplateConfig.ini",
+      "AGENTS.md",
+      "SESSION.md",
+      "ROADMAP.md"
+    ],
+    "path_substitution": {
+      "used": false,
+      "details": "None"
+    }
+  },
+  "counts": {
+    "in_scope_clusters": 2,
+    "pipeline_steps": 8,
+    "reason_codes": 15,
+    "example_counts": {
+      "PASS": 3,
+      "DEFER": 2,
+      "REJECT": 3
+    }
+  },
+  "artifacts": [
+    {
+      "path": "tests/_scratch/onair-mlb-composite-advisory-spec-pass05/mlb_composite_advisory_recognition_spec.md",
+      "size_bytes": 14987,
+      "sha256": "45E6C9AD359B948A079A4A95BBC117F2E0452A8001561031E31B32670F68440E"
+    },
+    {
+      "path": "tests/_scratch/onair-mlb-composite-advisory-spec-pass05/mlb_composite_advisory_recognition_spec.json",
+      "size_bytes": 19183,
+      "sha256": "8C7685D3C5FC87E0D1DF0AC375AAC42FA6C620C1AA17B10C35C3326F9B944208"
+    },
+    {
+      "path": "tests/_scratch/onair-mlb-composite-advisory-spec-pass05/mlb_composite_advisory_recognition_manifest.json",
+      "size_bytes": 2152,
+      "sha256": "N/A_SELF_REFERENTIAL"
+    }
+  ],
+  "boundary_note": "PASS_05 is advisory-spec analysis only. No runtime/config mutation authorized or performed."
+}

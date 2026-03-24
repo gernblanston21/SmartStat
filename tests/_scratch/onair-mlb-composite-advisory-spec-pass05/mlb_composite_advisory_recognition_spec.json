@@ -1,0 +1,652 @@
+{
+  "pass_name": "MLB_ONAIR_COMPOSITE_ADVISORY_RECOGNITION_SPEC_PASS_05",
+  "mode": "read_only_advisory_spec_analysis",
+  "generated_at_utc": "2026-03-24T13:52:23Z",
+  "scope": {
+    "in_scope_clusters": [
+      "ratio_or_slash_cluster",
+      "multi_measure_sequence_cluster"
+    ],
+    "out_of_scope_clusters": [
+      "text_plus_token_cluster",
+      "split_or_comparison_cluster",
+      "header_value_pair_cluster",
+      "contextual_template_cluster",
+      "unresolved_composite_cluster"
+    ],
+    "runtime_or_config_mutation_allowed": false
+  },
+  "pass04_recap": {
+    "source_manifest": "tests/_scratch/onair-mlb-composite-contract-pass04/mlb_composite_ratio_sequence_contract_manifest.json",
+    "ratio_or_slash_cluster": {
+      "membership_count": 161,
+      "contract_disposition_counts": {
+        "pass": 130,
+        "defer": 30,
+        "reject": 1
+      }
+    },
+    "multi_measure_sequence_cluster": {
+      "membership_count": 23,
+      "contract_disposition_counts": {
+        "pass": 16,
+        "defer": 5,
+        "reject": 2
+      }
+    }
+  },
+  "advisory_recognition_pipeline": [
+    {
+      "step": 1,
+      "name": "raw_expression_intake",
+      "input": [
+        "raw_expression",
+        "source_trace"
+      ],
+      "output": [
+        "intake_record.raw_expression",
+        "intake_record.source_trace"
+      ],
+      "failure_conditions": [
+        {
+          "condition": "raw expression is null or empty",
+          "classification": "REJECT",
+          "reason_code": "REJECT_EMPTY_EXPRESSION"
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "name": "normalization",
+      "input": [
+        "intake_record.raw_expression"
+      ],
+      "normalization_actions": [
+        "trim outer whitespace",
+        "collapse repeated spaces",
+        "lowercase for recognition only",
+        "normalize _per_ to lexical per for ratio checks"
+      ],
+      "output": [
+        "normalized_expression"
+      ],
+      "failure_conditions": [
+        {
+          "condition": "normalized expression is empty",
+          "classification": "REJECT",
+          "reason_code": "REJECT_EMPTY_EXPRESSION"
+        }
+      ]
+    },
+    {
+      "step": 3,
+      "name": "cluster_identification",
+      "input": [
+        "normalized_expression"
+      ],
+      "decision_order": [
+        "path-like signature detection",
+        "ratio/slash signature detection",
+        "multi-measure sequence signature detection",
+        "unsupported fallback"
+      ],
+      "output": [
+        "cluster_type"
+      ],
+      "failure_conditions": [
+        {
+          "condition": "path-like syntax detected",
+          "classification": "REJECT",
+          "reason_code": "REJECT_PATH_LIKE_SYNTAX"
+        },
+        {
+          "condition": "expression matches conflicting cluster signatures",
+          "classification": "REJECT",
+          "reason_code": "REJECT_MIXED_CLUSTER_SIGNAL"
+        },
+        {
+          "condition": "expression matches no in-scope cluster signature",
+          "classification": "REJECT",
+          "reason_code": "REJECT_UNKNOWN_STRUCTURE"
+        }
+      ]
+    },
+    {
+      "step": 4,
+      "name": "contract_validation",
+      "input": [
+        "cluster_type",
+        "normalized_expression"
+      ],
+      "cluster_contracts": {
+        "ratio_or_slash_cluster": {
+          "accepted_separators": [
+            "/",
+            "per"
+          ],
+          "component_count": {
+            "min": 2,
+            "max": 2
+          },
+          "repeated_components_allowed": false,
+          "custom_placeholder_coupling": "defer"
+        },
+        "multi_measure_sequence_cluster": {
+          "accepted_shapes": [
+            "comma-delimited sequence",
+            "slash pair with parenthetical third metric"
+          ],
+          "component_count": {
+            "min": 2,
+            "max": 3
+          },
+          "order_required": true,
+          "custom_placeholder_coupling": "defer"
+        }
+      },
+      "output": [
+        "contract_validation_result"
+      ],
+      "failure_conditions": [
+        {
+          "condition": "delimiter violates cluster contract",
+          "classification": "REJECT",
+          "reason_code": "REJECT_INVALID_DELIMITER"
+        },
+        {
+          "condition": "component count outside contract bounds",
+          "classification": "REJECT",
+          "reason_code": "REJECT_INVALID_COMPONENT_COUNT"
+        },
+        {
+          "condition": "custom placeholder/header coupling detected",
+          "classification": "DEFER",
+          "reason_code": "DEFER_BOUNDARY_CUSTOM_PLACEHOLDER"
+        },
+        {
+          "condition": "template context dependency beyond bounded contract",
+          "classification": "DEFER",
+          "reason_code": "DEFER_CONTEXT_DEPENDENT"
+        },
+        {
+          "condition": "unsupported mixed context across cluster boundaries",
+          "classification": "REJECT",
+          "reason_code": "REJECT_UNSUPPORTED_MIXED_CONTEXT"
+        }
+      ]
+    },
+    {
+      "step": 5,
+      "name": "component_extraction",
+      "input": [
+        "normalized_expression",
+        "cluster_type"
+      ],
+      "output": [
+        "extracted_components[]",
+        "separator_family"
+      ],
+      "failure_conditions": [
+        {
+          "condition": "more than one valid component parse",
+          "classification": "DEFER",
+          "reason_code": "DEFER_COMPONENT_PARSE_AMBIGUITY"
+        }
+      ]
+    },
+    {
+      "step": 6,
+      "name": "canonical_binding_attempt_read_only",
+      "input": [
+        "extracted_components[]",
+        "SmartStat_Mappings.ini reference"
+      ],
+      "binding_order": [
+        "canonical lookup",
+        "alias to canonical lookup"
+      ],
+      "output": [
+        "canonical_candidates[]",
+        "binding_status_per_component"
+      ],
+      "failure_conditions": [
+        {
+          "condition": "one or more components unresolved",
+          "classification": "DEFER",
+          "reason_code": "DEFER_UNRESOLVED_COMPONENT"
+        },
+        {
+          "condition": "alias maps to multiple canonical targets",
+          "classification": "DEFER",
+          "reason_code": "DEFER_ALIAS_AMBIGUITY"
+        }
+      ]
+    },
+    {
+      "step": 7,
+      "name": "classification_decision",
+      "input": [
+        "cluster_type",
+        "contract_validation_result",
+        "extraction_status",
+        "binding_status"
+      ],
+      "output": [
+        "classification",
+        "reason_code"
+      ],
+      "failure_conditions": []
+    },
+    {
+      "step": 8,
+      "name": "advisory_output_construction",
+      "input": [
+        "pipeline_outputs_step_1_to_7"
+      ],
+      "output": [
+        "advisory_output_object"
+      ],
+      "failure_conditions": [
+        {
+          "condition": "required advisory field missing",
+          "classification": "REJECT",
+          "reason_code": "REJECT_ADVISORY_OUTPUT_INCOMPLETE"
+        }
+      ]
+    }
+  ],
+  "classification_model": {
+    "PASS": {
+      "required_conditions": [
+        "in-scope cluster recognized",
+        "contract validation success",
+        "deterministic extraction",
+        "all components resolved",
+        "no ambiguity"
+      ],
+      "allowed_reason_codes": [
+        "PASS_FULLY_RESOLVED",
+        "PASS_STRUCTURAL_ONLY"
+      ]
+    },
+    "DEFER": {
+      "required_conditions": [
+        "structure recognized",
+        "insufficient safe finality"
+      ],
+      "typical_triggers": [
+        "unresolved component",
+        "alias ambiguity",
+        "custom placeholder boundary",
+        "context dependency",
+        "parse ambiguity"
+      ]
+    },
+    "REJECT": {
+      "required_conditions": [
+        "structural contract failed or unsupported",
+        "unsafe to interpret"
+      ],
+      "typical_triggers": [
+        "empty expression",
+        "invalid delimiter",
+        "invalid component count",
+        "unknown structure",
+        "mixed cluster signal",
+        "path-like syntax",
+        "unsupported mixed context",
+        "incomplete advisory output"
+      ]
+    }
+  },
+  "reason_codes": [
+    {
+      "code": "PASS_FULLY_RESOLVED",
+      "classification": "PASS",
+      "generated_at_step": 7,
+      "description": "Cluster, contract, extraction, and binding all resolved deterministically."
+    },
+    {
+      "code": "PASS_STRUCTURAL_ONLY",
+      "classification": "PASS",
+      "generated_at_step": 7,
+      "description": "Structure and extraction are valid but canonical binding is intentionally unavailable in advisory-only context."
+    },
+    {
+      "code": "DEFER_UNRESOLVED_COMPONENT",
+      "classification": "DEFER",
+      "generated_at_step": 6,
+      "description": "At least one component cannot be bound to a canonical candidate."
+    },
+    {
+      "code": "DEFER_ALIAS_AMBIGUITY",
+      "classification": "DEFER",
+      "generated_at_step": 6,
+      "description": "Alias binding produced multiple canonical candidates."
+    },
+    {
+      "code": "DEFER_COMPONENT_PARSE_AMBIGUITY",
+      "classification": "DEFER",
+      "generated_at_step": 5,
+      "description": "Component extraction produced more than one valid parse."
+    },
+    {
+      "code": "DEFER_BOUNDARY_CUSTOM_PLACEHOLDER",
+      "classification": "DEFER",
+      "generated_at_step": 4,
+      "description": "Expression includes custom placeholder/header coupling outside bounded contracts."
+    },
+    {
+      "code": "DEFER_CONTEXT_DEPENDENT",
+      "classification": "DEFER",
+      "generated_at_step": 4,
+      "description": "Expression requires template context beyond PASS_04 contract scope."
+    },
+    {
+      "code": "REJECT_EMPTY_EXPRESSION",
+      "classification": "REJECT",
+      "generated_at_step": 1,
+      "description": "Expression is empty after intake or normalization."
+    },
+    {
+      "code": "REJECT_INVALID_DELIMITER",
+      "classification": "REJECT",
+      "generated_at_step": 4,
+      "description": "Delimiter pattern violates in-scope cluster contract."
+    },
+    {
+      "code": "REJECT_INVALID_COMPONENT_COUNT",
+      "classification": "REJECT",
+      "generated_at_step": 4,
+      "description": "Component count is outside accepted cluster bounds."
+    },
+    {
+      "code": "REJECT_UNKNOWN_STRUCTURE",
+      "classification": "REJECT",
+      "generated_at_step": 3,
+      "description": "Expression does not match a supported in-scope cluster signature."
+    },
+    {
+      "code": "REJECT_MIXED_CLUSTER_SIGNAL",
+      "classification": "REJECT",
+      "generated_at_step": 3,
+      "description": "Expression produces conflicting cluster signatures."
+    },
+    {
+      "code": "REJECT_PATH_LIKE_SYNTAX",
+      "classification": "REJECT",
+      "generated_at_step": 3,
+      "description": "Path/file-target syntax detected; not a composite stat expression."
+    },
+    {
+      "code": "REJECT_UNSUPPORTED_MIXED_CONTEXT",
+      "classification": "REJECT",
+      "generated_at_step": 4,
+      "description": "Mixed context violates bounded contract boundaries."
+    },
+    {
+      "code": "REJECT_ADVISORY_OUTPUT_INCOMPLETE",
+      "classification": "REJECT",
+      "generated_at_step": 8,
+      "description": "Advisory output object is incomplete or non-deterministic."
+    }
+  ],
+  "reason_code_precedence": [
+    "REJECT_EMPTY_EXPRESSION",
+    "REJECT_PATH_LIKE_SYNTAX",
+    "REJECT_MIXED_CLUSTER_SIGNAL",
+    "REJECT_UNKNOWN_STRUCTURE",
+    "REJECT_INVALID_DELIMITER",
+    "REJECT_INVALID_COMPONENT_COUNT",
+    "REJECT_UNSUPPORTED_MIXED_CONTEXT",
+    "DEFER_COMPONENT_PARSE_AMBIGUITY",
+    "DEFER_ALIAS_AMBIGUITY",
+    "DEFER_UNRESOLVED_COMPONENT",
+    "DEFER_BOUNDARY_CUSTOM_PLACEHOLDER",
+    "DEFER_CONTEXT_DEPENDENT",
+    "PASS_FULLY_RESOLVED",
+    "PASS_STRUCTURAL_ONLY",
+    "REJECT_ADVISORY_OUTPUT_INCOMPLETE"
+  ],
+  "advisory_output_schema": {
+    "required_fields": [
+      {
+        "name": "original_expression",
+        "type": "string"
+      },
+      {
+        "name": "normalized_expression",
+        "type": "string"
+      },
+      {
+        "name": "cluster_type",
+        "type": "enum",
+        "allowed": [
+          "ratio_or_slash_cluster",
+          "multi_measure_sequence_cluster",
+          "unsupported"
+        ]
+      },
+      {
+        "name": "classification",
+        "type": "enum",
+        "allowed": [
+          "PASS",
+          "DEFER",
+          "REJECT"
+        ]
+      },
+      {
+        "name": "reason_code",
+        "type": "string"
+      },
+      {
+        "name": "extracted_components",
+        "type": "string_array_ordered"
+      },
+      {
+        "name": "canonical_candidates",
+        "type": "array",
+        "item_shape": {
+          "component": "string",
+          "canonical_key": "string_or_empty",
+          "binding_status": "resolved|unresolved|ambiguous"
+        }
+      },
+      {
+        "name": "interpretation_preview",
+        "type": "string"
+      },
+      {
+        "name": "confidence_level",
+        "type": "enum",
+        "allowed": [
+          "HIGH",
+          "MEDIUM",
+          "LOW"
+        ]
+      },
+      {
+        "name": "notes_for_operator",
+        "type": "string"
+      }
+    ],
+    "confidence_mapping": {
+      "HIGH": [
+        "PASS_FULLY_RESOLVED"
+      ],
+      "MEDIUM": [
+        "DEFER_UNRESOLVED_COMPONENT",
+        "DEFER_ALIAS_AMBIGUITY",
+        "DEFER_COMPONENT_PARSE_AMBIGUITY",
+        "DEFER_BOUNDARY_CUSTOM_PLACEHOLDER",
+        "DEFER_CONTEXT_DEPENDENT"
+      ],
+      "LOW": [
+        "REJECT_EMPTY_EXPRESSION",
+        "REJECT_INVALID_DELIMITER",
+        "REJECT_INVALID_COMPONENT_COUNT",
+        "REJECT_UNKNOWN_STRUCTURE",
+        "REJECT_MIXED_CLUSTER_SIGNAL",
+        "REJECT_PATH_LIKE_SYNTAX",
+        "REJECT_UNSUPPORTED_MIXED_CONTEXT",
+        "REJECT_ADVISORY_OUTPUT_INCOMPLETE"
+      ]
+    }
+  },
+  "interpretation_preview_rules": {
+    "allowed": [
+      "detected structure label",
+      "ordered component list",
+      "canonical candidate list when available",
+      "bounded semantic grouping statement"
+    ],
+    "forbidden": [
+      "final numeric output values",
+      "query execution",
+      "mutation-ready syntax",
+      "apply/take/cue guidance",
+      "runtime permission claims"
+    ]
+  },
+  "fail_closed_rules": [
+    "ambiguous delimiter usage",
+    "multiple valid component parses",
+    "unresolved component after canonical/alias lookup",
+    "mixed cluster signals",
+    "template-context dependency outside contract",
+    "custom header/value coupling outside in-scope clusters"
+  ],
+  "operator_explanation_model": {
+    "templates": {
+      "PASS": "Recognized as <cluster_label>. Components resolved: <component_summary>.",
+      "DEFER": "Structure recognized as <cluster_label>, but advisory resolution is incomplete: <defer_reason>.",
+      "REJECT": "Expression does not match supported composite contracts: <reject_reason>."
+    },
+    "cluster_label_map": {
+      "ratio_or_slash_cluster": "ratio/slash composite",
+      "multi_measure_sequence_cluster": "multi-measure sequence composite",
+      "unsupported": "unsupported composite"
+    }
+  },
+  "examples": {
+    "PASS": [
+      {
+        "expression": "K/BB",
+        "cluster_type": "ratio_or_slash_cluster",
+        "classification": "PASS",
+        "reason_code": "PASS_FULLY_RESOLVED",
+        "extracted_components": [
+          "K",
+          "BB"
+        ],
+        "canonical_candidates": [
+          "strikeouts",
+          "walks"
+        ],
+        "interpretation_preview": "Recognized ratio structure: K / BB."
+      },
+      {
+        "expression": "BB/K",
+        "cluster_type": "ratio_or_slash_cluster",
+        "classification": "PASS",
+        "reason_code": "PASS_FULLY_RESOLVED",
+        "extracted_components": [
+          "BB",
+          "K"
+        ],
+        "canonical_candidates": [
+          "walks",
+          "strikeouts"
+        ],
+        "interpretation_preview": "Recognized ratio structure: BB / K."
+      },
+      {
+        "expression": "AVG/HR/RBI",
+        "cluster_type": "multi_measure_sequence_cluster",
+        "classification": "PASS",
+        "reason_code": "PASS_FULLY_RESOLVED",
+        "extracted_components": [
+          "AVG",
+          "HR",
+          "RBI"
+        ],
+        "canonical_candidates": [
+          "batting_average",
+          "home_runs",
+          "rbis"
+        ],
+        "interpretation_preview": "Recognized ordered sequence: AVG, HR, RBI."
+      }
+    ],
+    "DEFER": [
+      {
+        "expression": "K/UNKNOWN",
+        "cluster_type": "ratio_or_slash_cluster",
+        "classification": "DEFER",
+        "reason_code": "DEFER_UNRESOLVED_COMPONENT",
+        "extracted_components": [
+          "K",
+          "UNKNOWN"
+        ],
+        "canonical_candidates": [
+          "strikeouts",
+          ""
+        ],
+        "interpretation_preview": "Structure recognized as ratio/slash composite, but advisory resolution is incomplete: one or more components are unresolved."
+      },
+      {
+        "expression": "AVG/HR/???",
+        "cluster_type": "multi_measure_sequence_cluster",
+        "classification": "DEFER",
+        "reason_code": "DEFER_UNRESOLVED_COMPONENT",
+        "extracted_components": [
+          "AVG",
+          "HR",
+          "???"
+        ],
+        "canonical_candidates": [
+          "batting_average",
+          "home_runs",
+          ""
+        ],
+        "interpretation_preview": "Structure recognized as multi-measure sequence composite, but advisory resolution is incomplete: one or more components are unresolved."
+      }
+    ],
+    "REJECT": [
+      {
+        "expression": "K//BB",
+        "cluster_type": "unsupported",
+        "classification": "REJECT",
+        "reason_code": "REJECT_INVALID_DELIMITER",
+        "extracted_components": [],
+        "canonical_candidates": [],
+        "interpretation_preview": "Expression does not match supported composite contracts: delimiter pattern is invalid."
+      },
+      {
+        "expression": "E:/EDRIVE/MLB/HEADSHOTS/{{info.team.alias}}/{{info.player.last_name}}.png",
+        "cluster_type": "unsupported",
+        "classification": "REJECT",
+        "reason_code": "REJECT_PATH_LIKE_SYNTAX",
+        "extracted_components": [],
+        "canonical_candidates": [],
+        "interpretation_preview": "Expression does not match supported composite contracts: path-like syntax is not a composite stat expression."
+      },
+      {
+        "expression": "AVG/HR, RBI",
+        "cluster_type": "unsupported",
+        "classification": "REJECT",
+        "reason_code": "REJECT_MIXED_CLUSTER_SIGNAL",
+        "extracted_components": [],
+        "canonical_candidates": [],
+        "interpretation_preview": "Expression does not match supported composite contracts: conflicting structure signatures detected."
+      }
+    ]
+  },
+  "recommended_next_pass": {
+    "name": "MLB_ONAIR_COMPOSITE_ADVISORY_TEST_VECTOR_PASS_06",
+    "mode": "read_only_test_vector_definition",
+    "objective": "Create deterministic expression-to-classification test vectors for PASS_05 reason-code coverage without implementing runtime behavior."
+  },
+  "boundary_note": "This PASS_05 artifact defines advisory recognition behavior only. It does not authorize runtime or INI mutation."
+}
