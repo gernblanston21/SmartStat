@@ -1,0 +1,919 @@
+{
+  "pass_name": "MLB_ONAIR_COMPOSITE_ADVISORY_TEST_VECTOR_PASS_06",
+  "mode": "read_only_test_vector_analysis",
+  "generated_at_utc": "2026-03-24T14:21:33Z",
+  "scope": {
+    "in_scope_clusters": [
+      "ratio_or_slash_cluster",
+      "multi_measure_sequence_cluster"
+    ],
+    "out_of_scope_clusters": [
+      "text_plus_token_cluster",
+      "split_or_comparison_cluster",
+      "contextual_template_cluster",
+      "header_value_pair_cluster",
+      "unresolved_composite_cluster"
+    ],
+    "runtime_or_config_mutation_allowed": false
+  },
+  "authoritative_inputs": {
+    "pass05": [
+      "tests/_scratch/onair-mlb-composite-advisory-spec-pass05/mlb_composite_advisory_recognition_spec.md",
+      "tests/_scratch/onair-mlb-composite-advisory-spec-pass05/mlb_composite_advisory_recognition_spec.json",
+      "tests/_scratch/onair-mlb-composite-advisory-spec-pass05/mlb_composite_advisory_recognition_manifest.json"
+    ],
+    "pass04": [
+      "tests/_scratch/onair-mlb-composite-contract-pass04/mlb_composite_ratio_sequence_contract_report.md",
+      "tests/_scratch/onair-mlb-composite-contract-pass04/mlb_composite_ratio_sequence_contract_definition.json"
+    ],
+    "path_substitution": {
+      "used": false,
+      "details": "None"
+    }
+  },
+  "test_vector_model": {
+    "required_fields": [
+      "test_id",
+      "raw_expression",
+      "normalized_expression",
+      "expected_cluster_type",
+      "expected_classification",
+      "expected_reason_code",
+      "expected_confidence_level",
+      "expected_extracted_components",
+      "expected_canonical_candidates",
+      "expected_interpretation_preview",
+      "expected_notes_for_operator",
+      "expected_pipeline_stop_step",
+      "source_basis"
+    ],
+    "organization": "cluster_family -> classification -> stable test_id ordering",
+    "determinism_rules": [
+      "single expected classification per vector",
+      "single expected reason code per vector",
+      "ordered extracted components",
+      "explicit pipeline stop step",
+      "no alternate expected outputs"
+    ]
+  },
+  "vectors": {
+    "ratio_or_slash_cluster": {
+      "PASS": [
+        {
+          "test_id": "RATIO_PASS_001",
+          "raw_expression": "K/BB",
+          "normalized_expression": "k/bb",
+          "context_profile": "default_hitter",
+          "expected_cluster_type": "ratio_or_slash_cluster",
+          "expected_classification": "PASS",
+          "expected_reason_code": "PASS_FULLY_RESOLVED",
+          "expected_confidence_level": "HIGH",
+          "expected_extracted_components": [
+            "K",
+            "BB"
+          ],
+          "expected_canonical_candidates": [
+            {
+              "component": "K",
+              "canonical_key": "strikeouts",
+              "binding_status": "resolved"
+            },
+            {
+              "component": "BB",
+              "canonical_key": "walks",
+              "binding_status": "resolved"
+            }
+          ],
+          "expected_interpretation_preview": "Recognized ratio structure: K / BB.",
+          "expected_notes_for_operator": "Resolved",
+          "expected_pipeline_stop_step": 8,
+          "precedence_conflict_case": false,
+          "source_basis": {
+            "pass05": "PASS_FULLY_RESOLVED"
+          }
+        },
+        {
+          "test_id": "RATIO_PASS_002",
+          "raw_expression": "BB/K",
+          "normalized_expression": "bb/k",
+          "context_profile": "default_hitter",
+          "expected_cluster_type": "ratio_or_slash_cluster",
+          "expected_classification": "PASS",
+          "expected_reason_code": "PASS_FULLY_RESOLVED",
+          "expected_confidence_level": "HIGH",
+          "expected_extracted_components": [
+            "BB",
+            "K"
+          ],
+          "expected_canonical_candidates": [
+            {
+              "component": "BB",
+              "canonical_key": "walks",
+              "binding_status": "resolved"
+            },
+            {
+              "component": "K",
+              "canonical_key": "strikeouts",
+              "binding_status": "resolved"
+            }
+          ],
+          "expected_interpretation_preview": "Recognized ratio structure: BB / K.",
+          "expected_notes_for_operator": "Resolved",
+          "expected_pipeline_stop_step": 8,
+          "precedence_conflict_case": false,
+          "source_basis": {
+            "pass05": "PASS_FULLY_RESOLVED"
+          }
+        },
+        {
+          "test_id": "RATIO_PASS_003",
+          "raw_expression": "STRIKEOUTS/BB",
+          "normalized_expression": "strikeouts/bb",
+          "context_profile": "default_hitter",
+          "expected_cluster_type": "ratio_or_slash_cluster",
+          "expected_classification": "PASS",
+          "expected_reason_code": "PASS_FULLY_RESOLVED",
+          "expected_confidence_level": "HIGH",
+          "expected_extracted_components": [
+            "STRIKEOUTS",
+            "BB"
+          ],
+          "expected_canonical_candidates": [
+            {
+              "component": "STRIKEOUTS",
+              "canonical_key": "strikeouts",
+              "binding_status": "resolved"
+            },
+            {
+              "component": "BB",
+              "canonical_key": "walks",
+              "binding_status": "resolved"
+            }
+          ],
+          "expected_interpretation_preview": "Recognized ratio structure: STRIKEOUTS / BB.",
+          "expected_notes_for_operator": "Alias resolved",
+          "expected_pipeline_stop_step": 8,
+          "precedence_conflict_case": false,
+          "source_basis": {
+            "pass05": "PASS_FULLY_RESOLVED"
+          }
+        }
+      ],
+      "DEFER": [
+        {
+          "test_id": "RATIO_DEFER_001",
+          "raw_expression": "K/UNKNOWN",
+          "normalized_expression": "k/unknown",
+          "context_profile": "default_hitter",
+          "expected_cluster_type": "ratio_or_slash_cluster",
+          "expected_classification": "DEFER",
+          "expected_reason_code": "DEFER_UNRESOLVED_COMPONENT",
+          "expected_confidence_level": "MEDIUM",
+          "expected_extracted_components": [
+            "K",
+            "UNKNOWN"
+          ],
+          "expected_canonical_candidates": [
+            {
+              "component": "K",
+              "canonical_key": "strikeouts",
+              "binding_status": "resolved"
+            },
+            {
+              "component": "UNKNOWN",
+              "canonical_key": "",
+              "binding_status": "unresolved"
+            }
+          ],
+          "expected_interpretation_preview": "Structure recognized as ratio/slash composite, but advisory resolution is incomplete: one or more components are unresolved.",
+          "expected_notes_for_operator": "Unresolved component",
+          "expected_pipeline_stop_step": 6,
+          "precedence_conflict_case": false,
+          "source_basis": {
+            "pass05": "DEFER_UNRESOLVED_COMPONENT"
+          }
+        },
+        {
+          "test_id": "RATIO_DEFER_002",
+          "raw_expression": "AVG/K",
+          "normalized_expression": "avg/k",
+          "context_profile": "context_unspecified",
+          "expected_cluster_type": "ratio_or_slash_cluster",
+          "expected_classification": "DEFER",
+          "expected_reason_code": "DEFER_ALIAS_AMBIGUITY",
+          "expected_confidence_level": "MEDIUM",
+          "expected_extracted_components": [
+            "AVG",
+            "K"
+          ],
+          "expected_canonical_candidates": [
+            {
+              "component": "AVG",
+              "canonical_key": "batting_average|pitcher_opponent_batting_average",
+              "binding_status": "ambiguous"
+            },
+            {
+              "component": "K",
+              "canonical_key": "strikeouts",
+              "binding_status": "resolved"
+            }
+          ],
+          "expected_interpretation_preview": "Structure recognized as ratio/slash composite, but advisory resolution is incomplete: alias resolves to multiple canonical targets.",
+          "expected_notes_for_operator": "Context ambiguous",
+          "expected_pipeline_stop_step": 6,
+          "precedence_conflict_case": false,
+          "source_basis": {
+            "pass05": "DEFER_ALIAS_AMBIGUITY"
+          }
+        },
+        {
+          "test_id": "RATIO_DEFER_003",
+          "raw_expression": "{{custom.header_k}}/BB",
+          "normalized_expression": "{{custom.header_k}}/bb",
+          "context_profile": "default_hitter",
+          "expected_cluster_type": "ratio_or_slash_cluster",
+          "expected_classification": "DEFER",
+          "expected_reason_code": "DEFER_BOUNDARY_CUSTOM_PLACEHOLDER",
+          "expected_confidence_level": "MEDIUM",
+          "expected_extracted_components": [
+            "{{custom.header_k}}",
+            "BB"
+          ],
+          "expected_canonical_candidates": [
+            {
+              "component": "{{custom.header_k}}",
+              "canonical_key": "",
+              "binding_status": "unresolved"
+            },
+            {
+              "component": "BB",
+              "canonical_key": "walks",
+              "binding_status": "resolved"
+            }
+          ],
+          "expected_interpretation_preview": "Structure recognized as ratio/slash composite, but advisory resolution is incomplete: custom placeholder coupling exceeds contract boundary.",
+          "expected_notes_for_operator": "Boundary defer",
+          "expected_pipeline_stop_step": 4,
+          "precedence_conflict_case": false,
+          "source_basis": {
+            "pass05": "DEFER_BOUNDARY_CUSTOM_PLACEHOLDER"
+          }
+        },
+        {
+          "test_id": "RATIO_DEFER_004",
+          "raw_expression": "H/AB",
+          "normalized_expression": "h/ab",
+          "context_profile": "default_hitter",
+          "expected_cluster_type": "ratio_or_slash_cluster",
+          "expected_classification": "DEFER",
+          "expected_reason_code": "DEFER_UNRESOLVED_COMPONENT",
+          "expected_confidence_level": "MEDIUM",
+          "expected_extracted_components": [
+            "H",
+            "AB"
+          ],
+          "expected_canonical_candidates": [
+            {
+              "component": "H",
+              "canonical_key": "",
+              "binding_status": "unresolved"
+            },
+            {
+              "component": "AB",
+              "canonical_key": "",
+              "binding_status": "unresolved"
+            }
+          ],
+          "expected_interpretation_preview": "Structure recognized as ratio/slash composite, but advisory resolution is incomplete: one or more components are unresolved.",
+          "expected_notes_for_operator": "Example unresolved ratio",
+          "expected_pipeline_stop_step": 6,
+          "precedence_conflict_case": false,
+          "source_basis": {
+            "pass05": "DEFER_UNRESOLVED_COMPONENT"
+          }
+        }
+      ],
+      "REJECT": [
+        {
+          "test_id": "RATIO_REJECT_001",
+          "raw_expression": "K//BB",
+          "normalized_expression": "k//bb",
+          "context_profile": "default_hitter",
+          "expected_cluster_type": "ratio_or_slash_cluster",
+          "expected_classification": "REJECT",
+          "expected_reason_code": "REJECT_INVALID_DELIMITER",
+          "expected_confidence_level": "LOW",
+          "expected_extracted_components": [],
+          "expected_canonical_candidates": [],
+          "expected_interpretation_preview": "Expression does not match supported composite contracts: delimiter pattern is invalid.",
+          "expected_notes_for_operator": "Invalid delimiter",
+          "expected_pipeline_stop_step": 4,
+          "precedence_conflict_case": false,
+          "source_basis": {
+            "pass05": "REJECT_INVALID_DELIMITER"
+          }
+        },
+        {
+          "test_id": "RATIO_REJECT_002",
+          "raw_expression": "/K",
+          "normalized_expression": "/k",
+          "context_profile": "default_hitter",
+          "expected_cluster_type": "ratio_or_slash_cluster",
+          "expected_classification": "REJECT",
+          "expected_reason_code": "REJECT_INVALID_COMPONENT_COUNT",
+          "expected_confidence_level": "LOW",
+          "expected_extracted_components": [],
+          "expected_canonical_candidates": [],
+          "expected_interpretation_preview": "Expression does not match supported composite contracts: component count is out of bounds.",
+          "expected_notes_for_operator": "Missing component",
+          "expected_pipeline_stop_step": 4,
+          "precedence_conflict_case": false,
+          "source_basis": {
+            "pass05": "REJECT_INVALID_COMPONENT_COUNT"
+          }
+        },
+        {
+          "test_id": "RATIO_REJECT_003",
+          "raw_expression": "E:/EDRIVE/MLB/HEADSHOTS/{{info.team.alias}}/{{info.player.last_name}}.png",
+          "normalized_expression": "e:/edrive/mlb/headshots/{{info.team.alias}}/{{info.player.last_name}}.png",
+          "context_profile": "default_hitter",
+          "expected_cluster_type": "unsupported",
+          "expected_classification": "REJECT",
+          "expected_reason_code": "REJECT_PATH_LIKE_SYNTAX",
+          "expected_confidence_level": "LOW",
+          "expected_extracted_components": [],
+          "expected_canonical_candidates": [],
+          "expected_interpretation_preview": "Expression does not match supported composite contracts: path-like syntax is not a composite stat expression.",
+          "expected_notes_for_operator": "Path-like",
+          "expected_pipeline_stop_step": 3,
+          "precedence_conflict_case": false,
+          "source_basis": {
+            "pass05": "REJECT_PATH_LIKE_SYNTAX"
+          }
+        },
+        {
+          "test_id": "RATIO_REJECT_004",
+          "raw_expression": "AVG/HR, RBI",
+          "normalized_expression": "avg/hr, rbi",
+          "context_profile": "default_hitter",
+          "expected_cluster_type": "unsupported",
+          "expected_classification": "REJECT",
+          "expected_reason_code": "REJECT_MIXED_CLUSTER_SIGNAL",
+          "expected_confidence_level": "LOW",
+          "expected_extracted_components": [],
+          "expected_canonical_candidates": [],
+          "expected_interpretation_preview": "Expression does not match supported composite contracts: conflicting structure signatures detected.",
+          "expected_notes_for_operator": "Mixed signal",
+          "expected_pipeline_stop_step": 3,
+          "precedence_conflict_case": false,
+          "source_basis": {
+            "pass05": "REJECT_MIXED_CLUSTER_SIGNAL"
+          }
+        }
+      ]
+    },
+    "multi_measure_sequence_cluster": {
+      "PASS": [
+        {
+          "test_id": "SEQUENCE_PASS_001",
+          "raw_expression": "AVG/HR/RBI",
+          "normalized_expression": "avg/hr/rbi",
+          "context_profile": "default_hitter",
+          "expected_cluster_type": "multi_measure_sequence_cluster",
+          "expected_classification": "PASS",
+          "expected_reason_code": "PASS_FULLY_RESOLVED",
+          "expected_confidence_level": "HIGH",
+          "expected_extracted_components": [
+            "AVG",
+            "HR",
+            "RBI"
+          ],
+          "expected_canonical_candidates": [
+            {
+              "component": "AVG",
+              "canonical_key": "batting_average",
+              "binding_status": "resolved"
+            },
+            {
+              "component": "HR",
+              "canonical_key": "home_runs",
+              "binding_status": "resolved"
+            },
+            {
+              "component": "RBI",
+              "canonical_key": "rbis",
+              "binding_status": "resolved"
+            }
+          ],
+          "expected_interpretation_preview": "Recognized ordered sequence: AVG, HR, RBI.",
+          "expected_notes_for_operator": "Resolved",
+          "expected_pipeline_stop_step": 8,
+          "precedence_conflict_case": false,
+          "source_basis": {
+            "pass05": "PASS_FULLY_RESOLVED"
+          }
+        },
+        {
+          "test_id": "SEQUENCE_PASS_002",
+          "raw_expression": "OBP/SLG/OPS",
+          "normalized_expression": "obp/slg/ops",
+          "context_profile": "default_hitter",
+          "expected_cluster_type": "multi_measure_sequence_cluster",
+          "expected_classification": "PASS",
+          "expected_reason_code": "PASS_FULLY_RESOLVED",
+          "expected_confidence_level": "HIGH",
+          "expected_extracted_components": [
+            "OBP",
+            "SLG",
+            "OPS"
+          ],
+          "expected_canonical_candidates": [
+            {
+              "component": "OBP",
+              "canonical_key": "on_base_percentage",
+              "binding_status": "resolved"
+            },
+            {
+              "component": "SLG",
+              "canonical_key": "slugging",
+              "binding_status": "resolved"
+            },
+            {
+              "component": "OPS",
+              "canonical_key": "on_base_plus_slugging",
+              "binding_status": "resolved"
+            }
+          ],
+          "expected_interpretation_preview": "Recognized ordered sequence: OBP, SLG, OPS.",
+          "expected_notes_for_operator": "Resolved",
+          "expected_pipeline_stop_step": 8,
+          "precedence_conflict_case": false,
+          "source_basis": {
+            "pass05": "PASS_FULLY_RESOLVED"
+          }
+        },
+        {
+          "test_id": "SEQUENCE_PASS_003",
+          "raw_expression": "PA,HR,RBI",
+          "normalized_expression": "pa,hr,rbi",
+          "context_profile": "default_hitter",
+          "expected_cluster_type": "multi_measure_sequence_cluster",
+          "expected_classification": "PASS",
+          "expected_reason_code": "PASS_FULLY_RESOLVED",
+          "expected_confidence_level": "HIGH",
+          "expected_extracted_components": [
+            "PA",
+            "HR",
+            "RBI"
+          ],
+          "expected_canonical_candidates": [
+            {
+              "component": "PA",
+              "canonical_key": "plate_appearances",
+              "binding_status": "resolved"
+            },
+            {
+              "component": "HR",
+              "canonical_key": "home_runs",
+              "binding_status": "resolved"
+            },
+            {
+              "component": "RBI",
+              "canonical_key": "rbis",
+              "binding_status": "resolved"
+            }
+          ],
+          "expected_interpretation_preview": "Recognized ordered sequence: PA, HR, RBI.",
+          "expected_notes_for_operator": "Resolved",
+          "expected_pipeline_stop_step": 8,
+          "precedence_conflict_case": false,
+          "source_basis": {
+            "pass05": "PASS_FULLY_RESOLVED"
+          }
+        },
+        {
+          "test_id": "SEQUENCE_PASS_004",
+          "raw_expression": "HR/PA (OBP)",
+          "normalized_expression": "hr/pa (obp)",
+          "context_profile": "default_hitter",
+          "expected_cluster_type": "multi_measure_sequence_cluster",
+          "expected_classification": "PASS",
+          "expected_reason_code": "PASS_FULLY_RESOLVED",
+          "expected_confidence_level": "HIGH",
+          "expected_extracted_components": [
+            "HR",
+            "PA",
+            "OBP"
+          ],
+          "expected_canonical_candidates": [
+            {
+              "component": "HR",
+              "canonical_key": "home_runs",
+              "binding_status": "resolved"
+            },
+            {
+              "component": "PA",
+              "canonical_key": "plate_appearances",
+              "binding_status": "resolved"
+            },
+            {
+              "component": "OBP",
+              "canonical_key": "on_base_percentage",
+              "binding_status": "resolved"
+            }
+          ],
+          "expected_interpretation_preview": "Recognized ordered sequence: HR, PA, OBP.",
+          "expected_notes_for_operator": "Resolved",
+          "expected_pipeline_stop_step": 8,
+          "precedence_conflict_case": false,
+          "source_basis": {
+            "pass05": "PASS_FULLY_RESOLVED"
+          }
+        }
+      ],
+      "DEFER": [
+        {
+          "test_id": "SEQUENCE_DEFER_001",
+          "raw_expression": "AVG/HR/???",
+          "normalized_expression": "avg/hr/???",
+          "context_profile": "default_hitter",
+          "expected_cluster_type": "multi_measure_sequence_cluster",
+          "expected_classification": "DEFER",
+          "expected_reason_code": "DEFER_UNRESOLVED_COMPONENT",
+          "expected_confidence_level": "MEDIUM",
+          "expected_extracted_components": [
+            "AVG",
+            "HR",
+            "???"
+          ],
+          "expected_canonical_candidates": [
+            {
+              "component": "AVG",
+              "canonical_key": "batting_average",
+              "binding_status": "resolved"
+            },
+            {
+              "component": "HR",
+              "canonical_key": "home_runs",
+              "binding_status": "resolved"
+            },
+            {
+              "component": "???",
+              "canonical_key": "",
+              "binding_status": "unresolved"
+            }
+          ],
+          "expected_interpretation_preview": "Structure recognized as multi-measure sequence composite, but advisory resolution is incomplete: one or more components are unresolved.",
+          "expected_notes_for_operator": "Unresolved component",
+          "expected_pipeline_stop_step": 6,
+          "precedence_conflict_case": false,
+          "source_basis": {
+            "pass05": "DEFER_UNRESOLVED_COMPONENT"
+          }
+        },
+        {
+          "test_id": "SEQUENCE_DEFER_002",
+          "raw_expression": "SB/CS/PCT",
+          "normalized_expression": "sb/cs/pct",
+          "context_profile": "default_hitter",
+          "expected_cluster_type": "multi_measure_sequence_cluster",
+          "expected_classification": "DEFER",
+          "expected_reason_code": "DEFER_UNRESOLVED_COMPONENT",
+          "expected_confidence_level": "MEDIUM",
+          "expected_extracted_components": [
+            "SB",
+            "CS",
+            "PCT"
+          ],
+          "expected_canonical_candidates": [
+            {
+              "component": "SB",
+              "canonical_key": "stolen_bases",
+              "binding_status": "resolved"
+            },
+            {
+              "component": "CS",
+              "canonical_key": "",
+              "binding_status": "unresolved"
+            },
+            {
+              "component": "PCT",
+              "canonical_key": "",
+              "binding_status": "unresolved"
+            }
+          ],
+          "expected_interpretation_preview": "Structure recognized as multi-measure sequence composite, but advisory resolution is incomplete: one or more components are unresolved.",
+          "expected_notes_for_operator": "Unresolved component",
+          "expected_pipeline_stop_step": 6,
+          "precedence_conflict_case": false,
+          "source_basis": {
+            "pass05": "DEFER_UNRESOLVED_COMPONENT"
+          }
+        },
+        {
+          "test_id": "SEQUENCE_DEFER_003",
+          "raw_expression": "AVG,HR,{{custom.header_rbi}}",
+          "normalized_expression": "avg,hr,{{custom.header_rbi}}",
+          "context_profile": "default_hitter",
+          "expected_cluster_type": "multi_measure_sequence_cluster",
+          "expected_classification": "DEFER",
+          "expected_reason_code": "DEFER_BOUNDARY_CUSTOM_PLACEHOLDER",
+          "expected_confidence_level": "MEDIUM",
+          "expected_extracted_components": [
+            "AVG",
+            "HR",
+            "{{custom.header_rbi}}"
+          ],
+          "expected_canonical_candidates": [
+            {
+              "component": "AVG",
+              "canonical_key": "batting_average",
+              "binding_status": "resolved"
+            },
+            {
+              "component": "HR",
+              "canonical_key": "home_runs",
+              "binding_status": "resolved"
+            },
+            {
+              "component": "{{custom.header_rbi}}",
+              "canonical_key": "",
+              "binding_status": "unresolved"
+            }
+          ],
+          "expected_interpretation_preview": "Structure recognized as multi-measure sequence composite, but advisory resolution is incomplete: custom placeholder coupling exceeds contract boundary.",
+          "expected_notes_for_operator": "Boundary defer",
+          "expected_pipeline_stop_step": 4,
+          "precedence_conflict_case": false,
+          "source_basis": {
+            "pass05": "DEFER_BOUNDARY_CUSTOM_PLACEHOLDER"
+          }
+        },
+        {
+          "test_id": "SEQUENCE_DEFER_004",
+          "raw_expression": "{{stats.player.season.avg}},HR,RBI",
+          "normalized_expression": "{{stats.player.season.avg}},hr,rbi",
+          "context_profile": "default_hitter",
+          "expected_cluster_type": "multi_measure_sequence_cluster",
+          "expected_classification": "DEFER",
+          "expected_reason_code": "DEFER_CONTEXT_DEPENDENT",
+          "expected_confidence_level": "MEDIUM",
+          "expected_extracted_components": [
+            "{{stats.player.season.avg}}",
+            "HR",
+            "RBI"
+          ],
+          "expected_canonical_candidates": [
+            {
+              "component": "{{stats.player.season.avg}}",
+              "canonical_key": "",
+              "binding_status": "unresolved"
+            },
+            {
+              "component": "HR",
+              "canonical_key": "home_runs",
+              "binding_status": "resolved"
+            },
+            {
+              "component": "RBI",
+              "canonical_key": "rbis",
+              "binding_status": "resolved"
+            }
+          ],
+          "expected_interpretation_preview": "Structure recognized as multi-measure sequence composite, but advisory resolution is incomplete: template context required for safe interpretation.",
+          "expected_notes_for_operator": "Context dependent",
+          "expected_pipeline_stop_step": 4,
+          "precedence_conflict_case": false,
+          "source_basis": {
+            "pass05": "DEFER_CONTEXT_DEPENDENT"
+          }
+        }
+      ],
+      "REJECT": [
+        {
+          "test_id": "SEQUENCE_REJECT_001",
+          "raw_expression": "AVG//HR/RBI",
+          "normalized_expression": "avg//hr/rbi",
+          "context_profile": "default_hitter",
+          "expected_cluster_type": "multi_measure_sequence_cluster",
+          "expected_classification": "REJECT",
+          "expected_reason_code": "REJECT_INVALID_DELIMITER",
+          "expected_confidence_level": "LOW",
+          "expected_extracted_components": [],
+          "expected_canonical_candidates": [],
+          "expected_interpretation_preview": "Expression does not match supported composite contracts: delimiter pattern is invalid.",
+          "expected_notes_for_operator": "Invalid delimiter",
+          "expected_pipeline_stop_step": 4,
+          "precedence_conflict_case": false,
+          "source_basis": {
+            "pass05": "REJECT_INVALID_DELIMITER"
+          }
+        },
+        {
+          "test_id": "SEQUENCE_REJECT_002",
+          "raw_expression": "SB/CS/PCT/PICKEDOFF",
+          "normalized_expression": "sb/cs/pct/pickedoff",
+          "context_profile": "default_hitter",
+          "expected_cluster_type": "multi_measure_sequence_cluster",
+          "expected_classification": "REJECT",
+          "expected_reason_code": "REJECT_INVALID_COMPONENT_COUNT",
+          "expected_confidence_level": "LOW",
+          "expected_extracted_components": [],
+          "expected_canonical_candidates": [],
+          "expected_interpretation_preview": "Expression does not match supported composite contracts: component count is out of bounds.",
+          "expected_notes_for_operator": "Too many components",
+          "expected_pipeline_stop_step": 4,
+          "precedence_conflict_case": false,
+          "source_basis": {
+            "pass05": "REJECT_INVALID_COMPONENT_COUNT"
+          }
+        },
+        {
+          "test_id": "SEQUENCE_REJECT_003",
+          "raw_expression": "AVG;HR;RBI",
+          "normalized_expression": "avg;hr;rbi",
+          "context_profile": "default_hitter",
+          "expected_cluster_type": "unsupported",
+          "expected_classification": "REJECT",
+          "expected_reason_code": "REJECT_UNKNOWN_STRUCTURE",
+          "expected_confidence_level": "LOW",
+          "expected_extracted_components": [],
+          "expected_canonical_candidates": [],
+          "expected_interpretation_preview": "Expression does not match supported composite contracts: structure is not supported.",
+          "expected_notes_for_operator": "Unknown structure",
+          "expected_pipeline_stop_step": 3,
+          "precedence_conflict_case": false,
+          "source_basis": {
+            "pass05": "REJECT_UNKNOWN_STRUCTURE"
+          }
+        },
+        {
+          "test_id": "SEQUENCE_REJECT_004",
+          "raw_expression": "E:/EDRIVE/MLB/SEQ/AVG/HR/RBI.txt",
+          "normalized_expression": "e:/edrive/mlb/seq/avg/hr/rbi.txt",
+          "context_profile": "default_hitter",
+          "expected_cluster_type": "unsupported",
+          "expected_classification": "REJECT",
+          "expected_reason_code": "REJECT_PATH_LIKE_SYNTAX",
+          "expected_confidence_level": "LOW",
+          "expected_extracted_components": [],
+          "expected_canonical_candidates": [],
+          "expected_interpretation_preview": "Expression does not match supported composite contracts: path-like syntax is not a composite stat expression.",
+          "expected_notes_for_operator": "Path-like",
+          "expected_pipeline_stop_step": 3,
+          "precedence_conflict_case": false,
+          "source_basis": {
+            "pass05": "REJECT_PATH_LIKE_SYNTAX"
+          }
+        }
+      ]
+    },
+    "precedence_conflict_vectors": [
+      {
+        "test_id": "PRECEDENCE_001",
+        "raw_expression": "E:/EDRIVE//K/BB",
+        "normalized_expression": "e:/edrive//k/bb",
+        "context_profile": "default_hitter",
+        "expected_cluster_type": "unsupported",
+        "expected_classification": "REJECT",
+        "expected_reason_code": "REJECT_PATH_LIKE_SYNTAX",
+        "expected_confidence_level": "LOW",
+        "expected_extracted_components": [],
+        "expected_canonical_candidates": [],
+        "expected_interpretation_preview": "Expression does not match supported composite contracts: path-like syntax is not a composite stat expression.",
+        "expected_notes_for_operator": "Path-like wins",
+        "expected_pipeline_stop_step": 3,
+        "precedence_conflict_case": true,
+        "source_basis": {
+          "purpose": "precedence"
+        }
+      },
+      {
+        "test_id": "PRECEDENCE_002",
+        "raw_expression": "AVG/HR,UNKNOWN",
+        "normalized_expression": "avg/hr,unknown",
+        "context_profile": "default_hitter",
+        "expected_cluster_type": "unsupported",
+        "expected_classification": "REJECT",
+        "expected_reason_code": "REJECT_MIXED_CLUSTER_SIGNAL",
+        "expected_confidence_level": "LOW",
+        "expected_extracted_components": [],
+        "expected_canonical_candidates": [],
+        "expected_interpretation_preview": "Expression does not match supported composite contracts: conflicting structure signatures detected.",
+        "expected_notes_for_operator": "Mixed signal wins",
+        "expected_pipeline_stop_step": 3,
+        "precedence_conflict_case": true,
+        "source_basis": {
+          "purpose": "precedence"
+        }
+      },
+      {
+        "test_id": "PRECEDENCE_003",
+        "raw_expression": "K/UNKNOWN",
+        "normalized_expression": "k/unknown",
+        "context_profile": "default_hitter",
+        "expected_cluster_type": "ratio_or_slash_cluster",
+        "expected_classification": "DEFER",
+        "expected_reason_code": "DEFER_UNRESOLVED_COMPONENT",
+        "expected_confidence_level": "MEDIUM",
+        "expected_extracted_components": [
+          "K",
+          "UNKNOWN"
+        ],
+        "expected_canonical_candidates": [
+          {
+            "component": "K",
+            "canonical_key": "strikeouts",
+            "binding_status": "resolved"
+          },
+          {
+            "component": "UNKNOWN",
+            "canonical_key": "",
+            "binding_status": "unresolved"
+          }
+        ],
+        "expected_interpretation_preview": "Structure recognized as ratio/slash composite, but advisory resolution is incomplete: one or more components are unresolved.",
+        "expected_notes_for_operator": "Defer blocks pass",
+        "expected_pipeline_stop_step": 6,
+        "precedence_conflict_case": true,
+        "source_basis": {
+          "purpose": "precedence"
+        }
+      },
+      {
+        "test_id": "PRECEDENCE_004",
+        "raw_expression": "",
+        "normalized_expression": "",
+        "context_profile": "default_hitter",
+        "expected_cluster_type": "unsupported",
+        "expected_classification": "REJECT",
+        "expected_reason_code": "REJECT_EMPTY_EXPRESSION",
+        "expected_confidence_level": "LOW",
+        "expected_extracted_components": [],
+        "expected_canonical_candidates": [],
+        "expected_interpretation_preview": "Expression does not match supported composite contracts: expression is empty.",
+        "expected_notes_for_operator": "Empty stops intake",
+        "expected_pipeline_stop_step": 1,
+        "precedence_conflict_case": true,
+        "source_basis": {
+          "purpose": "precedence"
+        }
+      }
+    ]
+  },
+  "coverage_summary": {
+    "totals": {
+      "total_vectors": 27,
+      "precedence_conflict_vectors": 4
+    },
+    "by_cluster": {
+      "ratio_or_slash_cluster": {
+        "PASS": 3,
+        "DEFER": 4,
+        "REJECT": 4,
+        "total": 11
+      },
+      "multi_measure_sequence_cluster": {
+        "PASS": 4,
+        "DEFER": 4,
+        "REJECT": 4,
+        "total": 12
+      }
+    },
+    "by_classification": {
+      "PASS": 7,
+      "DEFER": 9,
+      "REJECT": 11
+    },
+    "by_reason_code": {
+      "DEFER_ALIAS_AMBIGUITY": 1,
+      "DEFER_BOUNDARY_CUSTOM_PLACEHOLDER": 2,
+      "DEFER_CONTEXT_DEPENDENT": 1,
+      "DEFER_UNRESOLVED_COMPONENT": 5,
+      "PASS_FULLY_RESOLVED": 7,
+      "REJECT_EMPTY_EXPRESSION": 1,
+      "REJECT_INVALID_COMPONENT_COUNT": 2,
+      "REJECT_INVALID_DELIMITER": 2,
+      "REJECT_MIXED_CLUSTER_SIGNAL": 2,
+      "REJECT_PATH_LIKE_SYNTAX": 3,
+      "REJECT_UNKNOWN_STRUCTURE": 1
+    },
+    "edge_case_coverage": [
+      "delimiter edge cases",
+      "component-count bounds",
+      "path-like false-positive rejection",
+      "mixed-cluster signal rejection",
+      "unresolved component defer",
+      "alias ambiguity defer",
+      "custom placeholder boundary defer",
+      "template-context defer",
+      "ordering-sensitive sequences"
+    ]
+  },
+  "recommended_next_pass": {
+    "name": "MLB_ONAIR_COMPOSITE_ADVISORY_VECTOR_REVIEW_SIGNOFF_PASS_07",
+    "mode": "read_only_review_signoff",
+    "objective": "Perform conservative signoff over PASS_06 vectors and freeze a minimal approved conformance subset for future advisory-only implementation validation."
+  },
+  "boundary_note": "PASS_06 is test-vector definition only. No runtime, INI, or implementation mutation is authorized or performed."
+}

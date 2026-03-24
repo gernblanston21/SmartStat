@@ -1,0 +1,71 @@
+{
+  "pass_name": "MLB_ONAIR_COMPOSITE_ADVISORY_TEST_VECTOR_PASS_06",
+  "output_directory": "tests/_scratch/onair-mlb-composite-advisory-test-vectors-pass06",
+  "generated_at_utc": "2026-03-24T14:21:33Z",
+  "source_inputs": {
+    "primary_pass05": [
+      "tests/_scratch/onair-mlb-composite-advisory-spec-pass05/mlb_composite_advisory_recognition_spec.md",
+      "tests/_scratch/onair-mlb-composite-advisory-spec-pass05/mlb_composite_advisory_recognition_spec.json",
+      "tests/_scratch/onair-mlb-composite-advisory-spec-pass05/mlb_composite_advisory_recognition_manifest.json"
+    ],
+    "primary_pass04": [
+      "tests/_scratch/onair-mlb-composite-contract-pass04/mlb_composite_ratio_sequence_contract_report.md",
+      "tests/_scratch/onair-mlb-composite-contract-pass04/mlb_composite_ratio_sequence_contract_definition.json"
+    ],
+    "supporting_pass03": [
+      "tests/_scratch/onair-mlb-composite-cluster-pass03/mlb_composite_expression_cluster_report.md",
+      "tests/_scratch/onair-mlb-composite-cluster-pass03/mlb_composite_expression_cluster_definition.json"
+    ],
+    "path_substitution": {
+      "used": false,
+      "details": "None"
+    }
+  },
+  "counts": {
+    "total_vectors": 27,
+    "ratio_or_slash_cluster": {
+      "PASS": 3,
+      "DEFER": 4,
+      "REJECT": 4,
+      "total": 11
+    },
+    "multi_measure_sequence_cluster": {
+      "PASS": 4,
+      "DEFER": 4,
+      "REJECT": 4,
+      "total": 12
+    },
+    "precedence_conflict_vectors": 4,
+    "by_reason_code": {
+      "DEFER_ALIAS_AMBIGUITY": 1,
+      "DEFER_BOUNDARY_CUSTOM_PLACEHOLDER": 2,
+      "DEFER_CONTEXT_DEPENDENT": 1,
+      "DEFER_UNRESOLVED_COMPONENT": 5,
+      "PASS_FULLY_RESOLVED": 7,
+      "REJECT_EMPTY_EXPRESSION": 1,
+      "REJECT_INVALID_COMPONENT_COUNT": 2,
+      "REJECT_INVALID_DELIMITER": 2,
+      "REJECT_MIXED_CLUSTER_SIGNAL": 2,
+      "REJECT_PATH_LIKE_SYNTAX": 3,
+      "REJECT_UNKNOWN_STRUCTURE": 1
+    }
+  },
+  "artifacts": [
+    {
+      "path": "tests/_scratch/onair-mlb-composite-advisory-test-vectors-pass06/mlb_composite_advisory_test_vectors.json",
+      "size_bytes": 36256,
+      "sha256": "B80EE581ED679271F0097AA66D92309697141E4CE149111F9B5B40FC1D69BDF2"
+    },
+    {
+      "path": "tests/_scratch/onair-mlb-composite-advisory-test-vectors-pass06/mlb_composite_advisory_test_vector_report.md",
+      "size_bytes": 4194,
+      "sha256": "CEB187060B8A9217C16C283F3F338D0E859603E091B3EEDF263B49BF9E1F2779"
+    },
+    {
+      "path": "tests/_scratch/onair-mlb-composite-advisory-test-vectors-pass06/mlb_composite_advisory_test_vector_manifest.json",
+      "size_bytes": 2849,
+      "sha256": "N/A_SELF_REFERENTIAL"
+    }
+  ],
+  "boundary_note": "PASS_06 is read-only test-vector definition only. No runtime/config mutation authorized or performed."
+}
