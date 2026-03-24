@@ -1,0 +1,46 @@
+{
+  "target_file": "SmartStat_v4.1.0.vbs",
+  "candidate_insertion_points": [
+    {
+      "name": "Slice2PlanBridge_RunAndExit (after Slice2PlanBridge_Execute; before Slice2PlanBridge_EmitEvidence)",
+      "reason": "Read-only outcome context is complete at this boundary and it already has deterministic fail-closed diagnostic handling. Advisory can be invoked without changing execution authority or payload schema.",
+      "inputs_available": [
+        "outcome.preview_kind",
+        "outcome.tabfield_records",
+        "Slice1Ingress_GetNamedArg(...) plumbing for explicit composite input"
+      ],
+      "safe_for_first_slice": true
+    },
+    {
+      "name": "Slice2PlanBridge_BuildPreviewPayloadJson (adjacent to operator_hint_surface/detail/summary/next_step)",
+      "reason": "Technically close to existing operator advisory surfaces, but adding composite fields here would mutate preview payload contract and is not the safest first integration slice.",
+      "inputs_available": [
+        "previewKind",
+        "outcome",
+        "tabfieldRecords"
+      ],
+      "safe_for_first_slice": false
+    }
+  ],
+  "required_inputs": [
+    "composite_input_raw (explicit named arg; no implicit tabfield inference)",
+    "preview_kind",
+    "SmartStat_Mappings.ini authority (read-only)"
+  ],
+  "allowed_output_fields": [
+    "recognized",
+    "reason_code",
+    "confidence_bucket",
+    "has_ambiguity"
+  ],
+  "forbidden_surfaces": [
+    "tabfield_writes",
+    "socket_operations",
+    "apply_take_cue",
+    "runtime_payload_mutation",
+    "authoritative_branching"
+  ],
+  "recommended_next_pass": "MLB_ONAIR_COMPOSITE_ADVISORY_RUNTIME_INTEGRATION_SLICE_14_DIAG_ONLY",
+  "go_no_go": "GO",
+  "go_no_go_reason": "GO only for a diag-only read-only invocation slice with explicit input and zero preview payload/runtime mutation. Any payload/schema or authority expansion is out of scope."
+}
