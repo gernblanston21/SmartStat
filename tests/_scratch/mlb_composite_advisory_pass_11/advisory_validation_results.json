@@ -1,0 +1,255 @@
+[
+  {
+    "id": "PRECEDENCE_001",
+    "input": "E:/EDRIVE//K/BB",
+    "actual_classification": "REJECT",
+    "reason_code": "REJECT_UNSUPPORTED_PATTERN",
+    "has_ambiguity": false,
+    "ambiguity_flags": [],
+    "match": true
+  },
+  {
+    "id": "PRECEDENCE_002",
+    "input": "AVG/HR,UNKNOWN",
+    "actual_classification": "REJECT",
+    "reason_code": "REJECT_AMBIGUOUS_STRUCTURE",
+    "has_ambiguity": false,
+    "ambiguity_flags": [],
+    "match": true
+  },
+  {
+    "id": "PRECEDENCE_003",
+    "input": "K/UNKNOWN",
+    "actual_classification": "DEFER",
+    "reason_code": "DEFER_PARTIAL_MAPPING",
+    "has_ambiguity": false,
+    "ambiguity_flags": [],
+    "match": true
+  },
+  {
+    "id": "PRECEDENCE_004",
+    "input": "",
+    "actual_classification": "REJECT",
+    "reason_code": "REJECT_UNSUPPORTED_PATTERN",
+    "has_ambiguity": false,
+    "ambiguity_flags": [],
+    "match": true
+  },
+  {
+    "id": "RATIO_DEFER_001",
+    "input": "K/UNKNOWN",
+    "actual_classification": "DEFER",
+    "reason_code": "DEFER_PARTIAL_MAPPING",
+    "has_ambiguity": false,
+    "ambiguity_flags": [],
+    "match": true
+  },
+  {
+    "id": "RATIO_DEFER_002",
+    "input": "AVG/K",
+    "actual_classification": "DEFER",
+    "reason_code": "DEFER_NON_APPROVED_PATTERN_WITH_VALID_MAPPING",
+    "has_ambiguity": true,
+    "ambiguity_flags": [
+      "MULTI_MATCH"
+    ],
+    "match": true
+  },
+  {
+    "id": "RATIO_DEFER_003",
+    "input": "{{custom.header_k}}/BB",
+    "actual_classification": "DEFER",
+    "reason_code": "DEFER_PARTIAL_MAPPING",
+    "has_ambiguity": false,
+    "ambiguity_flags": [],
+    "match": true
+  },
+  {
+    "id": "RATIO_DEFER_004",
+    "input": "H/AB",
+    "actual_classification": "DEFER",
+    "reason_code": "DEFER_PARTIAL_MAPPING",
+    "has_ambiguity": false,
+    "ambiguity_flags": [],
+    "match": true
+  },
+  {
+    "id": "RATIO_PASS_001",
+    "input": "K/BB",
+    "actual_classification": "PASS",
+    "reason_code": "PASS_VALIDATED_MAPPING",
+    "has_ambiguity": false,
+    "ambiguity_flags": [],
+    "match": true
+  },
+  {
+    "id": "RATIO_PASS_002",
+    "input": "BB/K",
+    "actual_classification": "PASS",
+    "reason_code": "PASS_VALIDATED_MAPPING",
+    "has_ambiguity": false,
+    "ambiguity_flags": [],
+    "match": true
+  },
+  {
+    "id": "RATIO_PASS_003",
+    "input": "STRIKEOUTS/BB",
+    "actual_classification": "PASS",
+    "reason_code": "PASS_VALIDATED_MAPPING",
+    "has_ambiguity": false,
+    "ambiguity_flags": [],
+    "match": true
+  },
+  {
+    "id": "RATIO_REJECT_001",
+    "input": "K//BB",
+    "actual_classification": "REJECT",
+    "reason_code": "REJECT_AMBIGUOUS_STRUCTURE",
+    "has_ambiguity": false,
+    "ambiguity_flags": [],
+    "match": true
+  },
+  {
+    "id": "RATIO_REJECT_002",
+    "input": "/K",
+    "actual_classification": "REJECT",
+    "reason_code": "REJECT_AMBIGUOUS_STRUCTURE",
+    "has_ambiguity": false,
+    "ambiguity_flags": [],
+    "match": true
+  },
+  {
+    "id": "RATIO_REJECT_003",
+    "input": "E:/EDRIVE/MLB/HEADSHOTS/{{info.team.alias}}/{{info.player.last_name}}.png",
+    "actual_classification": "REJECT",
+    "reason_code": "REJECT_UNSUPPORTED_PATTERN",
+    "has_ambiguity": false,
+    "ambiguity_flags": [],
+    "match": true
+  },
+  {
+    "id": "RATIO_REJECT_004",
+    "input": "AVG/HR, RBI",
+    "actual_classification": "REJECT",
+    "reason_code": "REJECT_AMBIGUOUS_STRUCTURE",
+    "has_ambiguity": false,
+    "ambiguity_flags": [],
+    "match": true
+  },
+  {
+    "id": "SEQUENCE_DEFER_001",
+    "input": "AVG/HR/???",
+    "actual_classification": "DEFER",
+    "reason_code": "DEFER_PARTIAL_MAPPING",
+    "has_ambiguity": true,
+    "ambiguity_flags": [
+      "MULTI_MATCH"
+    ],
+    "match": true
+  },
+  {
+    "id": "SEQUENCE_DEFER_002",
+    "input": "SB/CS/PCT",
+    "actual_classification": "DEFER",
+    "reason_code": "DEFER_PARTIAL_MAPPING",
+    "has_ambiguity": false,
+    "ambiguity_flags": [],
+    "match": true
+  },
+  {
+    "id": "SEQUENCE_DEFER_003",
+    "input": "AVG,HR,{{custom.header_rbi}}",
+    "actual_classification": "DEFER",
+    "reason_code": "DEFER_PARTIAL_MAPPING",
+    "has_ambiguity": true,
+    "ambiguity_flags": [
+      "MULTI_MATCH"
+    ],
+    "match": true
+  },
+  {
+    "id": "SEQUENCE_DEFER_004",
+    "input": "{{stats.player.season.avg}},HR,RBI",
+    "actual_classification": "DEFER",
+    "reason_code": "DEFER_PARTIAL_MAPPING",
+    "has_ambiguity": false,
+    "ambiguity_flags": [],
+    "match": true
+  },
+  {
+    "id": "SEQUENCE_PASS_001",
+    "input": "AVG/HR/RBI",
+    "actual_classification": "PASS",
+    "reason_code": "PASS_VALIDATED_MAPPING",
+    "has_ambiguity": true,
+    "ambiguity_flags": [
+      "MULTI_MATCH"
+    ],
+    "match": true
+  },
+  {
+    "id": "SEQUENCE_PASS_002",
+    "input": "OBP/SLG/OPS",
+    "actual_classification": "PASS",
+    "reason_code": "PASS_VALIDATED_MAPPING",
+    "has_ambiguity": true,
+    "ambiguity_flags": [
+      "MULTI_MATCH"
+    ],
+    "match": true
+  },
+  {
+    "id": "SEQUENCE_PASS_003",
+    "input": "PA,HR,RBI",
+    "actual_classification": "PASS",
+    "reason_code": "PASS_VALIDATED_MAPPING",
+    "has_ambiguity": false,
+    "ambiguity_flags": [],
+    "match": true
+  },
+  {
+    "id": "SEQUENCE_PASS_004",
+    "input": "HR/PA (OBP)",
+    "actual_classification": "PASS",
+    "reason_code": "PASS_VALIDATED_MAPPING",
+    "has_ambiguity": false,
+    "ambiguity_flags": [],
+    "match": true
+  },
+  {
+    "id": "SEQUENCE_REJECT_001",
+    "input": "AVG//HR/RBI",
+    "actual_classification": "REJECT",
+    "reason_code": "REJECT_AMBIGUOUS_STRUCTURE",
+    "has_ambiguity": false,
+    "ambiguity_flags": [],
+    "match": true
+  },
+  {
+    "id": "SEQUENCE_REJECT_002",
+    "input": "SB/CS/PCT/PICKEDOFF",
+    "actual_classification": "REJECT",
+    "reason_code": "REJECT_UNSUPPORTED_PATTERN",
+    "has_ambiguity": false,
+    "ambiguity_flags": [],
+    "match": true
+  },
+  {
+    "id": "SEQUENCE_REJECT_003",
+    "input": "AVG;HR;RBI",
+    "actual_classification": "REJECT",
+    "reason_code": "REJECT_UNSUPPORTED_PATTERN",
+    "has_ambiguity": false,
+    "ambiguity_flags": [],
+    "match": true
+  },
+  {
+    "id": "SEQUENCE_REJECT_004",
+    "input": "E:/EDRIVE/MLB/SEQ/AVG/HR/RBI.txt",
+    "actual_classification": "REJECT",
+    "reason_code": "REJECT_UNSUPPORTED_PATTERN",
+    "has_ambiguity": false,
+    "ambiguity_flags": [],
+    "match": true
+  }
+]

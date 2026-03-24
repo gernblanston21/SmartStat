@@ -80,6 +80,22 @@ Public Function AdvisoryComposite_ResultLine(ByRef resultObj)
                                    CStr(invalidCount)
 End Function
 
+Public Function AdvisoryComposite_ResultLineExtended(ByRef resultObj)
+    Dim hasAmbiguity, ambiguityFlagsText
+    hasAmbiguity = "false"
+    If resultObj.Exists("has_ambiguity") Then
+        If CBool(resultObj("has_ambiguity")) Then hasAmbiguity = "true"
+    End If
+    ambiguityFlagsText = ""
+    If resultObj.Exists("ambiguity_flags") Then
+        ambiguityFlagsText = AC_JoinStringArray(resultObj("ambiguity_flags"), ";")
+    End If
+
+    AdvisoryComposite_ResultLineExtended = AdvisoryComposite_ResultLine(resultObj) & vbTab & _
+                                           hasAmbiguity & vbTab & _
+                                           ambiguityFlagsText
+End Function
+
 Private Function AC_HandleCommaSequence(ByVal normalized)
     Dim rawParts, parts
     rawParts = Split(normalized, ",")
@@ -153,6 +169,8 @@ Private Function AC_ApplyMappingValidation(ByRef baseResult)
     invalidCount = AC_CountInvalid(validations)
     baseResult("valid_component_count") = validCount
     baseResult("invalid_component_count") = invalidCount
+
+    Call AC_AttachAmbiguitySurface(baseResult, mapData, validations)
 
     Dim baseClass
     baseClass = CStr(baseResult("classification"))
@@ -281,6 +299,329 @@ Private Function AC_CountInvalid(ByRef validations)
     AC_CountInvalid = n
 End Function
 
+Private Sub AC_AttachAmbiguitySurface(ByRef baseResult, ByRef mapData, ByRef validations)
+    Dim flagsSet
+    Set flagsSet = CreateObject("Scripting.Dictionary")
+    flagsSet.CompareMode = vbTextCompare
+
+    Dim detailMap
+    Set detailMap = CreateObject("Scripting.Dictionary")
+    detailMap.CompareMode = vbTextCompare
+    Dim detailIndex
+    detailIndex = 0
+
+    Dim components, i, token, norm, candidates
+    components = baseResult("components")
+    If IsArray(components) Then
+        For i = LBound(components) To UBound(components)
+            token = CStr(components(i))
+            norm = AC_NormalizeMappingToken(token)
+            candidates = AC_GetTokenCandidates(norm, mapData)
+            Call AC_DetectTokenAmbiguity(token, candidates, flagsSet, detailMap, detailIndex)
+        Next
+    End If
+
+    Call AC_DetectAliasCollision(validations, flagsSet, detailMap, detailIndex)
+    Call AC_DetectSemanticDomainConflict(validations, flagsSet, detailMap, detailIndex)
+
+    baseResult("ambiguity_flags") = AC_OrderedFlags(flagsSet)
+    baseResult("ambiguity_details") = AC_DetailMapToArray(detailMap)
+    baseResult("has_ambiguity") = (flagsSet.Count > 0)
+End Sub
+
+Private Sub AC_DetectTokenAmbiguity(ByVal token, ByRef candidates, ByRef flagsSet, ByRef detailMap, ByRef detailIndex)
+    If Not AC_ArrayHasItems(candidates) Then Exit Sub
+
+    Dim canonicalSet, targetSet, candidateLabels
+    Set canonicalSet = CreateObject("Scripting.Dictionary")
+    Set targetSet = CreateObject("Scripting.Dictionary")
+    Set candidateLabels = CreateObject("Scripting.Dictionary")
+    canonicalSet.CompareMode = vbTextCompare
+    targetSet.CompareMode = vbTextCompare
+    candidateLabels.CompareMode = vbTextCompare
+
+    Dim hasCategory, hasQualifier, i, mappingType, canonicalToken, mappedTargetValue, label
+    hasCategory = False
+    hasQualifier = False
+
+    For i = LBound(candidates) To UBound(candidates)
+        mappingType = CStr(candidates(i)("mapping_type"))
+        canonicalToken = CStr(candidates(i)("canonical_token"))
+        mappedTargetValue = CStr(candidates(i)("mapped_target_value"))
+
+        If mappingType = "CATEGORY" Then hasCategory = True
+        If mappingType = "QUALIFIER" Then hasQualifier = True
+
+        If Len(canonicalToken) > 0 Then
+            If Not canonicalSet.Exists(canonicalToken) Then canonicalSet.Add canonicalToken, True
+        End If
+        If Len(mappedTargetValue) > 0 Then
+            If Not targetSet.Exists(mappedTargetValue) Then targetSet.Add mappedTargetValue, True
+        End If
+
+        label = mappingType & ":" & canonicalToken & "=>" & mappedTargetValue
+        If Not candidateLabels.Exists(label) Then candidateLabels.Add label, True
+    Next
+
+    If (canonicalSet.Count > 1) Or (targetSet.Count > 1) Then
+        flagsSet("MULTI_MATCH") = True
+        Call AC_AddAmbiguityDetail(detailMap, detailIndex, AC_NewDetail_TokenCandidates("MULTI_MATCH", token, AC_SortedKeys(candidateLabels)))
+    End If
+
+    If hasCategory And hasQualifier Then
+        flagsSet("CROSS_DOMAIN_CONFLICT") = True
+        Call AC_AddAmbiguityDetail(detailMap, detailIndex, AC_NewDetail_TokenCandidates("CROSS_DOMAIN_CONFLICT", token, AC_SortedKeys(candidateLabels)))
+    End If
+End Sub
+
+Private Sub AC_DetectAliasCollision(ByRef validations, ByRef flagsSet, ByRef detailMap, ByRef detailIndex)
+    If Not AC_ArrayHasItems(validations) Then Exit Sub
+
+    Dim canonicalToTokens
+    Set canonicalToTokens = CreateObject("Scripting.Dictionary")
+    canonicalToTokens.CompareMode = vbTextCompare
+
+    Dim i, canonicalToken, token, tokenSet
+    For i = LBound(validations) To UBound(validations)
+        If CBool(validations(i)("is_valid")) Then
+            canonicalToken = CStr(validations(i)("canonical_token"))
+            token = CStr(validations(i)("token"))
+            If Len(canonicalToken) > 0 Then
+                If Not canonicalToTokens.Exists(canonicalToken) Then
+                    Set tokenSet = CreateObject("Scripting.Dictionary")
+                    tokenSet.CompareMode = vbTextCompare
+                    canonicalToTokens.Add canonicalToken, tokenSet
+                End If
+                Set tokenSet = canonicalToTokens(canonicalToken)
+                If Not tokenSet.Exists(token) Then tokenSet.Add token, True
+            End If
+        End If
+    Next
+
+    Dim canonicalKeys, k
+    canonicalKeys = AC_SortedKeys(canonicalToTokens)
+    If AC_ArrayHasItems(canonicalKeys) Then
+        For k = LBound(canonicalKeys) To UBound(canonicalKeys)
+            canonicalToken = CStr(canonicalKeys(k))
+            Set tokenSet = canonicalToTokens(canonicalToken)
+            If tokenSet.Count > 1 Then
+                flagsSet("ALIAS_COLLISION") = True
+                Call AC_AddAmbiguityDetail(detailMap, detailIndex, AC_NewDetail_AliasCollision(canonicalToken, AC_SortedKeys(tokenSet)))
+            End If
+        Next
+    End If
+End Sub
+
+Private Sub AC_DetectSemanticDomainConflict(ByRef validations, ByRef flagsSet, ByRef detailMap, ByRef detailIndex)
+    If Not AC_ArrayHasItems(validations) Then Exit Sub
+
+    Dim hitterTokens, pitcherTokens
+    Set hitterTokens = CreateObject("Scripting.Dictionary")
+    Set pitcherTokens = CreateObject("Scripting.Dictionary")
+    hitterTokens.CompareMode = vbTextCompare
+    pitcherTokens.CompareMode = vbTextCompare
+
+    Dim i, mappedTargetValue, token
+    For i = LBound(validations) To UBound(validations)
+        If CBool(validations(i)("is_valid")) Then
+            mappedTargetValue = CStr(validations(i)("mapped_target_value"))
+            token = CStr(validations(i)("token"))
+            If AC_IsExplicitPitcherMeasure(mappedTargetValue) Then
+                If Not pitcherTokens.Exists(token) Then pitcherTokens.Add token, True
+            ElseIf AC_IsExplicitHitterMeasure(mappedTargetValue) Then
+                If Not hitterTokens.Exists(token) Then hitterTokens.Add token, True
+            End If
+        End If
+    Next
+
+    If (pitcherTokens.Count > 0) And (hitterTokens.Count > 0) Then
+        flagsSet("SEMANTIC_DOMAIN_CONFLICT") = True
+        Call AC_AddAmbiguityDetail(detailMap, detailIndex, AC_NewDetail_SemanticConflict(AC_SortedKeys(hitterTokens), AC_SortedKeys(pitcherTokens)))
+    End If
+End Sub
+
+Private Function AC_IsExplicitPitcherMeasure(ByVal mappedTargetValue)
+    AC_IsExplicitPitcherMeasure = (Left(LCase(CStr(mappedTargetValue)), 8) = "pitcher_")
+End Function
+
+Private Function AC_IsExplicitHitterMeasure(ByVal mappedTargetValue)
+    AC_IsExplicitHitterMeasure = (Left(LCase(CStr(mappedTargetValue)), 8) = "batting_")
+End Function
+
+Private Function AC_GetTokenCandidates(ByVal normalizedToken, ByRef mapData)
+    Dim categoryTokens, categoryTargets, categoryAliases, qualifierTokens, qualifierTargets, qualifierAliases
+    Set categoryTokens = mapData("CATEGORY_TOKEN")
+    Set categoryTargets = mapData("CATEGORY_TARGET")
+    Set categoryAliases = mapData("CATEGORY_ALIAS")
+    Set qualifierTokens = mapData("QUALIFIER_TOKEN")
+    Set qualifierTargets = mapData("QUALIFIER_TARGET")
+    Set qualifierAliases = mapData("QUALIFIER_ALIAS")
+
+    Dim candidateMap
+    Set candidateMap = CreateObject("Scripting.Dictionary")
+    candidateMap.CompareMode = vbTextCompare
+
+    Dim canonicalNorm
+    If categoryTokens.Exists(normalizedToken) Then
+        Call AC_AddCandidate(candidateMap, "CATEGORY", CStr(categoryTokens(normalizedToken)), CStr(categoryTargets(normalizedToken)))
+    End If
+    If categoryAliases.Exists(normalizedToken) Then
+        canonicalNorm = CStr(categoryAliases(normalizedToken))
+        If categoryTokens.Exists(canonicalNorm) Then
+            Call AC_AddCandidate(candidateMap, "CATEGORY", CStr(categoryTokens(canonicalNorm)), CStr(categoryTargets(canonicalNorm)))
+        End If
+    End If
+    If qualifierTokens.Exists(normalizedToken) Then
+        Call AC_AddCandidate(candidateMap, "QUALIFIER", CStr(qualifierTokens(normalizedToken)), CStr(qualifierTargets(normalizedToken)))
+    End If
+    If qualifierAliases.Exists(normalizedToken) Then
+        canonicalNorm = CStr(qualifierAliases(normalizedToken))
+        If qualifierTokens.Exists(canonicalNorm) Then
+            Call AC_AddCandidate(candidateMap, "QUALIFIER", CStr(qualifierTokens(canonicalNorm)), CStr(qualifierTargets(canonicalNorm)))
+        End If
+    End If
+
+    AC_GetTokenCandidates = AC_CandidateMapToArray(candidateMap)
+End Function
+
+Private Sub AC_AddCandidate(ByRef candidateMap, ByVal mappingType, ByVal canonicalToken, ByVal mappedTargetValue)
+    Dim key, row
+    key = mappingType & "|" & canonicalToken & "|" & mappedTargetValue
+    If candidateMap.Exists(key) Then Exit Sub
+
+    Set row = CreateObject("Scripting.Dictionary")
+    row.CompareMode = vbTextCompare
+    row("mapping_type") = mappingType
+    row("canonical_token") = canonicalToken
+    row("mapped_target_value") = mappedTargetValue
+    candidateMap.Add key, row
+End Sub
+
+Private Function AC_CandidateMapToArray(ByRef candidateMap)
+    If candidateMap.Count = 0 Then
+        AC_CandidateMapToArray = Array()
+        Exit Function
+    End If
+
+    Dim keys, ordered, i, out(), idx
+    keys = AC_SortedKeys(candidateMap)
+    If Not AC_ArrayHasItems(keys) Then
+        AC_CandidateMapToArray = Array()
+        Exit Function
+    End If
+
+    ordered = keys
+    ReDim out(UBound(ordered) - LBound(ordered))
+    idx = 0
+    For i = LBound(ordered) To UBound(ordered)
+        Set out(idx) = candidateMap(CStr(ordered(i)))
+        idx = idx + 1
+    Next
+    AC_CandidateMapToArray = out
+End Function
+
+Private Function AC_OrderedFlags(ByRef flagsSet)
+    Dim ordered
+    ordered = Array("MULTI_MATCH", "ALIAS_COLLISION", "CROSS_DOMAIN_CONFLICT", "SEMANTIC_DOMAIN_CONFLICT")
+
+    Dim out(), idx, i, flagName
+    idx = -1
+    For i = LBound(ordered) To UBound(ordered)
+        flagName = CStr(ordered(i))
+        If flagsSet.Exists(flagName) Then
+            idx = idx + 1
+            ReDim Preserve out(idx)
+            out(idx) = flagName
+        End If
+    Next
+
+    If idx = -1 Then
+        AC_OrderedFlags = Array()
+    Else
+        AC_OrderedFlags = out
+    End If
+End Function
+
+Private Sub AC_AddAmbiguityDetail(ByRef detailMap, ByRef detailIndex, ByRef detailObj)
+    detailMap.Add CStr(detailIndex), detailObj
+    detailIndex = detailIndex + 1
+End Sub
+
+Private Function AC_DetailMapToArray(ByRef detailMap)
+    If detailMap.Count = 0 Then
+        AC_DetailMapToArray = Array()
+        Exit Function
+    End If
+
+    Dim keys, i, out()
+    keys = AC_SortedKeys(detailMap)
+    ReDim out(UBound(keys) - LBound(keys))
+    For i = LBound(keys) To UBound(keys)
+        Set out(i - LBound(keys)) = detailMap(CStr(keys(i)))
+    Next
+    AC_DetailMapToArray = out
+End Function
+
+Private Function AC_NewDetail_TokenCandidates(ByVal detailType, ByVal token, ByRef candidates)
+    Dim detail
+    Set detail = CreateObject("Scripting.Dictionary")
+    detail.CompareMode = vbTextCompare
+    detail("type") = detailType
+    detail("token") = token
+    detail("candidates") = candidates
+    Set AC_NewDetail_TokenCandidates = detail
+End Function
+
+Private Function AC_NewDetail_AliasCollision(ByVal canonicalToken, ByRef tokens)
+    Dim detail
+    Set detail = CreateObject("Scripting.Dictionary")
+    detail.CompareMode = vbTextCompare
+    detail("type") = "ALIAS_COLLISION"
+    detail("canonical_token") = canonicalToken
+    detail("tokens") = tokens
+    Set AC_NewDetail_AliasCollision = detail
+End Function
+
+Private Function AC_NewDetail_SemanticConflict(ByRef hitterTokens, ByRef pitcherTokens)
+    Dim detail
+    Set detail = CreateObject("Scripting.Dictionary")
+    detail.CompareMode = vbTextCompare
+    detail("type") = "SEMANTIC_DOMAIN_CONFLICT"
+    detail("hitter_tokens") = hitterTokens
+    detail("pitcher_tokens") = pitcherTokens
+    Set AC_NewDetail_SemanticConflict = detail
+End Function
+
+Private Function AC_SortedKeys(ByRef dictObj)
+    If dictObj.Count = 0 Then
+        AC_SortedKeys = Array()
+        Exit Function
+    End If
+
+    Dim arr(), i, key
+    ReDim arr(dictObj.Count - 1)
+    i = 0
+    For Each key In dictObj.Keys
+        arr(i) = CStr(key)
+        i = i + 1
+    Next
+    Call AC_SortStringArray(arr)
+    AC_SortedKeys = arr
+End Function
+
+Private Sub AC_SortStringArray(ByRef arr)
+    Dim i, j, tmp
+    For i = LBound(arr) To UBound(arr) - 1
+        For j = i + 1 To UBound(arr)
+            If CStr(arr(j)) < CStr(arr(i)) Then
+                tmp = arr(i)
+                arr(i) = arr(j)
+                arr(j) = tmp
+            End If
+        Next
+    Next
+End Sub
+
 Private Function AC_LoadMappingData()
     Dim fso, mappingPath, stream
     Set fso = CreateObject("Scripting.FileSystemObject")
@@ -379,7 +720,8 @@ Private Sub AC_AssertNoCategoryQualifierOverlap(ByRef categories, ByRef qualifie
 
     If Len(firstOverlap) > 0 Then
         Err.Raise vbObjectError + 8102, "AC_AssertNoCategoryQualifierOverlap", _
-            "Ambiguous mapping key exists in both CATEGORY and QUALIFIER domains: " & firstOverlap
+            "CROSS_DOMAIN_CONFLICT flag=CROSS_DOMAIN_CONFLICT token=" & firstOverlap & _
+            " :: Ambiguous mapping key exists in both CATEGORY and QUALIFIER domains"
     End If
 End Sub
 
@@ -467,6 +809,31 @@ Private Function AC_JoinComponents(ByRef components)
     AC_JoinComponents = output
 End Function
 
+Private Function AC_JoinStringArray(ByRef values, ByVal delimiter)
+    Dim i, output
+    output = ""
+    If AC_ArrayHasItems(values) Then
+        For i = LBound(values) To UBound(values)
+            If i > LBound(values) Then output = output & delimiter
+            output = output & CStr(values(i))
+        Next
+    End If
+    AC_JoinStringArray = output
+End Function
+
+Private Function AC_ArrayHasItems(ByRef values)
+    On Error Resume Next
+    Dim lb, ub
+    lb = LBound(values)
+    ub = UBound(values)
+    If Err.Number <> 0 Then
+        AC_ArrayHasItems = False
+    Else
+        AC_ArrayHasItems = (ub >= lb)
+    End If
+    On Error GoTo 0
+End Function
+
 Private Function AC_NewResult(ByVal classification, ByVal patternType, ByRef components, ByVal reasonCode)
     Dim result
     Set result = CreateObject("Scripting.Dictionary")
@@ -484,5 +851,9 @@ If WScript.Arguments.Named.Exists("input") Then
     Dim cliInput, cliResult
     cliInput = WScript.Arguments.Named("input")
     Set cliResult = AdvisoryComposite_Recognize(cliInput)
-    WScript.Echo AdvisoryComposite_ResultLine(cliResult)
+    If WScript.Arguments.Named.Exists("extended") Then
+        WScript.Echo AdvisoryComposite_ResultLineExtended(cliResult)
+    Else
+        WScript.Echo AdvisoryComposite_ResultLine(cliResult)
+    End If
 End If
