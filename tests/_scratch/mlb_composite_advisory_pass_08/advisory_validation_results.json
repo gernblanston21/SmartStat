@@ -1,0 +1,191 @@
+[
+  {
+    "id": "PRECEDENCE_001",
+    "input": "E:/EDRIVE//K/BB",
+    "expected_signoff": "EXCLUDED_FROM_INITIAL_SET",
+    "actual_classification": "REJECT",
+    "match": true
+  },
+  {
+    "id": "PRECEDENCE_002",
+    "input": "AVG/HR,UNKNOWN",
+    "expected_signoff": "EXCLUDED_FROM_INITIAL_SET",
+    "actual_classification": "REJECT",
+    "match": true
+  },
+  {
+    "id": "PRECEDENCE_003",
+    "input": "K/UNKNOWN",
+    "expected_signoff": "HOLD_FOR_LATER",
+    "actual_classification": "DEFER",
+    "match": true
+  },
+  {
+    "id": "PRECEDENCE_004",
+    "input": "",
+    "expected_signoff": "EXCLUDED_FROM_INITIAL_SET",
+    "actual_classification": "REJECT",
+    "match": true
+  },
+  {
+    "id": "RATIO_DEFER_001",
+    "input": "K/UNKNOWN",
+    "expected_signoff": "HOLD_FOR_LATER",
+    "actual_classification": "DEFER",
+    "match": true
+  },
+  {
+    "id": "RATIO_DEFER_002",
+    "input": "AVG/K",
+    "expected_signoff": "HOLD_FOR_LATER",
+    "actual_classification": "DEFER",
+    "match": true
+  },
+  {
+    "id": "RATIO_DEFER_003",
+    "input": "{{custom.header_k}}/BB",
+    "expected_signoff": "HOLD_FOR_LATER",
+    "actual_classification": "DEFER",
+    "match": true
+  },
+  {
+    "id": "RATIO_DEFER_004",
+    "input": "H/AB",
+    "expected_signoff": "HOLD_FOR_LATER",
+    "actual_classification": "DEFER",
+    "match": true
+  },
+  {
+    "id": "RATIO_PASS_001",
+    "input": "K/BB",
+    "expected_signoff": "APPROVED_FOR_INITIAL_IMPLEMENTATION",
+    "actual_classification": "PASS",
+    "match": true
+  },
+  {
+    "id": "RATIO_PASS_002",
+    "input": "BB/K",
+    "expected_signoff": "APPROVED_FOR_INITIAL_IMPLEMENTATION",
+    "actual_classification": "PASS",
+    "match": true
+  },
+  {
+    "id": "RATIO_PASS_003",
+    "input": "STRIKEOUTS/BB",
+    "expected_signoff": "APPROVED_FOR_INITIAL_IMPLEMENTATION",
+    "actual_classification": "PASS",
+    "match": true
+  },
+  {
+    "id": "RATIO_REJECT_001",
+    "input": "K//BB",
+    "expected_signoff": "EXCLUDED_FROM_INITIAL_SET",
+    "actual_classification": "REJECT",
+    "match": true
+  },
+  {
+    "id": "RATIO_REJECT_002",
+    "input": "/K",
+    "expected_signoff": "EXCLUDED_FROM_INITIAL_SET",
+    "actual_classification": "REJECT",
+    "match": true
+  },
+  {
+    "id": "RATIO_REJECT_003",
+    "input": "E:/EDRIVE/MLB/HEADSHOTS/{{info.team.alias}}/{{info.player.last_name}}.png",
+    "expected_signoff": "EXCLUDED_FROM_INITIAL_SET",
+    "actual_classification": "REJECT",
+    "match": true
+  },
+  {
+    "id": "RATIO_REJECT_004",
+    "input": "AVG/HR, RBI",
+    "expected_signoff": "EXCLUDED_FROM_INITIAL_SET",
+    "actual_classification": "REJECT",
+    "match": true
+  },
+  {
+    "id": "SEQUENCE_DEFER_001",
+    "input": "AVG/HR/???",
+    "expected_signoff": "HOLD_FOR_LATER",
+    "actual_classification": "DEFER",
+    "match": true
+  },
+  {
+    "id": "SEQUENCE_DEFER_002",
+    "input": "SB/CS/PCT",
+    "expected_signoff": "HOLD_FOR_LATER",
+    "actual_classification": "DEFER",
+    "match": true
+  },
+  {
+    "id": "SEQUENCE_DEFER_003",
+    "input": "AVG,HR,{{custom.header_rbi}}",
+    "expected_signoff": "HOLD_FOR_LATER",
+    "actual_classification": "DEFER",
+    "match": true
+  },
+  {
+    "id": "SEQUENCE_DEFER_004",
+    "input": "{{stats.player.season.avg}},HR,RBI",
+    "expected_signoff": "HOLD_FOR_LATER",
+    "actual_classification": "DEFER",
+    "match": true
+  },
+  {
+    "id": "SEQUENCE_PASS_001",
+    "input": "AVG/HR/RBI",
+    "expected_signoff": "APPROVED_FOR_INITIAL_IMPLEMENTATION",
+    "actual_classification": "PASS",
+    "match": true
+  },
+  {
+    "id": "SEQUENCE_PASS_002",
+    "input": "OBP/SLG/OPS",
+    "expected_signoff": "APPROVED_FOR_INITIAL_IMPLEMENTATION",
+    "actual_classification": "PASS",
+    "match": true
+  },
+  {
+    "id": "SEQUENCE_PASS_003",
+    "input": "PA,HR,RBI",
+    "expected_signoff": "APPROVED_FOR_INITIAL_IMPLEMENTATION",
+    "actual_classification": "PASS",
+    "match": true
+  },
+  {
+    "id": "SEQUENCE_PASS_004",
+    "input": "HR/PA (OBP)",
+    "expected_signoff": "APPROVED_FOR_INITIAL_IMPLEMENTATION",
+    "actual_classification": "PASS",
+    "match": true
+  },
+  {
+    "id": "SEQUENCE_REJECT_001",
+    "input": "AVG//HR/RBI",
+    "expected_signoff": "EXCLUDED_FROM_INITIAL_SET",
+    "actual_classification": "REJECT",
+    "match": true
+  },
+  {
+    "id": "SEQUENCE_REJECT_002",
+    "input": "SB/CS/PCT/PICKEDOFF",
+    "expected_signoff": "EXCLUDED_FROM_INITIAL_SET",
+    "actual_classification": "REJECT",
+    "match": true
+  },
+  {
+    "id": "SEQUENCE_REJECT_003",
+    "input": "AVG;HR;RBI",
+    "expected_signoff": "EXCLUDED_FROM_INITIAL_SET",
+    "actual_classification": "REJECT",
+    "match": true
+  },
+  {
+    "id": "SEQUENCE_REJECT_004",
+    "input": "E:/EDRIVE/MLB/SEQ/AVG/HR/RBI.txt",
+    "expected_signoff": "EXCLUDED_FROM_INITIAL_SET",
+    "actual_classification": "REJECT",
+    "match": true
+  }
+]
