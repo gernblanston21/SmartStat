@@ -1,0 +1,39 @@
+{
+  "editor.tabSize": 4,
+  "editor.insertSpaces": true,
+  "editor.wordWrap": "off",
+  "editor.renderWhitespace": "selection",
+  "editor.minimap.enabled": false,
+
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "files.eol": "\r\n",
+
+  "[vbscript]": {
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "editor.formatOnSave": false
+  },
+
+  "files.associations": {
+    "*.vbs": "vbs",
+    "*.wsf": "xml",
+    "*.ini": "ini",
+    "*.cfg": "ini",
+    "*.bat": "bat",
+    "*.exe": "exe",
+    "*.md": "markdown",
+    "*.txt": "plaintext"
+  },
+
+  "search.exclude": {
+    "**/.git": true,
+    "**/Logs/**": true,
+    "**/_STAGE/**": true
+  },
+
+  "chat.tools.terminal.autoApprove": {
+    "\\.tools\\\\show-lines\\.ps1": true,
+    "\\.agents\\\\skills\\\\.*\\.ps1": true
+  }
+}

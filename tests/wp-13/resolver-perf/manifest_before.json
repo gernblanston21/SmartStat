@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "pack_name": "wp13_strict_compare",
+  "defaults": {
+    "script": "tests/wp-13/resolver-perf/inputs/SmartStat_v4.0.0_beta.before.vbs"
+  },
+  "cases": [
+    {
+      "id": "strict_success",
+      "enabled": true,
+      "runner": "tests/wp-10/phase-4/tmp_phase4_runner.vbs",
+      "args": ["SUCCESS", "HARNESS_STRICT"],
+      "artifact": "strict_success.txt"
+    },
+    {
+      "id": "strict_ambiguity",
+      "enabled": true,
+      "runner": "tests/wp-10/phase-4/tmp_phase4_runner.vbs",
+      "args": ["AMBIGUITY", "HARNESS_STRICT"],
+      "artifact": "strict_ambiguity.txt"
+    }
+  ]
+}

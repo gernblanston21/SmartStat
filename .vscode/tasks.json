@@ -1,0 +1,176 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "SmartStat: Copy MAIN script to clipboard (latest in Main_TrioScript)",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        ".tools/copy-latest-main-to-clipboard.ps1",
+        "-WorkspaceFolder",
+        "${workspaceFolder}"
+      ],
+      "problemMatcher": [],
+      "group": { "kind": "build", "isDefault": true },
+      "presentation": { "reveal": "always", "panel": "dedicated", "clear": true }
+    },
+    {
+      "label": "SmartStat: Export MAIN script to _EXPORT (latest in Main_TrioScript)",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        ".tools/export-latest-main-to-export.ps1",
+        "-WorkspaceFolder",
+        "${workspaceFolder}"
+      ],
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated", "clear": true }
+    },
+    {
+      "label": "SmartStat: Show lines (file + range)",
+      "type": "shell",
+      "command": "pwsh.exe",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy", "Bypass",
+        "-File", "${workspaceFolder}\\.tools\\show-lines.ps1",
+        "-Path", "${input:showLinesPath}",
+        "-From", "${input:showLinesFrom}",
+        "-To", "${input:showLinesTo}"
+      ],
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated", "clear": true }
+    },
+    {
+      "label": "SmartStat: PDF -> Chunked Markdown",
+      "type": "shell",
+      "command": "python",
+      "args": [
+        "${workspaceFolder}/tools/pdf_to_md_chunker.py",
+        "--pdf",
+        "${file}",
+        "--out",
+        "${workspaceFolder}/docs/viz-trio/_ingest"
+      ],
+      "problemMatcher": [],
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "SmartStat: Viz Trio Preflight + PROMPTS",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-Command",
+        "$paths=@(",
+        "  'PROMPTS.md',",
+        "  'docs/viz-trio/environment_constraints.md',",
+        "  'docs/viz-trio/command_reference.md',",
+        "  'docs/viz-trio/commands_full_index.md',",
+        "  'docs/viz-trio/tabfields.md',",
+        "  'docs/viz-trio/page_list.md',",
+        "  'docs/viz-trio/page_editor.md',",
+        "  'docs/viz-trio/show_control.md'",
+        ");",
+        "foreach($p in $paths){",
+        "  if(Test-Path $p){ code -r $p } else { Write-Host ('MISSING: ' + $p) }",
+        "}",
+        "Write-Host 'Viz Trio preflight complete.'"
+      ],
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated", "clear": true }
+    },
+    {
+      "label": "Skills: Validate TemplateConfig order",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}\\.agents\\skills\\smartstat-ini-governance\\scripts\\validate_templateconfig_order.ps1",
+        "-Path",
+        "${workspaceFolder}\\SmartStat_TemplateConfig.ini"
+      ],
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated", "clear": true }
+    },
+    {
+      "label": "Skills: Validate INI duplicates (TemplateConfig)",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}\\.agents\\skills\\smartstat-ini-governance\\scripts\\validate_ini_no_duplicate_keys.ps1",
+        "-Path",
+        "${workspaceFolder}\\SmartStat_TemplateConfig.ini"
+      ],
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated", "clear": true }
+    },
+    {
+      "label": "Skills: Determinism smoke",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}\\.agents\\skills\\smartstat-determinism-audit\\scripts\\determinism_smoke.ps1",
+        "-ScriptPath",
+        "${workspaceFolder}\\SmartStat_v4.0.0_beta.vbs",
+        "-OutDir",
+        "${workspaceFolder}\\DiagLogs\\Harness",
+        "-Tag",
+        "det_smoke"
+      ],
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated", "clear": true }
+    },
+    {
+      "label": "Roadmap: Status (mode + WP table)",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}\\.agents\\skills\\smartstat-roadmap-driver\\scripts\\roadmap_status.ps1"
+      ],
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated", "clear": true }
+    },
+    {
+      "label": "Roadmap: Next steps (RC vs Dev)",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}\\.agents\\skills\\smartstat-roadmap-driver\\scripts\\roadmap_next_steps.ps1"
+      ],
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated", "clear": true }
+    }
+  ]
+}

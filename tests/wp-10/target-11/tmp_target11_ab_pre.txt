@@ -1,0 +1,9 @@
+RET=False
+STAT_OUT=VAL_SPACE
+CONCEPT_OUT=INI.TEST_SEC
+IS_PITCHER=False
+USED_HEUR=False
+ACCEPTED_BY=ambiguous/ini
+SCORE=0.00
+AMB_COUNT=1
+AMB_SUMMARY=normalized_collision ambiguous in ini input=[TEST_SEC:alpha_beta] candidates=[top_tie=[ALPHA BETA|ALPHA_BETA]] note=[LoadIniSectionDictNormalized normalize collision fail-closed]

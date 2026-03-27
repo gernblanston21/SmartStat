@@ -1,5 +1,23 @@
-.vscode/
+.vscode/*
+!.vscode/tasks.json
+!.vscode/settings.json
+.tools/
+DiagLogs/
 _EXPORT/
 Logs/
 *.log
 *.tmp
+PLAN.md
+/tmp_*.vbs
+/tmp_*.txt
+# Codex Agent Skills runtime logs (keep structure, ignore outputs)
+.agents/**/logs/
+.agents/**/logs/**
+# WP-11 regression pack generated outputs
+tests/wp-11/regression-pack/artifacts/
+# WP-12 learn validation generated outputs
+tests/wp-12/learn-validation/artifacts/
+# WP-13 resolver perf generated outputs
+tests/wp-13/resolver-perf/artifacts/
+# WP-14 contract validator generated outputs
+tests/wp-14/**/artifacts/

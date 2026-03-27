@@ -1,0 +1,296 @@
+# ROADMAP - SmartStat v4 Lifecycle
+
+## Current State
+v4.0.0_beta - Frozen and stable
+Transitioning to v4.0.0_RC1
+v4.1.0_RC1 stabilization (Path A) is active.
+
+## Determinism Doctrine (v4+)
+
+SmartStat guarantees (within a given version + config):
+- Identical input state + config ? identical output
+- Identical STRICT harness run (same version/config) ? identical artifacts
+- No implicit precedence via iteration order in resolver logic
+- No filesystem-order-dependent behavior
+
+---
+
+# RC1 Phase (Immediate)
+
+## Objectives
+- Validate STRICT harness across representative templates
+- Confirm no behavioral drift since beta freeze
+- Verify determinism logging (no math changes)
+- Confirm transaction gating integrity
+
+## Definition of Done
+- No runtime errors
+- No ambiguity leakage
+- No unintended diff commits
+- RC1_CHECKLIST.md fully executed
+- Tag v4.0.0_RC1 created
+
+---
+
+# Post-RC Track (v4.1.0)
+
+## Guardrails (Post-RC)
+- RC1 behavior is the baseline; changes must be intentional, scoped, and validated.
+- No naming convention changes.
+- No INI key reordering.
+- Fail-closed semantics preserved (ambiguity + validation gates).
+- Each WP must include: scope, DoD, regression plan, and validation artifacts.
+
+## WP-10 (v4.1.0): Determinism Surface Stabilization (Explicit Ordering)
+
+### Objective
+Eliminate nondeterministic iteration surfaces that affect:
+- Visible output stability
+- Log emission stability
+- Harness artifact reproducibility
+- Resolver decision consistency
+- INI traversal consistency
+
+This is a controlled architectural stabilization pass.
+No math, resolution logic, or precedence changes are permitted.
+
+---
+
+### Determinism Surface Classes (Mapped)
+
+The following unordered iteration classes are in scope:
+
+1. Dictionary key iteration (runtime collections)
+2. Multi-source merge order (config overlays)
+3. First-match resolver scans
+4. Output_map emission ordering
+5. Log/diagnostic dump ordering
+6. INI section traversal
+7. INI key traversal (if iterative)
+8. Filesystem enumeration (if used for config load)
+9. List parsing rehydration into unordered containers
+10. Candidate set construction during heuristic scans
+
+Each surface must be classified as:
+- Behavior-affecting
+- Presentation-only
+- Non-impacting
+
+HIGH-risk surfaces (behavioral) must be stabilized before emission-level sorting.
+
+---
+
+### Explicit Non-Scope
+
+WP-10 must NOT:
+- Change resolution precedence rules
+- Alter ambiguity detection behavior
+- Modify fail-closed gating
+- Reorder INI files
+- Refactor resolver algorithm design
+- Introduce silent precedence changes
+- Mask latent ambiguity bugs via sorting
+
+---
+
+### Implementation Phases
+
+Phase 1 – Surface Audit (no code changes)
+- Confirm actual presence of each determinism surface class
+- Identify behavioral vs presentation-only cases
+- Document implicit precedence dependencies
+
+Phase 2 – Emission Stabilization
+- Stabilize output_map ordering
+- Stabilize ambiguity dump ordering
+- Stabilize harness artifact serialization
+
+Phase 3 – Behavioral Surface Hardening
+- Stabilize dictionary iteration used in resolver decisions
+- Stabilize overlay merge ordering explicitly
+- Stabilize candidate evaluation order
+
+### WP-10 Phase 3 — Behavioral Surface Hardening (Targets)
+
+Completed:
+- Target #1 — Commit ordering determinism (ApplyPlan.Keys sorted before non-atomic commit loop).
+- Target #2 — Resolver tie determinism (two-pass tie detection; ties fail closed).
+- Target #3 — TRANSFORMS_REGEX determinism (sorted load/apply; strict conflict fail-closed).
+- Target #4 — AmbiguityContext lifecycle determinism + strict invariants (AMBIGUOUS_CONTEXT_INVALID; stable ambiguity emissions).
+- Target #5 — TryCanonLookupFlexible: deterministic first-match behavior (normalize-collision handling).
+- Target #6 — LoadIniSectionDictNormalized / LoadIni: deterministic normalized-key collision handling.
+- Target #7 — SuggestQualifierMapping / ResolveFilterFragments: deterministic first-hit scanning (containment + fuzzy fallback).
+- Target #8 — ResolveQualifierSmart candidate pool ordering determinism.
+- Target #9 — ResolveCategorySmart alias/canonical merge determinism.
+- Target #10 — Heuristic scanner input normalization
+
+- Target #11 — Residual normalized lookup surfaces (if discovered) (Completed)
+
+Phase-3 complete: All documented HIGH nondeterministic behavioral surfaces stabilized with ordering-only fixes. No ambiguity, scoring, resolver, or logging drift introduced.
+
+Phase 4 – Regression Verification
+- STRICT harness repeat-run validation
+- Confirm identical resolution outcomes
+- Confirm diffs are ordering-only
+- Document validation artifact record
+
+WP-10 CLOSED — Determinism surface stabilization and regression verification complete.
+
+---
+
+### Definition of Done (Expanded)
+
+- All HIGH-risk determinism surfaces stabilized
+- All MEDIUM-risk surfaces stabilized for artifact consistency
+- STRICT harness repeat-run produces identical artifacts
+- No new ambiguity leakage
+- No resolution outcome changes
+- Changelog + validation record committed
+
+---
+
+### Versioning
+
+This is a minor version bump (v4.1.0) because:
+- Output ordering will change
+- Diff behavior changes
+- Determinism guarantees are strengthened
+
+### WP-10 Retrospective — Determinism Stabilization
+
+WP-10 hardened SmartStat’s resolution engine to guarantee deterministic behavior across runs.
+All previously identified HIGH-risk nondeterministic surfaces (dictionary iteration order, candidate pool construction, alias/canonical merge order, normalize-first lookup helpers, and heuristic scanner ingress) were stabilized without altering resolver math, scoring rules, or ambiguity policy.
+
+The work focused exclusively on deterministic ordering and fail-closed ambiguity preservation so that identical input state and configuration now produce identical outputs every time.
+
+Phase-4 regression verification validated repeat-run determinism in both STRICT and runtime harness modes, with archived evidence under `/tests/wp-10/phase-4/`.
+
+This milestone establishes SmartStat’s first fully verified deterministic core and provides a stable foundation for future resolver enhancements and feature work.
+
+No patch release permitted for this scope.
+
+## WP-11 (v4.1.0): Harness regression pack framework
+### Scope
+- Define a repeatable “regression pack” set of templates / scenarios
+- Standardize how artifacts are stored and compared
+
+### Definition of Done
+- Regression pack documented and runnable
+- Artifact locations standardized
+- Clear pass/fail criteria captured
+
+WP-11 CLOSED — Harness regression pack framework implemented (tests-only).
+Evidence: tests/wp-11/regression-pack/artifacts/compare/wp11_runA__wp11_runB/ (PACK_PASS=True)
+
+## WP-12 (v4.1.0): Enhanced learn system validation
+### Scope
+- Verify learn file writes are correct, stable, and governed
+- Ensure learn updates are validated (format + intent) before acceptance
+
+### Definition of Done
+- Learn write validation rules implemented
+- Bad/partial writes are blocked or quarantined (fail-closed)
+- Validation artifacts recorded
+
+WP-12 CLOSED — Enhanced learn system validation implemented (tests-only).
+Evidence: tests/wp-12/learn-validation/artifacts/wp12_runC/ (RUN_PASS=True)
+
+## WP-13 CLOSED (v4.1.0): Resolver performance optimization
+### Scope
+- Optimize resolver hot paths without changing resolution outcomes
+- Preserve determinism and logging semantics
+
+### Definition of Done
+- Performance improvement measured
+- No behavioral diffs in STRICT harness regression pack
+
+RC note:
+- Resolver performance optimization validated via regression harness under `tests/wp-13/resolver-perf/`.
+- Optimization itself modifies runtime code paths and is therefore **deferred until post-RC**.
+- Implementation change is preserved in local stash `WP-13 perf micro-opt (post-RC)`.
+
+Evidence: tests/wp-13/resolver-perf/ (STRICT regression harness validation)
+
+## WP-14 (v4.1.0): TrayApp alignment preparation
+### Scope
+- Define and stabilize the contract between SmartStat core + TrayApp
+- Ensure mappings/config expectations are explicit and version-safe
+
+### Definition of Done
+- Contract documented
+- Validator suite implemented
+- Harness execution passing
+- No SmartStat core behavior changes
+
+WP-14 implementation package (RC-safe, docs/tests/tooling only):
+- Contract spec: docs/contracts/smartstat_trayapp_contract.md
+- Validator suite: tests/wp-14/contract-validators/
+- Harness runner: tests/wp-14/run_wp14.ps1
+- Run command: pwsh -NoProfile -ExecutionPolicy Bypass -File tests/wp-14/run_wp14.ps1 -RunLabel <label>
+- Evidence location: tests/wp-14/contract-validators/artifacts/<runLabel>/
+- RC constraint: no SmartStat core VBScript behavior changes; no production INI schema/order mutations
+
+WP-14 CLOSED - TrayApp contract + validator harness implemented (docs/tests/tooling only).
+Evidence: tests/wp-14/contract-validators/artifacts/wp14_runB/ (RUN_PASS=True, REPO_GATE_FAILURES=0)
+
+## WP-15 (v4.2.0): Plan Engine — Phase 1 Plan Capture + Harness Evidence
+### Scope
+- Add deterministic plan output as an additive observability artifact
+- Capture resolved execution state without changing SmartStat runtime decisions
+- Include plan output in strict regression pack comparisons
+
+### Definition of Done
+- Plan schema documented
+- Plan output generated deterministically for strict cases
+- STRICT harness compare passes with plan included
+- No SmartStat runtime behavior changes introduced by plan capture
+
+## WP-16 (v4.2.0): Plan Engine — Phase 2 Plan Validation
+### Scope
+- Add validator tooling for SmartStat execution plans
+- Add good/bad fixtures for plan validation
+- Enforce deterministic, diffable plan structure
+
+### Definition of Done
+- Plan validator implemented
+- Fixture suite passes expected good/bad cases
+- Harness runner reports RUN_PASS=True
+- No SmartStat runtime behavior changes introduced by validation tooling
+
+## WP-17 (v4.2.0): Plan Engine — Phase 3 TrayApp Preview (Read-Only)
+### Scope
+- Allow TrayApp to read SmartStat plan output for preview only
+- Do not change apply behavior or runtime SmartStat execution
+- Use plan output as the inspection/preview layer for future integration
+
+### Definition of Done
+- TrayApp preview contract documented
+- Read-only preview path defined
+- No runtime apply behavior changes
+- Contract/version compatibility rules documented
+
+## WP-18 (v4.2.0): Semantic Layer + Source View
+### Scope
+- Introduce a semantic inspection layer derived from SmartStat plan output and OnAir schema/grammar discovery
+- Build developer tooling for source inspection and grammar exploration
+- Provide the foundation for a React SPA Source View
+- Recommended development branch: feature/semantic-layer
+
+### Definition of Done
+- Semantic model defined
+- Source inspection workflow documented
+- React SPA Source View architecture defined
+- Semantic-layer work isolated to a dedicated branch
+
+---
+
+# Long-Term (v4.2+ / v5.0)
+
+- Plan schema formalization
+- Internal model extraction for GUI control
+- Structured test harness automation
+- Config validation engine
+
+---
+
+Release discipline enforced starting 2026-02-28.
